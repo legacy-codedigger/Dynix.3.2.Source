@@ -1,0 +1,18 @@
+rwxr-xr-x     0    10        0 Mar 16 19:55 1992 ./
+rwxr-xr-x     0    10        0 Mar 16 22:22 1992 ./bin/
+rwxr-xr-x     0    10    45056 Mar 16 22:15 1992 ./bin/ed
+rwxr-xr-x     0    10    45056 Mar 16 22:15 1992 ./bin/red linked to ./bin/ed
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 ./bin/crypt
+rwxr-xr-x     0    10        0 Mar 16 20:49 1992 ./lib/
+rw-r--r--     0    10   140408 Mar 16 20:48 1992 ./lib/libc.a
+rw-r--r--     0    10   143458 Mar 16 20:49 1992 ./lib/libfpac.a
+rwxr-xr-x     0    10        0 Mar 16 19:55 1992 ./usr/
+rwxr-xr-x     0    10        0 Mar 16 21:02 1992 ./usr/lib/
+rw-r--r--     0    10     3222 Mar 16 21:02 1992 ./usr/lib/libcrypt.a
+rw-r--r--     0    10   116038 Mar 16 21:03 1992 ./usr/lib/libcurses.a
+rwxr-xr-x     0    10        0 Mar 16 22:22 1992 ./usr/bin/
+rwxr-xr-x     0    10   139264 Mar 16 22:21 1992 ./usr/bin/ex
+rwxr-xr-x     0    10   139264 Mar 16 22:21 1992 ./usr/bin/vi linked to ./usr/bin/ex
+rwxr-xr-x     0    10   139264 Mar 16 22:21 1992 ./usr/bin/view linked to ./usr/bin/ex
+rwxr-xr-x     0    10   139264 Mar 16 22:21 1992 ./usr/bin/edit linked to ./usr/bin/ex
+rwxr-xr-x     0    10   139264 Mar 16 22:21 1992 ./usr/bin/vedit linked to ./usr/bin/ex

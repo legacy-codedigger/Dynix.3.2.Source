@@ -1,0 +1,101 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: ypcat.1 1.4 87/04/06 $
+.\" @(#)ypcat.1 1.1 85/12/28 SMI; 
+.TH YPCAT 1 "\*(V)" "4BSD"
+.SH NAME
+ypcat - print values in a YP data base
+.SH SYNOPSIS
+.B ypcat
+[
+.B \-k
+] 
+[
+.B \-t
+] 
+[
+.B \-d
+.I  domainname 
+]
+.I  mname
+.br
+.B ypcat
+.B \-x
+.\".IX  "ypcat command"  ""  "\f2ypcat\fP \(em print values from YP database"
+.\".IX  "print values from YP database"  ""  "print values from YP database \(em \f2ypcat\fP"
+.\".IX  "yellow pages"  "print values from database"  ""  "print values from database \(em \f2ypcat\fP"
+.SH DESCRIPTION
+.I Ypcat
+prints out values in a yellow pages (YP) map specified by 
+.IR mname ,
+which may be either a
+.I mapname
+or a map 
+.IR nickname .
+Since
+.I ypcat
+uses the YP network services, no YP server is specified.
+.LP
+To look at the network-wide password database, 
+.I passwd.byname
+(with the nickname
+.IR passwd ),
+enter:
+.Ps
+ypcat passwd
+.Pe
+.LP
+Refer to
+.IR ypfiles (5)
+and
+.IR ypserv (8)
+for an overview of the yellow pages.
+.SH OPTIONS
+.TP 10
+.B \-k
+Display the keys for those maps in which the values are null
+or the key is not part of the value.
+(None of the maps derived from files that have an ASCII version in
+.I /etc
+fall into this class.)
+.TP 10
+.B \-t
+Inhibit translation of 
+.I mname 
+to 
+.I mapname.
+For example,
+.I "ypcat \-t passwd"
+fails because there is no map named
+.IR passwd ,
+whereas
+.I "ypcat passwd"
+is translated to
+.IR "ypcat passwd.byname" .
+.TP 10
+.B \-d
+Specify a domain other that the default domain.
+The default domain is returned by
+.IR domainname .
+.TP 10
+.B \-x
+Display the map nickname table.  
+This lists the nicknames
+the command knows of (\f2mnames\fP), and indicates the
+.I mapname
+associated with each
+nickname.
+.SH "SEE ALSO"
+domainname(1),
+ypmatch(1),
+ypfiles(5),
+ypserv(8)

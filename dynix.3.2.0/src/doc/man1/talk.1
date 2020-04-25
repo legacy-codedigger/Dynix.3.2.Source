@@ -1,0 +1,64 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: talk.1 1.8 91/01/02 $
+.TH TALK 1 "\*(V)" "4BSD"
+.SH NAME
+talk \- talk to another user
+.SH SYNOPSIS
+.B talk
+person [ ttyname ]
+.SH DESCRIPTION
+\fITalk\fP is a visual communication program which copies lines from your
+terminal to that of another user.
+.PP 
+If you wish to talk to someone on your own machine, then \fIperson\fP
+is just the person's login name.  If you wish to talk to a user on
+another host, then \fIperson\fP is of the form \fIuser@host\fP.
+.PP
+If you want to talk to a user who is logged in more than once, the
+\fIttyname\fP argument may be used to indicate the appropriate terminal
+name, where \fIttyname\fP is of the form ``ttyXX''.
+.PP
+When first called, \fItalk\fP sends the message
+.PP
+     Message from TalkDaemon@his_machine...
+     talk: connection requested by your_name@your_machine.
+     talk: respond with: talk your_name@your_machine
+.PP
+to the user you wish to talk to. At this point, the recipient
+of the message should reply by typing
+.PP
+     talk \ your_name@your_machine
+.PP
+It doesn't matter from which machine the recipient replies, as
+long as his login-name is the same.  Once communication is established,
+the two parties may type simultaneously, with their output appearing
+in separate windows.  Typing control L (^L) will cause the screen to
+be reprinted, while your erase, kill, and word kill characters will
+behave normally.  To exit, just type your interrupt character.
+.PP
+Permission to talk may be denied or granted by use of the \fImesg\fP
+command.  At the outset talking is allowed.  Certain commands, in
+particular \fInroff\fP and \fIpr\fP, disallow messages in order to
+prevent messy output.
+.PP
+.SH FILES
+/etc/hosts	to find the recipient's machine
+.br
+/etc/utmp		to find the recipient's tty
+.SH "SEE ALSO"
+42talk(1), mail(1), mesg(1), who(1), write(1), talkd(8)
+.SH BUGS
+The version of \fItalk\fP(1) released with 4.3BSD, as well as DYNIX(R) 3.0.17 
+and later, uses a protocol that
+is incompatible with the protocol used in earlier releases.
+To talk with a 4.2BSD based system, you must use the 42talk(1) command.

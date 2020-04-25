@@ -1,0 +1,2247 @@
+rwxr-xr-x     0    10    53248 Mar 16 22:15 1992 bin/bs
+rwxr-xr-x     0    10    24576 Mar 16 22:15 1992 bin/diff
+rwxr-xr-x     0    10    45056 Mar 16 22:15 1992 bin/ed
+rwxr-xr-x     0    10    45056 Mar 16 22:15 1992 bin/red linked to bin/ed
+rwxr-xr-x     0    10    28672 Mar 16 22:16 1992 bin/file
+rwxr-sr-x     0    10    32768 Mar 16 22:17 1992 bin/ipcs
+rwxr-xr-x     0    10    20480 Mar 16 22:17 1992 bin/ipcrm
+rwxr-xr-x     0    10    49152 Mar 16 22:17 1992 bin/make
+rwxr-xr-x     0    10    32768 Mar 16 22:19 1992 bin/sed
+rwxr-xr-x     0    10    53248 Mar 16 22:20 1992 bin/sh
+rwxr-xr-x     0    10    53248 Mar 16 22:20 1992 bin/rsh linked to bin/sh
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 bin/cat
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 bin/chgrp
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 bin/chmod
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 bin/chown
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 bin/cmp
+rwxr-xr-x     0    10    40960 Mar 16 22:22 1992 bin/cpio
+rwxr-xr-x     0    10    24576 Mar 16 22:22 1992 bin/date
+rwxr-xr-x     0    10    24576 Mar 16 22:22 1992 bin/dd
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 bin/du
+rwxr-xr-x     0    10    12288 Mar 16 22:22 1992 bin/echo
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 bin/env
+rwxr-xr-x     0    10    12288 Mar 16 22:22 1992 bin/expr
+rwxr-xr-x     0    10    32768 Mar 16 22:22 1992 bin/find
+rwxr-xr-x     0    10    24576 Mar 16 22:22 1992 bin/grep
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 bin/kill
+rwxr-xr-x     0    10     8192 Mar 16 22:22 1992 bin/line
+rwxr-xr-x     0    10    32768 Mar 16 22:22 1992 bin/ls
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 bin/mesg
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 bin/mv
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 bin/nice
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 bin/od
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 bin/nohup
+rwxr-xr-x     0    10    28672 Mar 16 22:22 1992 bin/pr
+rwxr-sr-x     0    10    61440 Mar 16 21:08 1992 bin/ps
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 bin/pwd
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 bin/rm
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 bin/sleep
+rwxr-xr-x     0    10    28672 Mar 16 22:22 1992 bin/sort
+rwxr-xr-x     0    10    32768 Mar 16 22:22 1992 bin/stty
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 bin/sum
+rwxr-xr-x     0    10     8192 Mar 16 22:22 1992 bin/sync
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 bin/tail
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 bin/tee
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 bin/time
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 bin/touch
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 bin/tty
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 bin/uname
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 bin/wc
+rwsr-xr-x     0    10    36864 Mar 16 22:22 1992 bin/mail
+rwsr-xr-x     0    10    20480 Mar 16 22:22 1992 bin/mkdir
+rwsr-xr-x     0    10    20480 Mar 16 22:22 1992 bin/rmdir
+rwsr-xr-x     0    10    32768 Mar 16 22:22 1992 bin/su
+rwxr-xr-x     0    10      145 Mar 16 22:22 1992 bin/basename
+rwxr-xr-x     0    10      114 Mar 16 22:22 1992 bin/dirname
+rwxr-xr-x     0    10       49 Mar 16 22:22 1992 bin/false
+rwxr-xr-x     0    10       18 Mar 16 22:22 1992 bin/true
+rwxr-xr-x     0    10       49 Mar 16 22:22 1992 bin/pdp11 linked to bin/false
+rwxr-xr-x     0    10       49 Mar 16 22:22 1992 bin/u370 linked to bin/false
+rwxr-xr-x     0    10       49 Mar 16 22:22 1992 bin/u3b10 linked to bin/false
+rwxr-xr-x     0    10       49 Mar 16 22:22 1992 bin/u3b2 linked to bin/false
+rwxr-xr-x     0    10       49 Mar 16 22:22 1992 bin/u3b5 linked to bin/false
+rwxr-xr-x     0    10       49 Mar 16 22:22 1992 bin/u3b linked to bin/false
+rwxr-xr-x     0    10       49 Mar 16 22:22 1992 bin/vax linked to bin/false
+rwxr-xr-x     0    10       49 Mar 16 22:22 1992 bin/ns32000 linked to bin/false
+rwxr-xr-x     0    10       18 Mar 16 22:22 1992 bin/i386 linked to bin/true
+rwsr-xr-x     0    10    36864 Mar 16 22:22 1992 bin/rmail linked to bin/mail
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 bin/cp linked to bin/mv
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 bin/ln linked to bin/mv
+rw-r--r--     0    10      436 Mar 16 22:15 1992 etc/profile
+rw-r--r--     0    10      351 Mar 16 19:56 1992 etc/rc.sys5
+rw-r--r--     0    10     2709 Mar 16 22:16 1992 etc/magic
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 etc/chroot
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 etc/mknod
+rwxr-xr-x     0    10     5141 Mar 16 22:22 1992 etc/install
+rwxr-xr-x     0    10        0 Mar 16 22:15 1992 lib/
+rw-r--r--     0    10   140408 Mar 16 20:48 1992 lib/libc.a
+rw-r--r--     0    10   143458 Mar 16 20:49 1992 lib/libfpac.a
+rw-r--r--     0    10      535 Mar 16 20:26 1992 lib/crt0.o
+rw-r--r--     0    10     2157 Mar 16 20:26 1992 lib/mcrt0.o
+rw-r--r--     0    10    24972 Mar 16 21:02 1992 lib/libm.a
+rw-r--r--     0    10    42308 Mar 16 21:02 1992 lib/libfpam.a
+rwxr-xr-x     0    10    36864 Mar 16 22:15 1992 lib/cpp
+rwxr-xr-x     0    10        0 Mar 16 22:16 1992 usr/bin/graf/
+rwxr-xr-x     0    10    28133 Mar 16 22:16 1992 usr/bin/graf/abs
+rwxr-xr-x     0    10    38017 Mar 16 22:16 1992 usr/bin/graf/af
+rwxr-xr-x     0    10    47719 Mar 16 22:16 1992 usr/bin/graf/bar
+rwxr-xr-x     0    10    28531 Mar 16 22:16 1992 usr/bin/graf/bucket
+rwxr-xr-x     0    10    28191 Mar 16 22:16 1992 usr/bin/graf/ceil
+rwxr-xr-x     0    10    28316 Mar 16 22:16 1992 usr/bin/graf/cor
+rwxr-xr-x     0    10    28098 Mar 16 22:16 1992 usr/bin/graf/cusum
+rwxr-xr-x     0    10    28174 Mar 16 22:16 1992 usr/bin/graf/exp
+rwxr-xr-x     0    10    28192 Mar 16 22:16 1992 usr/bin/graf/floor
+rwxr-xr-x     0    10    28418 Mar 16 22:16 1992 usr/bin/graf/gamma
+rwxr-xr-x     0    10    23280 Mar 16 22:16 1992 usr/bin/graf/gas
+rwxr-xr-x     0    10    28094 Mar 16 22:16 1992 usr/bin/graf/hilo
+rwxr-xr-x     0    10    47782 Mar 16 22:16 1992 usr/bin/graf/hist
+rwxr-xr-x     0    10    43309 Mar 16 22:16 1992 usr/bin/graf/label
+rwxr-xr-x     0    10    28160 Mar 16 22:16 1992 usr/bin/graf/list
+rwxr-xr-x     0    10    28269 Mar 16 22:16 1992 usr/bin/graf/log
+rwxr-xr-x     0    10    28196 Mar 16 22:16 1992 usr/bin/graf/lreg
+rwxr-xr-x     0    10    28389 Mar 16 22:16 1992 usr/bin/graf/mean
+rwxr-xr-x     0    10    28170 Mar 16 22:16 1992 usr/bin/graf/mod
+rwxr-xr-x     0    10    28200 Mar 16 22:16 1992 usr/bin/graf/pair
+rwxr-xr-x     0    10    47579 Mar 16 22:16 1992 usr/bin/graf/pie
+rwxr-xr-x     0    10    52257 Mar 16 22:16 1992 usr/bin/graf/plot
+rwxr-xr-x     0    10    28416 Mar 16 22:16 1992 usr/bin/graf/point
+rwxr-xr-x     0    10    28514 Mar 16 22:16 1992 usr/bin/graf/power
+rwxr-xr-x     0    10    35854 Mar 16 22:16 1992 usr/bin/graf/prime
+rwxr-xr-x     0    10    28044 Mar 16 22:16 1992 usr/bin/graf/prod
+rwxr-xr-x     0    10    28344 Mar 16 22:16 1992 usr/bin/graf/qsort
+rwxr-xr-x     0    10    23302 Mar 16 22:16 1992 usr/bin/graf/rand
+rwxr-xr-x     0    10    28044 Mar 16 22:16 1992 usr/bin/graf/rank
+rwxr-xr-x     0    10    28513 Mar 16 22:16 1992 usr/bin/graf/root
+rwxr-xr-x     0    10    28116 Mar 16 22:16 1992 usr/bin/graf/round
+rwxr-xr-x     0    10    28099 Mar 16 22:16 1992 usr/bin/graf/siline
+rwxr-xr-x     0    10    28228 Mar 16 22:16 1992 usr/bin/graf/sin
+rwxr-xr-x     0    10    28344 Mar 16 22:16 1992 usr/bin/graf/subset
+rwxr-xr-x     0    10    42746 Mar 16 22:16 1992 usr/bin/graf/title
+rwxr-xr-x     0    10    28004 Mar 16 22:16 1992 usr/bin/graf/total
+rwxr-xr-x     0    10    28060 Mar 16 22:16 1992 usr/bin/graf/var
+rwxr-xr-x     0    10    74373 Mar 16 22:16 1992 usr/bin/graf/hpd
+rwxr-xr-x     0    10    18698 Mar 16 22:16 1992 usr/bin/graf/erase
+rwxr-xr-x     0    10    18701 Mar 16 22:16 1992 usr/bin/graf/tekset
+rwxr-xr-x     0    10    23070 Mar 16 22:16 1992 usr/bin/graf/hardcopy
+rwxr-xr-x     0    10    64522 Mar 16 22:16 1992 usr/bin/graf/td
+rwxr-xr-x     0    10    86432 Mar 16 22:16 1992 usr/bin/graf/ged
+rwxr-xr-x     0    10      815 Mar 16 22:16 1992 usr/bin/graf/ttoc
+rwxr-xr-x     0    10      538 Mar 16 22:16 1992 usr/bin/graf/dtoc
+rwxr-xr-x     0    10    50855 Mar 16 22:16 1992 usr/bin/graf/vtoc
+rwxr-xr-x     0    10    23217 Mar 16 22:16 1992 usr/bin/graf/remcom
+rwxr-xr-x     0    10    14222 Mar 16 22:16 1992 usr/bin/graf/bel
+rwxr-xr-x     0    10    23487 Mar 16 22:16 1992 usr/bin/graf/gd
+rwxr-xr-x     0    10    23476 Mar 16 22:16 1992 usr/bin/graf/pd
+rwxr-xr-x     0    10    22985 Mar 16 22:16 1992 usr/bin/graf/cvrtopt
+rwxr-xr-x     0    10       28 Mar 16 22:16 1992 usr/bin/graf/quit
+rwxr-xr-x     0    10       86 Mar 16 22:16 1992 usr/bin/graf/yoo
+rwxr-xr-x     0    10    47944 Mar 16 22:16 1992 usr/bin/graf/gtop
+rwxr-xr-x     0    10    34389 Mar 16 22:16 1992 usr/bin/graf/ptog
+rwxr-xr-x     0    10       26 Mar 16 19:56 1992 usr/bin/mailbug
+rwxr-xr-x     0    10    28672 Mar 16 21:03 1992 usr/bin/tic
+rwxr-xr-x     0    10    77824 Mar 16 22:15 1992 usr/bin/awk
+rwxr-xr-x     0    10    36864 Mar 16 22:15 1992 usr/bin/bc
+rwxr-xr-x     0    10    24576 Mar 16 22:15 1992 usr/bin/bdiff
+rwxr-xr-x     0    10    32768 Mar 16 22:15 1992 usr/bin/bfs
+rwxr-xr-x     0    10      693 Mar 16 22:15 1992 usr/bin/calendar
+rwxr-xr-x     0    10     1410 Mar 16 22:15 1992 usr/bin/cflow
+rwxr-xr-x     0    10    53248 Mar 16 22:15 1992 usr/bin/ctrace
+rwxr-xr-x     0    10     3275 Mar 16 22:15 1992 usr/bin/ctcr
+rwxr-xr-x     0    10     3275 Mar 16 22:15 1992 usr/bin/ctc linked to usr/bin/ctcr
+rwxr-xr-x     0    10    32768 Mar 16 22:15 1992 usr/bin/cxref
+rwxr-xr-x     0    10    40960 Mar 16 22:15 1992 usr/bin/dc
+rwxr-xr-x     0    10      300 Mar 16 22:15 1992 usr/bin/diff3
+rwxr-xr-x     0    10   139700 Mar 16 22:16 1992 usr/bin/efl
+rwxr-xr-x     0    10      612 Mar 16 22:16 1992 usr/bin/graphics
+rwxr-xr-x     0    10    28672 Mar 16 22:17 1992 usr/bin/hpio
+rwxr-xr-x     0    10    53248 Mar 16 22:17 1992 usr/bin/lex
+rwxr-xr-x     0    10     3263 Mar 16 22:17 1992 usr/bin/lint
+rwxr-xr-x     0    10    36864 Mar 16 22:17 1992 usr/bin/m4
+rwxr-xr-x     0    10    94208 Mar 16 22:17 1992 usr/bin/mailx
+rwxr-xr-x     0    10     1665 Mar 16 22:19 1992 usr/bin/man
+rwxr-xr-x     0    10    37771 Mar 16 22:19 1992 usr/bin/ratfor
+rwxr-xr-x     0    10    45056 Mar 16 22:19 1992 usr/bin/admin
+rwxr-xr-x     0    10    36864 Mar 16 22:19 1992 usr/bin/comb
+rwxr-xr-x     0    10    61440 Mar 16 22:19 1992 usr/bin/delta
+rwxr-xr-x     0    10    53248 Mar 16 22:19 1992 usr/bin/get
+rwxr-xr-x     0    10    16384 Mar 16 22:19 1992 usr/bin/help
+rwxr-xr-x     0    10    45056 Mar 16 22:19 1992 usr/bin/prs
+rwxr-xr-x     0    10    49152 Mar 16 22:19 1992 usr/bin/rmdel
+rwxr-xr-x     0    10     1216 Mar 16 22:19 1992 usr/bin/sccsdiff
+rwxr-xr-x     0    10    36864 Mar 16 22:19 1992 usr/bin/unget
+rwxr-xr-x     0    10    24576 Mar 16 22:19 1992 usr/bin/val
+rwxr-xr-x     0    10    24576 Mar 16 22:19 1992 usr/bin/vc
+rwxr-xr-x     0    10    20480 Mar 16 22:19 1992 usr/bin/what
+rwxr-xr-x     0    10    49152 Mar 16 22:19 1992 usr/bin/cdc linked to usr/bin/rmdel
+rwxr-xr-x     0    10    36864 Mar 16 22:19 1992 usr/bin/sact linked to usr/bin/unget
+rwxr-xr-x     0    10    24576 Mar 16 22:20 1992 usr/bin/sno
+rwxr-xr-x     0    10     1631 Mar 16 22:20 1992 usr/bin/spell
+rwxr-xr-x     0    10      305 Mar 16 21:50 1992 usr/bin/tplot
+rwxr-xr-x     0    10   139264 Mar 16 22:21 1992 usr/bin/ex
+rwxr-xr-x     0    10   139264 Mar 16 22:21 1992 usr/bin/vi linked to usr/bin/ex
+rwxr-xr-x     0    10   139264 Mar 16 22:21 1992 usr/bin/view linked to usr/bin/ex
+rwxr-xr-x     0    10   139264 Mar 16 22:21 1992 usr/bin/edit linked to usr/bin/ex
+rwxr-xr-x     0    10   139264 Mar 16 22:21 1992 usr/bin/vedit linked to usr/bin/ex
+rwxr-xr-x     0    10    45056 Mar 16 22:22 1992 usr/bin/yacc
+rwxr-xr-x     0    10    16384 Mar 16 22:22 1992 usr/bin/300
+rwxr-xr-x     0    10    16384 Mar 16 22:22 1992 usr/bin/300s
+rwxr-xr-x     0    10    24576 Mar 16 22:22 1992 usr/bin/4014
+rwxr-xr-x     0    10    16384 Mar 16 22:22 1992 usr/bin/450
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 usr/bin/asa
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 usr/bin/cal
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 usr/bin/banner
+rwxr-xr-x     0    10    32768 Mar 16 22:22 1992 usr/bin/cb
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 usr/bin/checkeq
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 usr/bin/col
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 usr/bin/comm
+rwxr-xr-x     0    10    24576 Mar 16 22:22 1992 usr/bin/cpset
+rwxr-xr-x     0    10    24576 Mar 16 22:22 1992 usr/bin/csplit
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 usr/bin/cut
+rwxr-xr-x     0    10    36864 Mar 16 22:22 1992 usr/bin/deroff
+rwxr-xr-x     0    10    28672 Mar 16 22:22 1992 usr/bin/egrep
+rwxr-xr-x     0    10    24576 Mar 16 22:22 1992 usr/bin/factor
+rwxr-xr-x     0    10    24576 Mar 16 22:22 1992 usr/bin/fgrep
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 usr/bin/fsplit
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 usr/bin/getopt
+rwxr-xr-x     0    10    28672 Mar 16 22:22 1992 usr/bin/graph
+rwxr-xr-x     0    10    16384 Mar 16 22:22 1992 usr/bin/hp
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 usr/bin/id
+rwxr-xr-x     0    10    24576 Mar 16 22:22 1992 usr/bin/join
+rwxr-xr-x     0    10    16384 Mar 16 22:22 1992 usr/bin/logname
+rwxr-xr-x     0    10    28672 Mar 16 22:22 1992 usr/bin/newform
+rwxr-xr-x     0    10    24576 Mar 16 22:22 1992 usr/bin/news
+rwxr-xr-x     0    10    24576 Mar 16 22:22 1992 usr/bin/nl
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 usr/bin/pack
+rwxr-xr-x     0    10    16384 Mar 16 22:22 1992 usr/bin/paste
+rwxr-xr-x     0    10    40960 Mar 16 22:22 1992 usr/bin/pg
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 usr/bin/regcmp
+rwxr-xr-x     0    10    24576 Mar 16 22:22 1992 usr/bin/sdiff
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 usr/bin/split
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 usr/bin/spline
+rwxr-xr-x     0    10    16384 Mar 16 22:22 1992 usr/bin/tabs
+rwxr-xr-x     0    10    36864 Mar 16 22:22 1992 usr/bin/tar
+rwxr-xr-x     0    10    32768 Mar 16 22:22 1992 usr/bin/tput
+rwxr-xr-x     0    10    16384 Mar 16 22:22 1992 usr/bin/tr
+rwxr-xr-x     0    10    24576 Mar 16 22:22 1992 usr/bin/tsort
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 usr/bin/uniq
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 usr/bin/units
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 usr/bin/unpack
+rwxr-xr-x     0    10    24576 Mar 16 22:22 1992 usr/bin/xargs
+rwxr-xr-x     0    10     1737 Mar 16 22:22 1992 usr/bin/dircmp
+rwxr-xr-x     0    10      406 Mar 16 22:22 1992 usr/bin/greek
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 usr/bin/pcat linked to usr/bin/unpack
+rwsrwsr-x    70    10    35176 Mar 16 21:37 1992 usr/bin/cancel
+rwsrwsr-x    70    10    35006 Mar 16 21:38 1992 usr/bin/disable
+rwsrwsr-x    70    10    29215 Mar 16 21:38 1992 usr/bin/enable
+rwsrwsr-x    70    10    44242 Mar 16 21:38 1992 usr/bin/lp
+rwsrwsr-x    70    10    43957 Mar 16 21:39 1992 usr/bin/lpstat
+rwxr-xr-x     0    10    61440 Mar 16 22:20 1992 usr/bin/checkmm
+rwxr-xr-x     0    10   110592 Mar 16 22:20 1992 usr/bin/checkmm1
+rwxrwxr-x     0    10    57207 Mar 16 22:20 1992 usr/bin/di10
+rwxr-xr-x     0    10      403 Mar 16 22:22 1992 usr/bin/diffmk
+rwxr-xr-x     0    10    72585 Mar 16 22:20 1992 usr/bin/eqn
+rwxr-xr-x     0    10    95865 Mar 16 22:20 1992 usr/bin/grap
+rwxr-xr-x     0    10    42812 Mar 16 22:20 1992 usr/bin/hc
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 usr/bin/hyphen
+rwxr-xr-x     0    10    40903 Mar 16 22:20 1992 usr/bin/macref
+rwxr-xr-x     0    10     3014 Mar 16 22:21 1992 usr/bin/mm
+rwxr-xr-x     0    10     2136 Mar 16 22:21 1992 usr/bin/mmt
+rwxr-xr-x     0    10     2136 Mar 16 22:21 1992 usr/bin/mvt linked to usr/bin/mmt
+rwxrwxr-x     0    10     4764 Mar 16 22:21 1992 usr/bin/ndx
+rwxr-xr-x     0    10    54773 Mar 16 22:20 1992 usr/bin/neqn
+rwxr-xr-x     0    10    94549 Mar 16 22:20 1992 usr/bin/nroff
+rwxr-xr-x     0    10   120123 Mar 16 22:20 1992 usr/bin/pic
+rwxr-xr-x     0    10    24576 Mar 16 22:20 1992 usr/bin/ptx
+rwxrwxr-x     0    10     1529 Mar 16 22:21 1992 usr/bin/subj
+rwxr-xr-x     0    10    42580 Mar 16 22:20 1992 usr/bin/ta
+rwxr-xr-x     0    10    59893 Mar 16 22:21 1992 usr/bin/tbl
+rwxr-xr-x     0    10    47003 Mar 16 22:20 1992 usr/bin/tc
+rwxr-xr-x     0    10    98916 Mar 16 22:20 1992 usr/bin/troff
+rwxr-xr-x     0    10      645 Mar 16 22:16 1992 usr/bin/whatis
+rwxr-xr-x     0    10        0 Mar 16 19:57 1992 usr/include/
+rwxr-xr-x     0    10        0 Mar 16 19:57 1992 usr/include/sys/
+r--r--r--     0    10     1588 Mar 16 19:57 1992 usr/include/sys/_ioctl.h
+r--r--r--     0    10     1846 Mar 16 19:57 1992 usr/include/sys/acct.h
+r--r--r--     0    10     3016 Mar 16 19:57 1992 usr/include/sys/buf.h
+r--r--r--     0    10     2048 Mar 16 19:57 1992 usr/include/sys/crtctl.h
+r--r--r--     0    10      155 Mar 16 19:57 1992 usr/include/sys/dir.h
+r--r--r--     0    10     4540 Mar 16 19:57 1992 usr/include/sys/errno.h
+r--r--r--     0    10       22 Mar 16 19:57 1992 usr/include/sys/ioctl.h
+r--r--r--     0    10     6684 Mar 16 19:57 1992 usr/include/sys/param.h
+r--r--r--     0    10     1871 Mar 16 19:57 1992 usr/include/sys/shm.h
+r--r--r--     0    10     1060 Mar 16 19:57 1992 usr/include/sys/signal.h
+r--r--r--     0    10     1544 Mar 16 19:57 1992 usr/include/sys/stat.h
+r--r--r--     0    10     1774 Mar 16 19:57 1992 usr/include/sys/stermio.h
+r--r--r--     0    10     3093 Mar 16 19:57 1992 usr/include/sys/sysmacros.h
+r--r--r--     0    10     4512 Mar 16 19:57 1992 usr/include/sys/termio.h
+r--r--r--     0    10      248 Mar 16 19:57 1992 usr/include/sys/times.h
+r--r--r--     0    10      696 Mar 16 19:57 1992 usr/include/sys/ttold.h
+r--r--r--     0    10     4245 Mar 16 19:57 1992 usr/include/sys/tty.h
+r--r--r--     0    10      928 Mar 16 19:57 1992 usr/include/sys/types.h
+r--r--r--     0    10      764 Mar 16 19:57 1992 usr/include/sys/universe.h
+r--r--r--     0    10      166 Mar 16 19:57 1992 usr/include/sys/utsname.h
+r--r--r--     0    10     1376 Mar 16 19:57 1992 usr/include/sys/ipc.h
+r--r--r--     0    10     3911 Mar 16 19:57 1992 usr/include/sys/msg.h
+r--r--r--     0    10     3918 Mar 16 19:57 1992 usr/include/sys/sem.h
+r--r--r--     0    10      140 Mar 16 19:57 1992 usr/include/sys/lock.h
+r--r--r--     0    10     1910 Mar 16 19:57 1992 usr/include/sys/mount.h
+rwxr-xr-x     0    10        0 Mar 16 19:57 1992 usr/include/machine/
+r--r--r--     0    10     1995 Mar 16 19:57 1992 usr/include/machine/exec.h
+r--r--r--     0    10     2652 Mar 16 19:57 1992 usr/include/machine/param.h
+r--r--r--     0    10     8222 Mar 16 19:57 1992 usr/include/machine/vmparam.h
+r--r--r--     0    10     2547 Mar 16 19:57 1992 usr/include/machine/machtypes.h
+r--r--r--     0    10     4229 Mar 16 19:56 1992 usr/include/a.out.h
+r--r--r--     0    10     1731 Mar 16 19:56 1992 usr/include/ar.h
+r--r--r--     0    10      160 Mar 16 19:56 1992 usr/include/assert.h
+r--r--r--     0    10     1028 Mar 16 19:56 1992 usr/include/ctype.h
+r--r--r--     0    10     8778 Mar 16 19:56 1992 usr/include/curses.h
+r--r--r--     0    10     1619 Mar 16 19:56 1992 usr/include/dial.h
+r--r--r--     0    10      930 Mar 16 19:56 1992 usr/include/dir.h
+r--r--r--     0    10      106 Mar 16 19:56 1992 usr/include/errno.h
+r--r--r--     0    10      424 Mar 16 19:56 1992 usr/include/fatal.h
+r--r--r--     0    10     1264 Mar 16 19:56 1992 usr/include/fcntl.h
+r--r--r--     0    10      305 Mar 16 19:56 1992 usr/include/ftw.h
+r--r--r--     0    10      143 Mar 16 19:56 1992 usr/include/grp.h
+r--r--r--     0    10     2207 Mar 16 19:56 1992 usr/include/macros.h
+r--r--r--     0    10      977 Mar 16 19:56 1992 usr/include/malloc.h
+r--r--r--     0    10     2179 Mar 16 19:56 1992 usr/include/math.h
+r--r--r--     0    10      105 Mar 16 19:56 1992 usr/include/memory.h
+r--r--r--     0    10      231 Mar 16 19:56 1992 usr/include/mnttab.h
+r--r--r--     0    10      277 Mar 16 19:56 1992 usr/include/mon.h
+r--r--r--     0    10      636 Mar 16 19:56 1992 usr/include/nan.h
+r--r--r--     0    10     2037 Mar 16 19:56 1992 usr/include/nlist.h
+r--r--r--     0    10      282 Mar 16 19:56 1992 usr/include/pwd.h
+r--r--r--     0    10     6321 Mar 16 19:56 1992 usr/include/regexp.h
+r--r--r--     0    10      207 Mar 16 19:56 1992 usr/include/search.h
+r--r--r--     0    10      338 Mar 16 19:56 1992 usr/include/setjmp.h
+r--r--r--     0    10     1461 Mar 16 19:56 1992 usr/include/sgtty.h
+r--r--r--     0    10       90 Mar 16 19:56 1992 usr/include/signal.h
+r--r--r--     0    10     1968 Mar 16 19:56 1992 usr/include/stdio.h
+r--r--r--     0    10      203 Mar 16 19:56 1992 usr/include/string.h
+r--r--r--     0    10    17225 Mar 16 19:56 1992 usr/include/term.h
+r--r--r--     0    10       67 Mar 16 19:57 1992 usr/include/termio.h
+r--r--r--     0    10      362 Mar 16 19:57 1992 usr/include/time.h
+r--r--r--     0    10      188 Mar 16 19:57 1992 usr/include/unctrl.h
+r--r--r--     0    10      273 Mar 16 19:57 1992 usr/include/unistd.h
+r--r--r--     0    10      214 Mar 16 19:57 1992 usr/include/ustat.h
+r--r--r--     0    10     1435 Mar 16 19:57 1992 usr/include/utmp.h
+r--r--r--     0    10     4925 Mar 16 19:57 1992 usr/include/values.h
+r--r--r--     0    10      346 Mar 16 19:57 1992 usr/include/varargs.h
+rwxr-xr-x     0    10        0 Mar 16 22:15 1992 usr/lib/ctrace/
+rw-r--r--     0    10     8227 Mar 16 22:15 1992 usr/lib/ctrace/runtime.c
+rwxr-xr-x     0    10        0 Mar 16 22:21 1992 usr/lib/dwb/
+rwxr-xr-x     0    10        0 Mar 16 22:21 1992 usr/lib/dwb/samples/
+rw-r--r--     0    10     1167 Mar 16 22:21 1992 usr/lib/dwb/samples/nroff.letter
+rw-r--r--     0    10      819 Mar 16 22:21 1992 usr/lib/dwb/samples/mm.report
+rw-r--r--     0    10      470 Mar 16 22:21 1992 usr/lib/dwb/samples/mm.sales
+rw-r--r--     0    10      731 Mar 16 22:21 1992 usr/lib/dwb/samples/mm.letter
+rw-r--r--     0    10      397 Mar 16 22:21 1992 usr/lib/dwb/samples/tbl.language
+rw-r--r--     0    10      375 Mar 16 22:21 1992 usr/lib/dwb/samples/tbl.bridges
+rw-r--r--     0    10      472 Mar 16 22:21 1992 usr/lib/dwb/samples/tbl.pres
+rw-r--r--     0    10     1054 Mar 16 22:21 1992 usr/lib/dwb/samples/eqn.stats
+rw-r--r--     0    10      850 Mar 16 22:21 1992 usr/lib/dwb/samples/troff.fonts
+rw-r--r--     0    10     1330 Mar 16 22:21 1992 usr/lib/dwb/samples/troff.sizes
+rw-r--r--     0    10      468 Mar 16 22:21 1992 usr/lib/dwb/samples/troff.ad
+rw-r--r--     0    10     1771 Mar 16 22:21 1992 usr/lib/dwb/samples/troff.aeneid
+rw-r--r--     0    10     1057 Mar 16 22:21 1992 usr/lib/dwb/samples/pic.forms
+rw-r--r--     0    10      549 Mar 16 22:20 1992 usr/lib/dwb/grap.defines
+rwxr-xr-x     0    10    69108 Mar 16 22:21 1992 usr/lib/dwb/sbj1
+rwxr-xr-x     0    10    27979 Mar 16 22:21 1992 usr/lib/dwb/sbj2
+rwxr-xr-x     0    10    28025 Mar 16 22:21 1992 usr/lib/dwb/sbj3
+rwxr-xr-x     0    10    60767 Mar 16 22:21 1992 usr/lib/dwb/ndexer
+rwxr-xr-x     0    10    23563 Mar 16 22:21 1992 usr/lib/dwb/pages
+rwxr-xr-x     0    10    23101 Mar 16 22:21 1992 usr/lib/dwb/ndxformat
+rwxr-xr-x     0    10    23324 Mar 16 22:21 1992 usr/lib/dwb/sbjprep
+rwxr-xr-x     0    10     3811 Mar 16 22:21 1992 usr/lib/dwb/parts
+rwxr-xr-x     0    10    90437 Mar 16 22:21 1992 usr/lib/dwb/style1
+rwxr-xr-x     0    10    62652 Mar 16 22:21 1992 usr/lib/dwb/style2
+rwxr-xr-x     0    10    46021 Mar 16 22:21 1992 usr/lib/dwb/style3
+rwxr-xr-x     0    10    49027 Mar 16 22:21 1992 usr/lib/dwb/deroff
+rwxr-xr-x     0    10        0 Mar 16 19:55 1992 usr/lib/graf/
+rwxr-xr-x     0    10        0 Mar 16 22:17 1992 usr/lib/graf/whatis/
+rw-r--r--     0    10      389 Mar 16 22:16 1992 usr/lib/graf/whatis/abs
+rw-r--r--     0    10     2507 Mar 16 22:16 1992 usr/lib/graf/whatis/af
+rw-r--r--     0    10     1376 Mar 16 22:16 1992 usr/lib/graf/whatis/bar
+rw-r--r--     0    10      142 Mar 16 22:16 1992 usr/lib/graf/whatis/bel
+rw-r--r--     0    10     1069 Mar 16 22:16 1992 usr/lib/graf/whatis/bucket
+rw-r--r--     0    10      447 Mar 16 22:16 1992 usr/lib/graf/whatis/ceil
+rw-r--r--     0    10      720 Mar 16 22:16 1992 usr/lib/graf/whatis/cor
+rw-r--r--     0    10      429 Mar 16 22:16 1992 usr/lib/graf/whatis/cusum
+rw-r--r--     0    10     1635 Mar 16 22:16 1992 usr/lib/graf/whatis/cvrtopt
+rw-r--r--     0    10      456 Mar 16 22:16 1992 usr/lib/graf/whatis/dtoc
+rw-r--r--     0    10      137 Mar 16 22:16 1992 usr/lib/graf/whatis/erase
+rw-r--r--     0    10      468 Mar 16 22:16 1992 usr/lib/graf/whatis/exp
+rw-r--r--     0    10      441 Mar 16 22:16 1992 usr/lib/graf/whatis/floor
+rw-r--r--     0    10      390 Mar 16 22:16 1992 usr/lib/graf/whatis/gamma
+rw-r--r--     0    10     1293 Mar 16 22:16 1992 usr/lib/graf/whatis/gas
+rw-r--r--     0    10      159 Mar 16 22:16 1992 usr/lib/graf/whatis/gd
+rw-r--r--     0    10      521 Mar 16 22:16 1992 usr/lib/graf/whatis/ged
+rw-r--r--     0    10      655 Mar 16 22:16 1992 usr/lib/graf/whatis/gtop
+rw-r--r--     0    10      223 Mar 16 22:16 1992 usr/lib/graf/whatis/hardcopy
+rw-r--r--     0    10      643 Mar 16 22:16 1992 usr/lib/graf/whatis/hilo
+rw-r--r--     0    10     1107 Mar 16 22:16 1992 usr/lib/graf/whatis/hist
+rw-r--r--     0    10     1453 Mar 16 22:16 1992 usr/lib/graf/whatis/hpd
+rw-r--r--     0    10     1757 Mar 16 22:16 1992 usr/lib/graf/whatis/label
+rw-r--r--     0    10      990 Mar 16 22:16 1992 usr/lib/graf/whatis/list
+rw-r--r--     0    10      477 Mar 16 22:16 1992 usr/lib/graf/whatis/log
+rw-r--r--     0    10      749 Mar 16 22:16 1992 usr/lib/graf/whatis/lreg
+rw-r--r--     0    10      664 Mar 16 22:16 1992 usr/lib/graf/whatis/mean
+rw-r--r--     0    10      551 Mar 16 22:16 1992 usr/lib/graf/whatis/mod
+rw-r--r--     0    10      959 Mar 16 22:16 1992 usr/lib/graf/whatis/pair
+rw-r--r--     0    10      224 Mar 16 22:16 1992 usr/lib/graf/whatis/pd
+rw-r--r--     0    10     1833 Mar 16 22:16 1992 usr/lib/graf/whatis/pie
+rw-r--r--     0    10     2664 Mar 16 22:16 1992 usr/lib/graf/whatis/plot
+rw-r--r--     0    10      713 Mar 16 22:16 1992 usr/lib/graf/whatis/point
+rw-r--r--     0    10      391 Mar 16 22:17 1992 usr/lib/graf/whatis/sin
+rw-r--r--     0    10      550 Mar 16 22:16 1992 usr/lib/graf/whatis/power
+rw-r--r--     0    10      529 Mar 16 22:17 1992 usr/lib/graf/whatis/prime
+rw-r--r--     0    10      264 Mar 16 22:17 1992 usr/lib/graf/whatis/prod
+rw-r--r--     0    10      262 Mar 16 22:17 1992 usr/lib/graf/whatis/ptog
+rw-r--r--     0    10      381 Mar 16 22:17 1992 usr/lib/graf/whatis/qsort
+rw-r--r--     0    10      100 Mar 16 22:17 1992 usr/lib/graf/whatis/quit
+rw-r--r--     0    10     1126 Mar 16 22:17 1992 usr/lib/graf/whatis/rand
+rw-r--r--     0    10      257 Mar 16 22:17 1992 usr/lib/graf/whatis/rank
+rw-r--r--     0    10      264 Mar 16 22:17 1992 usr/lib/graf/whatis/remcom
+rw-r--r--     0    10      524 Mar 16 22:17 1992 usr/lib/graf/whatis/root
+rw-r--r--     0    10      689 Mar 16 22:17 1992 usr/lib/graf/whatis/round
+rw-r--r--     0    10      918 Mar 16 22:17 1992 usr/lib/graf/whatis/siline
+rw-r--r--     0    10     1758 Mar 16 22:17 1992 usr/lib/graf/whatis/subset
+rw-r--r--     0    10      680 Mar 16 22:17 1992 usr/lib/graf/whatis/td
+rw-r--r--     0    10      203 Mar 16 22:17 1992 usr/lib/graf/whatis/tekset
+rw-r--r--     0    10     1050 Mar 16 22:17 1992 usr/lib/graf/whatis/title
+rw-r--r--     0    10      273 Mar 16 22:17 1992 usr/lib/graf/whatis/total
+rw-r--r--     0    10      329 Mar 16 22:17 1992 usr/lib/graf/whatis/ttoc
+rw-r--r--     0    10      264 Mar 16 22:17 1992 usr/lib/graf/whatis/var
+rw-r--r--     0    10     1535 Mar 16 22:17 1992 usr/lib/graf/whatis/vtoc
+rw-r--r--     0    10      353 Mar 16 22:17 1992 usr/lib/graf/whatis/whatis
+rw-r--r--     0    10      366 Mar 16 22:17 1992 usr/lib/graf/whatis/yoo
+rwxr-xr-x     0    10        0 Mar 16 22:16 1992 usr/lib/graf/ttoc.d/
+rw-r--r--     0    10      115 Mar 16 22:16 1992 usr/lib/graf/ttoc.d/ed.notoc
+rw-r--r--     0    10      125 Mar 16 22:16 1992 usr/lib/graf/ttoc.d/ed.toc
+rw-r--r--     0    10      255 Mar 16 22:16 1992 usr/lib/graf/ttoc.d/ed.ttoc.t
+rwxr-xr-x     0    10        0 Mar 16 22:19 1992 usr/lib/help/
+rwxr-xr-x     0    10        0 Mar 16 22:19 1992 usr/lib/help/lib/
+rwxr-xr-x     0    10    20480 Mar 16 22:19 1992 usr/lib/help/lib/help2
+rw-r--r--     0    10     1784 Mar 16 22:19 1992 usr/lib/help/term
+rw-r--r--     0    10     4155 Mar 16 22:19 1992 usr/lib/help/ad
+rw-r--r--     0    10     1250 Mar 16 22:19 1992 usr/lib/help/bd
+rw-r--r--     0    10      659 Mar 16 22:19 1992 usr/lib/help/cb
+rw-r--r--     0    10     2502 Mar 16 22:19 1992 usr/lib/help/cm
+rw-r--r--     0    10     5348 Mar 16 22:19 1992 usr/lib/help/cmds
+rw-r--r--     0    10     4146 Mar 16 22:19 1992 usr/lib/help/co
+rw-r--r--     0    10     3350 Mar 16 22:19 1992 usr/lib/help/de
+rw-r--r--     0    10      166 Mar 16 22:19 1992 usr/lib/help/default
+rw-r--r--     0    10     2041 Mar 16 22:19 1992 usr/lib/help/ge
+rw-r--r--     0    10      320 Mar 16 22:19 1992 usr/lib/help/he
+rw-r--r--     0    10      823 Mar 16 22:19 1992 usr/lib/help/prs
+rw-r--r--     0    10     2272 Mar 16 22:19 1992 usr/lib/help/rc
+rw-r--r--     0    10      636 Mar 16 22:19 1992 usr/lib/help/un
+rw-r--r--     0    10     2312 Mar 16 22:19 1992 usr/lib/help/ut
+rw-r--r--     0    10     2428 Mar 16 22:19 1992 usr/lib/help/vc
+rwxr-xr-x     0    10        0 Mar 16 21:02 1992 usr/lib/lex/
+rw-r--r--     0    10     3985 Mar 16 21:02 1992 usr/lib/lex/ncform
+rw-r--r--     0    10     3114 Mar 16 21:02 1992 usr/lib/lex/nrform
+rwxr-xr-x     0    10        0 Mar 16 22:20 1992 usr/lib/macros/
+rw-r--r--     0    10    43384 Mar 16 22:20 1992 usr/lib/macros/mmn
+rw-r--r--     0    10     1190 Mar 16 22:20 1992 usr/lib/macros/strings.mm
+rw-r--r--     0    10    43858 Mar 16 22:20 1992 usr/lib/macros/mmt
+rw-r--r--     0    10     8066 Mar 16 22:20 1992 usr/lib/macros/vmca
+rw-r--r--     0    10     6458 Mar 16 22:20 1992 usr/lib/macros/an
+rw-r--r--     0    10      529 Mar 16 22:20 1992 usr/lib/macros/ptx
+rwxr-xr-x     0    10        0 Mar 16 22:17 1992 usr/lib/mailx/
+rwxr-sr-x     0    10    20480 Mar 16 22:17 1992 usr/lib/mailx/rmmail
+rw-r--r--     0    10      943 Mar 16 22:17 1992 usr/lib/mailx/mailx.help
+rw-r--r--     0    10      857 Mar 16 22:17 1992 usr/lib/mailx/mailx.help.~
+rwxr-xr-x     0    10        0 Mar 16 22:20 1992 usr/lib/nterm/
+rw-r--r--     0    10     2132 Mar 16 22:20 1992 usr/lib/nterm/tab.8510
+rw-r--r--     0    10     1331 Mar 16 22:20 1992 usr/lib/nterm/tab.2631
+rw-r--r--     0    10     1349 Mar 16 22:20 1992 usr/lib/nterm/tab.2631-c
+rw-r--r--     0    10     1349 Mar 16 22:20 1992 usr/lib/nterm/tab.2631-e
+rw-r--r--     0    10     1930 Mar 16 22:20 1992 usr/lib/nterm/tab.300
+rw-r--r--     0    10     1925 Mar 16 22:20 1992 usr/lib/nterm/tab.300-12
+rw-r--r--     0    10     1911 Mar 16 22:20 1992 usr/lib/nterm/tab.300s
+rw-r--r--     0    10     1904 Mar 16 22:20 1992 usr/lib/nterm/tab.300s-12
+rw-r--r--     0    10     1518 Mar 16 22:20 1992 usr/lib/nterm/tab.37
+rw-r--r--     0    10     1913 Mar 16 22:20 1992 usr/lib/nterm/tab.382
+rw-r--r--     0    10     1957 Mar 16 22:20 1992 usr/lib/nterm/tab.4000a
+rw-r--r--     0    10     1896 Mar 16 22:20 1992 usr/lib/nterm/tab.450
+rw-r--r--     0    10     1923 Mar 16 22:20 1992 usr/lib/nterm/tab.450-12
+rw-r--r--     0    10     1893 Mar 16 22:20 1992 usr/lib/nterm/tab.832
+rw-r--r--     0    10     1329 Mar 16 22:20 1992 usr/lib/nterm/tab.lp
+rw-r--r--     0    10     1316 Mar 16 22:20 1992 usr/lib/nterm/tab.tn300
+rw-r--r--     0    10     1589 Mar 16 22:20 1992 usr/lib/nterm/tab.X
+rw-r--r--     0    10     1911 Mar 16 22:20 1992 usr/lib/nterm/tab.300S linked to usr/lib/nterm/tab.300s
+rw-r--r--     0    10     1904 Mar 16 22:20 1992 usr/lib/nterm/tab.300S-12 linked to usr/lib/nterm/tab.300s-12
+rw-r--r--     0    10     1957 Mar 16 22:20 1992 usr/lib/nterm/tab.4000A linked to usr/lib/nterm/tab.4000a
+rwxr-xr-x     0    10        0 Mar 16 19:55 1992 usr/lib/font/
+rwxr-xr-x     0    10        0 Mar 16 22:20 1992 usr/lib/font/devi10/
+rwxr-xr-x     0    10        0 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/
+rwxr-xr-x     0    10        0 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/devaps/
+rw-r--r--     0    10      557 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/devaps/B.out
+rw-r--r--     0    10      554 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/devaps/C.out
+rw-r--r--     0    10      554 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/devaps/G.out
+rw-r--r--     0    10      554 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/devaps/H.out
+rw-r--r--     0    10      557 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/devaps/I.out
+rw-r--r--     0    10      557 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/devaps/R.out
+rw-r--r--     0    10      515 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/devaps/S.out
+rw-r--r--     0    10      554 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/devaps/BI.out
+rw-r--r--     0    10      554 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/devaps/CE.out
+rw-r--r--     0    10      554 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/devaps/CI.out
+rw-r--r--     0    10      560 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/devaps/CT.out
+rw-r--r--     0    10      611 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/devaps/CW.out
+rw-r--r--     0    10      554 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/devaps/CX.out
+rw-r--r--     0    10      338 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/devaps/GB.out
+rw-r--r--     0    10      554 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/devaps/GI.out
+rw-r--r--     0    10      410 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/devaps/GR.out
+rw-r--r--     0    10      554 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/devaps/GS.out
+rw-r--r--     0    10      554 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/devaps/HB.out
+rw-r--r--     0    10      554 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/devaps/HI.out
+rw-r--r--     0    10      554 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/devaps/HK.out
+rw-r--r--     0    10      554 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/devaps/HL.out
+rw-r--r--     0    10      554 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/devaps/HM.out
+rw-r--r--     0    10      554 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/devaps/HX.out
+rw-r--r--     0    10      554 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/devaps/MB.out
+rw-r--r--     0    10      554 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/devaps/MI.out
+rw-r--r--     0    10      554 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/devaps/MR.out
+rw-r--r--     0    10      554 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/devaps/MX.out
+rw-r--r--     0    10      554 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/devaps/PA.out
+rw-r--r--     0    10      554 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/devaps/PB.out
+rw-r--r--     0    10      554 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/devaps/PI.out
+rw-r--r--     0    10      611 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/devaps/PO.out
+rw-r--r--     0    10      554 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/devaps/PX.out
+rw-r--r--     0    10      311 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/devaps/S1.out
+rw-r--r--     0    10      554 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/devaps/SC.out
+rw-r--r--     0    10      560 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/devaps/SM.out
+rw-r--r--     0    10      554 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/devaps/TB.out
+rw-r--r--     0    10      554 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/devaps/TX.out
+rw-r--r--     0    10    20449 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/devaps/DESC.out
+rw-r--r--     0    10     7650 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/B.10
+rw-r--r--     0    10     9573 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/B.12
+rw-r--r--     0    10    12118 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/B.14
+rw-r--r--     0    10    14436 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/B.16
+rw-r--r--     0    10     4916 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/B.6
+rw-r--r--     0    10     6220 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/B.8
+rw-r--r--     0    10     6665 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/B.9
+rw-r--r--     0    10     7532 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/H.10
+rw-r--r--     0    10     9431 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/H.12
+rw-r--r--     0    10    11305 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/H.14
+rw-r--r--     0    10    14052 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/H.16
+rw-r--r--     0    10    16555 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/H.18
+rw-r--r--     0    10     5011 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/H.6
+rw-r--r--     0    10     6082 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/H.8
+rw-r--r--     0    10     6415 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/H.9
+rw-r--r--     0    10     7383 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/I.10
+rw-r--r--     0    10     9347 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/I.12
+rw-r--r--     0    10    12197 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/I.14
+rw-r--r--     0    10    13947 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/I.16
+rw-r--r--     0    10     4873 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/I.6
+rw-r--r--     0    10     6111 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/I.8
+rw-r--r--     0    10     6309 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/I.9
+rw-r--r--     0    10     7770 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/R.10
+rw-r--r--     0    10     9661 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/R.12
+rw-r--r--     0    10    11536 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/R.14
+rw-r--r--     0    10    17690 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/R.16
+rw-r--r--     0    10     4983 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/R.6
+rw-r--r--     0    10     6207 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/R.8
+rw-r--r--     0    10     6382 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/R.9
+rw-r--r--     0    10     9760 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/S.10
+rw-r--r--     0    10    12327 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/S.12
+rw-r--r--     0    10    15722 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/S.14
+rw-r--r--     0    10    19734 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/S.16
+rw-r--r--     0    10    23933 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/S.18
+rw-r--r--     0    10    38998 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/S.24
+rw-r--r--     0    10     5536 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/S.6
+rw-r--r--     0    10     7267 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/S.8
+rw-r--r--     0    10     8453 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/S.9
+rw-r--r--     0    10     7464 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/BI.10
+rw-r--r--     0    10     9609 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/BI.12
+rw-r--r--     0    10     4662 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/BI.6
+rw-r--r--     0    10     5944 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/BI.8
+rw-r--r--     0    10     7076 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/CW.10
+rw-r--r--     0    10     8595 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/CW.11
+rw-r--r--     0    10     9516 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/CW.12
+rw-r--r--     0    10    14026 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/CW.16
+rw-r--r--     0    10     4647 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/CW.6
+rw-r--r--     0    10     5457 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/CW.8
+rw-r--r--     0    10     6333 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/CW.9
+rw-r--r--     0    10     7595 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/HB.10
+rw-r--r--     0    10    11885 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/HB.14
+rw-r--r--     0    10     6469 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/HB.9
+rw-r--r--     0    10     8099 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/HI.10
+rw-r--r--     0    10     9540 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/HI.12
+rw-r--r--     0    10    13549 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/HI.14
+rw-r--r--     0    10    14586 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/HI.16
+rw-r--r--     0    10    17000 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/HI.18
+rw-r--r--     0    10     4672 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/HI.6
+rw-r--r--     0    10     5779 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/HI.8
+rw-r--r--     0    10     7146 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/HI.9
+rw-r--r--     0    10     8342 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/HK.10
+rw-r--r--     0    10    10671 Mar 16 22:20 1992 usr/lib/font/devi10/rasti10/HK.12
+rw-r--r--     0    10    13403 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/HK.14
+rw-r--r--     0    10    15762 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/HK.16
+rw-r--r--     0    10    19678 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/HK.18
+rw-r--r--     0    10     4847 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/HK.6
+rw-r--r--     0    10     6103 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/HK.8
+rw-r--r--     0    10     7279 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/HK.9
+rw-r--r--     0    10     7746 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/PA.10
+rw-r--r--     0    10     9443 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/PA.12
+rw-r--r--     0    10    11934 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/PA.14
+rw-r--r--     0    10     4943 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/PA.6
+rw-r--r--     0    10     6145 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/PA.8
+rw-r--r--     0    10     7886 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/PB.10
+rw-r--r--     0    10     9443 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/PB.12
+rw-r--r--     0    10    11908 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/PB.14
+rw-r--r--     0    10     5004 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/PB.6
+rw-r--r--     0    10     6139 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/PB.8
+rw-r--r--     0    10     7617 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/PI.10
+rw-r--r--     0    10     9351 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/PI.12
+rw-r--r--     0    10    11740 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/PI.14
+rw-r--r--     0    10     4895 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/PI.6
+rw-r--r--     0    10     6242 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/PI.8
+rw-r--r--     0    10     7076 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/PO.10
+rw-r--r--     0    10     8595 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/PO.11
+rw-r--r--     0    10     9516 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/PO.12
+rw-r--r--     0    10    14026 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/PO.16
+rw-r--r--     0    10     4675 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/PO.6
+rw-r--r--     0    10     5457 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/PO.8
+rw-r--r--     0    10     6333 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/PO.9
+rw-r--r--     0    10     7633 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/PX.10
+rw-r--r--     0    10     9863 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/PX.12
+rw-r--r--     0    10     4671 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/PX.6
+rw-r--r--     0    10     6015 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/PX.8
+rw-r--r--     0    10      616 Mar 16 22:21 1992 usr/lib/font/devi10/rasti10/RASTERLIST
+rw-r--r--     0    10      675 Mar 16 22:20 1992 usr/lib/font/devi10/B.out
+rw-r--r--     0    10      675 Mar 16 22:20 1992 usr/lib/font/devi10/G.out
+rw-r--r--     0    10      675 Mar 16 22:20 1992 usr/lib/font/devi10/H.out
+rw-r--r--     0    10      675 Mar 16 22:20 1992 usr/lib/font/devi10/I.out
+rw-r--r--     0    10      675 Mar 16 22:20 1992 usr/lib/font/devi10/R.out
+rw-r--r--     0    10      675 Mar 16 22:20 1992 usr/lib/font/devi10/S.out
+rw-r--r--     0    10      675 Mar 16 22:20 1992 usr/lib/font/devi10/CW.out
+rw-r--r--     0    10      675 Mar 16 22:20 1992 usr/lib/font/devi10/GI.out
+rw-r--r--     0    10      675 Mar 16 22:20 1992 usr/lib/font/devi10/HB.out
+rw-r--r--     0    10      675 Mar 16 22:20 1992 usr/lib/font/devi10/HI.out
+rw-r--r--     0    10      675 Mar 16 22:20 1992 usr/lib/font/devi10/HK.out
+rw-r--r--     0    10      675 Mar 16 22:20 1992 usr/lib/font/devi10/HM.out
+rw-r--r--     0    10      675 Mar 16 22:20 1992 usr/lib/font/devi10/PA.out
+rw-r--r--     0    10      675 Mar 16 22:20 1992 usr/lib/font/devi10/PB.out
+rw-r--r--     0    10      675 Mar 16 22:20 1992 usr/lib/font/devi10/PI.out
+rw-r--r--     0    10      675 Mar 16 22:20 1992 usr/lib/font/devi10/PO.out
+rw-r--r--     0    10     6190 Mar 16 22:20 1992 usr/lib/font/devi10/DESC.out
+rwxr-xr-x     0    10        0 Mar 16 22:20 1992 usr/lib/spell/
+rw-rw-rw-     0    10        0 Mar 16 22:15 1992 usr/lib/spell/spellhist
+rwxr-xr-x     0    10      303 Mar 16 22:20 1992 usr/lib/spell/compress
+rwxr-xr-x     0    10    28672 Mar 16 22:20 1992 usr/lib/spell/spellprog
+rwxr-xr-x     0    10    24576 Mar 16 22:20 1992 usr/lib/spell/spellin
+rwxr-xr-x     0    10    20480 Mar 16 22:20 1992 usr/lib/spell/hashcheck
+rwxr-xr-x     0    10    20480 Mar 16 22:20 1992 usr/lib/spell/hashmake
+rw-r--r--     0    10    53872 Mar 16 22:20 1992 usr/lib/spell/hlista
+rw-r--r--     0    10    53840 Mar 16 22:20 1992 usr/lib/spell/hlistb
+rw-r--r--     0    10     6336 Mar 16 22:20 1992 usr/lib/spell/hstop
+rwxr-xr-x     0    10        0 Mar 16 21:10 1992 usr/lib/terminfo/
+rwxr-xr-x     0    10        0 Mar 16 21:16 1992 usr/lib/terminfo/1/
+rw-r--r--     0    10      436 Mar 16 21:04 1992 usr/lib/terminfo/1/1521
+rw-r--r--     0    10      436 Mar 16 21:04 1992 usr/lib/terminfo/1/1520 linked to usr/lib/terminfo/1/1521
+rw-r--r--     0    10      417 Mar 16 21:04 1992 usr/lib/terminfo/1/1620
+rw-r--r--     0    10      417 Mar 16 21:04 1992 usr/lib/terminfo/1/1640 linked to usr/lib/terminfo/1/1620
+rw-r--r--     0    10      447 Mar 16 21:04 1992 usr/lib/terminfo/1/1620-m8
+rw-r--r--     0    10      447 Mar 16 21:04 1992 usr/lib/terminfo/1/1640-m8 linked to usr/lib/terminfo/1/1620-m8
+rw-r--r--     0    10      394 Mar 16 21:04 1992 usr/lib/terminfo/1/1700
+rw-r--r--     0    10      490 Mar 16 21:06 1992 usr/lib/terminfo/1/100
+rw-r--r--     0    10      372 Mar 16 21:16 1992 usr/lib/terminfo/1/1line
+rw-r--r--     0    10      439 Mar 16 21:16 1992 usr/lib/terminfo/1/1linepty
+rwxr-xr-x     0    10        0 Mar 16 21:22 1992 usr/lib/terminfo/2/
+rw-r--r--     0    10      491 Mar 16 21:04 1992 usr/lib/terminfo/2/2500
+rw-r--r--     0    10      570 Mar 16 21:04 1992 usr/lib/terminfo/2/2621-ba
+rw-r--r--     0    10      583 Mar 16 21:04 1992 usr/lib/terminfo/2/2621-wl
+rw-r--r--     0    10      583 Mar 16 21:04 1992 usr/lib/terminfo/2/2621 linked to usr/lib/terminfo/2/2621-wl
+rw-r--r--     0    10      595 Mar 16 21:05 1992 usr/lib/terminfo/2/2621a
+rw-r--r--     0    10      595 Mar 16 21:05 1992 usr/lib/terminfo/2/2621-fl linked to usr/lib/terminfo/2/2621a
+rw-r--r--     0    10      595 Mar 16 21:05 1992 usr/lib/terminfo/2/2621A linked to usr/lib/terminfo/2/2621a
+rw-r--r--     0    10      591 Mar 16 21:05 1992 usr/lib/terminfo/2/2621p
+rw-r--r--     0    10      591 Mar 16 21:05 1992 usr/lib/terminfo/2/2621P linked to usr/lib/terminfo/2/2621p
+rw-r--r--     0    10      580 Mar 16 21:05 1992 usr/lib/terminfo/2/2621k45
+rw-r--r--     0    10      669 Mar 16 21:05 1992 usr/lib/terminfo/2/2645
+rw-r--r--     0    10      687 Mar 16 21:05 1992 usr/lib/terminfo/2/2622
+rw-r--r--     0    10      687 Mar 16 21:05 1992 usr/lib/terminfo/2/2622a linked to usr/lib/terminfo/2/2622
+rw-r--r--     0    10      687 Mar 16 21:05 1992 usr/lib/terminfo/2/2623
+rw-r--r--     0    10      687 Mar 16 21:05 1992 usr/lib/terminfo/2/2623a linked to usr/lib/terminfo/2/2623
+rw-r--r--     0    10      723 Mar 16 21:05 1992 usr/lib/terminfo/2/2626
+rw-r--r--     0    10      723 Mar 16 21:05 1992 usr/lib/terminfo/2/2626a linked to usr/lib/terminfo/2/2626
+rw-r--r--     0    10      723 Mar 16 21:05 1992 usr/lib/terminfo/2/2626p linked to usr/lib/terminfo/2/2626
+rw-r--r--     0    10      723 Mar 16 21:05 1992 usr/lib/terminfo/2/2626A linked to usr/lib/terminfo/2/2626
+rw-r--r--     0    10      723 Mar 16 21:05 1992 usr/lib/terminfo/2/2626P linked to usr/lib/terminfo/2/2626
+rw-r--r--     0    10      825 Mar 16 21:05 1992 usr/lib/terminfo/2/2626-s
+rw-r--r--     0    10      765 Mar 16 21:05 1992 usr/lib/terminfo/2/2626-ns
+rw-r--r--     0    10      671 Mar 16 21:05 1992 usr/lib/terminfo/2/2626-12
+rw-r--r--     0    10      673 Mar 16 21:05 1992 usr/lib/terminfo/2/2626-12x40
+rw-r--r--     0    10      671 Mar 16 21:05 1992 usr/lib/terminfo/2/2626-x40
+rw-r--r--     0    10      801 Mar 16 21:05 1992 usr/lib/terminfo/2/2626-12-s
+rw-r--r--     0    10      710 Mar 16 21:05 1992 usr/lib/terminfo/2/2648a
+rw-r--r--     0    10      710 Mar 16 21:05 1992 usr/lib/terminfo/2/2648A linked to usr/lib/terminfo/2/2648a
+rw-r--r--     0    10      710 Mar 16 21:05 1992 usr/lib/terminfo/2/2648 linked to usr/lib/terminfo/2/2648a
+rw-r--r--     0    10      633 Mar 16 21:05 1992 usr/lib/terminfo/2/2640
+rw-r--r--     0    10      633 Mar 16 21:05 1992 usr/lib/terminfo/2/2640a linked to usr/lib/terminfo/2/2640
+rw-r--r--     0    10      667 Mar 16 21:05 1992 usr/lib/terminfo/2/2640b
+rw-r--r--     0    10      667 Mar 16 21:05 1992 usr/lib/terminfo/2/2644a linked to usr/lib/terminfo/2/2640b
+rw-r--r--     0    10      560 Mar 16 21:05 1992 usr/lib/terminfo/2/2621-48
+rw-r--r--     0    10      559 Mar 16 21:05 1992 usr/lib/terminfo/2/2621-nl
+rw-r--r--     0    10      567 Mar 16 21:05 1992 usr/lib/terminfo/2/2621-nt
+rw-r--r--     0    10      644 Mar 16 21:06 1992 usr/lib/terminfo/2/2621-pb
+rw-r--r--     0    10      523 Mar 16 21:21 1992 usr/lib/terminfo/2/2621nl
+rw-r--r--     0    10      547 Mar 16 21:21 1992 usr/lib/terminfo/2/2621nt
+rw-r--r--     0    10      553 Mar 16 21:22 1992 usr/lib/terminfo/2/2621wl
+rwxr-xr-x     0    10        0 Mar 16 21:13 1992 usr/lib/terminfo/3/
+rw-r--r--     0    10      508 Mar 16 21:04 1992 usr/lib/terminfo/3/3045
+rw-r--r--     0    10      445 Mar 16 21:04 1992 usr/lib/terminfo/3/382
+rw-r--r--     0    10      400 Mar 16 21:04 1992 usr/lib/terminfo/3/300
+rw-r--r--     0    10      400 Mar 16 21:04 1992 usr/lib/terminfo/3/300s linked to usr/lib/terminfo/3/300
+rw-r--r--     0    10      412 Mar 16 21:05 1992 usr/lib/terminfo/3/3101
+rw-r--r--     0    10      405 Mar 16 21:05 1992 usr/lib/terminfo/3/3a
+rw-r--r--     0    10      427 Mar 16 21:05 1992 usr/lib/terminfo/3/3a+
+rw-r--r--     0    10      492 Mar 16 21:05 1992 usr/lib/terminfo/3/31
+rw-r--r--     0    10      477 Mar 16 21:05 1992 usr/lib/terminfo/3/36
+rw-r--r--     0    10      382 Mar 16 21:06 1992 usr/lib/terminfo/3/333
+rw-r--r--     0    10      431 Mar 16 21:06 1992 usr/lib/terminfo/3/380
+rw-r--r--     0    10      378 Mar 16 21:13 1992 usr/lib/terminfo/3/33
+rw-r--r--     0    10      385 Mar 16 21:13 1992 usr/lib/terminfo/3/37
+rwxr-xr-x     0    10        0 Mar 16 21:13 1992 usr/lib/terminfo/4/
+rw-r--r--     0    10      481 Mar 16 21:03 1992 usr/lib/terminfo/4/4080
+rw-r--r--     0    10      417 Mar 16 21:04 1992 usr/lib/terminfo/4/450 linked to usr/lib/terminfo/1/1620
+rw-r--r--     0    10      483 Mar 16 21:04 1992 usr/lib/terminfo/4/400
+rw-r--r--     0    10      465 Mar 16 21:05 1992 usr/lib/terminfo/4/42
+rw-r--r--     0    10      531 Mar 16 21:05 1992 usr/lib/terminfo/4/42-nl
+rw-r--r--     0    10      402 Mar 16 21:12 1992 usr/lib/terminfo/4/4012
+rw-r--r--     0    10      404 Mar 16 21:12 1992 usr/lib/terminfo/4/4013
+rw-r--r--     0    10      400 Mar 16 21:12 1992 usr/lib/terminfo/4/4014
+rw-r--r--     0    10      406 Mar 16 21:12 1992 usr/lib/terminfo/4/4015
+rw-r--r--     0    10      420 Mar 16 21:12 1992 usr/lib/terminfo/4/4014-sm
+rw-r--r--     0    10      426 Mar 16 21:12 1992 usr/lib/terminfo/4/4015-sm
+rw-r--r--     0    10      421 Mar 16 21:12 1992 usr/lib/terminfo/4/4023
+rw-r--r--     0    10      706 Mar 16 21:12 1992 usr/lib/terminfo/4/4025
+rw-r--r--     0    10      706 Mar 16 21:12 1992 usr/lib/terminfo/4/4027 linked to usr/lib/terminfo/4/4025
+rw-r--r--     0    10      706 Mar 16 21:12 1992 usr/lib/terminfo/4/4024 linked to usr/lib/terminfo/4/4025
+rw-r--r--     0    10      706 Mar 16 21:12 1992 usr/lib/terminfo/4/4025cu linked to usr/lib/terminfo/4/4025
+rw-r--r--     0    10      706 Mar 16 21:12 1992 usr/lib/terminfo/4/4027cu linked to usr/lib/terminfo/4/4025
+rw-r--r--     0    10      668 Mar 16 21:13 1992 usr/lib/terminfo/4/4025-17
+rw-r--r--     0    10      668 Mar 16 21:13 1992 usr/lib/terminfo/4/4027-17 linked to usr/lib/terminfo/4/4025-17
+rw-r--r--     0    10      732 Mar 16 21:13 1992 usr/lib/terminfo/4/4025-17ws
+rw-r--r--     0    10      732 Mar 16 21:13 1992 usr/lib/terminfo/4/4027-17ws linked to usr/lib/terminfo/4/4025-17ws
+rw-r--r--     0    10      672 Mar 16 21:13 1992 usr/lib/terminfo/4/4025ex
+rw-r--r--     0    10      672 Mar 16 21:13 1992 usr/lib/terminfo/4/4027ex linked to usr/lib/terminfo/4/4025ex
+rw-r--r--     0    10      429 Mar 16 21:13 1992 usr/lib/terminfo/4/4112
+rw-r--r--     0    10      429 Mar 16 21:13 1992 usr/lib/terminfo/4/4112-nd linked to usr/lib/terminfo/4/4112
+rw-r--r--     0    10      429 Mar 16 21:13 1992 usr/lib/terminfo/4/4113 linked to usr/lib/terminfo/4/4112
+rw-r--r--     0    10      429 Mar 16 21:13 1992 usr/lib/terminfo/4/4114 linked to usr/lib/terminfo/4/4112
+rw-r--r--     0    10      376 Mar 16 21:13 1992 usr/lib/terminfo/4/4112-d
+rw-r--r--     0    10      411 Mar 16 21:13 1992 usr/lib/terminfo/4/4112-5
+rw-r--r--     0    10      471 Mar 16 21:13 1992 usr/lib/terminfo/4/40
+rw-r--r--     0    10      378 Mar 16 21:13 1992 usr/lib/terminfo/4/43
+rw-r--r--     0    10      679 Mar 16 21:13 1992 usr/lib/terminfo/4/4424
+rw-r--r--     0    10      648 Mar 16 21:13 1992 usr/lib/terminfo/4/4424-2
+rw-r--r--     0    10      431 Mar 16 21:13 1992 usr/lib/terminfo/4/4424-el-2
+rwxr-xr-x     0    10        0 Mar 16 21:04 1992 usr/lib/terminfo/5/
+rw-r--r--     0    10      412 Mar 16 21:04 1992 usr/lib/terminfo/5/5520
+rwxr-xr-x     0    10        0 Mar 16 19:55 1992 usr/lib/terminfo/6/
+rwxr-xr-x     0    10        0 Mar 16 21:16 1992 usr/lib/terminfo/7/
+rw-r--r--     0    10      392 Mar 16 21:16 1992 usr/lib/terminfo/7/735
+rw-r--r--     0    10      380 Mar 16 21:16 1992 usr/lib/terminfo/7/745
+rw-r--r--     0    10      380 Mar 16 21:16 1992 usr/lib/terminfo/7/743 linked to usr/lib/terminfo/7/745
+rwxr-xr-x     0    10        0 Mar 16 21:06 1992 usr/lib/terminfo/8/
+rw-r--r--     0    10      456 Mar 16 21:05 1992 usr/lib/terminfo/8/8001
+rw-r--r--     0    10      450 Mar 16 21:06 1992 usr/lib/terminfo/8/8510
+rwxr-xr-x     0    10        0 Mar 16 21:19 1992 usr/lib/terminfo/9/
+rw-r--r--     0    10      597 Mar 16 21:13 1992 usr/lib/terminfo/9/905
+rw-r--r--     0    10      516 Mar 16 21:13 1992 usr/lib/terminfo/9/912
+rw-r--r--     0    10      516 Mar 16 21:13 1992 usr/lib/terminfo/9/920 linked to usr/lib/terminfo/9/912
+rw-r--r--     0    10      526 Mar 16 21:13 1992 usr/lib/terminfo/9/912b
+rw-r--r--     0    10      526 Mar 16 21:13 1992 usr/lib/terminfo/9/912c linked to usr/lib/terminfo/9/912b
+rw-r--r--     0    10      526 Mar 16 21:14 1992 usr/lib/terminfo/9/920b
+rw-r--r--     0    10      526 Mar 16 21:14 1992 usr/lib/terminfo/9/920c linked to usr/lib/terminfo/9/920b
+rw-r--r--     0    10      504 Mar 16 21:14 1992 usr/lib/terminfo/9/912cc
+rw-r--r--     0    10      552 Mar 16 21:14 1992 usr/lib/terminfo/9/912-2p
+rw-r--r--     0    10      552 Mar 16 21:14 1992 usr/lib/terminfo/9/920-2p linked to usr/lib/terminfo/9/912-2p
+rw-r--r--     0    10      609 Mar 16 21:14 1992 usr/lib/terminfo/9/950
+rw-r--r--     0    10      659 Mar 16 21:15 1992 usr/lib/terminfo/9/950-2p
+rw-r--r--     0    10      659 Mar 16 21:15 1992 usr/lib/terminfo/9/950-4p
+rw-r--r--     0    10      622 Mar 16 21:15 1992 usr/lib/terminfo/9/950-rv
+rw-r--r--     0    10      670 Mar 16 21:15 1992 usr/lib/terminfo/9/950-rv-2p
+rw-r--r--     0    10      668 Mar 16 21:15 1992 usr/lib/terminfo/9/950-rv-4p
+rw-r--r--     0    10      549 Mar 16 21:15 1992 usr/lib/terminfo/9/925
+rw-r--r--     0    10      550 Mar 16 21:15 1992 usr/lib/terminfo/9/970-132
+rw-r--r--     0    10      528 Mar 16 21:15 1992 usr/lib/terminfo/9/970
+rw-r--r--     0    10      537 Mar 16 21:16 1992 usr/lib/terminfo/9/914
+rw-r--r--     0    10      498 Mar 16 21:18 1992 usr/lib/terminfo/9/9122p
+rw-r--r--     0    10      498 Mar 16 21:18 1992 usr/lib/terminfo/9/9202p
+rw-r--r--     0    10      625 Mar 16 21:18 1992 usr/lib/terminfo/9/9502p
+rw-r--r--     0    10      625 Mar 16 21:18 1992 usr/lib/terminfo/9/9504p
+rw-r--r--     0    10      588 Mar 16 21:19 1992 usr/lib/terminfo/9/950rv
+rw-r--r--     0    10      622 Mar 16 21:19 1992 usr/lib/terminfo/9/950rv2p
+rw-r--r--     0    10      620 Mar 16 21:19 1992 usr/lib/terminfo/9/950rv4p
+rwxr-xr-x     0    10        0 Mar 16 21:20 1992 usr/lib/terminfo/a/
+rw-r--r--     0    10      462 Mar 16 21:03 1992 usr/lib/terminfo/a/a980
+rw-r--r--     0    10      481 Mar 16 21:03 1992 usr/lib/terminfo/a/aa linked to usr/lib/terminfo/4/4080
+rw-r--r--     0    10      481 Mar 16 21:03 1992 usr/lib/terminfo/a/annarbor linked to usr/lib/terminfo/4/4080
+rw-r--r--     0    10      894 Mar 16 21:03 1992 usr/lib/terminfo/a/aaa-unk
+rw-r--r--     0    10      498 Mar 16 21:03 1992 usr/lib/terminfo/a/aaa-rv-unk
+rw-r--r--     0    10      917 Mar 16 21:03 1992 usr/lib/terminfo/a/aaa-18
+rw-r--r--     0    10      957 Mar 16 21:03 1992 usr/lib/terminfo/a/aaa-18-rv
+rw-r--r--     0    10      917 Mar 16 21:03 1992 usr/lib/terminfo/a/aaa-20
+rw-r--r--     0    10      917 Mar 16 21:03 1992 usr/lib/terminfo/a/aaa-22
+rw-r--r--     0    10      917 Mar 16 21:03 1992 usr/lib/terminfo/a/aaa-24
+rw-r--r--     0    10      957 Mar 16 21:03 1992 usr/lib/terminfo/a/aaa-24-rv
+rw-r--r--     0    10      923 Mar 16 21:03 1992 usr/lib/terminfo/a/aaa-26
+rw-r--r--     0    10      923 Mar 16 21:03 1992 usr/lib/terminfo/a/aaa-28
+rw-r--r--     0    10     1026 Mar 16 21:03 1992 usr/lib/terminfo/a/aaa-30-s
+rw-r--r--     0    10     1026 Mar 16 21:03 1992 usr/lib/terminfo/a/aaa-s linked to usr/lib/terminfo/a/aaa-30-s
+rw-r--r--     0    10     1062 Mar 16 21:03 1992 usr/lib/terminfo/a/aaa-30-s-rv
+rw-r--r--     0    10     1062 Mar 16 21:03 1992 usr/lib/terminfo/a/aaa-s-rv linked to usr/lib/terminfo/a/aaa-30-s-rv
+rw-r--r--     0    10     1002 Mar 16 21:03 1992 usr/lib/terminfo/a/aaa-30-s-ctxt
+rw-r--r--     0    10     1026 Mar 16 21:03 1992 usr/lib/terminfo/a/aaa-30-s-rv-ctxt
+rw-r--r--     0    10      945 Mar 16 21:03 1992 usr/lib/terminfo/a/aaa
+rw-r--r--     0    10      945 Mar 16 21:03 1992 usr/lib/terminfo/a/aaa-30 linked to usr/lib/terminfo/a/aaa
+rw-r--r--     0    10      945 Mar 16 21:03 1992 usr/lib/terminfo/a/ambas linked to usr/lib/terminfo/a/aaa
+rw-r--r--     0    10      945 Mar 16 21:03 1992 usr/lib/terminfo/a/ambassador linked to usr/lib/terminfo/a/aaa
+rw-r--r--     0    10      973 Mar 16 21:03 1992 usr/lib/terminfo/a/aaa-30-rv
+rw-r--r--     0    10      973 Mar 16 21:03 1992 usr/lib/terminfo/a/aaa-rv linked to usr/lib/terminfo/a/aaa-30-rv
+rw-r--r--     0    10      931 Mar 16 21:03 1992 usr/lib/terminfo/a/aaa-30-ctxt
+rw-r--r--     0    10      931 Mar 16 21:03 1992 usr/lib/terminfo/a/aaa-ctxt linked to usr/lib/terminfo/a/aaa-30-ctxt
+rw-r--r--     0    10      959 Mar 16 21:03 1992 usr/lib/terminfo/a/aaa-30-rv-ctxt
+rw-r--r--     0    10      959 Mar 16 21:03 1992 usr/lib/terminfo/a/aaa-rv-ctxt linked to usr/lib/terminfo/a/aaa-30-rv-ctxt
+rw-r--r--     0    10      923 Mar 16 21:03 1992 usr/lib/terminfo/a/aaa-36
+rw-r--r--     0    10      963 Mar 16 21:03 1992 usr/lib/terminfo/a/aaa-36-rv
+rw-r--r--     0    10      923 Mar 16 21:03 1992 usr/lib/terminfo/a/aaa-40
+rw-r--r--     0    10      963 Mar 16 21:03 1992 usr/lib/terminfo/a/aaa-40-rv
+rw-r--r--     0    10      923 Mar 16 21:03 1992 usr/lib/terminfo/a/aaa-48
+rw-r--r--     0    10      963 Mar 16 21:03 1992 usr/lib/terminfo/a/aaa-48-rv
+rw-r--r--     0    10      968 Mar 16 21:03 1992 usr/lib/terminfo/a/aaa-60-s
+rw-r--r--     0    10     1002 Mar 16 21:03 1992 usr/lib/terminfo/a/aaa-60-s-rv
+rw-r--r--     0    10      897 Mar 16 21:03 1992 usr/lib/terminfo/a/aaa-60
+rw-r--r--     0    10      937 Mar 16 21:03 1992 usr/lib/terminfo/a/aaa-60-rv
+rw-r--r--     0    10      938 Mar 16 21:03 1992 usr/lib/terminfo/a/aaa-db
+rw-r--r--     0    10      391 Mar 16 21:04 1992 usr/lib/terminfo/a/aj830
+rw-r--r--     0    10      391 Mar 16 21:04 1992 usr/lib/terminfo/a/aj832 linked to usr/lib/terminfo/a/aj830
+rw-r--r--     0    10      391 Mar 16 21:04 1992 usr/lib/terminfo/a/aj linked to usr/lib/terminfo/a/aj830
+rw-r--r--     0    10      400 Mar 16 21:04 1992 usr/lib/terminfo/a/agile
+rw-r--r--     0    10      400 Mar 16 21:04 1992 usr/lib/terminfo/a/agiles linked to usr/lib/terminfo/a/agile
+rw-r--r--     0    10      397 Mar 16 21:04 1992 usr/lib/terminfo/a/addrinfo
+rw-r--r--     0    10      541 Mar 16 21:04 1992 usr/lib/terminfo/a/altoh19
+rw-r--r--     0    10      541 Mar 16 21:04 1992 usr/lib/terminfo/a/altoheath linked to usr/lib/terminfo/a/altoh19
+rw-r--r--     0    10      541 Mar 16 21:04 1992 usr/lib/terminfo/a/alto linked to usr/lib/terminfo/a/altoh19
+rw-r--r--     0    10      408 Mar 16 21:05 1992 usr/lib/terminfo/a/adm1a
+rw-r--r--     0    10      408 Mar 16 21:05 1992 usr/lib/terminfo/a/adm1 linked to usr/lib/terminfo/a/adm1a
+rw-r--r--     0    10      426 Mar 16 21:05 1992 usr/lib/terminfo/a/adm2
+rw-r--r--     0    10      366 Mar 16 21:05 1992 usr/lib/terminfo/a/adm3
+rw-r--r--     0    10      405 Mar 16 21:05 1992 usr/lib/terminfo/a/adm3a linked to usr/lib/terminfo/3/3a
+rw-r--r--     0    10      427 Mar 16 21:05 1992 usr/lib/terminfo/a/adm3a+ linked to usr/lib/terminfo/3/3a+
+rw-r--r--     0    10      427 Mar 16 21:05 1992 usr/lib/terminfo/a/adm3aplus linked to usr/lib/terminfo/3/3a+
+rw-r--r--     0    10      425 Mar 16 21:05 1992 usr/lib/terminfo/a/adm5
+rw-r--r--     0    10      465 Mar 16 21:05 1992 usr/lib/terminfo/a/adm21
+rw-r--r--     0    10      492 Mar 16 21:05 1992 usr/lib/terminfo/a/adm31 linked to usr/lib/terminfo/3/31
+rw-r--r--     0    10      477 Mar 16 21:05 1992 usr/lib/terminfo/a/adm36 linked to usr/lib/terminfo/3/36
+rw-r--r--     0    10      465 Mar 16 21:05 1992 usr/lib/terminfo/a/adm42 linked to usr/lib/terminfo/4/42
+rw-r--r--     0    10      531 Mar 16 21:05 1992 usr/lib/terminfo/a/adm42-nl linked to usr/lib/terminfo/4/42-nl
+rw-r--r--     0    10      406 Mar 16 21:05 1992 usr/lib/terminfo/a/act4
+rw-r--r--     0    10      424 Mar 16 21:05 1992 usr/lib/terminfo/a/act5
+rw-r--r--     0    10      416 Mar 16 21:05 1992 usr/lib/terminfo/a/act5s
+rw-r--r--     0    10      656 Mar 16 21:06 1992 usr/lib/terminfo/a/aed512
+rw-r--r--     0    10      656 Mar 16 21:06 1992 usr/lib/terminfo/a/aed linked to usr/lib/terminfo/a/aed512
+rw-r--r--     0    10      489 Mar 16 21:06 1992 usr/lib/terminfo/a/ampex
+rw-r--r--     0    10      436 Mar 16 21:06 1992 usr/lib/terminfo/a/apple
+rw-r--r--     0    10      364 Mar 16 21:11 1992 usr/lib/terminfo/a/arpanet
+rw-r--r--     0    10      607 Mar 16 21:16 1992 usr/lib/terminfo/a/ansi
+rw-r--r--     0    10      970 Mar 16 21:19 1992 usr/lib/terminfo/a/aaa-29
+rw-r--r--     0    10      970 Mar 16 21:19 1992 usr/lib/terminfo/a/aaa-29-ctxt
+rw-r--r--     0    10      974 Mar 16 21:19 1992 usr/lib/terminfo/a/aaa-29-np
+rw-r--r--     0    10      996 Mar 16 21:20 1992 usr/lib/terminfo/a/aaa-29-rv
+rw-r--r--     0    10      994 Mar 16 21:20 1992 usr/lib/terminfo/a/aaa-29-rv-ctxt
+rw-r--r--     0    10      918 Mar 16 21:20 1992 usr/lib/terminfo/a/aaa-59
+rw-r--r--     0    10      887 Mar 16 21:20 1992 usr/lib/terminfo/a/aaa18
+rw-r--r--     0    10      887 Mar 16 21:20 1992 usr/lib/terminfo/a/aaa20
+rw-r--r--     0    10      887 Mar 16 21:20 1992 usr/lib/terminfo/a/aaa22
+rw-r--r--     0    10      887 Mar 16 21:20 1992 usr/lib/terminfo/a/aaa24
+rw-r--r--     0    10      893 Mar 16 21:20 1992 usr/lib/terminfo/a/aaa26
+rw-r--r--     0    10      893 Mar 16 21:20 1992 usr/lib/terminfo/a/aaa28
+rw-r--r--     0    10      970 Mar 16 21:20 1992 usr/lib/terminfo/a/aaa29
+rw-r--r--     0    10      893 Mar 16 21:20 1992 usr/lib/terminfo/a/aaa30
+rw-r--r--     0    10      893 Mar 16 21:20 1992 usr/lib/terminfo/a/aaa36
+rw-r--r--     0    10      893 Mar 16 21:20 1992 usr/lib/terminfo/a/aaa40
+rw-r--r--     0    10      893 Mar 16 21:20 1992 usr/lib/terminfo/a/aaa48
+rw-r--r--     0    10      918 Mar 16 21:20 1992 usr/lib/terminfo/a/aaa59
+rw-r--r--     0    10      867 Mar 16 21:20 1992 usr/lib/terminfo/a/aaa60
+rw-r--r--     0    10      892 Mar 16 21:20 1992 usr/lib/terminfo/a/aaadb
+rwxr-xr-x     0    10        0 Mar 16 21:13 1992 usr/lib/terminfo/b/
+rw-r--r--     0    10      430 Mar 16 21:03 1992 usr/lib/terminfo/b/bh3m
+rw-r--r--     0    10      430 Mar 16 21:03 1992 usr/lib/terminfo/b/beehiveIIIm linked to usr/lib/terminfo/b/bh3m
+rw-r--r--     0    10      406 Mar 16 21:04 1992 usr/lib/terminfo/b/bc
+rw-r--r--     0    10      557 Mar 16 21:06 1992 usr/lib/terminfo/b/bitgraph-ni
+rw-r--r--     0    10      557 Mar 16 21:06 1992 usr/lib/terminfo/b/bg2.0 linked to usr/lib/terminfo/b/bitgraph-ni
+rw-r--r--     0    10      557 Mar 16 21:06 1992 usr/lib/terminfo/b/bg-ni linked to usr/lib/terminfo/b/bitgraph-ni
+rw-r--r--     0    10      589 Mar 16 21:06 1992 usr/lib/terminfo/b/bitgraph-nv
+rw-r--r--     0    10      589 Mar 16 21:06 1992 usr/lib/terminfo/b/bg2.0-nv linked to usr/lib/terminfo/b/bitgraph-nv
+rw-r--r--     0    10      589 Mar 16 21:06 1992 usr/lib/terminfo/b/bg-nv linked to usr/lib/terminfo/b/bitgraph-nv
+rw-r--r--     0    10      603 Mar 16 21:06 1992 usr/lib/terminfo/b/bg
+rw-r--r--     0    10      603 Mar 16 21:06 1992 usr/lib/terminfo/b/bitgraph linked to usr/lib/terminfo/b/bg
+rw-r--r--     0    10      603 Mar 16 21:06 1992 usr/lib/terminfo/b/bg2.0-rv linked to usr/lib/terminfo/b/bg
+rw-r--r--     0    10      603 Mar 16 21:06 1992 usr/lib/terminfo/b/bg-rv linked to usr/lib/terminfo/b/bg
+rw-r--r--     0    10      603 Mar 16 21:06 1992 usr/lib/terminfo/b/bitgraph-rv linked to usr/lib/terminfo/b/bg
+rw-r--r--     0    10      519 Mar 16 21:06 1992 usr/lib/terminfo/b/bg1.25
+rw-r--r--     0    10      555 Mar 16 21:06 1992 usr/lib/terminfo/b/bg1.25-nv
+rw-r--r--     0    10      557 Mar 16 21:06 1992 usr/lib/terminfo/b/bg1.25-rv
+rw-r--r--     0    10      472 Mar 16 21:06 1992 usr/lib/terminfo/b/beacon
+rw-r--r--     0    10      437 Mar 16 21:06 1992 usr/lib/terminfo/b/bantam
+rw-r--r--     0    10      580 Mar 16 21:06 1992 usr/lib/terminfo/b/blit-pb
+rw-r--r--     0    10      360 Mar 16 21:11 1992 usr/lib/terminfo/b/bussiplexer
+rw-r--r--     0    10      519 Mar 16 21:13 1992 usr/lib/terminfo/b/blit
+rw-r--r--     0    10      413 Mar 16 21:13 1992 usr/lib/terminfo/b/blitlayer
+rwxr-xr-x     0    10        0 Mar 16 21:21 1992 usr/lib/terminfo/c/
+rw-r--r--     0    10      404 Mar 16 21:03 1992 usr/lib/terminfo/c/cdc456
+rw-r--r--     0    10      404 Mar 16 21:03 1992 usr/lib/terminfo/c/cdc linked to usr/lib/terminfo/c/cdc456
+rw-r--r--     0    10      388 Mar 16 21:03 1992 usr/lib/terminfo/c/cdc456tst
+rw-r--r--     0    10      510 Mar 16 21:10 1992 usr/lib/terminfo/c/co3100
+rw-r--r--     0    10      524 Mar 16 21:10 1992 usr/lib/terminfo/c/c2
+rw-r--r--     0    10      524 Mar 16 21:10 1992 usr/lib/terminfo/c/co3100-132 linked to usr/lib/terminfo/c/c2
+rw-r--r--     0    10      857 Mar 16 21:03 1992 usr/lib/terminfo/c/c108
+rw-r--r--     0    10      857 Mar 16 21:03 1992 usr/lib/terminfo/c/c108-8p linked to usr/lib/terminfo/c/c108
+rw-r--r--     0    10      857 Mar 16 21:03 1992 usr/lib/terminfo/c/concept108-8p linked to usr/lib/terminfo/c/c108
+rw-r--r--     0    10      850 Mar 16 21:04 1992 usr/lib/terminfo/c/c108-4p
+rw-r--r--     0    10      850 Mar 16 21:04 1992 usr/lib/terminfo/c/concept108-4p linked to usr/lib/terminfo/c/c108-4p
+rw-r--r--     0    10      874 Mar 16 21:04 1992 usr/lib/terminfo/c/c108-rv
+rw-r--r--     0    10      874 Mar 16 21:04 1992 usr/lib/terminfo/c/c108-rv-8p linked to usr/lib/terminfo/c/c108-rv
+rw-r--r--     0    10      874 Mar 16 21:04 1992 usr/lib/terminfo/c/concept108-rv-8p linked to usr/lib/terminfo/c/c108-rv
+rw-r--r--     0    10      867 Mar 16 21:04 1992 usr/lib/terminfo/c/c108-rv-4p
+rw-r--r--     0    10      867 Mar 16 21:04 1992 usr/lib/terminfo/c/concept108-rv-4p linked to usr/lib/terminfo/c/c108-rv-4p
+rw-r--r--     0    10      890 Mar 16 21:04 1992 usr/lib/terminfo/c/c108-na
+rw-r--r--     0    10      890 Mar 16 21:04 1992 usr/lib/terminfo/c/c108-na-8p linked to usr/lib/terminfo/c/c108-na
+rw-r--r--     0    10      890 Mar 16 21:04 1992 usr/lib/terminfo/c/c108-8p-na linked to usr/lib/terminfo/c/c108-na
+rw-r--r--     0    10      890 Mar 16 21:04 1992 usr/lib/terminfo/c/concept108-na-8p linked to usr/lib/terminfo/c/c108-na
+rw-r--r--     0    10      881 Mar 16 21:04 1992 usr/lib/terminfo/c/c108-rv-na
+rw-r--r--     0    10      881 Mar 16 21:04 1992 usr/lib/terminfo/c/c108-rv-na-8p linked to usr/lib/terminfo/c/c108-rv-na
+rw-r--r--     0    10      881 Mar 16 21:04 1992 usr/lib/terminfo/c/c108-8p-rv-na linked to usr/lib/terminfo/c/c108-rv-na
+rw-r--r--     0    10      875 Mar 16 21:04 1992 usr/lib/terminfo/c/c108-w
+rw-r--r--     0    10      763 Mar 16 21:04 1992 usr/lib/terminfo/c/c100
+rw-r--r--     0    10      875 Mar 16 21:04 1992 usr/lib/terminfo/c/c108-w-8p linked to usr/lib/terminfo/c/c108-w
+rw-r--r--     0    10      875 Mar 16 21:04 1992 usr/lib/terminfo/c/concept108-w-8p linked to usr/lib/terminfo/c/c108-w
+rw-r--r--     0    10      763 Mar 16 21:04 1992 usr/lib/terminfo/c/concept100 linked to usr/lib/terminfo/c/c100
+rw-r--r--     0    10      763 Mar 16 21:04 1992 usr/lib/terminfo/c/concept linked to usr/lib/terminfo/c/c100
+rw-r--r--     0    10      763 Mar 16 21:04 1992 usr/lib/terminfo/c/c104 linked to usr/lib/terminfo/c/c100
+rw-r--r--     0    10      763 Mar 16 21:04 1992 usr/lib/terminfo/c/c100-4p linked to usr/lib/terminfo/c/c100
+rw-r--r--     0    10      729 Mar 16 21:20 1992 usr/lib/terminfo/c/c100-rv
+rw-r--r--     0    10      729 Mar 16 21:20 1992 usr/lib/terminfo/c/c100-rv-4p linked to usr/lib/terminfo/c/c100-rv
+rw-r--r--     0    10      729 Mar 16 21:20 1992 usr/lib/terminfo/c/c100-rv-4p-pp linked to usr/lib/terminfo/c/c100-rv
+rw-r--r--     0    10      729 Mar 16 21:20 1992 usr/lib/terminfo/c/concept100-rv linked to usr/lib/terminfo/c/c100-rv
+rw-r--r--     0    10      771 Mar 16 21:04 1992 usr/lib/terminfo/c/c100-rv-na
+rw-r--r--     0    10      771 Mar 16 21:04 1992 usr/lib/terminfo/c/c100-rv-4p-na linked to usr/lib/terminfo/c/c100-rv-na
+rw-r--r--     0    10      771 Mar 16 21:04 1992 usr/lib/terminfo/c/concept100-rv-na linked to usr/lib/terminfo/c/c100-rv-na
+rw-r--r--     0    10      747 Mar 16 21:04 1992 usr/lib/terminfo/c/c100-1p
+rw-r--r--     0    10      368 Mar 16 21:04 1992 usr/lib/terminfo/c/cdi
+rw-r--r--     0    10      368 Mar 16 21:04 1992 usr/lib/terminfo/c/cdi1203 linked to usr/lib/terminfo/c/cdi
+rw-r--r--     0    10      421 Mar 16 21:04 1992 usr/lib/terminfo/c/carlock
+rw-r--r--     0    10      396 Mar 16 21:05 1992 usr/lib/terminfo/c/compucolor2
+rw-r--r--     0    10      396 Mar 16 21:05 1992 usr/lib/terminfo/c/compucolorii linked to usr/lib/terminfo/c/compucolor2
+rw-r--r--     0    10      424 Mar 16 21:06 1992 usr/lib/terminfo/c/ca
+rw-r--r--     0    10      424 Mar 16 21:06 1992 usr/lib/terminfo/c/ca22851 linked to usr/lib/terminfo/c/ca
+rw-r--r--     0    10      572 Mar 16 21:06 1992 usr/lib/terminfo/c/cg7900
+rw-r--r--     0    10      572 Mar 16 21:06 1992 usr/lib/terminfo/c/chromatics linked to usr/lib/terminfo/c/cg7900
+rw-r--r--     0    10      458 Mar 16 21:06 1992 usr/lib/terminfo/c/ct82
+rw-r--r--     0    10      450 Mar 16 21:06 1992 usr/lib/terminfo/c/citoh linked to usr/lib/terminfo/8/8510
+rw-r--r--     0    10      450 Mar 16 21:06 1992 usr/lib/terminfo/c/ci8510 linked to usr/lib/terminfo/8/8510
+rw-r--r--     0    10      447 Mar 16 21:06 1992 usr/lib/terminfo/c/citoh-pica
+rw-r--r--     0    10      449 Mar 16 21:06 1992 usr/lib/terminfo/c/citoh-elite
+rw-r--r--     0    10      453 Mar 16 21:06 1992 usr/lib/terminfo/c/citoh-comp
+rw-r--r--     0    10      481 Mar 16 21:06 1992 usr/lib/terminfo/c/citoh-prop
+rw-r--r--     0    10      481 Mar 16 21:06 1992 usr/lib/terminfo/c/citoh-ps linked to usr/lib/terminfo/c/citoh-prop
+rw-r--r--     0    10      465 Mar 16 21:07 1992 usr/lib/terminfo/c/citoh-6lpi
+rw-r--r--     0    10      465 Mar 16 21:07 1992 usr/lib/terminfo/c/citoh-8lpi
+rw-r--r--     0    10      420 Mar 16 21:10 1992 usr/lib/terminfo/c/cad68-3
+rw-r--r--     0    10      420 Mar 16 21:10 1992 usr/lib/terminfo/c/cgc3 linked to usr/lib/terminfo/c/cad68-3
+rw-r--r--     0    10      420 Mar 16 21:10 1992 usr/lib/terminfo/c/cad68-2
+rw-r--r--     0    10      420 Mar 16 21:10 1992 usr/lib/terminfo/c/cgc2 linked to usr/lib/terminfo/c/cad68-2
+rw-r--r--     0    10      447 Mar 16 21:13 1992 usr/lib/terminfo/c/ct8500
+rw-r--r--     0    10      555 Mar 16 21:13 1992 usr/lib/terminfo/c/cbblit
+rw-r--r--     0    10      537 Mar 16 21:16 1992 usr/lib/terminfo/c/cnorm linked to usr/lib/terminfo/9/914
+rw-r--r--     0    10      466 Mar 16 21:16 1992 usr/lib/terminfo/c/cbunix
+rw-r--r--     0    10      466 Mar 16 21:16 1992 usr/lib/terminfo/c/cb-unix linked to usr/lib/terminfo/c/cbunix
+rw-r--r--     0    10      725 Mar 16 21:21 1992 usr/lib/terminfo/c/c100-rv-pp
+rw-r--r--     0    10      721 Mar 16 21:21 1992 usr/lib/terminfo/c/c1004p
+rw-r--r--     0    10      721 Mar 16 21:21 1992 usr/lib/terminfo/c/c100rv
+rw-r--r--     0    10      723 Mar 16 21:21 1992 usr/lib/terminfo/c/c100rv4p
+rw-r--r--     0    10      719 Mar 16 21:21 1992 usr/lib/terminfo/c/c100rv4pna
+rw-r--r--     0    10      725 Mar 16 21:21 1992 usr/lib/terminfo/c/c100rv4ppp
+rw-r--r--     0    10      717 Mar 16 21:21 1992 usr/lib/terminfo/c/c100rvna
+rw-r--r--     0    10      723 Mar 16 21:21 1992 usr/lib/terminfo/c/c100rvpp
+rw-r--r--     0    10      723 Mar 16 21:21 1992 usr/lib/terminfo/c/c100rvs
+rw-r--r--     0    10      721 Mar 16 21:21 1992 usr/lib/terminfo/c/c100s
+rw-r--r--     0    10      812 Mar 16 21:21 1992 usr/lib/terminfo/c/c108-4
+rw-r--r--     0    10      815 Mar 16 21:21 1992 usr/lib/terminfo/c/c108-8
+rwxr-xr-x     0    10        0 Mar 16 21:16 1992 usr/lib/terminfo/d/
+rw-r--r--     0    10      436 Mar 16 21:04 1992 usr/lib/terminfo/d/dm1520 linked to usr/lib/terminfo/1/1521
+rw-r--r--     0    10      436 Mar 16 21:04 1992 usr/lib/terminfo/d/dm1521 linked to usr/lib/terminfo/1/1521
+rw-r--r--     0    10      491 Mar 16 21:04 1992 usr/lib/terminfo/d/dm2500 linked to usr/lib/terminfo/2/2500
+rw-r--r--     0    10      491 Mar 16 21:04 1992 usr/lib/terminfo/d/datamedia2500 linked to usr/lib/terminfo/2/2500
+rw-r--r--     0    10      484 Mar 16 21:04 1992 usr/lib/terminfo/d/dm3025
+rw-r--r--     0    10      508 Mar 16 21:04 1992 usr/lib/terminfo/d/dm3045 linked to usr/lib/terminfo/3/3045
+rw-r--r--     0    10      706 Mar 16 21:04 1992 usr/lib/terminfo/d/dt80
+rw-r--r--     0    10      706 Mar 16 21:04 1992 usr/lib/terminfo/d/dmdt80 linked to usr/lib/terminfo/d/dt80
+rw-r--r--     0    10      706 Mar 16 21:04 1992 usr/lib/terminfo/d/dm80 linked to usr/lib/terminfo/d/dt80
+rw-r--r--     0    10      753 Mar 16 21:04 1992 usr/lib/terminfo/d/dt80-w
+rw-r--r--     0    10      753 Mar 16 21:04 1992 usr/lib/terminfo/d/dmdt80-w linked to usr/lib/terminfo/d/dt80-w
+rw-r--r--     0    10      753 Mar 16 21:04 1992 usr/lib/terminfo/d/dm80-w linked to usr/lib/terminfo/d/dt80-w
+rw-r--r--     0    10      366 Mar 16 21:04 1992 usr/lib/terminfo/d/dw1
+rw-r--r--     0    10      382 Mar 16 21:04 1992 usr/lib/terminfo/d/dw2
+rw-r--r--     0    10      382 Mar 16 21:04 1992 usr/lib/terminfo/d/decwriter linked to usr/lib/terminfo/d/dw2
+rw-r--r--     0    10      382 Mar 16 21:04 1992 usr/lib/terminfo/d/dw linked to usr/lib/terminfo/d/dw2
+rw-r--r--     0    10      487 Mar 16 21:04 1992 usr/lib/terminfo/d/dw3
+rw-r--r--     0    10      389 Mar 16 21:04 1992 usr/lib/terminfo/d/dw4
+rw-r--r--     0    10      417 Mar 16 21:04 1992 usr/lib/terminfo/d/diablo linked to usr/lib/terminfo/1/1620
+rw-r--r--     0    10      445 Mar 16 21:04 1992 usr/lib/terminfo/d/dtc linked to usr/lib/terminfo/3/382
+rw-r--r--     0    10      445 Mar 16 21:04 1992 usr/lib/terminfo/d/dtc382 linked to usr/lib/terminfo/3/382
+rw-r--r--     0    10      400 Mar 16 21:04 1992 usr/lib/terminfo/d/dtc300s linked to usr/lib/terminfo/3/300
+rw-r--r--     0    10      489 Mar 16 21:06 1992 usr/lib/terminfo/d/d80 linked to usr/lib/terminfo/a/ampex
+rw-r--r--     0    10      489 Mar 16 21:06 1992 usr/lib/terminfo/d/dialogue linked to usr/lib/terminfo/a/ampex
+rw-r--r--     0    10      489 Mar 16 21:06 1992 usr/lib/terminfo/d/dialogue80 linked to usr/lib/terminfo/a/ampex
+rw-r--r--     0    10      462 Mar 16 21:06 1992 usr/lib/terminfo/d/d200
+rw-r--r--     0    10      462 Mar 16 21:06 1992 usr/lib/terminfo/d/d100 linked to usr/lib/terminfo/d/d200
+rw-r--r--     0    10      400 Mar 16 21:06 1992 usr/lib/terminfo/d/dg
+rw-r--r--     0    10      400 Mar 16 21:06 1992 usr/lib/terminfo/d/dg6053 linked to usr/lib/terminfo/d/dg
+rw-r--r--     0    10      413 Mar 16 21:06 1992 usr/lib/terminfo/d/d132
+rw-r--r--     0    10      399 Mar 16 21:06 1992 usr/lib/terminfo/d/dp3
+rw-r--r--     0    10      413 Mar 16 21:06 1992 usr/lib/terminfo/d/datagraphix linked to usr/lib/terminfo/d/d132
+rw-r--r--     0    10      399 Mar 16 21:06 1992 usr/lib/terminfo/d/datapoint linked to usr/lib/terminfo/d/dp3
+rw-r--r--     0    10      399 Mar 16 21:06 1992 usr/lib/terminfo/d/dp3360 linked to usr/lib/terminfo/d/dp3
+rw-r--r--     0    10      452 Mar 16 21:06 1992 usr/lib/terminfo/d/delta
+rw-r--r--     0    10      452 Mar 16 21:06 1992 usr/lib/terminfo/d/dd5000 linked to usr/lib/terminfo/d/delta
+rw-r--r--     0    10      382 Mar 16 21:06 1992 usr/lib/terminfo/d/digilog linked to usr/lib/terminfo/3/333
+rw-r--r--     0    10      525 Mar 16 21:06 1992 usr/lib/terminfo/d/d800
+rw-r--r--     0    10      525 Mar 16 21:06 1992 usr/lib/terminfo/d/direct linked to usr/lib/terminfo/d/d800
+rw-r--r--     0    10      525 Mar 16 21:06 1992 usr/lib/terminfo/d/direct800 linked to usr/lib/terminfo/d/d800
+rw-r--r--     0    10      588 Mar 16 21:06 1992 usr/lib/terminfo/d/daleblit-pb
+rw-r--r--     0    10      354 Mar 16 21:11 1992 usr/lib/terminfo/d/dialup
+rw-r--r--     0    10      352 Mar 16 21:12 1992 usr/lib/terminfo/d/dumb
+rw-r--r--     0    10      519 Mar 16 21:13 1992 usr/lib/terminfo/d/daleblit linked to usr/lib/terminfo/b/blit
+rw-r--r--     0    10      471 Mar 16 21:13 1992 usr/lib/terminfo/d/ds40 linked to usr/lib/terminfo/4/40
+rw-r--r--     0    10      471 Mar 16 21:13 1992 usr/lib/terminfo/d/ds40-2 linked to usr/lib/terminfo/4/40
+rw-r--r--     0    10      471 Mar 16 21:13 1992 usr/lib/terminfo/d/dataspeed40 linked to usr/lib/terminfo/4/40
+rw-r--r--     0    10      468 Mar 16 21:16 1992 usr/lib/terminfo/d/debug
+rwxr-xr-x     0    10        0 Mar 16 21:11 1992 usr/lib/terminfo/e/
+rw-r--r--     0    10      380 Mar 16 21:04 1992 usr/lib/terminfo/e/ep48
+rw-r--r--     0    10      380 Mar 16 21:04 1992 usr/lib/terminfo/e/ep4080 linked to usr/lib/terminfo/e/ep48
+rw-r--r--     0    10      380 Mar 16 21:04 1992 usr/lib/terminfo/e/ep40
+rw-r--r--     0    10      380 Mar 16 21:04 1992 usr/lib/terminfo/e/ep4000 linked to usr/lib/terminfo/e/ep40
+rw-r--r--     0    10      521 Mar 16 21:04 1992 usr/lib/terminfo/e/esprit
+rw-r--r--     0    10      356 Mar 16 21:04 1992 usr/lib/terminfo/e/ex3000
+rw-r--r--     0    10      448 Mar 16 21:04 1992 usr/lib/terminfo/e/exidy
+rw-r--r--     0    10      448 Mar 16 21:04 1992 usr/lib/terminfo/e/exidy2500 linked to usr/lib/terminfo/e/exidy
+rw-r--r--     0    10      768 Mar 16 21:06 1992 usr/lib/terminfo/e/env230
+rw-r--r--     0    10      768 Mar 16 21:06 1992 usr/lib/terminfo/e/envision230 linked to usr/lib/terminfo/e/env230
+rw-r--r--     0    10      364 Mar 16 21:11 1992 usr/lib/terminfo/e/ethernet
+rwxr-xr-x     0    10        0 Mar 16 21:13 1992 usr/lib/terminfo/f/
+rw-r--r--     0    10      470 Mar 16 21:06 1992 usr/lib/terminfo/f/falco
+rw-r--r--     0    10      517 Mar 16 21:06 1992 usr/lib/terminfo/f/falco-p
+rw-r--r--     0    10      448 Mar 16 21:06 1992 usr/lib/terminfo/f/f1720
+rw-r--r--     0    10      448 Mar 16 21:06 1992 usr/lib/terminfo/f/f1720a linked to usr/lib/terminfo/f/f1720
+rw-r--r--     0    10      589 Mar 16 21:06 1992 usr/lib/terminfo/f/f100
+rw-r--r--     0    10      589 Mar 16 21:06 1992 usr/lib/terminfo/f/freedom linked to usr/lib/terminfo/f/f100
+rw-r--r--     0    10      589 Mar 16 21:06 1992 usr/lib/terminfo/f/freedom100 linked to usr/lib/terminfo/f/f100
+rw-r--r--     0    10      613 Mar 16 21:06 1992 usr/lib/terminfo/f/f100-rv
+rw-r--r--     0    10      613 Mar 16 21:06 1992 usr/lib/terminfo/f/freedom-rv linked to usr/lib/terminfo/f/f100-rv
+rw-r--r--     0    10      448 Mar 16 21:06 1992 usr/lib/terminfo/f/fox
+rw-r--r--     0    10     1118 Mar 16 21:06 1992 usr/lib/terminfo/f/fenix-48
+rw-r--r--     0    10     1141 Mar 16 21:07 1992 usr/lib/terminfo/f/fenix
+rw-r--r--     0    10     1147 Mar 16 21:07 1992 usr/lib/terminfo/f/fenix-132
+rw-r--r--     0    10      555 Mar 16 21:13 1992 usr/lib/terminfo/f/fixterm linked to usr/lib/terminfo/c/cbblit
+rwxr-xr-x     0    10        0 Mar 16 21:04 1992 usr/lib/terminfo/g/
+rw-r--r--     0    10      362 Mar 16 21:04 1992 usr/lib/terminfo/g/gt40
+rw-r--r--     0    10      362 Mar 16 21:04 1992 usr/lib/terminfo/g/gt42
+rw-r--r--     0    10      578 Mar 16 21:04 1992 usr/lib/terminfo/g/gigi
+rw-r--r--     0    10      364 Mar 16 21:04 1992 usr/lib/terminfo/g/gsi
+rw-r--r--     0    10      471 Mar 16 21:04 1992 usr/lib/terminfo/g/gt100
+rw-r--r--     0    10      471 Mar 16 21:04 1992 usr/lib/terminfo/g/gt100a linked to usr/lib/terminfo/g/gt100
+rwxr-xr-x     0    10        0 Mar 16 21:21 1992 usr/lib/terminfo/h/
+rw-r--r--     0    10      376 Mar 16 21:04 1992 usr/lib/terminfo/h/h1000
+rw-r--r--     0    10      417 Mar 16 21:04 1992 usr/lib/terminfo/h/h1420
+rw-r--r--     0    10      418 Mar 16 21:04 1992 usr/lib/terminfo/h/h1500
+rw-r--r--     0    10      403 Mar 16 21:04 1992 usr/lib/terminfo/h/h1510
+rw-r--r--     0    10      416 Mar 16 21:04 1992 usr/lib/terminfo/h/h1520
+rw-r--r--     0    10      461 Mar 16 21:04 1992 usr/lib/terminfo/h/h1552
+rw-r--r--     0    10      485 Mar 16 21:04 1992 usr/lib/terminfo/h/h1552-rv
+rw-r--r--     0    10      407 Mar 16 21:04 1992 usr/lib/terminfo/h/h2000
+rw-r--r--     0    10      629 Mar 16 21:04 1992 usr/lib/terminfo/h/h19-a
+rw-r--r--     0    10      629 Mar 16 21:04 1992 usr/lib/terminfo/h/heath-ansi linked to usr/lib/terminfo/h/h19-a
+rw-r--r--     0    10      629 Mar 16 21:04 1992 usr/lib/terminfo/h/heathkit-a linked to usr/lib/terminfo/h/h19-a
+rw-r--r--     0    10      567 Mar 16 21:04 1992 usr/lib/terminfo/h/h19-bs
+rw-r--r--     0    10      579 Mar 16 21:04 1992 usr/lib/terminfo/h/h19-smul
+rw-r--r--     0    10      587 Mar 16 21:04 1992 usr/lib/terminfo/h/h19
+rw-r--r--     0    10      587 Mar 16 21:04 1992 usr/lib/terminfo/h/heath linked to usr/lib/terminfo/h/h19
+rw-r--r--     0    10      587 Mar 16 21:04 1992 usr/lib/terminfo/h/h19-b linked to usr/lib/terminfo/h/h19
+rw-r--r--     0    10      587 Mar 16 21:04 1992 usr/lib/terminfo/h/heathkit linked to usr/lib/terminfo/h/h19
+rw-r--r--     0    10      587 Mar 16 21:04 1992 usr/lib/terminfo/h/heath-19 linked to usr/lib/terminfo/h/h19
+rw-r--r--     0    10      559 Mar 16 21:04 1992 usr/lib/terminfo/h/h19-u
+rw-r--r--     0    10      563 Mar 16 21:04 1992 usr/lib/terminfo/h/h89
+rw-r--r--     0    10      570 Mar 16 21:04 1992 usr/lib/terminfo/h/hp2621-ba linked to usr/lib/terminfo/2/2621-ba
+rw-r--r--     0    10      583 Mar 16 21:04 1992 usr/lib/terminfo/h/hp2621-wl linked to usr/lib/terminfo/2/2621-wl
+rw-r--r--     0    10      583 Mar 16 21:04 1992 usr/lib/terminfo/h/hp2621 linked to usr/lib/terminfo/2/2621-wl
+rw-r--r--     0    10      595 Mar 16 21:05 1992 usr/lib/terminfo/h/hp2621-fl linked to usr/lib/terminfo/2/2621a
+rw-r--r--     0    10      595 Mar 16 21:05 1992 usr/lib/terminfo/h/hp2621a linked to usr/lib/terminfo/2/2621a
+rw-r--r--     0    10      591 Mar 16 21:05 1992 usr/lib/terminfo/h/hp2621p linked to usr/lib/terminfo/2/2621p
+rw-r--r--     0    10      580 Mar 16 21:05 1992 usr/lib/terminfo/h/hp2621k45 linked to usr/lib/terminfo/2/2621k45
+rw-r--r--     0    10      669 Mar 16 21:05 1992 usr/lib/terminfo/h/hp2645 linked to usr/lib/terminfo/2/2645
+rw-r--r--     0    10      669 Mar 16 21:05 1992 usr/lib/terminfo/h/hp45 linked to usr/lib/terminfo/2/2645
+rw-r--r--     0    10      470 Mar 16 21:05 1992 usr/lib/terminfo/h/hp
+rw-r--r--     0    10      470 Mar 16 21:05 1992 usr/lib/terminfo/h/hewlett-packard linked to usr/lib/terminfo/h/hp
+rw-r--r--     0    10      687 Mar 16 21:05 1992 usr/lib/terminfo/h/hp2622 linked to usr/lib/terminfo/2/2622
+rw-r--r--     0    10      687 Mar 16 21:05 1992 usr/lib/terminfo/h/hp2622a linked to usr/lib/terminfo/2/2622
+rw-r--r--     0    10      687 Mar 16 21:05 1992 usr/lib/terminfo/h/hp2623 linked to usr/lib/terminfo/2/2623
+rw-r--r--     0    10      687 Mar 16 21:05 1992 usr/lib/terminfo/h/hp2623a linked to usr/lib/terminfo/2/2623
+rw-r--r--     0    10      723 Mar 16 21:05 1992 usr/lib/terminfo/h/hp2626 linked to usr/lib/terminfo/2/2626
+rw-r--r--     0    10      723 Mar 16 21:05 1992 usr/lib/terminfo/h/hp2626a linked to usr/lib/terminfo/2/2626
+rw-r--r--     0    10      723 Mar 16 21:05 1992 usr/lib/terminfo/h/hp2626p linked to usr/lib/terminfo/2/2626
+rw-r--r--     0    10      710 Mar 16 21:05 1992 usr/lib/terminfo/h/hp2648 linked to usr/lib/terminfo/2/2648a
+rw-r--r--     0    10      710 Mar 16 21:05 1992 usr/lib/terminfo/h/hp2648a linked to usr/lib/terminfo/2/2648a
+rw-r--r--     0    10      633 Mar 16 21:05 1992 usr/lib/terminfo/h/hp2640a linked to usr/lib/terminfo/2/2640
+rw-r--r--     0    10      667 Mar 16 21:05 1992 usr/lib/terminfo/h/hp2640b linked to usr/lib/terminfo/2/2640b
+rw-r--r--     0    10      667 Mar 16 21:05 1992 usr/lib/terminfo/h/hp2644a linked to usr/lib/terminfo/2/2640b
+rw-r--r--     0    10      559 Mar 16 21:05 1992 usr/lib/terminfo/h/hp2621-nl linked to usr/lib/terminfo/2/2621-nl
+rw-r--r--     0    10      567 Mar 16 21:05 1992 usr/lib/terminfo/h/hp2621-nt linked to usr/lib/terminfo/2/2621-nt
+rw-r--r--     0    10      644 Mar 16 21:06 1992 usr/lib/terminfo/h/hp2621-pb linked to usr/lib/terminfo/2/2621-pb
+rw-r--r--     0    10      632 Mar 16 21:06 1992 usr/lib/terminfo/h/h19-pb
+rw-r--r--     0    10      845 Mar 16 21:07 1992 usr/lib/terminfo/h/hp700
+rw-r--r--     0    10      845 Mar 16 21:07 1992 usr/lib/terminfo/h/hp700-44 linked to usr/lib/terminfo/h/hp700
+rw-r--r--     0    10      852 Mar 16 21:07 1992 usr/lib/terminfo/h/hp700-vb
+rw-r--r--     0    10      852 Mar 16 21:07 1992 usr/lib/terminfo/h/hp700vb linked to usr/lib/terminfo/h/hp700-vb
+rw-r--r--     0    10      821 Mar 16 21:07 1992 usr/lib/terminfo/h/hp700-w
+rw-r--r--     0    10      821 Mar 16 21:07 1992 usr/lib/terminfo/h/hp700w linked to usr/lib/terminfo/h/hp700-w
+rw-r--r--     0    10      866 Mar 16 21:07 1992 usr/lib/terminfo/h/hp700-wvb
+rw-r--r--     0    10      866 Mar 16 21:07 1992 usr/lib/terminfo/h/hp700wvb linked to usr/lib/terminfo/h/hp700-wvb
+rw-r--r--     0    10      821 Mar 16 21:07 1992 usr/lib/terminfo/h/hp700l
+rw-r--r--     0    10      821 Mar 16 21:07 1992 usr/lib/terminfo/h/hp700-44l linked to usr/lib/terminfo/h/hp700l
+rw-r--r--     0    10      589 Mar 16 21:21 1992 usr/lib/terminfo/h/h19a
+rw-r--r--     0    10      589 Mar 16 21:21 1992 usr/lib/terminfo/h/h19A linked to usr/lib/terminfo/h/h19a
+rw-r--r--     0    10      533 Mar 16 21:21 1992 usr/lib/terminfo/h/h19b
+rw-r--r--     0    10      541 Mar 16 21:21 1992 usr/lib/terminfo/h/h19bs
+rw-r--r--     0    10      525 Mar 16 21:21 1992 usr/lib/terminfo/h/h19u
+rw-r--r--     0    10      523 Mar 16 21:21 1992 usr/lib/terminfo/h/hp2621nl linked to usr/lib/terminfo/2/2621nl
+rw-r--r--     0    10      547 Mar 16 21:21 1992 usr/lib/terminfo/h/hp2621nt linked to usr/lib/terminfo/2/2621nt
+rw-r--r--     0    10      553 Mar 16 21:22 1992 usr/lib/terminfo/h/hp2621wl linked to usr/lib/terminfo/2/2621wl
+rwxr-xr-x     0    10        0 Mar 16 21:06 1992 usr/lib/terminfo/i/
+rw-r--r--     0    10      471 Mar 16 21:04 1992 usr/lib/terminfo/i/i100 linked to usr/lib/terminfo/g/gt100
+rw-r--r--     0    10      483 Mar 16 21:04 1992 usr/lib/terminfo/i/i400 linked to usr/lib/terminfo/4/400
+rw-r--r--     0    10      369 Mar 16 21:04 1992 usr/lib/terminfo/i/infoton
+rw-r--r--     0    10      456 Mar 16 21:05 1992 usr/lib/terminfo/i/isc linked to usr/lib/terminfo/8/8001
+rw-r--r--     0    10      456 Mar 16 21:05 1992 usr/lib/terminfo/i/isc8001 linked to usr/lib/terminfo/8/8001
+rw-r--r--     0    10      569 Mar 16 21:05 1992 usr/lib/terminfo/i/intext
+rw-r--r--     0    10      655 Mar 16 21:05 1992 usr/lib/terminfo/i/intext2
+rw-r--r--     0    10      655 Mar 16 21:05 1992 usr/lib/terminfo/i/intextii linked to usr/lib/terminfo/i/intext2
+rw-r--r--     0    10      412 Mar 16 21:05 1992 usr/lib/terminfo/i/ibm linked to usr/lib/terminfo/3/3101
+rw-r--r--     0    10      412 Mar 16 21:05 1992 usr/lib/terminfo/i/ibm3101 linked to usr/lib/terminfo/3/3101
+rw-r--r--     0    10      412 Mar 16 21:05 1992 usr/lib/terminfo/i/i3101 linked to usr/lib/terminfo/3/3101
+rw-r--r--     0    10      421 Mar 16 21:06 1992 usr/lib/terminfo/i/it
+rw-r--r--     0    10      421 Mar 16 21:06 1992 usr/lib/terminfo/i/intertube linked to usr/lib/terminfo/i/it
+rw-r--r--     0    10      421 Mar 16 21:06 1992 usr/lib/terminfo/i/intertec linked to usr/lib/terminfo/i/it
+rw-r--r--     0    10      500 Mar 16 21:06 1992 usr/lib/terminfo/i/it2
+rw-r--r--     0    10      500 Mar 16 21:06 1992 usr/lib/terminfo/i/intertube2 linked to usr/lib/terminfo/i/it2
+rw-r--r--     0    10      424 Mar 16 21:06 1992 usr/lib/terminfo/i/iq120
+rw-r--r--     0    10      498 Mar 16 21:06 1992 usr/lib/terminfo/i/iq140
+rw-r--r--     0    10      481 Mar 16 21:06 1992 usr/lib/terminfo/i/ips linked to usr/lib/terminfo/c/citoh-prop
+rwxr-xr-x     0    10        0 Mar 16 21:13 1992 usr/lib/terminfo/j/
+rw-r--r--     0    10      519 Mar 16 21:13 1992 usr/lib/terminfo/j/jerq linked to usr/lib/terminfo/b/blit
+rwxr-xr-x     0    10        0 Mar 16 21:06 1992 usr/lib/terminfo/k/
+rw-r--r--     0    10      421 Mar 16 21:04 1992 usr/lib/terminfo/k/klc linked to usr/lib/terminfo/c/carlock
+rw-r--r--     0    10      580 Mar 16 21:05 1992 usr/lib/terminfo/k/k45 linked to usr/lib/terminfo/2/2621k45
+rw-r--r--     0    10      431 Mar 16 21:06 1992 usr/lib/terminfo/k/ktm linked to usr/lib/terminfo/3/380
+rwxr-xr-x     0    10        0 Mar 16 21:13 1992 usr/lib/terminfo/l/
+rw-r--r--     0    10      487 Mar 16 21:04 1992 usr/lib/terminfo/l/la120 linked to usr/lib/terminfo/d/dw3
+rw-r--r--     0    10      394 Mar 16 21:06 1992 usr/lib/terminfo/l/lpr
+rw-r--r--     0    10      394 Mar 16 21:06 1992 usr/lib/terminfo/l/lp linked to usr/lib/terminfo/l/lpr
+rw-r--r--     0    10      413 Mar 16 21:13 1992 usr/lib/terminfo/l/layer linked to usr/lib/terminfo/b/blitlayer
+rwxr-xr-x     0    10        0 Mar 16 21:22 1992 usr/lib/terminfo/m/
+rw-r--r--     0    10      484 Mar 16 21:03 1992 usr/lib/terminfo/m/microb
+rw-r--r--     0    10      484 Mar 16 21:03 1992 usr/lib/terminfo/m/microbee linked to usr/lib/terminfo/m/microb
+rw-r--r--     0    10      366 Mar 16 21:04 1992 usr/lib/terminfo/m/mw2
+rw-r--r--     0    10      406 Mar 16 21:05 1992 usr/lib/terminfo/m/microterm linked to usr/lib/terminfo/a/act4
+rw-r--r--     0    10      424 Mar 16 21:05 1992 usr/lib/terminfo/m/microterm5 linked to usr/lib/terminfo/a/act5
+rw-r--r--     0    10      494 Mar 16 21:05 1992 usr/lib/terminfo/m/mime
+rw-r--r--     0    10      494 Mar 16 21:05 1992 usr/lib/terminfo/m/mime1 linked to usr/lib/terminfo/m/mime
+rw-r--r--     0    10      494 Mar 16 21:05 1992 usr/lib/terminfo/m/mime2 linked to usr/lib/terminfo/m/mime
+rw-r--r--     0    10      494 Mar 16 21:05 1992 usr/lib/terminfo/m/mimei linked to usr/lib/terminfo/m/mime
+rw-r--r--     0    10      494 Mar 16 21:05 1992 usr/lib/terminfo/m/mimeii linked to usr/lib/terminfo/m/mime
+rw-r--r--     0    10      435 Mar 16 21:05 1992 usr/lib/terminfo/m/mime-3a
+rw-r--r--     0    10      435 Mar 16 21:05 1992 usr/lib/terminfo/m/mime-adm3a linked to usr/lib/terminfo/m/mime-3a
+rw-r--r--     0    10      471 Mar 16 21:05 1992 usr/lib/terminfo/m/mime-3ax
+rw-r--r--     0    10      471 Mar 16 21:05 1992 usr/lib/terminfo/m/mime-adm3ax linked to usr/lib/terminfo/m/mime-3ax
+rw-r--r--     0    10      478 Mar 16 21:05 1992 usr/lib/terminfo/m/mime-fb
+rw-r--r--     0    10      477 Mar 16 21:06 1992 usr/lib/terminfo/m/mime-hb
+rw-r--r--     0    10      519 Mar 16 21:06 1992 usr/lib/terminfo/m/mime2a
+rw-r--r--     0    10      519 Mar 16 21:06 1992 usr/lib/terminfo/m/mime2a-v linked to usr/lib/terminfo/m/mime2a
+rw-r--r--     0    10      514 Mar 16 21:06 1992 usr/lib/terminfo/m/mime2a-s
+rw-r--r--     0    10      486 Mar 16 21:06 1992 usr/lib/terminfo/m/mdl110
+rw-r--r--     0    10      473 Mar 16 21:06 1992 usr/lib/terminfo/m/microkit
+rw-r--r--     0    10      473 Mar 16 21:06 1992 usr/lib/terminfo/m/mkt linked to usr/lib/terminfo/m/microkit
+rw-r--r--     0    10      386 Mar 16 21:06 1992 usr/lib/terminfo/m/megatek
+rw-r--r--     0    10      420 Mar 16 21:16 1992 usr/lib/terminfo/m/minansi
+rw-r--r--     0    10      397 Mar 16 21:16 1992 usr/lib/terminfo/m/mransi
+rw-r--r--     0    10      460 Mar 16 21:22 1992 usr/lib/terminfo/m/mime2as
+rw-r--r--     0    10      465 Mar 16 21:22 1992 usr/lib/terminfo/m/mime2av
+rw-r--r--     0    10      458 Mar 16 21:22 1992 usr/lib/terminfo/m/mimefb
+rw-r--r--     0    10      457 Mar 16 21:22 1992 usr/lib/terminfo/m/mimehb
+rwxr-xr-x     0    10        0 Mar 16 21:11 1992 usr/lib/terminfo/n/
+rw-r--r--     0    10      412 Mar 16 21:04 1992 usr/lib/terminfo/n/nec linked to usr/lib/terminfo/5/5520
+rw-r--r--     0    10      400 Mar 16 21:04 1992 usr/lib/terminfo/n/nucterm
+rw-r--r--     0    10      400 Mar 16 21:04 1992 usr/lib/terminfo/n/nuc linked to usr/lib/terminfo/n/nucterm
+rw-r--r--     0    10      433 Mar 16 21:04 1992 usr/lib/terminfo/n/netx
+rw-r--r--     0    10      433 Mar 16 21:04 1992 usr/lib/terminfo/n/netronics linked to usr/lib/terminfo/n/netx
+rw-r--r--     0    10      364 Mar 16 21:11 1992 usr/lib/terminfo/n/network linked to usr/lib/terminfo/a/arpanet
+rwxr-xr-x     0    10        0 Mar 16 21:17 1992 usr/lib/terminfo/o/
+rw-r--r--     0    10      747 Mar 16 21:04 1992 usr/lib/terminfo/o/oc100 linked to usr/lib/terminfo/c/c100-1p
+rw-r--r--     0    10      747 Mar 16 21:04 1992 usr/lib/terminfo/o/oconcept linked to usr/lib/terminfo/c/c100-1p
+rw-r--r--     0    10      496 Mar 16 21:05 1992 usr/lib/terminfo/o/oldpci
+rw-r--r--     0    10      486 Mar 16 21:05 1992 usr/lib/terminfo/o/oadm31
+rw-r--r--     0    10      486 Mar 16 21:05 1992 usr/lib/terminfo/o/o31 linked to usr/lib/terminfo/o/oadm31
+rw-r--r--     0    10      519 Mar 16 21:06 1992 usr/lib/terminfo/o/obitgraph linked to usr/lib/terminfo/b/bg1.25
+rw-r--r--     0    10      555 Mar 16 21:06 1992 usr/lib/terminfo/o/obitgraph-nv linked to usr/lib/terminfo/b/bg1.25-nv
+rw-r--r--     0    10      557 Mar 16 21:06 1992 usr/lib/terminfo/o/obitgraph-rv linked to usr/lib/terminfo/b/bg1.25-rv
+rw-r--r--     0    10      408 Mar 16 21:06 1992 usr/lib/terminfo/o/omron
+rw-r--r--     0    10      545 Mar 16 21:06 1992 usr/lib/terminfo/o/owl
+rw-r--r--     0    10      478 Mar 16 21:13 1992 usr/lib/terminfo/o/oblit
+rw-r--r--     0    10      478 Mar 16 21:13 1992 usr/lib/terminfo/o/ojerq linked to usr/lib/terminfo/o/oblit
+rw-r--r--     0    10      582 Mar 16 21:17 1992 usr/lib/terminfo/o/ovi300
+rwxr-xr-x     0    10        0 Mar 16 21:16 1992 usr/lib/terminfo/p/
+rw-r--r--     0    10      445 Mar 16 21:04 1992 usr/lib/terminfo/p/ps linked to usr/lib/terminfo/3/382
+rw-r--r--     0    10      548 Mar 16 21:05 1992 usr/lib/terminfo/p/pci
+rw-r--r--     0    10      496 Mar 16 21:05 1992 usr/lib/terminfo/p/pad linked to usr/lib/terminfo/o/oldpci
+rw-r--r--     0    10      378 Mar 16 21:06 1992 usr/lib/terminfo/p/plasma
+rw-r--r--     0    10      390 Mar 16 21:06 1992 usr/lib/terminfo/p/pc
+rw-r--r--     0    10      437 Mar 16 21:06 1992 usr/lib/terminfo/p/pe550 linked to usr/lib/terminfo/b/bantam
+rw-r--r--     0    10     1118 Mar 16 21:06 1992 usr/lib/terminfo/p/pl linked to usr/lib/terminfo/f/fenix-48
+rw-r--r--     0    10     1118 Mar 16 21:06 1992 usr/lib/terminfo/p/pt200-48 linked to usr/lib/terminfo/f/fenix-48
+rw-r--r--     0    10     1118 Mar 16 21:06 1992 usr/lib/terminfo/p/pt250-48 linked to usr/lib/terminfo/f/fenix-48
+rw-r--r--     0    10     1118 Mar 16 21:06 1992 usr/lib/terminfo/p/pt200e-48 linked to usr/lib/terminfo/f/fenix-48
+rw-r--r--     0    10     1118 Mar 16 21:06 1992 usr/lib/terminfo/p/pt250e-48 linked to usr/lib/terminfo/f/fenix-48
+rw-r--r--     0    10      394 Mar 16 21:06 1992 usr/lib/terminfo/p/printer linked to usr/lib/terminfo/l/lpr
+rw-r--r--     0    10      394 Mar 16 21:06 1992 usr/lib/terminfo/p/print linked to usr/lib/terminfo/l/lpr
+rw-r--r--     0    10      394 Mar 16 21:06 1992 usr/lib/terminfo/p/printing linked to usr/lib/terminfo/l/lpr
+rw-r--r--     0    10      449 Mar 16 21:06 1992 usr/lib/terminfo/p/pbox
+rw-r--r--     0    10      449 Mar 16 21:06 1992 usr/lib/terminfo/p/printerbox linked to usr/lib/terminfo/p/pbox
+rw-r--r--     0    10     1141 Mar 16 21:07 1992 usr/lib/terminfo/p/pt linked to usr/lib/terminfo/f/fenix
+rw-r--r--     0    10     1141 Mar 16 21:07 1992 usr/lib/terminfo/p/pt200 linked to usr/lib/terminfo/f/fenix
+rw-r--r--     0    10     1141 Mar 16 21:07 1992 usr/lib/terminfo/p/pt250 linked to usr/lib/terminfo/f/fenix
+rw-r--r--     0    10     1141 Mar 16 21:07 1992 usr/lib/terminfo/p/pt200-24 linked to usr/lib/terminfo/f/fenix
+rw-r--r--     0    10     1141 Mar 16 21:07 1992 usr/lib/terminfo/p/pt250-24 linked to usr/lib/terminfo/f/fenix
+rw-r--r--     0    10     1141 Mar 16 21:07 1992 usr/lib/terminfo/p/pt200-c linked to usr/lib/terminfo/f/fenix
+rw-r--r--     0    10     1141 Mar 16 21:07 1992 usr/lib/terminfo/p/pt250e linked to usr/lib/terminfo/f/fenix
+rw-r--r--     0    10     1141 Mar 16 21:07 1992 usr/lib/terminfo/p/performer linked to usr/lib/terminfo/f/fenix
+rw-r--r--     0    10     1147 Mar 16 21:07 1992 usr/lib/terminfo/p/pw linked to usr/lib/terminfo/f/fenix-132
+rw-r--r--     0    10     1147 Mar 16 21:07 1992 usr/lib/terminfo/p/pt200-132 linked to usr/lib/terminfo/f/fenix-132
+rw-r--r--     0    10     1147 Mar 16 21:07 1992 usr/lib/terminfo/p/pt250-132 linked to usr/lib/terminfo/f/fenix-132
+rw-r--r--     0    10     1147 Mar 16 21:07 1992 usr/lib/terminfo/p/pt200e-132 linked to usr/lib/terminfo/f/fenix-132
+rw-r--r--     0    10     1147 Mar 16 21:07 1992 usr/lib/terminfo/p/pt250e-132 linked to usr/lib/terminfo/f/fenix-132
+rw-r--r--     0    10      374 Mar 16 21:12 1992 usr/lib/terminfo/p/plugboard
+rw-r--r--     0    10      374 Mar 16 21:12 1992 usr/lib/terminfo/p/patch linked to usr/lib/terminfo/p/plugboard
+rw-r--r--     0    10      374 Mar 16 21:12 1992 usr/lib/terminfo/p/patchboard linked to usr/lib/terminfo/p/plugboard
+rw-r--r--     0    10      452 Mar 16 21:16 1992 usr/lib/terminfo/p/pty
+rwxr-xr-x     0    10        0 Mar 16 21:04 1992 usr/lib/terminfo/q/
+rw-r--r--     0    10      394 Mar 16 21:04 1992 usr/lib/terminfo/q/qume5
+rw-r--r--     0    10      394 Mar 16 21:04 1992 usr/lib/terminfo/q/qume linked to usr/lib/terminfo/q/qume5
+rwxr-xr-x     0    10        0 Mar 16 21:06 1992 usr/lib/terminfo/r/
+rw-r--r--     0    10      385 Mar 16 21:03 1992 usr/lib/terminfo/r/regent
+rw-r--r--     0    10      486 Mar 16 21:03 1992 usr/lib/terminfo/r/regent100
+rw-r--r--     0    10      434 Mar 16 21:03 1992 usr/lib/terminfo/r/regent20
+rw-r--r--     0    10      442 Mar 16 21:03 1992 usr/lib/terminfo/r/regent25
+rw-r--r--     0    10      526 Mar 16 21:03 1992 usr/lib/terminfo/r/regent40
+rw-r--r--     0    10      543 Mar 16 21:03 1992 usr/lib/terminfo/r/regent40-s
+rw-r--r--     0    10      543 Mar 16 21:03 1992 usr/lib/terminfo/r/regent40+ linked to usr/lib/terminfo/r/regent40-s
+rw-r--r--     0    10      564 Mar 16 21:03 1992 usr/lib/terminfo/r/regent60
+rw-r--r--     0    10      564 Mar 16 21:03 1992 usr/lib/terminfo/r/regent200 linked to usr/lib/terminfo/r/regent60
+rw-r--r--     0    10      560 Mar 16 21:03 1992 usr/lib/terminfo/r/regent60-na
+rw-r--r--     0    10      563 Mar 16 21:04 1992 usr/lib/terminfo/r/reach linked to usr/lib/terminfo/h/h89
+rw-r--r--     0    10      400 Mar 16 21:04 1992 usr/lib/terminfo/r/rayterm linked to usr/lib/terminfo/n/nucterm
+rw-r--r--     0    10      385 Mar 16 21:06 1992 usr/lib/terminfo/r/ramtek
+rwxr-xr-x     0    10        0 Mar 16 21:12 1992 usr/lib/terminfo/s/
+rw-r--r--     0    10      464 Mar 16 21:03 1992 usr/lib/terminfo/s/screwpoint
+rw-r--r--     0    10      710 Mar 16 21:03 1992 usr/lib/terminfo/s/sb1
+rw-r--r--     0    10      710 Mar 16 21:03 1992 usr/lib/terminfo/s/sbg linked to usr/lib/terminfo/s/sb1
+rw-r--r--     0    10      696 Mar 16 21:03 1992 usr/lib/terminfo/s/sb2
+rw-r--r--     0    10      696 Mar 16 21:03 1992 usr/lib/terminfo/s/sb3 linked to usr/lib/terminfo/s/sb2
+rw-r--r--     0    10      718 Mar 16 21:03 1992 usr/lib/terminfo/s/sbi
+rw-r--r--     0    10      718 Mar 16 21:03 1992 usr/lib/terminfo/s/superbee linked to usr/lib/terminfo/s/sbi
+rw-r--r--     0    10      412 Mar 16 21:04 1992 usr/lib/terminfo/s/spinwriter linked to usr/lib/terminfo/5/5520
+rw-r--r--     0    10      442 Mar 16 21:04 1992 usr/lib/terminfo/s/s1500
+rw-r--r--     0    10      378 Mar 16 21:04 1992 usr/lib/terminfo/s/sexidy
+rw-r--r--     0    10      475 Mar 16 21:04 1992 usr/lib/terminfo/s/smartvid
+rw-r--r--     0    10      482 Mar 16 21:04 1992 usr/lib/terminfo/s/smarterm
+rw-r--r--     0    10      482 Mar 16 21:04 1992 usr/lib/terminfo/s/smarterm-s linked to usr/lib/terminfo/s/smarterm
+rw-r--r--     0    10      412 Mar 16 21:05 1992 usr/lib/terminfo/s/system1 linked to usr/lib/terminfo/3/3101
+rw-r--r--     0    10      453 Mar 16 21:06 1992 usr/lib/terminfo/s/superbrain
+rw-r--r--     0    10      424 Mar 16 21:06 1992 usr/lib/terminfo/s/soroc linked to usr/lib/terminfo/i/iq120
+rw-r--r--     0    10      458 Mar 16 21:06 1992 usr/lib/terminfo/s/swtp linked to usr/lib/terminfo/c/ct82
+rw-r--r--     0    10      431 Mar 16 21:06 1992 usr/lib/terminfo/s/synertek linked to usr/lib/terminfo/3/380
+rw-r--r--     0    10      475 Mar 16 21:06 1992 usr/lib/terminfo/s/sol
+rw-r--r--     0    10      475 Mar 16 21:06 1992 usr/lib/terminfo/s/sol1 linked to usr/lib/terminfo/s/sol
+rw-r--r--     0    10      475 Mar 16 21:06 1992 usr/lib/terminfo/s/sol2 linked to usr/lib/terminfo/s/sol
+rw-r--r--     0    10      499 Mar 16 21:06 1992 usr/lib/terminfo/s/sun
+rw-r--r--     0    10      499 Mar 16 21:06 1992 usr/lib/terminfo/s/sun1 linked to usr/lib/terminfo/s/sun
+rw-r--r--     0    10      813 Mar 16 21:07 1992 usr/lib/terminfo/s/sym220
+rw-r--r--     0    10      845 Mar 16 21:07 1992 usr/lib/terminfo/s/sqnt220 linked to usr/lib/terminfo/h/hp700
+rw-r--r--     0    10      574 Mar 16 21:10 1992 usr/lib/terminfo/s/shells
+rw-r--r--     0    10      601 Mar 16 21:10 1992 usr/lib/terminfo/s/shells-e
+rw-r--r--     0    10      601 Mar 16 21:10 1992 usr/lib/terminfo/s/shells-c
+rw-r--r--     0    10      613 Mar 16 21:10 1992 usr/lib/terminfo/s/shells-h
+rw-r--r--     0    10      374 Mar 16 21:12 1992 usr/lib/terminfo/s/switch
+rwxr-xr-x     0    10        0 Mar 16 21:24 1992 usr/lib/terminfo/t/
+rw-r--r--     0    10      412 Mar 16 21:04 1992 usr/lib/terminfo/t/terminet1200
+rw-r--r--     0    10      412 Mar 16 21:04 1992 usr/lib/terminfo/t/terminet300 linked to usr/lib/terminfo/t/terminet1200
+rw-r--r--     0    10      412 Mar 16 21:04 1992 usr/lib/terminfo/t/tn1200 linked to usr/lib/terminfo/t/terminet1200
+rw-r--r--     0    10      412 Mar 16 21:04 1992 usr/lib/terminfo/t/tn300 linked to usr/lib/terminfo/t/terminet1200
+rw-r--r--     0    10      412 Mar 16 21:04 1992 usr/lib/terminfo/t/terminet linked to usr/lib/terminfo/t/terminet1200
+rw-r--r--     0    10      372 Mar 16 21:04 1992 usr/lib/terminfo/t/ttywilliams
+rw-r--r--     0    10      470 Mar 16 21:06 1992 usr/lib/terminfo/t/ts1 linked to usr/lib/terminfo/f/falco
+rw-r--r--     0    10      470 Mar 16 21:06 1992 usr/lib/terminfo/t/ts-1 linked to usr/lib/terminfo/f/falco
+rw-r--r--     0    10      743 Mar 16 21:06 1992 usr/lib/terminfo/t/tab132
+rw-r--r--     0    10      743 Mar 16 21:06 1992 usr/lib/terminfo/t/tab linked to usr/lib/terminfo/t/tab132
+rw-r--r--     0    10      729 Mar 16 21:06 1992 usr/lib/terminfo/t/tab132-w
+rw-r--r--     0    10      731 Mar 16 21:06 1992 usr/lib/terminfo/t/tab132-rv
+rw-r--r--     0    10      733 Mar 16 21:06 1992 usr/lib/terminfo/t/tab132-w-rv
+rw-r--r--     0    10      406 Mar 16 21:06 1992 usr/lib/terminfo/t/tec400
+rw-r--r--     0    10      406 Mar 16 21:06 1992 usr/lib/terminfo/t/tec500
+rw-r--r--     0    10      362 Mar 16 21:06 1992 usr/lib/terminfo/t/tec
+rw-r--r--     0    10      388 Mar 16 21:06 1992 usr/lib/terminfo/t/teletec
+rw-r--r--     0    10      434 Mar 16 21:06 1992 usr/lib/terminfo/t/terak
+rw-r--r--     0    10      390 Mar 16 21:06 1992 usr/lib/terminfo/t/trs80
+rw-r--r--     0    10      390 Mar 16 21:06 1992 usr/lib/terminfo/t/trs-80 linked to usr/lib/terminfo/t/trs80
+rw-r--r--     0    10      461 Mar 16 21:10 1992 usr/lib/terminfo/t/trs2
+rw-r--r--     0    10      461 Mar 16 21:10 1992 usr/lib/terminfo/t/trsII linked to usr/lib/terminfo/t/trs2
+rw-r--r--     0    10      461 Mar 16 21:10 1992 usr/lib/terminfo/t/trs80II linked to usr/lib/terminfo/t/trs2
+rw-r--r--     0    10      450 Mar 16 21:10 1992 usr/lib/terminfo/t/td200
+rw-r--r--     0    10      450 Mar 16 21:10 1992 usr/lib/terminfo/t/trs200 linked to usr/lib/terminfo/t/td200
+rw-r--r--     0    10      402 Mar 16 21:12 1992 usr/lib/terminfo/t/tek linked to usr/lib/terminfo/4/4012
+rw-r--r--     0    10      402 Mar 16 21:12 1992 usr/lib/terminfo/t/tek4012 linked to usr/lib/terminfo/4/4012
+rw-r--r--     0    10      404 Mar 16 21:12 1992 usr/lib/terminfo/t/tek4013 linked to usr/lib/terminfo/4/4013
+rw-r--r--     0    10      400 Mar 16 21:12 1992 usr/lib/terminfo/t/tek4014 linked to usr/lib/terminfo/4/4014
+rw-r--r--     0    10      406 Mar 16 21:12 1992 usr/lib/terminfo/t/tek4015 linked to usr/lib/terminfo/4/4015
+rw-r--r--     0    10      420 Mar 16 21:12 1992 usr/lib/terminfo/t/tek4014-sm linked to usr/lib/terminfo/4/4014-sm
+rw-r--r--     0    10      426 Mar 16 21:12 1992 usr/lib/terminfo/t/tek4015-sm linked to usr/lib/terminfo/4/4015-sm
+rw-r--r--     0    10      421 Mar 16 21:12 1992 usr/lib/terminfo/t/tek4023 linked to usr/lib/terminfo/4/4023
+rw-r--r--     0    10      421 Mar 16 21:12 1992 usr/lib/terminfo/t/tex linked to usr/lib/terminfo/4/4023
+rw-r--r--     0    10      706 Mar 16 21:12 1992 usr/lib/terminfo/t/tek4025 linked to usr/lib/terminfo/4/4025
+rw-r--r--     0    10      706 Mar 16 21:12 1992 usr/lib/terminfo/t/tek4027 linked to usr/lib/terminfo/4/4025
+rw-r--r--     0    10      706 Mar 16 21:12 1992 usr/lib/terminfo/t/tek4024 linked to usr/lib/terminfo/4/4025
+rw-r--r--     0    10      429 Mar 16 21:13 1992 usr/lib/terminfo/t/tek4112 linked to usr/lib/terminfo/4/4112
+rw-r--r--     0    10      407 Mar 16 21:13 1992 usr/lib/terminfo/t/t500
+rw-r--r--     0    10      384 Mar 16 21:13 1992 usr/lib/terminfo/t/t3700
+rw-r--r--     0    10      384 Mar 16 21:13 1992 usr/lib/terminfo/t/teleray linked to usr/lib/terminfo/t/t3700
+rw-r--r--     0    10      424 Mar 16 21:13 1992 usr/lib/terminfo/t/t3800
+rw-r--r--     0    10      578 Mar 16 21:13 1992 usr/lib/terminfo/t/t1061
+rw-r--r--     0    10      578 Mar 16 21:13 1992 usr/lib/terminfo/t/t10 linked to usr/lib/terminfo/t/t1061
+rw-r--r--     0    10      566 Mar 16 21:13 1992 usr/lib/terminfo/t/t1061f
+rw-r--r--     0    10      538 Mar 16 21:13 1992 usr/lib/terminfo/t/t16
+rw-r--r--     0    10      378 Mar 16 21:13 1992 usr/lib/terminfo/t/tty33 linked to usr/lib/terminfo/3/33
+rw-r--r--     0    10      378 Mar 16 21:13 1992 usr/lib/terminfo/t/tty linked to usr/lib/terminfo/3/33
+rw-r--r--     0    10      471 Mar 16 21:13 1992 usr/lib/terminfo/t/tty40 linked to usr/lib/terminfo/4/40
+rw-r--r--     0    10      378 Mar 16 21:13 1992 usr/lib/terminfo/t/tty43 linked to usr/lib/terminfo/4/43
+rw-r--r--     0    10      385 Mar 16 21:13 1992 usr/lib/terminfo/t/tty37 linked to usr/lib/terminfo/3/37
+rw-r--r--     0    10      679 Mar 16 21:13 1992 usr/lib/terminfo/t/tty4424 linked to usr/lib/terminfo/4/4424
+rw-r--r--     0    10      648 Mar 16 21:13 1992 usr/lib/terminfo/t/tty4424-2 linked to usr/lib/terminfo/4/4424-2
+rw-r--r--     0    10      431 Mar 16 21:13 1992 usr/lib/terminfo/t/tty4424-el-2 linked to usr/lib/terminfo/4/4424-el-2
+rw-r--r--     0    10      597 Mar 16 21:13 1992 usr/lib/terminfo/t/tvi905 linked to usr/lib/terminfo/9/905
+rw-r--r--     0    10      516 Mar 16 21:13 1992 usr/lib/terminfo/t/tvi912 linked to usr/lib/terminfo/9/912
+rw-r--r--     0    10      516 Mar 16 21:13 1992 usr/lib/terminfo/t/tvi920 linked to usr/lib/terminfo/9/912
+rw-r--r--     0    10      526 Mar 16 21:13 1992 usr/lib/terminfo/t/tvi912b linked to usr/lib/terminfo/9/912b
+rw-r--r--     0    10      526 Mar 16 21:13 1992 usr/lib/terminfo/t/tvi912c linked to usr/lib/terminfo/9/912b
+rw-r--r--     0    10      526 Mar 16 21:13 1992 usr/lib/terminfo/t/tvi linked to usr/lib/terminfo/9/912b
+rw-r--r--     0    10      526 Mar 16 21:14 1992 usr/lib/terminfo/t/tvi920b linked to usr/lib/terminfo/9/920b
+rw-r--r--     0    10      526 Mar 16 21:14 1992 usr/lib/terminfo/t/tvi920c linked to usr/lib/terminfo/9/920b
+rw-r--r--     0    10      504 Mar 16 21:14 1992 usr/lib/terminfo/t/tvi912cc linked to usr/lib/terminfo/9/912cc
+rw-r--r--     0    10      504 Mar 16 21:14 1992 usr/lib/terminfo/t/tvi912cup@ linked to usr/lib/terminfo/9/912cc
+rw-r--r--     0    10      552 Mar 16 21:14 1992 usr/lib/terminfo/t/tvi912-2p linked to usr/lib/terminfo/9/912-2p
+rw-r--r--     0    10      552 Mar 16 21:14 1992 usr/lib/terminfo/t/tvi920-2p linked to usr/lib/terminfo/9/912-2p
+rw-r--r--     0    10      552 Mar 16 21:14 1992 usr/lib/terminfo/t/tvi-2p linked to usr/lib/terminfo/9/912-2p
+rw-r--r--     0    10      562 Mar 16 21:14 1992 usr/lib/terminfo/t/tvi950-ap
+rw-r--r--     0    10      544 Mar 16 21:14 1992 usr/lib/terminfo/t/tvi950-b
+rw-r--r--     0    10      599 Mar 16 21:14 1992 usr/lib/terminfo/t/tvi950-ns
+rw-r--r--     0    10      609 Mar 16 21:14 1992 usr/lib/terminfo/t/tvi950 linked to usr/lib/terminfo/9/950
+rw-r--r--     0    10      609 Mar 16 21:14 1992 usr/lib/terminfo/t/televideo950 linked to usr/lib/terminfo/9/950
+rw-r--r--     0    10      659 Mar 16 21:15 1992 usr/lib/terminfo/t/tvi950-2p linked to usr/lib/terminfo/9/950-2p
+rw-r--r--     0    10      659 Mar 16 21:15 1992 usr/lib/terminfo/t/tvi950-4p linked to usr/lib/terminfo/9/950-4p
+rw-r--r--     0    10      622 Mar 16 21:15 1992 usr/lib/terminfo/t/tvi950-rv linked to usr/lib/terminfo/9/950-rv
+rw-r--r--     0    10      670 Mar 16 21:15 1992 usr/lib/terminfo/t/tvi950-rv-2p linked to usr/lib/terminfo/9/950-rv-2p
+rw-r--r--     0    10      668 Mar 16 21:15 1992 usr/lib/terminfo/t/tvi950-rv-4p linked to usr/lib/terminfo/9/950-rv-4p
+rw-r--r--     0    10      549 Mar 16 21:15 1992 usr/lib/terminfo/t/tvi925 linked to usr/lib/terminfo/9/925
+rw-r--r--     0    10      514 Mar 16 21:15 1992 usr/lib/terminfo/t/tvi970vc
+rw-r--r--     0    10      514 Mar 16 21:15 1992 usr/lib/terminfo/t/televideo970 linked to usr/lib/terminfo/t/tvi970vc
+rw-r--r--     0    10      550 Mar 16 21:15 1992 usr/lib/terminfo/t/tvi970-132 linked to usr/lib/terminfo/9/970-132
+rw-r--r--     0    10      528 Mar 16 21:15 1992 usr/lib/terminfo/t/tvi970 linked to usr/lib/terminfo/9/970
+rw-r--r--     0    10      537 Mar 16 21:16 1992 usr/lib/terminfo/t/tvi914 linked to usr/lib/terminfo/9/914
+rw-r--r--     0    10      537 Mar 16 21:16 1992 usr/lib/terminfo/t/televideo914 linked to usr/lib/terminfo/9/914
+rw-r--r--     0    10      392 Mar 16 21:16 1992 usr/lib/terminfo/t/ti700 linked to usr/lib/terminfo/7/735
+rw-r--r--     0    10      392 Mar 16 21:16 1992 usr/lib/terminfo/t/ti733 linked to usr/lib/terminfo/7/735
+rw-r--r--     0    10      392 Mar 16 21:16 1992 usr/lib/terminfo/t/ti735 linked to usr/lib/terminfo/7/735
+rw-r--r--     0    10      380 Mar 16 21:16 1992 usr/lib/terminfo/t/ti linked to usr/lib/terminfo/7/745
+rw-r--r--     0    10      380 Mar 16 21:16 1992 usr/lib/terminfo/t/ti745 linked to usr/lib/terminfo/7/745
+rw-r--r--     0    10      368 Mar 16 21:16 1992 usr/lib/terminfo/t/ti800
+rw-r--r--     0    10      498 Mar 16 21:22 1992 usr/lib/terminfo/t/tvi2p
+rw-r--r--     0    10      500 Mar 16 21:22 1992 usr/lib/terminfo/t/tvi9122p
+rw-r--r--     0    10      500 Mar 16 21:22 1992 usr/lib/terminfo/t/tvi9202p
+rw-r--r--     0    10      627 Mar 16 21:22 1992 usr/lib/terminfo/t/tvi9502p
+rw-r--r--     0    10      627 Mar 16 21:22 1992 usr/lib/terminfo/t/tvi9504p
+rw-r--r--     0    10      524 Mar 16 21:23 1992 usr/lib/terminfo/t/tvi950b
+rw-r--r--     0    10      577 Mar 16 21:23 1992 usr/lib/terminfo/t/tvi950ns
+rw-r--r--     0    10      590 Mar 16 21:23 1992 usr/lib/terminfo/t/tvi950rv
+rw-r--r--     0    10      624 Mar 16 21:23 1992 usr/lib/terminfo/t/tvi950rv2p
+rw-r--r--     0    10      622 Mar 16 21:24 1992 usr/lib/terminfo/t/tvi950rv4p
+rwxr-xr-x     0    10        0 Mar 16 21:12 1992 usr/lib/terminfo/u/
+rw-r--r--     0    10      426 Mar 16 21:04 1992 usr/lib/terminfo/u/ubell
+rw-r--r--     0    10      426 Mar 16 21:04 1992 usr/lib/terminfo/u/ubellchar linked to usr/lib/terminfo/u/ubell
+rw-r--r--     0    10      426 Mar 16 21:06 1992 usr/lib/terminfo/u/unitrm18
+rw-r--r--     0    10      356 Mar 16 21:12 1992 usr/lib/terminfo/u/unknown
+rwxr-xr-x     0    10        0 Mar 16 21:24 1992 usr/lib/terminfo/v/
+rw-r--r--     0    10      492 Mar 16 21:03 1992 usr/lib/terminfo/v/viewpoint
+rw-r--r--     0    10      733 Mar 16 21:04 1992 usr/lib/terminfo/v/vt100
+rw-r--r--     0    10      733 Mar 16 21:04 1992 usr/lib/terminfo/v/vt100-am linked to usr/lib/terminfo/v/vt100
+rw-r--r--     0    10      733 Mar 16 21:04 1992 usr/lib/terminfo/v/vt100-nam linked to usr/lib/terminfo/v/vt100
+rw-r--r--     0    10      754 Mar 16 21:04 1992 usr/lib/terminfo/v/vt100-w
+rw-r--r--     0    10      754 Mar 16 21:04 1992 usr/lib/terminfo/v/vt100-w-am linked to usr/lib/terminfo/v/vt100-w
+rw-r--r--     0    10      760 Mar 16 21:04 1992 usr/lib/terminfo/v/vt100-w-nam
+rw-r--r--     0    10      760 Mar 16 21:04 1992 usr/lib/terminfo/v/vt100-nam-w linked to usr/lib/terminfo/v/vt100-w-nam
+rw-r--r--     0    10      632 Mar 16 21:04 1992 usr/lib/terminfo/v/vt100-nav
+rw-r--r--     0    10      664 Mar 16 21:04 1992 usr/lib/terminfo/v/vt100-nav-w
+rw-r--r--     0    10      664 Mar 16 21:04 1992 usr/lib/terminfo/v/vt100-w-nav linked to usr/lib/terminfo/v/vt100-nav-w
+rw-r--r--     0    10      818 Mar 16 21:04 1992 usr/lib/terminfo/v/vt100-s
+rw-r--r--     0    10      818 Mar 16 21:04 1992 usr/lib/terminfo/v/vt100-s-top linked to usr/lib/terminfo/v/vt100-s
+rw-r--r--     0    10      818 Mar 16 21:04 1992 usr/lib/terminfo/v/vt100-top-s linked to usr/lib/terminfo/v/vt100-s
+rw-r--r--     0    10      801 Mar 16 21:04 1992 usr/lib/terminfo/v/vt100-s-bot
+rw-r--r--     0    10      801 Mar 16 21:04 1992 usr/lib/terminfo/v/vt100-bot-s linked to usr/lib/terminfo/v/vt100-s-bot
+rw-r--r--     0    10      761 Mar 16 21:04 1992 usr/lib/terminfo/v/vt132
+rw-r--r--     0    10      383 Mar 16 21:04 1992 usr/lib/terminfo/v/vt50
+rw-r--r--     0    10      413 Mar 16 21:04 1992 usr/lib/terminfo/v/vt50h
+rw-r--r--     0    10      425 Mar 16 21:04 1992 usr/lib/terminfo/v/vt52
+rw-r--r--     0    10      743 Mar 16 21:04 1992 usr/lib/terminfo/v/vt125
+rw-r--r--     0    10      578 Mar 16 21:04 1992 usr/lib/terminfo/v/vk100 linked to usr/lib/terminfo/g/gigi
+rw-r--r--     0    10      436 Mar 16 21:06 1992 usr/lib/terminfo/v/vc404
+rw-r--r--     0    10      458 Mar 16 21:06 1992 usr/lib/terminfo/v/vc404-s
+rw-r--r--     0    10      452 Mar 16 21:06 1992 usr/lib/terminfo/v/vc404-na
+rw-r--r--     0    10      476 Mar 16 21:06 1992 usr/lib/terminfo/v/vc404-s-na
+rw-r--r--     0    10      550 Mar 16 21:15 1992 usr/lib/terminfo/v/v8 linked to usr/lib/terminfo/9/970-132
+rw-r--r--     0    10      431 Mar 16 21:06 1992 usr/lib/terminfo/v/vc415
+rw-r--r--     0    10      415 Mar 16 21:06 1992 usr/lib/terminfo/v/vc303-a
+rw-r--r--     0    10      415 Mar 16 21:06 1992 usr/lib/terminfo/v/vc403a linked to usr/lib/terminfo/v/vc303-a
+rw-r--r--     0    10      415 Mar 16 21:06 1992 usr/lib/terminfo/v/vc303
+rw-r--r--     0    10      415 Mar 16 21:06 1992 usr/lib/terminfo/v/vc103 linked to usr/lib/terminfo/v/vc303
+rw-r--r--     0    10      415 Mar 16 21:06 1992 usr/lib/terminfo/v/vc203 linked to usr/lib/terminfo/v/vc303
+rw-r--r--     0    10      413 Mar 16 21:13 1992 usr/lib/terminfo/v/vitty linked to usr/lib/terminfo/b/blitlayer
+rw-r--r--     0    10      528 Mar 16 21:15 1992 usr/lib/terminfo/v/v7 linked to usr/lib/terminfo/9/970
+rw-r--r--     0    10      466 Mar 16 21:16 1992 usr/lib/terminfo/v/virtual linked to usr/lib/terminfo/c/cbunix
+rw-r--r--     0    10      533 Mar 16 21:16 1992 usr/lib/terminfo/v/vi200
+rw-r--r--     0    10      547 Mar 16 21:16 1992 usr/lib/terminfo/v/vi200-rv-ic
+rw-r--r--     0    10      555 Mar 16 21:16 1992 usr/lib/terminfo/v/vi200-f
+rw-r--r--     0    10      555 Mar 16 21:16 1992 usr/lib/terminfo/v/visual linked to usr/lib/terminfo/v/vi200-f
+rw-r--r--     0    10      528 Mar 16 21:16 1992 usr/lib/terminfo/v/vi200-rv
+rw-r--r--     0    10      534 Mar 16 21:17 1992 usr/lib/terminfo/v/vi200-ic
+rw-r--r--     0    10      588 Mar 16 21:17 1992 usr/lib/terminfo/v/vi300
+rw-r--r--     0    10      594 Mar 16 21:17 1992 usr/lib/terminfo/v/vi300-rv
+rw-r--r--     0    10      604 Mar 16 21:17 1992 usr/lib/terminfo/v/vi300-ss
+rw-r--r--     0    10      604 Mar 16 21:17 1992 usr/lib/terminfo/v/vi300-aw
+rw-r--r--     0    10      589 Mar 16 21:17 1992 usr/lib/terminfo/v/vi550
+rw-r--r--     0    10      711 Mar 16 21:24 1992 usr/lib/terminfo/v/vt100-np
+rw-r--r--     0    10      711 Mar 16 21:24 1992 usr/lib/terminfo/v/vt100am
+rw-r--r--     0    10      711 Mar 16 21:24 1992 usr/lib/terminfo/v/vt100nam
+rw-r--r--     0    10      766 Mar 16 21:24 1992 usr/lib/terminfo/v/vt100s
+rw-r--r--     0    10      704 Mar 16 21:24 1992 usr/lib/terminfo/v/vt100w
+rwxr-xr-x     0    10        0 Mar 16 21:18 1992 usr/lib/terminfo/w/
+rw-r--r--     0    10      490 Mar 16 21:06 1992 usr/lib/terminfo/w/wy100 linked to usr/lib/terminfo/1/100
+rw-r--r--     0    10      825 Mar 16 21:07 1992 usr/lib/terminfo/w/wy75
+rw-r--r--     0    10      825 Mar 16 21:07 1992 usr/lib/terminfo/w/wyse75 linked to usr/lib/terminfo/w/wy75
+rw-r--r--     0    10      858 Mar 16 21:07 1992 usr/lib/terminfo/w/wy75-vb
+rw-r--r--     0    10      858 Mar 16 21:07 1992 usr/lib/terminfo/w/wy75vb linked to usr/lib/terminfo/w/wy75-vb
+rw-r--r--     0    10      849 Mar 16 21:07 1992 usr/lib/terminfo/w/wy75-w
+rw-r--r--     0    10      849 Mar 16 21:07 1992 usr/lib/terminfo/w/wy75w linked to usr/lib/terminfo/w/wy75-w
+rw-r--r--     0    10      849 Mar 16 21:07 1992 usr/lib/terminfo/w/wy75-132 linked to usr/lib/terminfo/w/wy75-w
+rw-r--r--     0    10      868 Mar 16 21:07 1992 usr/lib/terminfo/w/wy75-wvb
+rw-r--r--     0    10      868 Mar 16 21:07 1992 usr/lib/terminfo/w/wy75wvb linked to usr/lib/terminfo/w/wy75-wvb
+rw-r--r--     0    10      898 Mar 16 21:07 1992 usr/lib/terminfo/w/wy85
+rw-r--r--     0    10      898 Mar 16 21:07 1992 usr/lib/terminfo/w/wyse85 linked to usr/lib/terminfo/w/wy85
+rw-r--r--     0    10      931 Mar 16 21:07 1992 usr/lib/terminfo/w/wy85-vb
+rw-r--r--     0    10      931 Mar 16 21:07 1992 usr/lib/terminfo/w/wy85vb linked to usr/lib/terminfo/w/wy85-vb
+rw-r--r--     0    10      916 Mar 16 21:07 1992 usr/lib/terminfo/w/wy85-w
+rw-r--r--     0    10      916 Mar 16 21:07 1992 usr/lib/terminfo/w/wy85w linked to usr/lib/terminfo/w/wy85-w
+rw-r--r--     0    10      916 Mar 16 21:07 1992 usr/lib/terminfo/w/wy85-132 linked to usr/lib/terminfo/w/wy85-w
+rw-r--r--     0    10      935 Mar 16 21:08 1992 usr/lib/terminfo/w/wy85-wvb
+rw-r--r--     0    10      935 Mar 16 21:08 1992 usr/lib/terminfo/w/wy85wvb linked to usr/lib/terminfo/w/wy85-wvb
+rw-r--r--     0    10      567 Mar 16 21:08 1992 usr/lib/terminfo/w/wy60
+rw-r--r--     0    10      567 Mar 16 21:08 1992 usr/lib/terminfo/w/wyse60 linked to usr/lib/terminfo/w/wy60
+rw-r--r--     0    10      584 Mar 16 21:08 1992 usr/lib/terminfo/w/wy60-w
+rw-r--r--     0    10      584 Mar 16 21:08 1992 usr/lib/terminfo/w/wy60-l
+rw-r--r--     0    10      598 Mar 16 21:08 1992 usr/lib/terminfo/w/wy60-wl
+rw-r--r--     0    10      598 Mar 16 21:08 1992 usr/lib/terminfo/w/wy60-lw linked to usr/lib/terminfo/w/wy60-wl
+rw-r--r--     0    10      629 Mar 16 21:08 1992 usr/lib/terminfo/w/wy60c
+rw-r--r--     0    10      611 Mar 16 21:09 1992 usr/lib/terminfo/w/wy60c-w
+rw-r--r--     0    10      604 Mar 16 21:09 1992 usr/lib/terminfo/w/wy60emacs
+rw-r--r--     0    10      600 Mar 16 21:09 1992 usr/lib/terminfo/w/wy60emacs-w
+rw-r--r--     0    10      594 Mar 16 21:09 1992 usr/lib/terminfo/w/wy60emacs-l
+rw-r--r--     0    10      614 Mar 16 21:09 1992 usr/lib/terminfo/w/wy60emacs-wl
+rw-r--r--     0    10      614 Mar 16 21:09 1992 usr/lib/terminfo/w/wy60emacs-lw linked to usr/lib/terminfo/w/wy60emacs-wl
+rw-r--r--     0    10      569 Mar 16 21:09 1992 usr/lib/terminfo/w/wy150
+rw-r--r--     0    10      569 Mar 16 21:09 1992 usr/lib/terminfo/w/wyse150 linked to usr/lib/terminfo/w/wy150
+rw-r--r--     0    10      415 Mar 16 21:10 1992 usr/lib/terminfo/w/wind
+rw-r--r--     0    10      393 Mar 16 21:10 1992 usr/lib/terminfo/w/wind16
+rw-r--r--     0    10      393 Mar 16 21:10 1992 usr/lib/terminfo/w/wind40
+rw-r--r--     0    10      417 Mar 16 21:10 1992 usr/lib/terminfo/w/wind50
+rw-r--r--     0    10      494 Mar 16 21:17 1992 usr/lib/terminfo/w/wy50
+rw-r--r--     0    10      494 Mar 16 21:17 1992 usr/lib/terminfo/w/wyse50 linked to usr/lib/terminfo/w/wy50
+rw-r--r--     0    10      516 Mar 16 21:17 1992 usr/lib/terminfo/w/w5
+rw-r--r--     0    10      516 Mar 16 21:17 1992 usr/lib/terminfo/w/wy50-w linked to usr/lib/terminfo/w/w5
+rw-r--r--     0    10      516 Mar 16 21:17 1992 usr/lib/terminfo/w/wyse50-w linked to usr/lib/terminfo/w/w5
+rw-r--r--     0    10      597 Mar 16 21:17 1992 usr/lib/terminfo/w/w7
+rw-r--r--     0    10      857 Mar 16 21:17 1992 usr/lib/terminfo/w/w8
+rw-r--r--     0    10      862 Mar 16 21:17 1992 usr/lib/terminfo/w/w9
+rw-r--r--     0    10      862 Mar 16 21:17 1992 usr/lib/terminfo/w/wy75-flash linked to usr/lib/terminfo/w/w9
+rw-r--r--     0    10      874 Mar 16 21:18 1992 usr/lib/terminfo/w/wa
+rwxr-xr-x     0    10        0 Mar 16 21:10 1992 usr/lib/terminfo/x/
+rw-r--r--     0    10      394 Mar 16 21:04 1992 usr/lib/terminfo/x/x1720 linked to usr/lib/terminfo/1/1700
+rw-r--r--     0    10      394 Mar 16 21:04 1992 usr/lib/terminfo/x/x1700 linked to usr/lib/terminfo/1/1700
+rw-r--r--     0    10      394 Mar 16 21:04 1992 usr/lib/terminfo/x/x1750 linked to usr/lib/terminfo/1/1700
+rw-r--r--     0    10      439 Mar 16 21:04 1992 usr/lib/terminfo/x/xitex
+rw-r--r--     0    10      430 Mar 16 21:06 1992 usr/lib/terminfo/x/xl83
+rw-r--r--     0    10      636 Mar 16 21:09 1992 usr/lib/terminfo/x/xterm
+rw-r--r--     0    10      644 Mar 16 21:09 1992 usr/lib/terminfo/x/xterms
+rw-r--r--     0    10      672 Mar 16 21:10 1992 usr/lib/terminfo/x/xsight
+rwxr-xr-x     0    10        0 Mar 16 21:13 1992 usr/lib/terminfo/y/
+rw-r--r--     0    10      538 Mar 16 21:13 1992 usr/lib/terminfo/y/ya linked to usr/lib/terminfo/t/t16
+rwxr-xr-x     0    10        0 Mar 16 21:06 1992 usr/lib/terminfo/z/
+rw-r--r--     0    10      587 Mar 16 21:04 1992 usr/lib/terminfo/z/z19 linked to usr/lib/terminfo/h/h19
+rw-r--r--     0    10      587 Mar 16 21:04 1992 usr/lib/terminfo/z/zenith linked to usr/lib/terminfo/h/h19
+rw-r--r--     0    10      454 Mar 16 21:06 1992 usr/lib/terminfo/z/zen30
+rw-r--r--     0    10      454 Mar 16 21:06 1992 usr/lib/terminfo/z/z30 linked to usr/lib/terminfo/z/zen30
+rwxr-xr-x     0    10        0 Mar 16 21:10 1992 usr/lib/terminfo/P/
+rw-r--r--     0    10      672 Mar 16 21:10 1992 usr/lib/terminfo/P/PCxsight linked to usr/lib/terminfo/x/xsight
+rwxr-xr-x     0    10        0 Mar 16 22:20 1992 usr/lib/tmac/
+rw-r--r--     0    10      252 Mar 16 22:20 1992 usr/lib/tmac/tmac.an
+rw-r--r--     0    10      323 Mar 16 22:20 1992 usr/lib/tmac/tmac.m
+rw-r--r--     0    10      289 Mar 16 22:20 1992 usr/lib/tmac/tmac.ptx
+rw-r--r--     0    10      288 Mar 16 22:20 1992 usr/lib/tmac/tmac.v
+rw-r--r--     0    10     3316 Mar 16 20:26 1992 usr/lib/gcrt0.o
+rw-r--r--     0    10   165406 Mar 16 20:49 1992 usr/lib/libc_p.a
+rw-r--r--     0    10     3158 Mar 16 21:02 1992 usr/lib/libl.a
+rw-r--r--     0    10     7178 Mar 16 21:02 1992 usr/lib/libmalloc_p.a
+rw-r--r--     0    10    27396 Mar 16 21:02 1992 usr/lib/libm_p.a
+rw-r--r--     0    10      668 Mar 16 21:02 1992 usr/lib/liby.a
+rw-r--r--     0    10    30694 Mar 16 21:02 1992 usr/lib/libPW_p.a
+rw-r--r--     0    10     3190 Mar 16 21:02 1992 usr/lib/libcrypt.a
+rw-r--r--     0    10     6754 Mar 16 21:02 1992 usr/lib/libplot.a
+rw-r--r--     0    10     6706 Mar 16 21:02 1992 usr/lib/libmalloc.a
+rw-r--r--     0    10   116038 Mar 16 21:02 1992 usr/lib/libcurses.a
+rw-r--r--     0    10     7846 Mar 16 21:02 1992 usr/lib/libplot_p.a
+rw-r--r--     0    10     8876 Mar 16 21:02 1992 usr/lib/lib4014.a
+rw-r--r--     0    10    26140 Mar 16 21:02 1992 usr/lib/libPW.a
+rw-r--r--     0    10    10270 Mar 16 21:03 1992 usr/lib/lib4014_p.a
+rw-r--r--     0    10    11356 Mar 16 21:03 1992 usr/lib/lib300.a
+rw-r--r--     0    10    12960 Mar 16 21:03 1992 usr/lib/lib300_p.a
+rw-r--r--     0    10    12434 Mar 16 21:03 1992 usr/lib/lib300s.a
+rw-r--r--     0    10    14514 Mar 16 21:03 1992 usr/lib/lib300s_p.a
+rw-r--r--     0    10    11438 Mar 16 21:03 1992 usr/lib/lib450.a
+rw-r--r--     0    10    13034 Mar 16 21:03 1992 usr/lib/lib450_p.a
+rw-r--r--     0    10     6628 Mar 16 21:03 1992 usr/lib/libvt0.a
+rw-r--r--     0    10     7772 Mar 16 21:03 1992 usr/lib/libvt0_p.a
+rw-r--r--     0    10     1632 Mar 16 22:15 1992 usr/lib/lib.b
+rwxr-xr-x     0    10    20480 Mar 16 22:15 1992 usr/lib/calprog
+rwxr-xr-x     0    10    20480 Mar 16 22:15 1992 usr/lib/dag
+rwxr-xr-x     0    10    28672 Mar 16 22:15 1992 usr/lib/lpfx
+rwxr-xr-x     0    10    20480 Mar 16 22:15 1992 usr/lib/nmf
+rwxr-xr-x     0    10    20480 Mar 16 22:15 1992 usr/lib/flip
+rwxr-xr-x     0    10    81920 Mar 16 22:15 1992 usr/lib/xpass
+rwxr-xr-x     0    10    36864 Mar 16 22:15 1992 usr/lib/xcpp
+rwxr-xr-x     0    10    20480 Mar 16 22:15 1992 usr/lib/diffh
+rwxr-xr-x     0    10    20480 Mar 16 22:15 1992 usr/lib/diff3prog
+rwxr-xr-x     0    10    90112 Mar 16 22:17 1992 usr/lib/lint1
+rwxr-xr-x     0    10    32768 Mar 16 22:17 1992 usr/lib/lint2
+rw-r--r--     0    10    14762 Mar 16 22:17 1992 usr/lib/llib-lc
+rw-r--r--     0    10    16436 Mar 16 22:17 1992 usr/lib/llib-lc.ln
+rw-r--r--     0    10     6807 Mar 16 22:17 1992 usr/lib/llib-port
+rw-r--r--     0    10     8107 Mar 16 22:17 1992 usr/lib/llib-port.ln
+rw-r--r--     0    10     1468 Mar 16 22:17 1992 usr/lib/llib-lm
+rw-r--r--     0    10     1822 Mar 16 22:17 1992 usr/lib/llib-lm.ln
+rw-r--r--     0    10      305 Mar 16 22:17 1992 usr/lib/llib-lmalloc
+rw-r--r--     0    10      163 Mar 16 22:17 1992 usr/lib/llib-lmalloc.ln
+rw-r--r--     0    10      946 Mar 16 22:20 1992 usr/lib/eign
+rw-r--r--     0    10    28836 Mar 16 21:49 1992 usr/lib/t4014
+rw-r--r--     0    10    28860 Mar 16 21:49 1992 usr/lib/t300
+rw-r--r--     0    10    28879 Mar 16 21:49 1992 usr/lib/t300s
+rw-r--r--     0    10    28903 Mar 16 21:49 1992 usr/lib/t450
+rw-r--r--     0    10    36963 Mar 16 21:50 1992 usr/lib/vplot
+rwsr-xr-x     0    10    28672 Mar 16 22:22 1992 usr/lib/exrecover
+rwsr-xr-x     0    10    28672 Mar 16 22:22 1992 usr/lib/expreserve
+rw-r--r--     0    10     9042 Mar 16 22:22 1992 usr/lib/yaccpar
+rwxr-xr-x     0    10    20480 Mar 16 22:22 1992 usr/lib/mv_dir
+rwxr-xr-x     0    10     8192 Mar 16 22:22 1992 usr/lib/makekey
+rwxr-xr-x     0    10     7905 Mar 16 22:22 1992 usr/lib/unittab
+rwsrwsr-x    70    10    29641 Mar 16 21:39 1992 usr/lib/accept
+rwsrwsr-x     0    10    45017 Mar 16 21:41 1992 usr/lib/lpadmin
+rwsrwsr-x    70    10    34600 Mar 16 21:39 1992 usr/lib/lpmove
+rwsrwsr-x     0    10    53749 Mar 16 21:40 1992 usr/lib/lpsched
+rwsrwsr-x    70    10    24382 Mar 16 21:39 1992 usr/lib/lpshut
+rwsrwsr-x    70    10    29738 Mar 16 21:40 1992 usr/lib/reject
+rwxr-xr-x     0    10    23784 Mar 16 22:17 1992 usr/lib/hp2631a
+rwxr-xr-x     0    10    23195 Mar 16 21:41 1992 usr/lib/prx
+rwxr-xr-x     0    10    23198 Mar 16 21:41 1992 usr/lib/pprx
+rwxrwxrwx     0    10        0 Mar 16 19:55 1992 usr/news/
+rwxr-xr-x     0    10        0 Mar 16 22:21 1992 usr/pub/
+rw-r--r--     0    10     3424 Mar 16 22:20 1992 usr/pub/apseqnchar
+rw-r--r--     0    10     3465 Mar 16 22:20 1992 usr/pub/cateqnchar
+rw-r--r--     0    10     3424 Mar 16 22:20 1992 usr/pub/eqnchar linked to usr/pub/apseqnchar
+rw-rw-r--     0    10     1515 Mar 16 22:21 1992 usr/pub/terminals
+rwxr-xr-x     0    10        0 Mar 16 22:19 1992 usr/catman/
+rwxr-xr-x     0    10        0 Mar 16 22:17 1992 usr/catman/a_man/
+rwxr-xr-x     0    10        0 Mar 16 22:19 1992 usr/catman/a_man/man1/
+r--r--r--     0    10      848 Mar 16 22:17 1992 usr/catman/a_man/man1/abt.1m.z
+r--r--r--     0    10     1428 Mar 16 22:17 1992 usr/catman/a_man/man1/accept.1m.z
+r--r--r--     0    10     3416 Mar 16 22:17 1992 usr/catman/a_man/man1/acct.1m.z
+r--r--r--     0    10     2484 Mar 16 22:17 1992 usr/catman/a_man/man1/acctcms.1m.z
+r--r--r--     0    10     2761 Mar 16 22:17 1992 usr/catman/a_man/man1/acctcon.1m.z
+r--r--r--     0    10     1421 Mar 16 22:17 1992 usr/catman/a_man/man1/acctmerg.1m.z
+r--r--r--     0    10     1927 Mar 16 22:17 1992 usr/catman/a_man/man1/acctprc.1m.z
+r--r--r--     0    10     6370 Mar 16 22:17 1992 usr/catman/a_man/man1/acctsh.1m.z
+r--r--r--     0    10     1529 Mar 16 22:17 1992 usr/catman/a_man/man1/acuset.1m.z
+r--r--r--     0    10     2098 Mar 16 22:17 1992 usr/catman/a_man/man1/bdblk.1m.z
+r--r--r--     0    10     1547 Mar 16 22:17 1992 usr/catman/a_man/man1/brc.1m.z
+r--r--r--     0    10     2465 Mar 16 22:18 1992 usr/catman/a_man/man1/checkall.1m.z
+r--r--r--     0    10     1043 Mar 16 22:18 1992 usr/catman/a_man/man1/chmap.1m.z
+r--r--r--     0    10     1053 Mar 16 22:18 1992 usr/catman/a_man/man1/chroot.1m.z
+r--r--r--     0    10     1308 Mar 16 22:18 1992 usr/catman/a_man/man1/clri.1m.z
+r--r--r--     0    10     1392 Mar 16 22:18 1992 usr/catman/a_man/man1/config.3b.1m.z
+r--r--r--     0    10     7941 Mar 16 22:18 1992 usr/catman/a_man/man1/config.dc.1m.z
+r--r--r--     0    10     2638 Mar 16 22:18 1992 usr/catman/a_man/man1/cpset.1m.z
+r--r--r--     0    10     7590 Mar 16 22:18 1992 usr/catman/a_man/man1/crash.1m.z
+r--r--r--     0    10     1264 Mar 16 22:18 1992 usr/catman/a_man/man1/cron.1m.z
+r--r--r--     0    10     1783 Mar 16 22:18 1992 usr/catman/a_man/man1/dcopy.1m.z
+r--r--r--     0    10     1056 Mar 16 22:18 1992 usr/catman/a_man/man1/devnm.1m.z
+r--r--r--     0    10     1049 Mar 16 22:18 1992 usr/catman/a_man/man1/df.1m.z
+r--r--r--     0    10     1241 Mar 16 22:18 1992 usr/catman/a_man/man1/dfcvers.1m.z
+r--r--r--     0    10     3649 Mar 16 22:18 1992 usr/catman/a_man/man1/dgn.1m.z
+r--r--r--     0    10     2381 Mar 16 22:18 1992 usr/catman/a_man/man1/diskusg.1m.z
+r--r--r--     0    10     1124 Mar 16 22:18 1992 usr/catman/a_man/man1/dmkset.1m.z
+r--r--r--     0    10     2745 Mar 16 22:18 1992 usr/catman/a_man/man1/don.1m.z
+r--r--r--     0    10     1197 Mar 16 22:18 1992 usr/catman/a_man/man1/dskfmt.1m.z
+r--r--r--     0    10     2065 Mar 16 22:18 1992 usr/catman/a_man/man1/dstart.1m.z
+r--r--r--     0    10     1230 Mar 16 22:18 1992 usr/catman/a_man/man1/errdead.1m.z
+r--r--r--     0    10     1321 Mar 16 22:18 1992 usr/catman/a_man/man1/errdemon.1m.z
+r--r--r--     0    10     2799 Mar 16 22:18 1992 usr/catman/a_man/man1/errpt.1m.z
+r--r--r--     0    10      970 Mar 16 22:18 1992 usr/catman/a_man/man1/errstop.1m.z
+r--r--r--     0    10     2566 Mar 16 22:18 1992 usr/catman/a_man/man1/ff.1m.z
+r--r--r--     0    10      930 Mar 16 22:18 1992 usr/catman/a_man/man1/filesave.1m.z
+r--r--r--     0    10     1632 Mar 16 22:18 1992 usr/catman/a_man/man1/finc.1m.z
+r--r--r--     0    10     2128 Mar 16 22:18 1992 usr/catman/a_man/man1/format.1m.z
+r--r--r--     0    10     1854 Mar 16 22:18 1992 usr/catman/a_man/man1/frec.1m.z
+r--r--r--     0    10     5929 Mar 16 22:18 1992 usr/catman/a_man/man1/fsck.1m.z
+r--r--r--     0    10     2596 Mar 16 22:18 1992 usr/catman/a_man/man1/fscv.vax.1m.z
+r--r--r--     0    10     4752 Mar 16 22:18 1992 usr/catman/a_man/man1/fsdb.1m.z
+r--r--r--     0    10     1705 Mar 16 22:18 1992 usr/catman/a_man/man1/fts.1m.z
+r--r--r--     0    10     1707 Mar 16 22:18 1992 usr/catman/a_man/man1/fuser.1m.z
+r--r--r--     0    10     2215 Mar 16 22:18 1992 usr/catman/a_man/man1/fwtmp.1m.z
+r--r--r--     0    10     5332 Mar 16 22:18 1992 usr/catman/a_man/man1/getty.1m.z
+r--r--r--     0    10     7973 Mar 16 22:18 1992 usr/catman/a_man/man1/init.1m.z
+r--r--r--     0    10     3115 Mar 16 22:18 1992 usr/catman/a_man/man1/install.1m.z
+r--r--r--     0    10     2408 Mar 16 22:18 1992 usr/catman/a_man/man1/intro.1m.z
+r--r--r--     0    10      802 Mar 16 22:18 1992 usr/catman/a_man/man1/ipb.1m.z
+r--r--r--     0    10      969 Mar 16 22:18 1992 usr/catman/a_man/man1/killall.1m.z
+r--r--r--     0    10      712 Mar 16 22:18 1992 usr/catman/a_man/man1/link.1m.z
+r--r--r--     0    10     5904 Mar 16 22:18 1992 usr/catman/a_man/man1/lpadmin.1m.z
+r--r--r--     0    10     1579 Mar 16 22:18 1992 usr/catman/a_man/man1/lpsched.1m.z
+r--r--r--     0    10     1656 Mar 16 22:18 1992 usr/catman/a_man/man1/mkboot.1m.z
+r--r--r--     0    10     3420 Mar 16 22:18 1992 usr/catman/a_man/man1/mkfs.1m.z
+r--r--r--     0    10     1059 Mar 16 22:18 1992 usr/catman/a_man/man1/mknod.1m.z
+r--r--r--     0    10     1479 Mar 16 22:18 1992 usr/catman/a_man/man1/mount.1m.z
+r--r--r--     0    10     2282 Mar 16 22:18 1992 usr/catman/a_man/man1/msi.1m.z
+r--r--r--     0    10      692 Mar 16 22:18 1992 usr/catman/a_man/man1/mvdir.1m.z
+r--r--r--     0    10     1179 Mar 16 22:18 1992 usr/catman/a_man/man1/ncheck.1m.z
+r--r--r--     0    10     1576 Mar 16 22:18 1992 usr/catman/a_man/man1/newboot.1m.z
+r--r--r--     0    10     1071 Mar 16 22:18 1992 usr/catman/a_man/man1/pcldaemon.1m.z
+r--r--r--     0    10      909 Mar 16 22:18 1992 usr/catman/a_man/man1/prm.1m.z
+r--r--r--     0    10     1837 Mar 16 22:18 1992 usr/catman/a_man/man1/profiler.1m.z
+r--r--r--     0    10     1425 Mar 16 22:18 1992 usr/catman/a_man/man1/psel.1m.z
+r--r--r--     0    10     1357 Mar 16 22:18 1992 usr/catman/a_man/man1/pwck.1m.z
+r--r--r--     0    10     1166 Mar 16 22:18 1992 usr/catman/a_man/man1/qasurvey.1m.z
+r--r--r--     0    10     1115 Mar 16 22:18 1992 usr/catman/a_man/man1/reboot.1m.z
+r--r--r--     0    10      816 Mar 16 22:18 1992 usr/catman/a_man/man1/rmv.1m.z
+r--r--r--     0    10     3214 Mar 16 22:18 1992 usr/catman/a_man/man1/rst.1m.z
+r--r--r--     0    10     4778 Mar 16 22:18 1992 usr/catman/a_man/man1/runacct.1m.z
+r--r--r--     0    10     1295 Mar 16 22:18 1992 usr/catman/a_man/man1/sadp.1m.z
+r--r--r--     0    10     3550 Mar 16 22:18 1992 usr/catman/a_man/man1/sar.1m.z
+r--r--r--     0    10     1106 Mar 16 22:18 1992 usr/catman/a_man/man1/setmnt.1m.z
+r--r--r--     0    10     1239 Mar 16 22:18 1992 usr/catman/a_man/man1/setmrf.1m.z
+r--r--r--     0    10     1321 Mar 16 22:18 1992 usr/catman/a_man/man1/shutdown.1m.z
+r--r--r--     0    10     1323 Mar 16 22:18 1992 usr/catman/a_man/man1/ssr.1m.z
+r--r--r--     0    10      868 Mar 16 22:18 1992 usr/catman/a_man/man1/sta.1m.z
+r--r--r--     0    10     2034 Mar 16 22:18 1992 usr/catman/a_man/man1/swap.1m.z
+r--r--r--     0    10     1048 Mar 16 22:18 1992 usr/catman/a_man/man1/sysdef.1m.z
+r--r--r--     0    10     1313 Mar 16 22:18 1992 usr/catman/a_man/man1/tic.1m.z
+r--r--r--     0    10     5255 Mar 16 22:18 1992 usr/catman/a_man/man1/trenter.1m.z
+r--r--r--     0    10     2160 Mar 16 22:18 1992 usr/catman/a_man/man1/uuclean.1m.z
+r--r--r--     0    10     2163 Mar 16 22:18 1992 usr/catman/a_man/man1/uusub.1m.z
+r--r--r--     0    10     1501 Mar 16 22:18 1992 usr/catman/a_man/man1/vcf.1m.z
+r--r--r--     0    10     1450 Mar 16 22:18 1992 usr/catman/a_man/man1/vlx.1m.z
+r--r--r--     0    10     3041 Mar 16 22:18 1992 usr/catman/a_man/man1/volcopy.1m.z
+r--r--r--     0    10    24032 Mar 16 22:18 1992 usr/catman/a_man/man1/vpmc.dec.1m.z
+r--r--r--     0    10    11352 Mar 16 22:18 1992 usr/catman/a_man/man1/vpmc.u3b.1m.z
+r--r--r--     0    10     1699 Mar 16 22:18 1992 usr/catman/a_man/man1/vpmsave.1m.z
+r--r--r--     0    10     2754 Mar 16 22:18 1992 usr/catman/a_man/man1/vpmset.1m.z
+r--r--r--     0    10     2265 Mar 16 22:18 1992 usr/catman/a_man/man1/vpmtest.1m.z
+r--r--r--     0    10      865 Mar 16 22:19 1992 usr/catman/a_man/man1/wall.1m.z
+r--r--r--     0    10      937 Mar 16 22:19 1992 usr/catman/a_man/man1/whodo.1m
+rwxr-xr-x     0    10        0 Mar 16 22:18 1992 usr/catman/a_man/man7/
+r--r--r--     0    10     1995 Mar 16 22:17 1992 usr/catman/a_man/man7/acu.7.z
+r--r--r--     0    10      801 Mar 16 22:17 1992 usr/catman/a_man/man7/dgn.7.z
+r--r--r--     0    10      732 Mar 16 22:17 1992 usr/catman/a_man/man7/dmc.7.z
+r--r--r--     0    10     1517 Mar 16 22:17 1992 usr/catman/a_man/man7/dmk.7.z
+r--r--r--     0    10     3140 Mar 16 22:17 1992 usr/catman/a_man/man7/dsk.7.z
+r--r--r--     0    10      999 Mar 16 22:17 1992 usr/catman/a_man/man7/du.pdp.7.z
+r--r--r--     0    10     1022 Mar 16 22:17 1992 usr/catman/a_man/man7/dz.7.z
+r--r--r--     0    10      659 Mar 16 22:17 1992 usr/catman/a_man/man7/err.7.z
+r--r--r--     0    10     2022 Mar 16 22:17 1992 usr/catman/a_man/man7/gd.7.z
+r--r--r--     0    10      865 Mar 16 22:17 1992 usr/catman/a_man/man7/gt.7.z
+r--r--r--     0    10     1355 Mar 16 22:17 1992 usr/catman/a_man/man7/hm.7.z
+r--r--r--     0    10     1742 Mar 16 22:17 1992 usr/catman/a_man/man7/hp.7.z
+r--r--r--     0    10     1238 Mar 16 22:17 1992 usr/catman/a_man/man7/hs.pdp.7.z
+r--r--r--     0    10     2141 Mar 16 22:17 1992 usr/catman/a_man/man7/ht.7.z
+r--r--r--     0    10     1554 Mar 16 22:17 1992 usr/catman/a_man/man7/intro.7.z
+r--r--r--     0    10      692 Mar 16 22:18 1992 usr/catman/a_man/man7/kl.pdp.7.z
+r--r--r--     0    10     1816 Mar 16 22:18 1992 usr/catman/a_man/man7/kmc.7.z
+r--r--r--     0    10     1667 Mar 16 22:18 1992 usr/catman/a_man/man7/lp.7.z
+r--r--r--     0    10      932 Mar 16 22:18 1992 usr/catman/a_man/man7/mem.7.z
+r--r--r--     0    10      859 Mar 16 22:18 1992 usr/catman/a_man/man7/ml11.pdp.7.z
+r--r--r--     0    10     3224 Mar 16 22:18 1992 usr/catman/a_man/man7/mtc.7.z
+r--r--r--     0    10      428 Mar 16 22:18 1992 usr/catman/a_man/man7/null.7.z
+r--r--r--     0    10     1303 Mar 16 22:18 1992 usr/catman/a_man/man7/osm.7.z
+r--r--r--     0    10     1134 Mar 16 22:18 1992 usr/catman/a_man/man7/pcl.7.z
+r--r--r--     0    10      850 Mar 16 22:18 1992 usr/catman/a_man/man7/prf.7.z
+r--r--r--     0    10     1281 Mar 16 22:18 1992 usr/catman/a_man/man7/rf.pdp.7.z
+r--r--r--     0    10     1103 Mar 16 22:18 1992 usr/catman/a_man/man7/rk.pdp.7.z
+r--r--r--     0    10     1109 Mar 16 22:18 1992 usr/catman/a_man/man7/rl.7.z
+r--r--r--     0    10     1367 Mar 16 22:18 1992 usr/catman/a_man/man7/rm80.7.z
+r--r--r--     0    10     1324 Mar 16 22:18 1992 usr/catman/a_man/man7/rp.pdp.7.z
+r--r--r--     0    10     1423 Mar 16 22:18 1992 usr/catman/a_man/man7/rp07.7.z
+r--r--r--     0    10     3067 Mar 16 22:18 1992 usr/catman/a_man/man7/sxt.7.z
+r--r--r--     0    10    15167 Mar 16 22:18 1992 usr/catman/a_man/man7/termio.7.z
+r--r--r--     0    10     2242 Mar 16 22:18 1992 usr/catman/a_man/man7/tm.pdp.7.z
+r--r--r--     0    10     1023 Mar 16 22:18 1992 usr/catman/a_man/man7/tn4.7
+r--r--r--     0    10      652 Mar 16 22:18 1992 usr/catman/a_man/man7/tn74.7.z
+r--r--r--     0    10     1463 Mar 16 22:18 1992 usr/catman/a_man/man7/tn83.7.z
+r--r--r--     0    10      741 Mar 16 22:18 1992 usr/catman/a_man/man7/tn85.7.z
+r--r--r--     0    10     2124 Mar 16 22:18 1992 usr/catman/a_man/man7/trace.7.z
+r--r--r--     0    10     2380 Mar 16 22:18 1992 usr/catman/a_man/man7/ts11.7.z
+r--r--r--     0    10      769 Mar 16 22:18 1992 usr/catman/a_man/man7/tty.7.z
+r--r--r--     0    10     2275 Mar 16 22:18 1992 usr/catman/a_man/man7/tu78.7.z
+r--r--r--     0    10     1912 Mar 16 22:18 1992 usr/catman/a_man/man7/un32.7.z
+r--r--r--     0    10      739 Mar 16 22:18 1992 usr/catman/a_man/man7/un53.7.z
+r--r--r--     0    10      737 Mar 16 22:18 1992 usr/catman/a_man/man7/vp.pdp.7.z
+r--r--r--     0    10     9107 Mar 16 22:18 1992 usr/catman/a_man/man7/vpm.7.z
+rwxr-xr-x     0    10        0 Mar 16 22:18 1992 usr/catman/a_man/man8/
+r--r--r--     0    10     3260 Mar 16 22:17 1992 usr/catman/a_man/man8/3B20boot.8.z
+r--r--r--     0    10     2129 Mar 16 22:17 1992 usr/catman/a_man/man8/3B20ops.8.z
+r--r--r--     0    10     5998 Mar 16 22:17 1992 usr/catman/a_man/man8/70boot.8.z
+r--r--r--     0    10     7397 Mar 16 22:17 1992 usr/catman/a_man/man8/750ops.8.z
+r--r--r--     0    10    10768 Mar 16 22:17 1992 usr/catman/a_man/man8/780ops.8.z
+r--r--r--     0    10     6619 Mar 16 22:17 1992 usr/catman/a_man/man8/crash.dec.8.z
+r--r--r--     0    10     4439 Mar 16 22:17 1992 usr/catman/a_man/man8/crash.u3b.8.z
+r--r--r--     0    10     2614 Mar 16 22:17 1992 usr/catman/a_man/man8/diskboot.8.z
+r--r--r--     0    10     7679 Mar 16 22:17 1992 usr/catman/a_man/man8/eai.8.z
+r--r--r--     0    10      903 Mar 16 22:17 1992 usr/catman/a_man/man8/intro.8
+r--r--r--     0    10     3022 Mar 16 22:17 1992 usr/catman/a_man/man8/ldtape.8.z
+r--r--r--     0    10     5425 Mar 16 22:18 1992 usr/catman/a_man/man8/mk.8.z
+r--r--r--     0    10     6441 Mar 16 22:18 1992 usr/catman/a_man/man8/prm.8.z
+r--r--r--     0    10    11504 Mar 16 22:18 1992 usr/catman/a_man/man8/rje.8.z
+r--r--r--     0    10     3481 Mar 16 22:18 1992 usr/catman/a_man/man8/romboot.8.z
+r--r--r--     0    10     1863 Mar 16 22:18 1992 usr/catman/a_man/man8/tapeboot.8.z
+r--r--r--     0    10     1134 Mar 16 22:18 1992 usr/catman/a_man/man8/unixboot.8.z
+rwxr-xr-x     0    10        0 Mar 16 22:17 1992 usr/catman/p_man/
+rwxr-xr-x     0    10        0 Mar 16 22:18 1992 usr/catman/p_man/man2/
+r--r--r--     0    10     1771 Mar 16 22:17 1992 usr/catman/p_man/man2/access.2.z
+r--r--r--     0    10     1926 Mar 16 22:17 1992 usr/catman/p_man/man2/acct.2.z
+r--r--r--     0    10      968 Mar 16 22:17 1992 usr/catman/p_man/man2/alarm.2.z
+r--r--r--     0    10     1628 Mar 16 22:17 1992 usr/catman/p_man/man2/brk.2.z
+r--r--r--     0    10     1083 Mar 16 22:17 1992 usr/catman/p_man/man2/chdir.2.z
+r--r--r--     0    10     2170 Mar 16 22:17 1992 usr/catman/p_man/man2/chmod.2.z
+r--r--r--     0    10     1558 Mar 16 22:17 1992 usr/catman/p_man/man2/chown.2.z
+r--r--r--     0    10     1351 Mar 16 22:17 1992 usr/catman/p_man/man2/chroot.2.z
+r--r--r--     0    10     1003 Mar 16 22:17 1992 usr/catman/p_man/man2/close.2.z
+r--r--r--     0    10     2411 Mar 16 22:17 1992 usr/catman/p_man/man2/creat.2.z
+r--r--r--     0    10     1237 Mar 16 22:17 1992 usr/catman/p_man/man2/dup.2.z
+r--r--r--     0    10     6602 Mar 16 22:17 1992 usr/catman/p_man/man2/exec.2.z
+r--r--r--     0    10     2397 Mar 16 22:17 1992 usr/catman/p_man/man2/exit.2.z
+r--r--r--     0    10     5501 Mar 16 22:17 1992 usr/catman/p_man/man2/fcntl.2.z
+r--r--r--     0    10     2390 Mar 16 22:17 1992 usr/catman/p_man/man2/fork.2.z
+r--r--r--     0    10      778 Mar 16 22:18 1992 usr/catman/p_man/man2/getpid.2.z
+r--r--r--     0    10     1006 Mar 16 22:18 1992 usr/catman/p_man/man2/getuid.2.z
+r--r--r--     0    10    20876 Mar 16 22:18 1992 usr/catman/p_man/man2/intro.2.z
+r--r--r--     0    10     1319 Mar 16 22:18 1992 usr/catman/p_man/man2/ioctl.2.z
+r--r--r--     0    10     2395 Mar 16 22:18 1992 usr/catman/p_man/man2/kill.2.z
+r--r--r--     0    10     1944 Mar 16 22:18 1992 usr/catman/p_man/man2/link.2.z
+r--r--r--     0    10     1627 Mar 16 22:18 1992 usr/catman/p_man/man2/lseek.2.z
+r--r--r--     0    10     4652 Mar 16 22:18 1992 usr/catman/p_man/man2/maus.2.z
+r--r--r--     0    10     2622 Mar 16 22:18 1992 usr/catman/p_man/man2/mknod.2.z
+r--r--r--     0    10     1955 Mar 16 22:18 1992 usr/catman/p_man/man2/mount.2.z
+r--r--r--     0    10     3243 Mar 16 22:18 1992 usr/catman/p_man/man2/msgctl.2.z
+r--r--r--     0    10     3031 Mar 16 22:18 1992 usr/catman/p_man/man2/msgget.2.z
+r--r--r--     0    10     6758 Mar 16 22:18 1992 usr/catman/p_man/man2/msgop.2.z
+r--r--r--     0    10     1152 Mar 16 22:18 1992 usr/catman/p_man/man2/nice.2.z
+r--r--r--     0    10     4023 Mar 16 22:18 1992 usr/catman/p_man/man2/open.2.z
+r--r--r--     0    10      855 Mar 16 22:18 1992 usr/catman/p_man/man2/pause.2.z
+r--r--r--     0    10     1172 Mar 16 22:18 1992 usr/catman/p_man/man2/pipe.2.z
+r--r--r--     0    10     2131 Mar 16 22:18 1992 usr/catman/p_man/man2/plock.2.z
+r--r--r--     0    10     1584 Mar 16 22:18 1992 usr/catman/p_man/man2/profil.2.z
+r--r--r--     0    10     5533 Mar 16 22:18 1992 usr/catman/p_man/man2/ptrace.2.z
+r--r--r--     0    10     2367 Mar 16 22:18 1992 usr/catman/p_man/man2/read.2.z
+r--r--r--     0    10     4850 Mar 16 22:18 1992 usr/catman/p_man/man2/semctl.2.z
+r--r--r--     0    10      885 Mar 16 22:18 1992 usr/catman/p_man/man2/semget.2.z
+r--r--r--     0    10     5690 Mar 16 22:18 1992 usr/catman/p_man/man2/semop.2.z
+r--r--r--     0    10      718 Mar 16 22:18 1992 usr/catman/p_man/man2/setpgrp.2.z
+r--r--r--     0    10     1386 Mar 16 22:18 1992 usr/catman/p_man/man2/setuid.2.z
+r--r--r--     0    10     3608 Mar 16 22:18 1992 usr/catman/p_man/man2/shmctl.2.z
+r--r--r--     0    10     3427 Mar 16 22:18 1992 usr/catman/p_man/man2/shmget.2.z
+r--r--r--     0    10     3211 Mar 16 22:18 1992 usr/catman/p_man/man2/shmop.2.z
+r--r--r--     0    10     7052 Mar 16 22:18 1992 usr/catman/p_man/man2/signal.2.z
+r--r--r--     0    10     3282 Mar 16 22:18 1992 usr/catman/p_man/man2/stat.2.z
+r--r--r--     0    10      842 Mar 16 22:18 1992 usr/catman/p_man/man2/stime.2.z
+r--r--r--     0    10      693 Mar 16 22:18 1992 usr/catman/p_man/man2/sync.2.z
+r--r--r--     0    10     1862 Mar 16 22:18 1992 usr/catman/p_man/man2/sys3b.2.z
+r--r--r--     0    10      959 Mar 16 22:18 1992 usr/catman/p_man/man2/time.2.z
+r--r--r--     0    10     1781 Mar 16 22:18 1992 usr/catman/p_man/man2/times.2.z
+r--r--r--     0    10     1289 Mar 16 22:18 1992 usr/catman/p_man/man2/ulimit.2.z
+r--r--r--     0    10      867 Mar 16 22:18 1992 usr/catman/p_man/man2/umask.2.z
+r--r--r--     0    10     1220 Mar 16 22:18 1992 usr/catman/p_man/man2/umount.2.z
+r--r--r--     0    10     1491 Mar 16 22:18 1992 usr/catman/p_man/man2/uname.2.z
+r--r--r--     0    10     1866 Mar 16 22:18 1992 usr/catman/p_man/man2/unlink.2.z
+r--r--r--     0    10     1403 Mar 16 22:18 1992 usr/catman/p_man/man2/ustat.2.z
+r--r--r--     0    10     2293 Mar 16 22:18 1992 usr/catman/p_man/man2/utime.2.z
+r--r--r--     0    10     2594 Mar 16 22:18 1992 usr/catman/p_man/man2/wait.2.z
+r--r--r--     0    10     2542 Mar 16 22:18 1992 usr/catman/p_man/man2/write.2.z
+rwxr-xr-x     0    10        0 Mar 16 22:19 1992 usr/catman/p_man/man3/
+r--r--r--     0    10     1288 Mar 16 22:18 1992 usr/catman/p_man/man3/a64l.3c.z
+r--r--r--     0    10     1003 Mar 16 22:18 1992 usr/catman/p_man/man3/abort.3c.z
+r--r--r--     0    10      778 Mar 16 22:18 1992 usr/catman/p_man/man3/abort.3f.z
+r--r--r--     0    10      675 Mar 16 22:18 1992 usr/catman/p_man/man3/abs.3c.z
+r--r--r--     0    10     1498 Mar 16 22:18 1992 usr/catman/p_man/man3/abs.3f.z
+r--r--r--     0    10      917 Mar 16 22:18 1992 usr/catman/p_man/man3/acos.3f.z
+r--r--r--     0    10      833 Mar 16 22:18 1992 usr/catman/p_man/man3/aimag.3f.z
+r--r--r--     0    10      901 Mar 16 22:18 1992 usr/catman/p_man/man3/aint.3f.z
+r--r--r--     0    10      896 Mar 16 22:18 1992 usr/catman/p_man/man3/asin.3f.z
+r--r--r--     0    10     1272 Mar 16 22:18 1992 usr/catman/p_man/man3/assert.3x.z
+r--r--r--     0    10      912 Mar 16 22:18 1992 usr/catman/p_man/man3/atan.3f.z
+r--r--r--     0    10      996 Mar 16 22:18 1992 usr/catman/p_man/man3/atan2.3f.z
+r--r--r--     0    10     1803 Mar 16 22:18 1992 usr/catman/p_man/man3/bessel.3m.z
+r--r--r--     0    10     1456 Mar 16 22:18 1992 usr/catman/p_man/man3/bool.3f.z
+r--r--r--     0    10     3177 Mar 16 22:18 1992 usr/catman/p_man/man3/bsearch.3c.z
+r--r--r--     0    10     1030 Mar 16 22:18 1992 usr/catman/p_man/man3/clock.3c.z
+r--r--r--     0    10      789 Mar 16 22:18 1992 usr/catman/p_man/man3/conjg.3f.z
+r--r--r--     0    10     1657 Mar 16 22:18 1992 usr/catman/p_man/man3/conv.3c.z
+r--r--r--     0    10     1083 Mar 16 22:18 1992 usr/catman/p_man/man3/cos.3f.z
+r--r--r--     0    10      923 Mar 16 22:18 1992 usr/catman/p_man/man3/cosh.3f.z
+r--r--r--     0    10     2455 Mar 16 22:18 1992 usr/catman/p_man/man3/crypt.3c.z
+r--r--r--     0    10     2760 Mar 16 22:18 1992 usr/catman/p_man/man3/crypt.3x.z
+r--r--r--     0    10     1392 Mar 16 22:18 1992 usr/catman/p_man/man3/ctermid.3s.z
+r--r--r--     0    10     3850 Mar 16 22:18 1992 usr/catman/p_man/man3/ctime.3c.z
+r--r--r--     0    10     1897 Mar 16 22:18 1992 usr/catman/p_man/man3/ctype.3c.z
+r--r--r--     0    10    11220 Mar 16 22:18 1992 usr/catman/p_man/man3/curses.3x.z
+r--r--r--     0    10     1213 Mar 16 22:18 1992 usr/catman/p_man/man3/cuserid.3s.z
+r--r--r--     0    10     4784 Mar 16 22:18 1992 usr/catman/p_man/man3/dial.3c.z
+r--r--r--     0    10      801 Mar 16 22:18 1992 usr/catman/p_man/man3/dim.3f.z
+r--r--r--     0    10     2058 Mar 16 22:18 1992 usr/catman/p_man/man3/directory.3c.z
+r--r--r--     0    10      617 Mar 16 22:18 1992 usr/catman/p_man/man3/dprod.3f.z
+r--r--r--     0    10     5706 Mar 16 22:18 1992 usr/catman/p_man/man3/drand48.3c.z
+r--r--r--     0    10     2119 Mar 16 22:18 1992 usr/catman/p_man/man3/ecvt.3c.z
+r--r--r--     0    10     1126 Mar 16 22:18 1992 usr/catman/p_man/man3/end.3c.z
+r--r--r--     0    10      930 Mar 16 22:18 1992 usr/catman/p_man/man3/erf.3m.z
+r--r--r--     0    10     1131 Mar 16 22:18 1992 usr/catman/p_man/man3/exp.3f.z
+r--r--r--     0    10     2356 Mar 16 22:18 1992 usr/catman/p_man/man3/exp.3m.z
+r--r--r--     0    10     1196 Mar 16 22:18 1992 usr/catman/p_man/man3/fclose.3s.z
+r--r--r--     0    10     1447 Mar 16 22:18 1992 usr/catman/p_man/man3/ferror.3s.z
+r--r--r--     0    10     1239 Mar 16 22:18 1992 usr/catman/p_man/man3/floor.3m.z
+r--r--r--     0    10     3282 Mar 16 22:18 1992 usr/catman/p_man/man3/fopen.3s.z
+r--r--r--     0    10     2252 Mar 16 22:18 1992 usr/catman/p_man/man3/fread.3s.z
+r--r--r--     0    10     1639 Mar 16 22:18 1992 usr/catman/p_man/man3/frexp.3c.z
+r--r--r--     0    10     2099 Mar 16 22:18 1992 usr/catman/p_man/man3/fseek.3s.z
+r--r--r--     0    10     2624 Mar 16 22:18 1992 usr/catman/p_man/man3/ftw.3c.z
+r--r--r--     0    10     4365 Mar 16 22:18 1992 usr/catman/p_man/man3/ftype.3f.z
+r--r--r--     0    10     1418 Mar 16 22:18 1992 usr/catman/p_man/man3/gamma.3m.z
+r--r--r--     0    10      769 Mar 16 22:18 1992 usr/catman/p_man/man3/getarg.3f.z
+r--r--r--     0    10     2505 Mar 16 22:18 1992 usr/catman/p_man/man3/getc.3s.z
+r--r--r--     0    10     1416 Mar 16 22:18 1992 usr/catman/p_man/man3/getcwd.3c.z
+r--r--r--     0    10      761 Mar 16 22:18 1992 usr/catman/p_man/man3/getenv.3c.z
+r--r--r--     0    10      806 Mar 16 22:18 1992 usr/catman/p_man/man3/getenv.3f.z
+r--r--r--     0    10     2968 Mar 16 22:18 1992 usr/catman/p_man/man3/getgrent.3c.z
+r--r--r--     0    10     1164 Mar 16 22:18 1992 usr/catman/p_man/man3/getlogin.3c.z
+r--r--r--     0    10     2834 Mar 16 22:18 1992 usr/catman/p_man/man3/getopt.3c.z
+r--r--r--     0    10     1245 Mar 16 22:18 1992 usr/catman/p_man/man3/getpass.3c.z
+r--r--r--     0    10     1170 Mar 16 22:18 1992 usr/catman/p_man/man3/getpw.3c.z
+r--r--r--     0    10     3139 Mar 16 22:18 1992 usr/catman/p_man/man3/getpwent.3c.z
+r--r--r--     0    10     1448 Mar 16 22:18 1992 usr/catman/p_man/man3/gets.3s.z
+r--r--r--     0    10     4898 Mar 16 22:18 1992 usr/catman/p_man/man3/getut.3c.z
+r--r--r--     0    10     5250 Mar 16 22:18 1992 usr/catman/p_man/man3/hsearch.3c.z
+r--r--r--     0    10      936 Mar 16 22:18 1992 usr/catman/p_man/man3/hypot.3m.z
+r--r--r--     0    10      659 Mar 16 22:18 1992 usr/catman/p_man/man3/iargc.3f.z
+r--r--r--     0    10      792 Mar 16 22:18 1992 usr/catman/p_man/man3/index.3f.z
+r--r--r--     0    10     4512 Mar 16 22:18 1992 usr/catman/p_man/man3/intro.3.z
+r--r--r--     0    10     1155 Mar 16 22:18 1992 usr/catman/p_man/man3/l3tol.3c.z
+r--r--r--     0    10     1508 Mar 16 22:18 1992 usr/catman/p_man/man3/ldahread.3x.z
+r--r--r--     0    10     2075 Mar 16 22:18 1992 usr/catman/p_man/man3/ldclose.3x.z
+r--r--r--     0    10     1613 Mar 16 22:18 1992 usr/catman/p_man/man3/ldfhread.3x.z
+r--r--r--     0    10     2622 Mar 16 22:18 1992 usr/catman/p_man/man3/ldgetname.3x.z
+r--r--r--     0    10     3295 Mar 16 22:18 1992 usr/catman/p_man/man3/ldlread.3x.z
+r--r--r--     0    10     1893 Mar 16 22:18 1992 usr/catman/p_man/man3/ldlseek.3x.z
+r--r--r--     0    10     1251 Mar 16 22:18 1992 usr/catman/p_man/man3/ldohseek.3x.z
+r--r--r--     0    10     3551 Mar 16 22:18 1992 usr/catman/p_man/man3/ldopen.3x.z
+r--r--r--     0    10     1888 Mar 16 22:18 1992 usr/catman/p_man/man3/ldrseek.3x.z
+r--r--r--     0    10     2171 Mar 16 22:18 1992 usr/catman/p_man/man3/ldshread.3x.z
+r--r--r--     0    10     1837 Mar 16 22:18 1992 usr/catman/p_man/man3/ldsseek.3x.z
+r--r--r--     0    10     1672 Mar 16 22:18 1992 usr/catman/p_man/man3/ldtbindex.3x.z
+r--r--r--     0    10     1712 Mar 16 22:19 1992 usr/catman/p_man/man3/ldtbread.3x.z
+r--r--r--     0    10     1246 Mar 16 22:19 1992 usr/catman/p_man/man3/ldtbseek.3x.z
+r--r--r--     0    10      879 Mar 16 22:19 1992 usr/catman/p_man/man3/len.3f
+r--r--r--     0    10     4329 Mar 16 22:19 1992 usr/catman/p_man/man3/lockf.3c.z
+r--r--r--     0    10     1182 Mar 16 22:19 1992 usr/catman/p_man/man3/log.3f.z
+r--r--r--     0    10     1027 Mar 16 22:19 1992 usr/catman/p_man/man3/log10.3f.z
+r--r--r--     0    10      968 Mar 16 22:19 1992 usr/catman/p_man/man3/logname.3x.z
+r--r--r--     0    10     3267 Mar 16 22:19 1992 usr/catman/p_man/man3/lsearch.3c.z
+r--r--r--     0    10     2937 Mar 16 22:19 1992 usr/catman/p_man/man3/malloc.3c.z
+r--r--r--     0    10     4846 Mar 16 22:19 1992 usr/catman/p_man/man3/malloc.3x.z
+r--r--r--     0    10     4326 Mar 16 22:19 1992 usr/catman/p_man/man3/matherr.3m.z
+r--r--r--     0    10     1518 Mar 16 22:19 1992 usr/catman/p_man/man3/max.3f.z
+r--r--r--     0    10      702 Mar 16 22:19 1992 usr/catman/p_man/man3/mclock.3f.z
+r--r--r--     0    10     2687 Mar 16 22:19 1992 usr/catman/p_man/man3/memory.3c.z
+r--r--r--     0    10     2385 Mar 16 22:19 1992 usr/catman/p_man/man3/mil.3f.z
+r--r--r--     0    10     1506 Mar 16 22:19 1992 usr/catman/p_man/man3/min.3f.z
+r--r--r--     0    10      957 Mar 16 22:19 1992 usr/catman/p_man/man3/mktemp.3c.z
+r--r--r--     0    10     1111 Mar 16 22:19 1992 usr/catman/p_man/man3/mod.3f.z
+r--r--r--     0    10     2614 Mar 16 22:19 1992 usr/catman/p_man/man3/monitor.3c.z
+r--r--r--     0    10     1792 Mar 16 22:19 1992 usr/catman/p_man/man3/nlist.3c.z
+r--r--r--     0    10     1395 Mar 16 22:19 1992 usr/catman/p_man/man3/perror.3c.z
+r--r--r--     0    10     2814 Mar 16 22:19 1992 usr/catman/p_man/man3/plot.3x.z
+r--r--r--     0    10     1878 Mar 16 22:19 1992 usr/catman/p_man/man3/popen.3s.z
+r--r--r--     0    10     6925 Mar 16 22:19 1992 usr/catman/p_man/man3/printf.3s.z
+r--r--r--     0    10     2963 Mar 16 22:19 1992 usr/catman/p_man/man3/putc.3s.z
+r--r--r--     0    10     1518 Mar 16 22:19 1992 usr/catman/p_man/man3/putenv.3c.z
+r--r--r--     0    10     1222 Mar 16 22:19 1992 usr/catman/p_man/man3/putpwent.3c.z
+r--r--r--     0    10     1207 Mar 16 22:19 1992 usr/catman/p_man/man3/puts.3s.z
+r--r--r--     0    10     1445 Mar 16 22:19 1992 usr/catman/p_man/man3/qsort.3c.z
+r--r--r--     0    10      927 Mar 16 22:19 1992 usr/catman/p_man/man3/rand.3c.z
+r--r--r--     0    10      944 Mar 16 22:19 1992 usr/catman/p_man/man3/rand.3f.z
+r--r--r--     0    10     4636 Mar 16 22:19 1992 usr/catman/p_man/man3/regcmp.3x.z
+r--r--r--     0    10     1220 Mar 16 22:19 1992 usr/catman/p_man/man3/round.3f.z
+r--r--r--     0    10     6564 Mar 16 22:19 1992 usr/catman/p_man/man3/scanf.3s.z
+r--r--r--     0    10     2563 Mar 16 22:19 1992 usr/catman/p_man/man3/setbuf.3s.z
+r--r--r--     0    10     1601 Mar 16 22:19 1992 usr/catman/p_man/man3/setjmp.3c.z
+r--r--r--     0    10     1114 Mar 16 22:19 1992 usr/catman/p_man/man3/sign.3f.z
+r--r--r--     0    10      931 Mar 16 22:19 1992 usr/catman/p_man/man3/signal.3f.z
+r--r--r--     0    10     1066 Mar 16 22:19 1992 usr/catman/p_man/man3/sin.3f.z
+r--r--r--     0    10      930 Mar 16 22:19 1992 usr/catman/p_man/man3/sinh.3f.z
+r--r--r--     0    10     1146 Mar 16 22:19 1992 usr/catman/p_man/man3/sinh.3m.z
+r--r--r--     0    10     1608 Mar 16 22:19 1992 usr/catman/p_man/man3/sleep.3c.z
+r--r--r--     0    10     1225 Mar 16 22:19 1992 usr/catman/p_man/man3/sputl.3x.z
+r--r--r--     0    10     1136 Mar 16 22:19 1992 usr/catman/p_man/man3/sqrt.3f.z
+r--r--r--     0    10     2665 Mar 16 22:19 1992 usr/catman/p_man/man3/ssignal.3c.z
+r--r--r--     0    10     2768 Mar 16 22:19 1992 usr/catman/p_man/man3/stdio.3s.z
+r--r--r--     0    10     2132 Mar 16 22:19 1992 usr/catman/p_man/man3/stdipc.3c.z
+r--r--r--     0    10      766 Mar 16 22:19 1992 usr/catman/p_man/man3/strcmp.3f.z
+r--r--r--     0    10     4646 Mar 16 22:19 1992 usr/catman/p_man/man3/string.3c.z
+r--r--r--     0    10     1602 Mar 16 22:19 1992 usr/catman/p_man/man3/strtod.3c.z
+r--r--r--     0    10     1786 Mar 16 22:19 1992 usr/catman/p_man/man3/strtol.3c.z
+r--r--r--     0    10      863 Mar 16 22:19 1992 usr/catman/p_man/man3/swab.3c.z
+r--r--r--     0    10      748 Mar 16 22:19 1992 usr/catman/p_man/man3/system.3f.z
+r--r--r--     0    10     1131 Mar 16 22:19 1992 usr/catman/p_man/man3/system.3s.z
+r--r--r--     0    10      870 Mar 16 22:19 1992 usr/catman/p_man/man3/tan.3f.z
+r--r--r--     0    10      937 Mar 16 22:19 1992 usr/catman/p_man/man3/tanh.3f.z
+r--r--r--     0    10      900 Mar 16 22:19 1992 usr/catman/p_man/man3/tmpfile.3s.z
+r--r--r--     0    10     3173 Mar 16 22:19 1992 usr/catman/p_man/man3/tmpnam.3s.z
+r--r--r--     0    10     2251 Mar 16 22:19 1992 usr/catman/p_man/man3/trig.3m.z
+r--r--r--     0    10     6130 Mar 16 22:19 1992 usr/catman/p_man/man3/tsearch.3c.z
+r--r--r--     0    10     1081 Mar 16 22:19 1992 usr/catman/p_man/man3/ttyname.3c.z
+r--r--r--     0    10      993 Mar 16 22:19 1992 usr/catman/p_man/man3/ttyslot.3c.z
+r--r--r--     0    10     1307 Mar 16 22:19 1992 usr/catman/p_man/man3/ungetc.3s.z
+r--r--r--     0    10     2317 Mar 16 22:19 1992 usr/catman/p_man/man3/vprintf.3s.z
+r--r--r--     0    10     2318 Mar 16 22:19 1992 usr/catman/p_man/man3/vprintf.3x.z
+rwxr-xr-x     0    10        0 Mar 16 22:18 1992 usr/catman/p_man/man4/
+r--r--r--     0    10     9711 Mar 16 22:18 1992 usr/catman/p_man/man4/a.out.4.z
+r--r--r--     0    10     5624 Mar 16 22:18 1992 usr/catman/p_man/man4/a.out.pdp.4.z
+r--r--r--     0    10     2815 Mar 16 22:18 1992 usr/catman/p_man/man4/acct.4.z
+r--r--r--     0    10     3313 Mar 16 22:18 1992 usr/catman/p_man/man4/ar.4.z
+r--r--r--     0    10     1078 Mar 16 22:18 1992 usr/catman/p_man/man4/ar.pdp.4.z
+r--r--r--     0    10      736 Mar 16 22:18 1992 usr/catman/p_man/man4/checklist.4.z
+r--r--r--     0    10     1599 Mar 16 22:18 1992 usr/catman/p_man/man4/core.4.z
+r--r--r--     0    10     1542 Mar 16 22:18 1992 usr/catman/p_man/man4/cpio.4.z
+r--r--r--     0    10     1015 Mar 16 22:18 1992 usr/catman/p_man/man4/dir.4.z
+r--r--r--     0    10     5136 Mar 16 22:18 1992 usr/catman/p_man/man4/errfile.4.z
+r--r--r--     0    10     1884 Mar 16 22:18 1992 usr/catman/p_man/man4/filehdr.4.z
+r--r--r--     0    10     5406 Mar 16 22:18 1992 usr/catman/p_man/man4/fs.4.z
+r--r--r--     0    10     2678 Mar 16 22:18 1992 usr/catman/p_man/man4/fspec.4.z
+r--r--r--     0    10     3749 Mar 16 22:18 1992 usr/catman/p_man/man4/gettydefs.4.z
+r--r--r--     0    10     4789 Mar 16 22:18 1992 usr/catman/p_man/man4/gps.4.z
+r--r--r--     0    10      909 Mar 16 22:18 1992 usr/catman/p_man/man4/group.4.z
+r--r--r--     0    10     7630 Mar 16 22:18 1992 usr/catman/p_man/man4/inittab.4.z
+r--r--r--     0    10     1294 Mar 16 22:18 1992 usr/catman/p_man/man4/inode.4.z
+r--r--r--     0    10      733 Mar 16 22:18 1992 usr/catman/p_man/man4/intro.4.z
+r--r--r--     0    10      678 Mar 16 22:18 1992 usr/catman/p_man/man4/issue.4.z
+r--r--r--     0    10     5549 Mar 16 22:18 1992 usr/catman/p_man/man4/ldfcn.4.z
+r--r--r--     0    10     1448 Mar 16 22:18 1992 usr/catman/p_man/man4/linenum.4.z
+r--r--r--     0    10     2787 Mar 16 22:18 1992 usr/catman/p_man/man4/master.dec.4.z
+r--r--r--     0    10     2429 Mar 16 22:18 1992 usr/catman/p_man/man4/master.u3b.4.z
+r--r--r--     0    10     1364 Mar 16 22:18 1992 usr/catman/p_man/man4/mnttab.4.z
+r--r--r--     0    10     2357 Mar 16 22:18 1992 usr/catman/p_man/man4/passwd.4.z
+r--r--r--     0    10     2612 Mar 16 22:18 1992 usr/catman/p_man/man4/plot.4.z
+r--r--r--     0    10      818 Mar 16 22:18 1992 usr/catman/p_man/man4/pnch.4.z
+r--r--r--     0    10     1590 Mar 16 22:18 1992 usr/catman/p_man/man4/profile.4.z
+r--r--r--     0    10     3498 Mar 16 22:18 1992 usr/catman/p_man/man4/reloc.4.z
+r--r--r--     0    10     5780 Mar 16 22:18 1992 usr/catman/p_man/man4/sccsfile.4.z
+r--r--r--     0    10     1555 Mar 16 22:18 1992 usr/catman/p_man/man4/scnhdr.4.z
+r--r--r--     0    10     3441 Mar 16 22:18 1992 usr/catman/p_man/man4/syms.4.z
+r--r--r--     0    10     3852 Mar 16 22:18 1992 usr/catman/p_man/man4/system.4.z
+r--r--r--     0    10     4613 Mar 16 22:18 1992 usr/catman/p_man/man4/term.4.z
+r--r--r--     0    10    40184 Mar 16 22:18 1992 usr/catman/p_man/man4/terminfo.4.z
+r--r--r--     0    10     2165 Mar 16 22:18 1992 usr/catman/p_man/man4/utmp.4.z
+rwxr-xr-x     0    10        0 Mar 16 22:18 1992 usr/catman/p_man/man5/
+r--r--r--     0    10     1901 Mar 16 22:18 1992 usr/catman/p_man/man5/ascii.5.z
+r--r--r--     0    10     1758 Mar 16 22:18 1992 usr/catman/p_man/man5/environ.5.z
+r--r--r--     0    10     1586 Mar 16 22:18 1992 usr/catman/p_man/man5/fcntl.5.z
+r--r--r--     0    10      409 Mar 16 22:18 1992 usr/catman/p_man/man5/intro.5.z
+r--r--r--     0    10     1305 Mar 16 22:18 1992 usr/catman/p_man/man5/math.5.z
+r--r--r--     0    10     1835 Mar 16 22:18 1992 usr/catman/p_man/man5/prof.5.z
+r--r--r--     0    10     8373 Mar 16 22:18 1992 usr/catman/p_man/man5/regexp.5.z
+r--r--r--     0    10     1475 Mar 16 22:18 1992 usr/catman/p_man/man5/stat.5.z
+r--r--r--     0    10     2490 Mar 16 22:18 1992 usr/catman/p_man/man5/term.5.z
+r--r--r--     0    10     1223 Mar 16 22:18 1992 usr/catman/p_man/man5/types.5.z
+r--r--r--     0    10     2174 Mar 16 22:18 1992 usr/catman/p_man/man5/values.5.z
+r--r--r--     0    10     2868 Mar 16 22:18 1992 usr/catman/p_man/man5/varargs.5.z
+rwxr-xr-x     0    10        0 Mar 16 22:17 1992 usr/catman/u_man/
+rwxr-xr-x     0    10        0 Mar 16 22:19 1992 usr/catman/u_man/man1/
+r--r--r--     0    10     4484 Mar 16 22:18 1992 usr/catman/u_man/man1/300.1.z
+r--r--r--     0    10     1241 Mar 16 22:18 1992 usr/catman/u_man/man1/4014.1.z
+r--r--r--     0    10     2185 Mar 16 22:18 1992 usr/catman/u_man/man1/450.1.z
+r--r--r--     0    10     5231 Mar 16 22:18 1992 usr/catman/u_man/man1/acctcom.1.z
+r--r--r--     0    10    12783 Mar 16 22:18 1992 usr/catman/u_man/man1/adb.1.z
+r--r--r--     0    10    10626 Mar 16 22:18 1992 usr/catman/u_man/man1/admin.1.z
+r--r--r--     0    10     3926 Mar 16 22:18 1992 usr/catman/u_man/man1/ar.1.z
+r--r--r--     0    10     2965 Mar 16 22:18 1992 usr/catman/u_man/man1/ar.pdp.1.z
+r--r--r--     0    10      846 Mar 16 22:18 1992 usr/catman/u_man/man1/arcv.pdp.1.z
+r--r--r--     0    10     3328 Mar 16 22:18 1992 usr/catman/u_man/man1/as.1.z
+r--r--r--     0    10     2148 Mar 16 22:18 1992 usr/catman/u_man/man1/as.pdp.1.z
+r--r--r--     0    10     1228 Mar 16 22:18 1992 usr/catman/u_man/man1/asa.1.z
+r--r--r--     0    10     4325 Mar 16 22:18 1992 usr/catman/u_man/man1/at.1.z
+r--r--r--     0    10     5235 Mar 16 22:18 1992 usr/catman/u_man/man1/awk.1.z
+r--r--r--     0    10      851 Mar 16 22:18 1992 usr/catman/u_man/man1/banner.1
+r--r--r--     0    10     1267 Mar 16 22:18 1992 usr/catman/u_man/man1/basename.1.z
+r--r--r--     0    10     3152 Mar 16 22:18 1992 usr/catman/u_man/man1/bc.1.z
+r--r--r--     0    10     1488 Mar 16 22:18 1992 usr/catman/u_man/man1/bdiff.1.z
+r--r--r--     0    10     6081 Mar 16 22:18 1992 usr/catman/u_man/man1/bfs.1.z
+r--r--r--     0    10    18250 Mar 16 22:18 1992 usr/catman/u_man/man1/bs.1.z
+r--r--r--     0    10      796 Mar 16 22:18 1992 usr/catman/u_man/man1/cal.1.z
+r--r--r--     0    10     1213 Mar 16 22:18 1992 usr/catman/u_man/man1/calendar.1.z
+r--r--r--     0    10     1459 Mar 16 22:18 1992 usr/catman/u_man/man1/cat.1.z
+r--r--r--     0    10     1006 Mar 16 22:18 1992 usr/catman/u_man/man1/cb.1.z
+r--r--r--     0    10     5388 Mar 16 22:18 1992 usr/catman/u_man/man1/cc.1.z
+r--r--r--     0    10     1130 Mar 16 22:18 1992 usr/catman/u_man/man1/cd.1.z
+r--r--r--     0    10     4356 Mar 16 22:19 1992 usr/catman/u_man/man1/cdc.1.z
+r--r--r--     0    10     3076 Mar 16 22:19 1992 usr/catman/u_man/man1/cflow.1.z
+r--r--r--     0    10     2124 Mar 16 22:19 1992 usr/catman/u_man/man1/chmod.1.z
+r--r--r--     0    10      984 Mar 16 22:19 1992 usr/catman/u_man/man1/chown.1.z
+r--r--r--     0    10      945 Mar 16 22:19 1992 usr/catman/u_man/man1/cmp.1.z
+r--r--r--     0    10     2795 Mar 16 22:19 1992 usr/catman/u_man/man1/col.1.z
+r--r--r--     0    10     2817 Mar 16 22:19 1992 usr/catman/u_man/man1/comb.1.z
+r--r--r--     0    10      938 Mar 16 22:19 1992 usr/catman/u_man/man1/comm.1.z
+r--r--r--     0    10     2807 Mar 16 22:19 1992 usr/catman/u_man/man1/convert.1.z
+r--r--r--     0    10     1906 Mar 16 22:19 1992 usr/catman/u_man/man1/cp.1.z
+r--r--r--     0    10     3592 Mar 16 22:19 1992 usr/catman/u_man/man1/cpio.1.z
+r--r--r--     0    10     7005 Mar 16 22:19 1992 usr/catman/u_man/man1/cpp.1.z
+r--r--r--     0    10      853 Mar 16 22:19 1992 usr/catman/u_man/man1/cprs.1.z
+r--r--r--     0    10     3125 Mar 16 22:19 1992 usr/catman/u_man/man1/crontab.1.z
+r--r--r--     0    10     2079 Mar 16 22:19 1992 usr/catman/u_man/man1/crypt.1.z
+r--r--r--     0    10     3743 Mar 16 22:19 1992 usr/catman/u_man/man1/csplit.1.z
+r--r--r--     0    10     1803 Mar 16 22:19 1992 usr/catman/u_man/man1/ct.1c.z
+r--r--r--     0    10    10030 Mar 16 22:19 1992 usr/catman/u_man/man1/ctrace.1.z
+r--r--r--     0    10     6910 Mar 16 22:19 1992 usr/catman/u_man/man1/cu.1c.z
+r--r--r--     0    10     2754 Mar 16 22:19 1992 usr/catman/u_man/man1/cut.1.z
+r--r--r--     0    10     1627 Mar 16 22:19 1992 usr/catman/u_man/man1/cxref.1.z
+r--r--r--     0    10     2420 Mar 16 22:19 1992 usr/catman/u_man/man1/date.1.z
+r--r--r--     0    10     3848 Mar 16 22:19 1992 usr/catman/u_man/man1/dc.1.z
+r--r--r--     0    10     2971 Mar 16 22:19 1992 usr/catman/u_man/man1/dd.1.z
+r--r--r--     0    10     5404 Mar 16 22:19 1992 usr/catman/u_man/man1/delta.1.z
+r--r--r--     0    10     2587 Mar 16 22:19 1992 usr/catman/u_man/man1/diff.1.z
+r--r--r--     0    10     1793 Mar 16 22:19 1992 usr/catman/u_man/man1/diff3.1.z
+r--r--r--     0    10     1591 Mar 16 22:19 1992 usr/catman/u_man/man1/diffmk.1.z
+r--r--r--     0    10     1021 Mar 16 22:19 1992 usr/catman/u_man/man1/dircmp.1.z
+r--r--r--     0    10     2545 Mar 16 22:19 1992 usr/catman/u_man/man1/dis.1.z
+r--r--r--     0    10     1108 Mar 16 22:19 1992 usr/catman/u_man/man1/du.1.z
+r--r--r--     0    10     2902 Mar 16 22:19 1992 usr/catman/u_man/man1/dump.1.z
+r--r--r--     0    10      930 Mar 16 22:19 1992 usr/catman/u_man/man1/echo.1.z
+r--r--r--     0    10    21171 Mar 16 22:19 1992 usr/catman/u_man/man1/ed.1.z
+r--r--r--     0    10     6972 Mar 16 22:19 1992 usr/catman/u_man/man1/edit.1.z
+r--r--r--     0    10     2709 Mar 16 22:19 1992 usr/catman/u_man/man1/efl.1.z
+r--r--r--     0    10     1324 Mar 16 22:19 1992 usr/catman/u_man/man1/enable.1.z
+r--r--r--     0    10      940 Mar 16 22:19 1992 usr/catman/u_man/man1/env.1.z
+r--r--r--     0    10    10190 Mar 16 22:19 1992 usr/catman/u_man/man1/ex.1.z
+r--r--r--     0    10     3533 Mar 16 22:19 1992 usr/catman/u_man/man1/expr.1.z
+r--r--r--     0    10     4547 Mar 16 22:19 1992 usr/catman/u_man/man1/f77.1.z
+r--r--r--     0    10      966 Mar 16 22:19 1992 usr/catman/u_man/man1/factor.1.z
+r--r--r--     0    10     1232 Mar 16 22:19 1992 usr/catman/u_man/man1/file.1.z
+r--r--r--     0    10     3980 Mar 16 22:19 1992 usr/catman/u_man/man1/find.1.z
+r--r--r--     0    10     1170 Mar 16 22:19 1992 usr/catman/u_man/man1/fsplit.1.z
+r--r--r--     0    10     2594 Mar 16 22:19 1992 usr/catman/u_man/man1/gdev.1g.z
+r--r--r--     0    10    12471 Mar 16 22:19 1992 usr/catman/u_man/man1/ged.1g.z
+r--r--r--     0    10    15279 Mar 16 22:19 1992 usr/catman/u_man/man1/get.1.z
+r--r--r--     0    10     1910 Mar 16 22:19 1992 usr/catman/u_man/man1/getopt.1.z
+r--r--r--     0    10     2480 Mar 16 22:19 1992 usr/catman/u_man/man1/graph.1g.z
+r--r--r--     0    10     2140 Mar 16 22:19 1992 usr/catman/u_man/man1/graphics.1g.z
+r--r--r--     0    10     1485 Mar 16 22:19 1992 usr/catman/u_man/man1/greek.1.z
+r--r--r--     0    10     3284 Mar 16 22:19 1992 usr/catman/u_man/man1/grep.1.z
+r--r--r--     0    10     3356 Mar 16 22:19 1992 usr/catman/u_man/man1/gutil.1g.z
+r--r--r--     0    10     1321 Mar 16 22:19 1992 usr/catman/u_man/man1/help.1.z
+r--r--r--     0    10     2672 Mar 16 22:19 1992 usr/catman/u_man/man1/hp.1.z
+r--r--r--     0    10     5789 Mar 16 22:19 1992 usr/catman/u_man/man1/hpio.1.z
+r--r--r--     0    10      915 Mar 16 22:19 1992 usr/catman/u_man/man1/hyphen.1.z
+r--r--r--     0    10     1023 Mar 16 22:19 1992 usr/catman/u_man/man1/id.1
+r--r--r--     0    10     2383 Mar 16 22:19 1992 usr/catman/u_man/man1/intro.1.z
+r--r--r--     0    10     1675 Mar 16 22:19 1992 usr/catman/u_man/man1/ipcrm.1.z
+r--r--r--     0    10     6308 Mar 16 22:19 1992 usr/catman/u_man/man1/ipcs.1.z
+r--r--r--     0    10     2484 Mar 16 22:19 1992 usr/catman/u_man/man1/join.1.z
+r--r--r--     0    10     2242 Mar 16 22:19 1992 usr/catman/u_man/man1/kasb.1.z
+r--r--r--     0    10     1129 Mar 16 22:19 1992 usr/catman/u_man/man1/kill.1.z
+r--r--r--     0    10     5665 Mar 16 22:19 1992 usr/catman/u_man/man1/ld.1.z
+r--r--r--     0    10     4455 Mar 16 22:19 1992 usr/catman/u_man/man1/ld.pdp.1.z
+r--r--r--     0    10     4648 Mar 16 22:19 1992 usr/catman/u_man/man1/lex.1.z
+r--r--r--     0    10      680 Mar 16 22:19 1992 usr/catman/u_man/man1/line.1.z
+r--r--r--     0    10     6904 Mar 16 22:19 1992 usr/catman/u_man/man1/lint.1.z
+r--r--r--     0    10     2520 Mar 16 22:19 1992 usr/catman/u_man/man1/list.1.z
+r--r--r--     0    10     4057 Mar 16 22:19 1992 usr/catman/u_man/man1/login.1.z
+r--r--r--     0    10      705 Mar 16 22:19 1992 usr/catman/u_man/man1/logname.1.z
+r--r--r--     0    10     1363 Mar 16 22:19 1992 usr/catman/u_man/man1/lorder.1.z
+r--r--r--     0    10     3328 Mar 16 22:19 1992 usr/catman/u_man/man1/lp.1.z
+r--r--r--     0    10     2215 Mar 16 22:19 1992 usr/catman/u_man/man1/lpstat.1.z
+r--r--r--     0    10     4838 Mar 16 22:19 1992 usr/catman/u_man/man1/ls.1.z
+r--r--r--     0    10     6690 Mar 16 22:19 1992 usr/catman/u_man/man1/m4.1.z
+r--r--r--     0    10      980 Mar 16 22:19 1992 usr/catman/u_man/man1/machid.1.z
+r--r--r--     0    10     4609 Mar 16 22:19 1992 usr/catman/u_man/man1/mail.1.z
+r--r--r--     0    10    25977 Mar 16 22:19 1992 usr/catman/u_man/man1/mailx.1.z
+r--r--r--     0    10    14521 Mar 16 22:19 1992 usr/catman/u_man/man1/make.1.z
+r--r--r--     0    10     1549 Mar 16 22:19 1992 usr/catman/u_man/man1/makekey.1.z
+r--r--r--     0    10     2578 Mar 16 22:19 1992 usr/catman/u_man/man1/man.1.z
+r--r--r--     0    10      767 Mar 16 22:19 1992 usr/catman/u_man/man1/mesg.1.z
+r--r--r--     0    10      812 Mar 16 22:19 1992 usr/catman/u_man/man1/mkdir.1.z
+r--r--r--     0    10     2714 Mar 16 22:19 1992 usr/catman/u_man/man1/net.1c.z
+r--r--r--     0    10     5387 Mar 16 22:19 1992 usr/catman/u_man/man1/newform.1.z
+r--r--r--     0    10     2250 Mar 16 22:19 1992 usr/catman/u_man/man1/newgrp.1.z
+r--r--r--     0    10     1772 Mar 16 22:19 1992 usr/catman/u_man/man1/news.1.z
+r--r--r--     0    10      936 Mar 16 22:19 1992 usr/catman/u_man/man1/nice.1.z
+r--r--r--     0    10     3455 Mar 16 22:19 1992 usr/catman/u_man/man1/nl.1.z
+r--r--r--     0    10     3853 Mar 16 22:19 1992 usr/catman/u_man/man1/nm.1.z
+r--r--r--     0    10     1584 Mar 16 22:19 1992 usr/catman/u_man/man1/nm.pdp.1.z
+r--r--r--     0    10     1706 Mar 16 22:19 1992 usr/catman/u_man/man1/nohup.1.z
+r--r--r--     0    10     1310 Mar 16 22:19 1992 usr/catman/u_man/man1/od.1.z
+r--r--r--     0    10     3424 Mar 16 22:19 1992 usr/catman/u_man/man1/pack.1.z
+r--r--r--     0    10     2198 Mar 16 22:19 1992 usr/catman/u_man/man1/passwd.1.z
+r--r--r--     0    10     2631 Mar 16 22:19 1992 usr/catman/u_man/man1/paste.1.z
+r--r--r--     0    10     6849 Mar 16 22:19 1992 usr/catman/u_man/man1/pg.1.z
+r--r--r--     0    10     3430 Mar 16 22:19 1992 usr/catman/u_man/man1/pr.1.z
+r--r--r--     0    10     3868 Mar 16 22:19 1992 usr/catman/u_man/man1/prof.1.z
+r--r--r--     0    10    11965 Mar 16 22:19 1992 usr/catman/u_man/man1/prs.1.z
+r--r--r--     0    10     5426 Mar 16 22:19 1992 usr/catman/u_man/man1/ps.1.z
+r--r--r--     0    10     2518 Mar 16 22:19 1992 usr/catman/u_man/man1/ptx.1.z
+r--r--r--     0    10      990 Mar 16 22:19 1992 usr/catman/u_man/man1/pwd.1
+r--r--r--     0    10     2089 Mar 16 22:19 1992 usr/catman/u_man/man1/ratfor.1.z
+r--r--r--     0    10     1547 Mar 16 22:19 1992 usr/catman/u_man/man1/regcmp.1.z
+r--r--r--     0    10     2675 Mar 16 22:19 1992 usr/catman/u_man/man1/rjestat.1c.z
+r--r--r--     0    10     1440 Mar 16 22:19 1992 usr/catman/u_man/man1/rm.1.z
+r--r--r--     0    10     1639 Mar 16 22:19 1992 usr/catman/u_man/man1/rmdel.1.z
+r--r--r--     0    10     1313 Mar 16 22:19 1992 usr/catman/u_man/man1/sact.1.z
+r--r--r--     0    10     2849 Mar 16 22:19 1992 usr/catman/u_man/man1/sag.1g.z
+r--r--r--     0    10     4451 Mar 16 22:19 1992 usr/catman/u_man/man1/sar.1.z
+r--r--r--     0    10     1622 Mar 16 22:19 1992 usr/catman/u_man/man1/scc.1.z
+r--r--r--     0    10     1273 Mar 16 22:19 1992 usr/catman/u_man/man1/sccsdiff.1.z
+r--r--r--     0    10     2059 Mar 16 22:19 1992 usr/catman/u_man/man1/sdiff.1.z
+r--r--r--     0    10     6204 Mar 16 22:19 1992 usr/catman/u_man/man1/sed.1.z
+r--r--r--     0    10    13620 Mar 16 22:19 1992 usr/catman/u_man/man1/send.1c.z
+r--r--r--     0    10    26242 Mar 16 22:19 1992 usr/catman/u_man/man1/sh.1.z
+r--r--r--     0    10     3457 Mar 16 22:19 1992 usr/catman/u_man/man1/shl.1.z
+r--r--r--     0    10     1210 Mar 16 22:19 1992 usr/catman/u_man/man1/size.1.z
+r--r--r--     0    10      725 Mar 16 22:19 1992 usr/catman/u_man/man1/size.pdp.1.z
+r--r--r--     0    10      803 Mar 16 22:19 1992 usr/catman/u_man/man1/sleep.1.z
+r--r--r--     0    10     1980 Mar 16 22:19 1992 usr/catman/u_man/man1/sno.1.z
+r--r--r--     0    10     6247 Mar 16 22:19 1992 usr/catman/u_man/man1/sort.1.z
+r--r--r--     0    10     4175 Mar 16 22:19 1992 usr/catman/u_man/man1/spell.1.z
+r--r--r--     0    10     1707 Mar 16 22:19 1992 usr/catman/u_man/man1/spline.1g.z
+r--r--r--     0    10      802 Mar 16 22:19 1992 usr/catman/u_man/man1/split.1.z
+r--r--r--     0    10     7691 Mar 16 22:19 1992 usr/catman/u_man/man1/stat.1g.z
+r--r--r--     0    10     2300 Mar 16 22:19 1992 usr/catman/u_man/man1/strip.1.z
+r--r--r--     0    10     1075 Mar 16 22:19 1992 usr/catman/u_man/man1/strip.pdp.1.z
+r--r--r--     0    10     9049 Mar 16 22:19 1992 usr/catman/u_man/man1/stty.1.z
+r--r--r--     0    10     3135 Mar 16 22:19 1992 usr/catman/u_man/man1/su.1.z
+r--r--r--     0    10      795 Mar 16 22:19 1992 usr/catman/u_man/man1/sum.1.z
+r--r--r--     0    10     4014 Mar 16 22:19 1992 usr/catman/u_man/man1/tar.1.z
+r--r--r--     0    10      726 Mar 16 22:19 1992 usr/catman/u_man/man1/sync.1.z
+r--r--r--     0    10     5239 Mar 16 22:19 1992 usr/catman/u_man/man1/tabs.1.z
+r--r--r--     0    10     1549 Mar 16 22:19 1992 usr/catman/u_man/man1/tail.1.z
+r--r--r--     0    10      930 Mar 16 22:19 1992 usr/catman/u_man/man1/tee.1
+r--r--r--     0    10     2736 Mar 16 22:19 1992 usr/catman/u_man/man1/test.1.z
+r--r--r--     0    10      895 Mar 16 22:19 1992 usr/catman/u_man/man1/time.1.z
+r--r--r--     0    10     2110 Mar 16 22:19 1992 usr/catman/u_man/man1/timex.1.z
+r--r--r--     0    10     3111 Mar 16 22:19 1992 usr/catman/u_man/man1/toc.1g.z
+r--r--r--     0    10     1014 Mar 16 22:19 1992 usr/catman/u_man/man1/touch.1.z
+r--r--r--     0    10     1276 Mar 16 22:19 1992 usr/catman/u_man/man1/tplot.1g.z
+r--r--r--     0    10     2205 Mar 16 22:19 1992 usr/catman/u_man/man1/tput.1.z
+r--r--r--     0    10     2072 Mar 16 22:19 1992 usr/catman/u_man/man1/tr.1.z
+r--r--r--     0    10      683 Mar 16 22:19 1992 usr/catman/u_man/man1/true.1.z
+r--r--r--     0    10      923 Mar 16 22:19 1992 usr/catman/u_man/man1/tsort.1.z
+r--r--r--     0    10      920 Mar 16 22:19 1992 usr/catman/u_man/man1/tty.1.z
+r--r--r--     0    10     1142 Mar 16 22:19 1992 usr/catman/u_man/man1/umask.1.z
+r--r--r--     0    10     2438 Mar 16 22:19 1992 usr/catman/u_man/man1/un53ctl.1c.z
+r--r--r--     0    10      967 Mar 16 22:19 1992 usr/catman/u_man/man1/uname.1.z
+r--r--r--     0    10     1421 Mar 16 22:19 1992 usr/catman/u_man/man1/unget.1.z
+r--r--r--     0    10     1309 Mar 16 22:19 1992 usr/catman/u_man/man1/uniq.1.z
+r--r--r--     0    10     1609 Mar 16 22:19 1992 usr/catman/u_man/man1/units.1.z
+r--r--r--     0    10     5898 Mar 16 22:19 1992 usr/catman/u_man/man1/uucp.1c.z
+r--r--r--     0    10     3853 Mar 16 22:19 1992 usr/catman/u_man/man1/uustat.1c.z
+r--r--r--     0    10     2518 Mar 16 22:19 1992 usr/catman/u_man/man1/uuto.1c.z
+r--r--r--     0    10     4259 Mar 16 22:19 1992 usr/catman/u_man/man1/uux.1c.z
+r--r--r--     0    10     2932 Mar 16 22:19 1992 usr/catman/u_man/man1/val.1.z
+r--r--r--     0    10     4992 Mar 16 22:19 1992 usr/catman/u_man/man1/vc.1.z
+r--r--r--     0    10    11647 Mar 16 22:19 1992 usr/catman/u_man/man1/vi.1.z
+r--r--r--     0    10     1499 Mar 16 22:19 1992 usr/catman/u_man/man1/vpr.1.z
+r--r--r--     0    10      793 Mar 16 22:19 1992 usr/catman/u_man/man1/wait.1.z
+r--r--r--     0    10      759 Mar 16 22:19 1992 usr/catman/u_man/man1/wc.1.z
+r--r--r--     0    10     1437 Mar 16 22:19 1992 usr/catman/u_man/man1/what.1.z
+r--r--r--     0    10     4194 Mar 16 22:19 1992 usr/catman/u_man/man1/who.1.z
+r--r--r--     0    10     2679 Mar 16 22:19 1992 usr/catman/u_man/man1/write.1.z
+r--r--r--     0    10     5755 Mar 16 22:19 1992 usr/catman/u_man/man1/xargs.1.z
+r--r--r--     0    10     2909 Mar 16 22:19 1992 usr/catman/u_man/man1/yacc.1.z
+rwxr-xr-x     0    10        0 Mar 16 22:19 1992 usr/catman/u_man/man6/
+r--r--r--     0    10     1629 Mar 16 22:18 1992 usr/catman/u_man/man6/arithmetic.6.z
+r--r--r--     0    10     1518 Mar 16 22:18 1992 usr/catman/u_man/man6/back.6.z
+r--r--r--     0    10     1906 Mar 16 22:18 1992 usr/catman/u_man/man6/bj.6.z
+r--r--r--     0    10     1282 Mar 16 22:18 1992 usr/catman/u_man/man6/chess.6.z
+r--r--r--     0    10     2878 Mar 16 22:18 1992 usr/catman/u_man/man6/craps.6.z
+r--r--r--     0    10      693 Mar 16 22:18 1992 usr/catman/u_man/man6/hangman.6.z
+r--r--r--     0    10      491 Mar 16 22:18 1992 usr/catman/u_man/man6/intro.6.z
+r--r--r--     0    10     1154 Mar 16 22:18 1992 usr/catman/u_man/man6/jotto.6.z
+r--r--r--     0    10      842 Mar 16 22:18 1992 usr/catman/u_man/man6/maze.6
+r--r--r--     0    10      683 Mar 16 22:18 1992 usr/catman/u_man/man6/moo.6.z
+r--r--r--     0    10     1663 Mar 16 22:18 1992 usr/catman/u_man/man6/quiz.6.z
+r--r--r--     0    10     2730 Mar 16 22:18 1992 usr/catman/u_man/man6/reversi.6.z
+r--r--r--     0    10     2483 Mar 16 22:18 1992 usr/catman/u_man/man6/sky.6.z
+r--r--r--     0    10      862 Mar 16 22:19 1992 usr/catman/u_man/man6/ttt.6.z
+r--r--r--     0    10      947 Mar 16 22:19 1992 usr/catman/u_man/man6/wump.6.z
+r--r--r--     0    10    24199 Mar 16 22:19 1992 usr/catman/notes
+rwxr-xr-x    70    10        0 Mar 16 22:17 1992 usr/spool/lp/
+rwxr-xr-x    70    10        0 Mar 16 22:17 1992 usr/spool/lp/model/
+rwxr-xr-x    70    10     1663 Mar 16 22:17 1992 usr/spool/lp/model/1640
+rwxr-xr-x    70    10      989 Mar 16 22:17 1992 usr/spool/lp/model/dumb
+rwxr-xr-x    70    10     2022 Mar 16 22:17 1992 usr/spool/lp/model/f450
+rwxr-xr-x    70    10     1873 Mar 16 22:17 1992 usr/spool/lp/model/hp
+rwxr-xr-x    70    10     1725 Mar 16 22:17 1992 usr/spool/lp/model/prx
+rwxr-xr-x    70    10     1382 Mar 16 22:17 1992 usr/spool/lp/model/pprx
+rwxr-xr-x    70    10      294 Mar 16 22:17 1992 usr/spool/lp/model/ph.daps
+rwxr-xr-x    70    10      733 Mar 16 22:17 1992 usr/spool/lp/model/PRIME3260p
+rwxr-xr-x    70    10      764 Mar 16 22:17 1992 usr/spool/lp/model/PRIME3260s
+rwxr-xr-x    70    10      733 Mar 16 22:17 1992 usr/spool/lp/model/PRIME3280p
+rwxr-xr-x    70    10     2365 Mar 16 22:17 1992 usr/spool/lp/model/PRIME3450p
+rwxr-xr-x    70    10     2421 Mar 16 22:17 1992 usr/spool/lp/model/PRIME3450s
+rwxr-xr-x    70    10        0 Mar 16 19:55 1992 usr/spool/lp/class/
+rwxr-xr-x    70    10        0 Mar 16 19:55 1992 usr/spool/lp/interface/
+rwxr-xr-x    70    10        0 Mar 16 19:55 1992 usr/spool/lp/member/
+rwxr-xr-x    70    10        0 Mar 16 19:55 1992 usr/spool/lp/request/
+rw-r--r--    70    10        0 Mar 16 22:17 1992 usr/spool/lp/pstatus
+rw-r--r--    70    10        0 Mar 16 22:17 1992 usr/spool/lp/qstatus
+rw-r--r--     0    10   168430 Mar 16 20:49 1992 usr/lib/libfpac_p.a

@@ -1,0 +1,258 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: ls.1 1.23 1991/06/12 01:12:06 $
+.TH LS 1 "\*(V)" "4BSD/DYNIX"
+.SH NAME
+ls \- list contents of directory
+.SH SYNOPSIS
+.B ls
+[
+.B \-acdfgilqrstu1ACLFR
+] \f2filename\f1 ...
+.br
+.SH DESCRIPTION
+.B ls
+lists the contents of the directory when
+.IR filename
+is a directory,
+and lists the name of the file when
+.IR filename
+is a file.
+Output is sorted alphabetically by default.
+When no argument is given, the current directory is listed.
+When several arguments are given,
+the arguments are sorted appropriately,
+and file arguments are processed
+before directories and their contents.
+.SH OPTIONS
+.TP
+.B \-a
+List all entries; in the absence of this option, entries whose
+names begin with a period
+.RB ( . )
+are
+not listed
+(except for the superuser, for whom
+.B ls
+normally prints even files that begin with . ).
+.TP
+.B \-c
+Use time of creation, last edit, or last mode change for sorting (with the
+.B -t
+option) or printing (with the
+.B -l
+option),
+instead of alphabetical order.
+.TP
+.B \-d
+If argument is a directory, list only its name;
+often used with \f3\-l\f1 to get the status of a directory.
+.TP
+.B \-f
+Force each argument to be interpreted as a directory
+and list the name found in each slot.
+This option turns off the
+.BR \-l ,
+.BR \-r ,
+.BR \-s ,
+and
+.B \-t
+options,
+and
+turns on the
+.B \-a
+option;
+the order is the order in which entries
+appear in the directory.
+.TP
+.B \-g
+Show the group ownership of the file in a long output.
+.TP
+.B \-i
+For each file, print the i-number in the first column of the report.
+.TP
+.B \-l
+List in long format, giving mode, number of links, owner,
+size in bytes, and time of last modification
+for each file.
+If the file is a special file, the size field will contain
+the major and minor device numbers.
+If the file is a symbolic link (or conditional symbolic link),
+the pathname of the linked-to file is preceded by \-> .
+(For conditional symbolic links, each pathname is listed separately,
+preceded by the corresponding universe identifier.)
+.TP
+.B \-q
+Display nongraphic characters in filenames as
+the character ? ; this is the default when output is to a terminal.
+.TP
+.B \-r
+Reverse the order of sort to get reverse alphabetic
+or oldest first as appropriate.
+.TP
+.B \-s
+Give size in kilobytes of each file.
+.TP
+.B \-t
+Sort by time modified (latest first) instead of
+by name.
+.TP
+.B \-u
+Use time of last access instead of last
+modification for sorting
+(with the \f3\-t\fP option)
+and/or printing (with the \f3\-l\fP option).
+.TP
+.B \-1
+Force one entry per line output format; this is the default when
+output is not to a terminal.
+.TP
+.B \-A
+Similar to
+.BR \-a ,
+but does not list entries for current directory
+( . )
+and parent directory
+( .. ) .
+.TP
+.B \-C
+Force multicolumn output; this is the default when output is to a terminal.
+.TP
+.B \-F
+Cause directories to be marked with a trailing / ,
+sockets with a trailing = ,
+symbolic links
+(including conditional symbolic links)
+with a trailing @ (except for symbolic links to directories, which are
+marked with a `/'), and executable
+files with a trailing * .
+.TP
+.B \-L
+If argument is a symbolic link (or a conditional symbolic link),
+list the file or directory the link references
+rather than the link itself.
+.TP
+.B \-R
+Recursively list subdirectories encountered.
+.PP
+The mode printed under the
+.B \-l
+option contains 11 characters,
+which are interpreted
+as follows:
+the first character is as follows:
+.TP 3
+.B d
+if the entry is a directory
+.br
+.ns
+.TP 3
+.B b
+if the entry is a block-type special file
+.br
+.ns
+.TP 3
+.B c
+if the entry is a character-type special file
+.br
+.ns
+.TP 3
+.B l
+if the entry is a symbolic link, or conditional symbolic link
+.br
+.ns
+.TP 3
+.B p
+if the entry is a pipe
+.br
+.ns
+.TP 3
+.B s
+if the entry is a socket
+.br
+.ns
+.TP 3
+.B \-
+if the entry is a plain file
+.PP
+The next 9 characters are interpreted
+as three sets of three bits each.
+The first set refers to owner permissions;
+the next refers to permissions to others in the same user-group;
+and the last to all others.
+Within each set, the three characters indicate
+permission to read, write, or
+execute the file as a program.
+For a directory, execute permission 
+means permission to search the directory.
+The permissions are indicated as follows:
+.TP 3
+.B r
+if the file is readable;
+.br
+.ns
+.TP 3
+.B w
+if the file is writable;
+.br
+.ns
+.TP 3
+.B x
+if the file is executable;
+.br
+.ns
+.TP 3
+.B \-
+if the indicated permission is not granted.
+.PP
+The group-execute permission character is given as
+.B s
+if the file has 
+the set-group-id bit set; likewise, the user-execute permission character is 
+given as
+.B s
+if the file has the set-user-id bit set.  These are given
+as
+.B S
+(capitalized) if the corresponding execute permission is not 
+set.
+.PP
+The last character of the mode (normally x or \- ) is
+.B t
+if the 1000 bit of the mode is on.
+See
+.BR chmod (1)
+for the meaning of this mode. This is given as 
+.B T
+(capitalized) if the
+corresponding execute permission is not set.
+.PP
+When the size of the files in a directory
+is listed, a total count of blocks,
+including indirect blocks, is printed.
+.SH FILES
+/etc/passwd to get user id's for
+`ls \-l'.
+.br
+/etc/group to get group id's for
+`ls \-g'.
+.SH BUGS
+Newline and tab are considered printing characters in file names.
+.PP
+The option setting based on whether the output is a teletype is
+undesirable, because 
+.B ls\ \-s 
+is different than 
+.B ls\ \-s\ |\ lpr.
+On the other hand, not doing this setting would make old shell scripts
+.B ls
+almost certain losers.

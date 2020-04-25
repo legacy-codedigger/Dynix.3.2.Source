@@ -1,0 +1,473 @@
+# $Copyright: $
+# Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+# Sequent Computer Systems, Inc.   All rights reserved.
+#  
+# This software is furnished under a license and may be used
+# only in accordance with the terms of that license and with the
+# inclusion of the above copyright notice.   This software may not
+# be provided or otherwise made available to, or used by, any
+# other person.  No title to or ownership of the software is
+# hereby transferred.
+
+# $Header: man.aliases 1.32 1991/06/13 18:06:38 $
+
+###
+#	aliases for manual pages
+###
+
+####
+#	The format is:
+#       	name.sec <white space> othername.sec
+#	where '.sec' is optional and can include a subsection,
+#	and white space is tabs or spaces.
+#	eg:
+#		dbx.1	pdbx.1
+#	The alias is 'name' and is placed under 'othername.sec'.
+#	The order of section search by man is "1nl6823457po" by default
+#	so take care to order aliases of the same name in this order.
+#	If a section/subsection is specified, the left hand size must
+#	also specify it for a match to occur.
+#	Comment lines start with '#'.
+####
+
+_longjmp.3           setjmp.3
+_setjmp.3            setjmp.3
+accton.8             sa.8
+acos.3m              sin.3m
+addmntent.3          getmntent.3
+alloca.3             malloc.3
+alphasort.3          scandir.3
+asctime.3            ctime.3
+asin.3m              sin.3m
+async_daemon.2       nfssvc.2
+atan.3m              sin.3m
+atan2.3m             sin.3m
+atob.1               btoa.1
+atoi.3               atof.3
+atol.3               atof.3
+att.1                universe.1
+auth_destroy.3       rpc.3n
+authnone_create.3    rpc.3n
+authunix_create.3    rpc.3n
+authunix_create_default.3 rpc.3n
+bcmp.3               bstring.3
+bcopy.3              bstring.3
+biod.8               nfsd.8
+bzero.3              bstring.3
+cabs.3m		     hypot.3m
+calloc.3             malloc.3
+callrpc.3            rpc.3n
+ccat.1               compact.1
+# cfree.3              malloc.3
+ceil.3m		     floor.3m
+checkeq.1            eqn.1
+clearerr.3s          ferror.3s
+clnt_broadcast.3     rpc.3n
+clnt_call.3          rpc.3n
+clnt_destroy.3       rpc.3n
+clnt_freeres.3       rpc.3n
+clnt_geterr.3        rpc.3n
+clnt_pcreateerror.3  rpc.3n
+clnt_perrno.3        rpc.3n
+clnt_perror.3        rpc.3n
+clntraw_create.3     rpc.3n
+clnttcp_create.3     rpc.3n
+clntudp_create.3     rpc.3n
+closedir.3           directory.3
+closelog.3           syslog.3
+cos.3m               sin.3m
+cosh.3m		     sinh.3m
+cu.1c                tip.1c
+# cust1.2              cust0.2
+# cust2.2              cust0.2
+# cust3.2              cust0.2
+# cust4.2              cust0.2
+# cust5.2              cust0.2
+# cust6.2              cust0.2
+# cust7.2              cust0.2
+# cust8.2              cust0.2
+# cust9.2              cust0.2
+diffh.1              diff.1
+dbmclose.3x          dbm.3x
+dbmflush.3x          dbm.3x
+dbminit.3x           dbm.3x
+dbx.1                pdbx.1
+delete.3x            dbm.3x
+dis32000.3x	     dis.3x
+dis386.3x	     dis.3x
+dn_comp.3            resolver.3
+dn_expand.3          resolver.3
+dumpdates.5          dump.5
+dup2.2               dup.2
+e.1                  ex.1
+edata.5              end.3
+edit.1               ex.1
+egrep.1              grep.1
+encrypt.3            crypt.3
+endfsent.3x          getfsent.3x
+endgrent.3           getgrent.3
+endhostent.3n        gethostent.3n
+endmntent.3          getmntent.3
+endnetent.3n         getnetent.3n
+endnetgrent.3n       getnetgrent.3n
+endprotoent.3n       getprotoent.3n
+endpwent.3           getpwent.3
+endrpcent.3n         getrpcent.3n
+endservent.3n        getservent.3n
+endusershell.3       getusershell.3
+enroll.1             xsend.1
+environ.3            execl.3
+etext.5              end.3
+ether_aton.3n        ethers.3n
+ether_hostton.3n     ethers.3n
+ether_line.3n        ethers.3n
+ether_ntoa.3n        ethers.3n
+ether_ntohost.3n     ethers.3n
+exec.3               execl.3
+exece.3              execl.3
+execle.3             execl.3
+execlp.3             execl.3
+exect.3              execl.3
+execv.3              execl.3
+execvp.3             execl.3
+f.1                  finger.1
+fabs.3m              floor.3m
+fasthalt.8           fastboot.8
+fchmod.2             chmod.2
+fchown.2             chown.2
+fcvt.3               ecvt.3
+fdopen.3s            fopen.3s
+fetch.3x             dbm.3x
+fflush.3s            fclose.3s
+ffs.3                bstring.3
+fgetc.3s             getc.3s
+fgets.3s             gets.3s
+fgrep.1              grep.1
+firstkey.3x          dbm.3x
+fprintf.3s           printf.3s
+fputc.3s             putc.3s
+fputs.3s             puts.3s
+free.3               malloc.3
+freopen.3s           fopen.3s
+fscanf.3s            scanf.3s
+fstat.2              stat.2
+fstatfs.2            statfs.2
+ftell.3s             fseek.3s
+ftime.3c             time.3c
+ftruncate.2          truncate.2
+fwrite.3s            fread.3s
+gcvt.3               ecvt.3
+get_myaddress.3      rpc.3n
+getchar.3s           getc.3s
+getdiskbyname.3x     getdisk.3x
+getdomainname.2      getdomainname.2
+getegid.2            getgid.2
+geteuid.2            getuid.2
+getfsfile.3x         getfsent.3x
+getfsspec.3x         getfsent.3x
+getfstype.3x         getfsent.3x
+getgrgid.3           getgrent.3
+getgrnam.3           getgrent.3
+gethostbyaddr.3n     gethostent.3n
+gethostbyname.3n     gethostent.3n
+getnetbyaddr.3n      getnetent.3n
+getnetbyname.3n      getnetent.3n
+getppid.2            getpid.2
+getprotobyname.3n    getprotoent.3n
+getprotobynumber.3n  getprotoent.3n
+getpwnam.3           getpwent.3
+getpwuid.3           getpwent.3
+getrpcbyname.3n      getrpcent.3n
+getrpcbynumber.3n    getrpcent.3n
+getscsimatch.3       getscsiinfo.3
+getservbyname.3n     getservent.3n
+getservbyport.3n     getservent.3n
+getw.3s              getc.3s
+getzdinfobyname.3    getzdinfo.3
+gmtime.3             ctime.3
+gtty.3c              stty.3c
+hasmntopt.3          getmntent.3
+htonl.3n             byteorder.3n
+htons.3n             byteorder.3n
+i386.1		     machid.1
+index.3              string.3
+indxbib.1            lookbib.1
+inet_addr.3n         inet.3n
+inet_lnaof.3n        inet.3n
+inet_makeaddr.3n     inet.3n
+inet_netof.3n        inet.3n
+inet_network.3n      inet.3n
+inet_ntoa.3n         inet.3n
+initstate.3          random.3
+innetgr.3n           getnetgrent.3n
+inode.5              fs.5
+isatty.3             ttyname.3
+isalnum.3            ctype.3
+isalpha.3            ctype.3
+isascii.3            ctype.3
+iscntrl.3            ctype.3
+isdigit.3            ctype.3
+islower.3            ctype.3
+isprint.3            ctype.3
+ispseudotty.3        getpseudotty.3
+ispunct.3            ctype.3
+isspace.3            ctype.3
+isupper.3            ctype.3
+kMBmem.4             mem.4
+kmem.4               mem.4
+kMWmem.4             mem.4
+ldexp.3              frexp.3
+localtime.3          ctime.3
+log.3m               exp.3m
+log10.3m             exp.3m
+longjmp.3            setjmp.3
+lstat.2              stat.2
+m_unlock.3p          m_lock.3p
+m_rele_procs.3p      m_park_procs.3p
+m_multi.3p           m_single.3p
+math.3m              intro.3m
+mkstemp.3            mktemp.3
+modf.3               frexp.3
+moncontrol.3         monitor.3
+monstartup.3         monitor.3
+# msgrcv.2             msgop.2
+# msgsnd.2             msgop.2
+neqn.1               eqn.1
+nextkey.3x           dbm.3x
+nohup.1              nice.1
+nologin.1	     login.1
+nopff.8              noage.8
+noswap.8             noage.8
+ns32000.1	     machid.1
+ntohl.3n             byteorder.3n
+ntohs.3n             byteorder.3n
+offline.8            online.8
+on.8                 noage.8
+opendir.3            directory.3
+openlog.3            syslog.3
+#p_finit_barrier.3p   p_wait_barrier.3p
+#p_init_barrier.3p    p_wait_barrier.3p
+#p_init_lock.3p       p_lock.3p
+#p_unlock.3p          p_lock.3p
+page.1               more.1
+pclose.3             popen.3
+pdp11.1		     machid.1
+pmap_getmaps.3       rpc.3n
+pmap_getport.3       rpc.3n
+pmap_rmtcall.3       rpc.3n
+pmap_set.3           rpc.3n
+pmap_unset.3         rpc.3n
+pow.3m               exp.3m
+primes.6             factor.6
+ptime.1              time.1
+putchar.3s           putc.3s
+putw.3s              putc.3s
+quotaoff.8           quotaon.8
+rc.local.8	     rc.8
+rc.shutdown.8        rc.8
+re_comp.3            regex.3
+re_exec.3            regex.3
+readdir.3            directory.3
+readv.2              read.2
+realloc.3            malloc.3
+recvfrom.2           recv.2
+recvmsg.2            recv.2
+registerrpc.3        rpc.3n
+remque.3             insque.3
+res_init.3           resolver.3
+res_mkquery.3        resolver.3
+res_send.3           resolver.3
+reset.1              reset.1
+# reset.3              setjmp.3
+rewind.3s            fseek.3s
+rewinddir.3          directory.3
+rindex.3             string.3
+rpc_createerr.3      rpc.3n
+rresvport.3x         rcmd.3x
+ruserok.3x           rcmd.3x
+rusers.3r            rnusers.3r
+# ruserpass            
+s_clock.3p           s_lock.3p
+s_init_barrier.3p    s_wait_barrier.3p
+s_init_lock.3p       s_lock.3p
+s_unlock.3p          s_lock.3p
+sbrk.2               brk.2
+sbrk.3p              brk.3p
+seekdir.3            directory.3
+sendmsg.2            send.2
+sendto.2             send.2
+setbuffer.3s         setbuf.3s
+setdomainname.2      getdomainname.2
+setnetgrent.3n       getnetgrent.3n
+setegid.3            setuid.3
+seteuid.3            setuid.3
+# setexit.3            setjmp.3
+setfsent.3x          getfsent.3x
+setgid.3             setuid.3
+setgrent.3           getgrent.3
+sethostent.3n        gethostent.3n
+sethostid.2          gethostid.2
+sethostname.2        gethostname.2
+setitimer.2          getitimer.2
+setkey.3             crypt.3
+setlinebuf.3s        setbuf.3s
+setlogmask.3         syslog.3
+setmntent.3          getmntent.3
+setnetent.3n         getnetent.3n
+setpriority.2        getpriority.2
+setprotoent.3n       getprotoent.3n
+setpwent.3           getpwent.3
+setrgid.3            setuid.3
+setrlimit.2          getrlimit.2
+setrpcent.3n         getrpcent.3n
+setruid.3            setuid.3
+setservent.3n        getservent.3n
+setsockopt.2         getsockopt.2
+setstate.3           random.3
+settimeofday.2       gettimeofday.2
+setusershell.3       getusershell.3
+shsbrk.3p            shbrk.3p
+shfree.3p            shmalloc.3p
+smemco.4             smem.4
+snscore.6            snake.6
+spellin.1            spell.1
+spellout.1           spell.1
+sprintf.3s           printf.3s
+sqrt.3m              exp.3m
+srand.3c             rand.3c
+srandom.3            random.3
+sscanf.3s            scanf.3s
+stdio.3s             intro.3s
+store.3x             dbm.3x
+strcasecmp.3         string.3
+strncasecmp.3        string.3
+strcat.3             string.3
+# strcatn.3            string.3
+strcmp.3             string.3
+# strcmpn.3            string.3
+strcpy.3             string.3
+# strcpyn.3            string.3
+strlen.3             string.3
+strncat.3            string.3
+strncmp.3            string.3
+strncpy.3            string.3
+svc_destroy.3        rpc.3n
+# svc_fds.3            rpc.3n
+svc_freeargs.3       rpc.3n
+svc_getargs.3        rpc.3n
+svc_getcaller.3      rpc.3n
+svc_getreq.3         rpc.3n
+svc_register.3       rpc.3n
+svc_run.3            rpc.3n
+svc_sendreply.3      rpc.3n
+svc_unregister.3     rpc.3n
+svcerr_auth.3        rpc.3n
+svcerr_decode.3      rpc.3n
+svcerr_noproc.3      rpc.3n
+svcerr_noprog.3      rpc.3n
+svcerr_progvers.3    rpc.3n
+svcerr_systemerr.3   rpc.3n
+svcerr_weakauth.3    rpc.3n
+svcraw_create.3      rpc.3n
+svctcp_create.3      rpc.3n
+svcudp_create.3      rpc.3n
+sys_errlist.3        perror.3
+sys_nerr.3           perror.3
+sys_siglist.3        psignal.3
+tan.3m               sin.3m
+tarmail.1            btoa.1
+# tell                 
+telldir.3            directory.3
+tgetent.3x           termcap.3x
+tgetnum.3x           termcap.3x
+tgetflag.3x          termcap.3x
+tgetstr.3x           termcap.3x
+tgoto.3x             termcap.3x
+timezone.3           ctime.3
+setenv.3             getenv.3
+# tmpnam              
+toascii.3            ctype.3
+tolower.3            ctype.3
+toupper.3            ctype.3
+tputs.3x             termcap.3x
+ttyslot.3            ttyname.3
+u3b.1		     machid.1
+u3b2.1		     machid.1
+u3b5.1		     machid.1
+ucb.1                universe.1
+u.1                  users.1
+# udiv                 udiv.3
+umount.8             mount.8
+uncompact.1          compact.1
+uncompress.1         compress.1
+uncompressdir.1      compressdir.1
+unexpand.1           expand.1
+unmirror.8		mirror.8
+unsetenv.3           getenv.3
+untarmail.1          btoa.1
+# urem.3               udiv.3
+usclk_init.3         getusclk.3
+uucpd.8c             uucico.8c
+uudecode.1c          uuencode.1c
+vax.1		     machid.1
+view.1               vi.1
+vpq.1                vpr.1
+vprint.1             vpr.1
+vprm.1               vpr.1
+wait3.2              wait.2
+writev.2             write.2
+wtmp.5               utmp.5
+xdr_accepted_reply.3 rpc.3n
+xdr_array.3          xdr.3n
+xdr_authunix_parms.3 rpc.3n
+xdr_bool.3           xdr.3n
+xdr_bytes.3          xdr.3n
+xdr_callhdr.3        rpc.3n
+xdr_callmsg.3        rpc.3n
+xdr_destroy.3        xdr.3n
+xdr_double.3         xdr.3n
+xdr_enum.3           xdr.3n
+xdr_float.3          xdr.3n
+xdr_getpos.3         xdr.3n
+xdr_inline.3         xdr.3n
+xdr_int.3            xdr.3n
+xdr_long.3           xdr.3n
+xdr_opaque.3         xdr.3n
+xdr_opaque_auth.3    rpc.3n
+xdr_pmap.3           rpc.3n
+xdr_pmaplist.3       rpc.3n
+xdr-reference.3      xdr.3n
+xdr_rejected_reply.3 rpc.3n
+xdr_replymsg.3       rpc.3n
+xdr_setpos.3         xdr.3n
+xdr_short.3          xdr.3n
+xdr_string.3         xdr.3n
+xdr_u_int.3          xdr.3n
+xdr_u_long.3         xdr.3n
+xdr_u_short.3        xdr.3n
+xdr_union.3          xdr.3n
+xdr_void.3           xdr.3n
+xdr_wrapstring.3     xdr.3n
+xdrmem_create.3      xdr.3n
+xdrrec_create.3      xdr.3n
+xdrrec_endofrecord.3 xdr.3n
+xdrrec_eof.3         xdr.3n
+xdrrec_skiprecord.3  xdr.3n
+xdrstdio_create.3    xdr.3n
+xget.1               xsend.1
+xprt_register.3      rpc.3n
+xprt_unregister.3    rpc.3n
+ypbind.8             ypserv.8
+yp_all.3n            ypclnt.3n
+yp_bind.3n           ypclnt.3n
+yp_first.3n          ypclnt.3n
+yp_get_default_domain.3n ypclnt.3n
+yp_master.3n         ypclnt.3n
+yp_match.3n          ypclnt.3n
+yp_next.3n           ypclnt.3n
+yp_order.3n          ypclnt.3n
+yp_unbind.3n         ypclnt.3n
+yperr_string.3n      ypclnt.3n
+ypprot_err.3n        ypclnt.3n
+zcat.1               compress.1
+zdiff.1              zcmp.1

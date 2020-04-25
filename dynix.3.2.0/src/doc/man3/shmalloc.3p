@@ -1,0 +1,99 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986 Sequent Computer Systems, Inc.
+.\" All rights reserved
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: shmalloc.3p 1.8 1991/06/12 21:38:39 $
+.TH SHMALLOC 3P "\*(V)" "DYNIX"
+.SH NAME
+shmalloc, shrealloc, shfree \- shared memory allocator
+.SH SYNOPSIS
+.nf
+\f2C syntax:\fP
+.PP
+.B char *shmalloc(size)
+.B unsigned size;
+.B shfree(ptr)
+.B char *ptr;
+.PP
+.B char *shrealloc(ptr,size)
+.B char *ptr;
+.B unsigned size;
+.PP
+\f2Pascal syntax\fP
+.PP
+none
+.PP
+\f2FORTRAN syntax\fP
+.PP
+none
+.fi
+.SH DESCRIPTION
+\f2shmalloc\fP, \f2shrealloc\fP, and \f2shfree\fP
+provide a simple general-purpose shared memory allocation package
+for a set of processes executing a single application.
+To use these routines, the program must have been linked with
+the Parallel Programming Library.
+.I shmalloc
+returns a pointer to a block of at least
+.I size
+bytes beginning on a 4-byte word boundary.
+.PP
+The argument to
+.I shfree
+is a pointer to a block previously allocated by
+.IR shmalloc ;
+this space is made available for further allocation,
+but its contents are left undisturbed.
+.PP
+Clearly, grave disorder will result if the space assigned by
+.I shmalloc
+is overrun or if some random number is handed to
+.IR shfree .
+.PP
+.I shmalloc
+maintains multiple lists of free blocks according to size,
+allocating space from the appropriate list.
+It calls
+.I shsbrk
+(see
+.IR shbrk (3P))
+to get more memory from the system when there is no
+suitable space already free.
+.I shmalloc
+and
+.I shfree
+coordinate the allocation of shared memory among the processes
+in the task.
+They maintain a consistent list of free blocks even when
+several processes are allocating shared memory concurrently.
+Concurrent requests for shared memory blocks always return
+unique blocks from the program's shared data segment.
+.PP
+\f2shrealloc\fP changes the size of the block pointed to by
+\f2ptr\fP to \f2size\fP bytes and returns a pointer to the
+(possibly moved) block.
+The contents will be unchanged up to the lesser of the new
+and old sizes. If \f2ptr\fP points to a freed block, shrealloc
+returns NULL.
+.PP
+When any of these allocation routines increases a program's address
+space, it also attempts to increase its allowable resident set size
+(see \f2vm_ctl\fP(2)).
+.SH DIAGNOSTICS
+.I shmalloc
+returns a null pointer (0) if there is no available shared memory or
+if the region has been detectably corrupted by storing data
+outside the bounds of a block.
+.I shmalloc
+may be recompiled to check the arena very stringently on every transaction;
+those sites with a source code license may check the source code to see
+how this can be done.
+.SH "SEE ALSO"
+shbrk(3P), vm_ctl(2), \f2Guide to Parallel Programming\fP

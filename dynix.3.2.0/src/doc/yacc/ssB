@@ -1,0 +1,36 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+. \" $Header: ssB 1.2 86/03/06 $
+.SH
+11: Acknowledgements
+.PP
+Yacc owes much to a
+most stimulating collection of users, who have goaded
+me beyond my inclination, and frequently beyond my
+ability, in their endless search for ``one more feature''.
+Their irritating unwillingness to learn how to
+do things my way has usually led to my doing things their way;
+most of the time, they have been right.
+B. W. Kernighan, P. J. Plauger, S. I. Feldman, C. Imagna,
+M. E. Lesk,
+and A. Snyder will recognize some of their ideas in the current version
+of Yacc.
+C. B. Haley contributed to the error recovery algorithm.
+D. M. Ritchie, B. W. Kernighan, and M. O. Harris helped translate this document into English.
+Al Aho also deserves special credit for bringing
+the mountain to Mohammed, and other favors.
+.SG "MH-1273-SCJ-unix"
+.bp
+.[
+$LIST$
+.]
+.bp

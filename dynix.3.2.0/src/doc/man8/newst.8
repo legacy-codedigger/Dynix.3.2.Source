@@ -1,0 +1,301 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987 Sequent Computer Systems, Inc.
+.\" All rights reserved
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: newst.8 1.1 91/04/08 $
+.TH NEWST 8 "\*(V)" "DYNIX"
+.CX
+.SH NAME
+newst \- make a new striped file system
+.SH SYNOPSIS
+.B newst
+[
+.I options
+]
+.I stripedev
+.I diskdev1
+.I type1
+.I diskdev2
+.I type2...
+.SH DESCRIPTION
+.I newst
+is a program for making \*(lqstriped file systems\*(rq.  A striped file system
+is a regular DYNIX file system which uses a striped disk partition.
+Striped disk partitions are logical disk partitions which are
+interleaved over several physical disk partitions.  Striped disk partitions
+are used to take advantage of performance improvements made possible by
+the parallel operation of the several disk arms which make up the striped
+disk partition.  This parallelism can be acheived either by distributing 
+large transfers over many disks or by spreading multiple simultaneous requests 
+to the same partition across multiple disks.  
+Another possible advantage may come from the ability
+to create multi-volume virtual partitions whose size is larger than that
+of any physical disk involved in it.  
+Striped disk partitions may be accessed just as \*(lqnormal\*(rq disk 
+partitions are, including for creating and mounting DYNIX file systems on them.
+.PP
+.I newst
+has three basic jobs: (1) constructing a stripe descriptor based on
+the characteristics of the different partitions to be combined,
+(2) loading the stripe descriptor into a table in the DYNIX kernel using
+.IR putst (8),
+and (3) making a DYNIX file system on the stripe partition using
+.IR mkfs (8).
+After running
+.IR newst ,
+the new striped file system can be checked with
+.IR fsck (8),
+tuned with 
+.IR tunefs (8),
+mounted with
+.IR mount (8),
+and used like any other normal file system.
+.PP
+The arguments to
+.I newst
+consist of a striped partition device name
+(
+.I /dev/rdsX
+)
+and a list of pairs of disk partition names and device types.
+For example, 
+.I /dev/rzd2h 
+and 
+.I m2344k, 
+respectively.
+Each name/type pair specifies a disk partition which will become a part
+of the \*(lqstriped partition\*(rq.  The device type is identical to the
+type specified for
+.IR newfs (8),
+and must be in the file
+.I /etc/disktab
+(
+see
+.IR disktab (5)
+).
+.PP
+.I newst
+creates a stripe descriptor entry and adds the
+entry to the stripe descriptor database file
+.IR /etc/stripecap 
+( see
+.IR stripecap (5)
+).
+.PP
+The switch options may be used:
+.PP
+.TP 10
+.B \-v
+Verbose.  Prints out the generated stripecap entry.
+.TP 10
+.B \-n
+Nochange.  Prints the actions which would otherwise be taken,
+but does not update
+.IR /etc/stripecap ,
+and does not invoke
+.IR putst (8)
+or
+.IR mkfs (8). 
+.TP 10
+.B \-e
+Entry.  Create the stripecap entry only; don't invoke
+.IR putst (8)
+or
+.IR mkfs (8). 
+.TP 10
+.BI \-b \ block-size
+Specifies the file system block size to be
+.I block-size
+bytes, e.g. 8k or 8192.  It defaults to that of
+the first partition specified in the argment list,
+as listed in 
+.IR /etc/disktab
+for the its disk type argment.  Currently it must
+be either 4k or 8k.
+.TP 10
+.BI \-f \ frag-size
+Specifies the file system fragment size to be
+.IR frag-size
+bytes, e.g. 1k or 1024.
+It defaults to that of the first partition specified in the argment list,
+as listed in 
+.IR /etc/disktab
+for the its disk type argment.  It must
+be a power of 2, in the range 512 through 8k, inclusive.
+.TP 10
+.BI \-m \ minfree
+Specifies a value for the file system
+.I minfree
+parameter.  It defaults to 10 percent.
+.TP 10
+.BI \-r \ revolutions/second
+Specifies a value for the file system
+.I revolutions/second
+parameter.  It defaults to 3600.
+.TP 10
+.BI \-s \ #sectors/track
+Specifies the number of disk sectors per track.  The default is
+that of the first partition's disktype entry in 
+.IR /etc/disktab
+multiplied by the number of distinct physical disks upon which the
+composit partitions for this stripe partition reside.
+.TP 10
+.BI \-t \ #tracks/cylinder
+Specifies the number of disk tracks per cylinder.
+It defaults to that of the first partition specified in the argment list,
+as listed in 
+.IR /etc/disktab
+for the its disk type argment.
+.TP 10
+.BI \-c \ #cylinders/group
+The number of cylinders per cylinder group in the file system.
+The default is to make an estimate based on the file system size that
+will allow for enough inodes (as inodes are allocated on a cylinder group
+basis) without creating excessive overhead.
+.TP 10
+\fB\-I\fR \fInumber of inodes desired\fR
+An attempt will be made by \fInewst\fR to set up a striped file system with
+the desired number of inodes.  However, the number specifed
+most likely will not be the exact number of inodes created, because of the 
+other requirements and restrictions that affect the creation of
+an \*(lqoptimal\*(rq file system on the specified devices.
+.TP 10
+\fB\-i\fR \fInumber of bytes per inode\fR
+Specifies a value for the 
+.I number of bytes per inode
+parameter to be passed to 
+.IR mkfs (8).
+This is used alternatively to the \fB\-I\fR option described above.
+.TP 10
+\fB\-B\fR \fIdevice blocks per stripe block\fR
+Specifies the value to use for the stripe block size (in device blocks)
+of logical sections calculated for this stripe partition.  It must be
+a multiple of 16 (8kbytes) and will be ignored for stripe sections
+containing only one composit partition or with multiple partitions 
+composit partitions on the same physical disk.  The default is 16,
+which matches the system's maximum file system block size.
+.PP
+Note that the
+.I block-size
+and
+.I frag-size
+arguments can end with a \*(lqk\*(rq,
+e.g. \*(lq-b 8k\*(rq to indicate 8192-byte blocks.
+Disk partition size information is obtained from
+.I /etc/disktab
+based on the disk types supplied in the argument list.  Disk geometric
+information, such as disk block size, is obtained either from the
+switches, or else from the
+.I /etc/disktab
+entry of the first disk device given in the argument list (see
+.IR disktab (5)).
+.PP
+.I newst
+uses a set of heuristics to determine how to lay out logical stripe sections on
+the physical devices.
+These heuristics are derived
+from performance measurements using stripe file systems.
+The user need not be aware of them except that file system bandwidth
+is optimized if only one partition per physical disk drive is used in
+a striped file system.
+.SH EXAMPLE
+.PP
+.B "newst /dev/rds0 zd4a m2344k zd5a m2344k zd6h m2344k"
+.PP
+The above command creates a three disk striped partition, using the
+disk partitions
+.IR /dev/rzd4a ,
+.IR /dev/rzd5a ,
+and
+.IR /dev/rzd6h ,
+each of which is of type
+.I m2344k
+as found in
+.IR /etc/disktab .
+.SH FILES
+.ta \w`/etc/stripecap     `u
+\fI/dev/rzd??\fR		Raw devices for the DCC disk driver
+.br
+\fI/dev/rsd??\fR		Raw devices for the SCED SCSI disk driver
+.br
+\fI/dev/rds?\fR		Raw stripe device
+.br
+\fI/etc/stripecap\fR		Permanent home of the stripe descriptors
+.br
+\fI/etc/putst\fR		For downloading the stripe table entry to the DYNIX kernel
+.br
+\fI/etc/disktab\fR		For disk geometry and file system partition information 
+.br
+\fI/etc/mkfs\fR		To actually build the file system
+.br
+\fI/etc/fsirand\fR		To randomize inode allocation in that file system
+.br
+.SH SEE ALSO
+putst(8), getst(8), stripecap(5), ds(4), newfs(8), mkfs(8), fsirand(8), tunefs(8)
+.SH CAVEATS
+The partitions specified on the command line may be either the block
+or raw interface device name for the device, but be aware that newst
+will verify that the other does exist and is valid.  
+.PP
+Since the stripe partition devices and /etc/stripecap are owned 
+by root, you must be superuser to successfully run this utility.
+.PP
+The partitions specified in the command line from which newst
+generates a stripe partition need not be ordered any particular
+way.  They will be sorted by size internally prior to determining
+logical stripe sections within the partition.
+.PP
+Be careful that composit partitions do not overlap
+on the same device or data corruption may result from their use.
+Likewise, care must be taken to ensure that the same stripecap
+configuration is repeatedly used to access the stripe partition.
+Otherwise, previously written data may appear to be corrupt and 
+subsequently get corrupted.
+.PP
+Stripe block sizes must be a minimum of 16 or a multiple thereof
+(representing 8kbytes).
+Stripe section sizes must be a multiple of the that section's stripe
+block size.  This can result in some wasted space and the end of each
+composit partition, about which newst will issue warnings. 
+.PP
+Performance may be reduced if partitions in the stripe partition are not
+on distict disk drives.  It is also recommended that they be located on
+distinct disk controller channels.  Likewise, it is best for partitions
+to be of equal lengths on identical drives and controllers, although not
+necessary.
+.PP
+.IR newst
+sets the stripe block size to match the stripe section size (no
+interleave) when only one partition is involved or when multiple partitions
+in that section reside on the same physical drive.  In this situation 
+a performance degradation may result otherwise.  Also, some experimentation
+with stripe block sizes may be useful to tune performance to your application.
+.PP
+The total size of the entire stripe partition must be less than 2 gigabytes.
+This is currently a DYNIX addressing limitation.  Newst will truncate the
+stripe partition so that it meets this limitation, issueing a warning that
+it is wasting space at the end of the composit partitions.
+.PP
+Stripe partitions cannot be used for the root file system, since the DYNIX
+kernel and standalone utilities do not know the stripe partitions layout.
+This information is not available until the root file system is being used
+to execute putst.  Similarly, do not use it as a swap partition.
+.PP
+The stripe partition's data may be corrupted if one of its composit
+partitions is written to directly.
+.PP
+This utility does not have the ability to tune the file system's
+.I maxcontig
+and
+.I rotdelay
+parameters.  They can be tuned with the 
+.IR tunefs (8)
+utility after the file system has been created.
+

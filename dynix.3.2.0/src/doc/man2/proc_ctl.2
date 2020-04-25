@@ -1,0 +1,81 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: proc_ctl.2 1.11 1991/04/12 22:26:38 $
+.TH PROC_CTL 2 "\*(V)" "DYNIX"
+.SH NAME
+proc_ctl \- control over various process attributes
+.SH SYNOPSIS
+.nf
+.DT
+.ft 3
+#include <sys/time.h>
+#include <sys/resource.h>
+
+proc_ctl(cmd, who, arg)
+int	cmd;
+int	who;
+int	arg;
+.fi
+.ft 1
+.SH DESCRIPTION
+This call supports manipulation of various process attributes.
+The only currently supported \*(lqcmd\*(rq is PROC_PRIOAGE.
+Cmd, who, and arg are interpreted as follows:
+.TP
+cmd = PROC_PRIOAGE
+\*(lqwho\*(rq is a process ID (pid);
+zero means the calling process.
+Priority aging of the selected process is enabled or disabled depending
+on arg being non-zero or zero (respectively).
+When priority aging is disabled,
+DYNIX no longer takes the calling process's CPU usage history into
+consideration when selecting among processes to run.
+The calling process's effective uid must be root or the same as the
+selected process.
+Any uid can enable priority aging with the \*(lqarg\*(rq argument.
+A root process,
+or any process if the system is configured for it,
+can disable priority aging.  Zero (0) indicates no aging.  One (1)
+enables aging.
+The priority aging attribute is inherited across fork and exec.
+.SH "RETURN VALUE"
+Upon successful completion, a value of 0 is returned.
+Otherwise, a value of \-1 is returned and
+.I errno
+is set to indicate the error.
+.SH "ERRORS
+.I Proc_ctl
+will fail if one or more of the following are true:
+.TP 15
+[EINVAL]
+.I Cmd
+is not one of the supported values.
+.TP 15
+[EPERM]
+Caller is not root for disabling priority aging,
+and the binary configuration disallows this.
+.TP 15
+[EPERM]
+The caller is not root
+and the effective uid is not the same as the selected process.
+.TP 15
+[ESRCH]
+.I who
+specifies a non-existent process.
+.SH "SEE ALSO"
+setpriority(2), vm_ctl(2)
+.SH "NOTES"
+Binary configuration of ability for non-root processes to
+disable priority aging is provided via a variable in
+.IR /sys/conf/param.c :
+root_prio_noage.
+If this variable is non-zero, only root can disable priority aging.

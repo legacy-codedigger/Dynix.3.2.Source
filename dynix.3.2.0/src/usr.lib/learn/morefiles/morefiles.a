@@ -1,0 +1,2378 @@
+!<arch>
+L0              445768617   100   205   100640  14        `
+#next
+0.1a 10
+L0.1a           445768619   100   205   100640  699       `
+#print
+In the basic files course you learned about the "ls" command
+for listing the names of files in the current directory.
+You will now learn some of the extra abilities of "ls".
+UNIX maintains a lot more information about a file than just
+its name; this extra information includes the size of the
+file, the date and time it was last changed, the owner,
+and scattered other miscellany.  To see this "long" list of information,
+use the command "ls -l".  (That's an "ell", not a "one".)
+The "-l" is called an "optional argument",
+since it may or may not be present.
+
+To begin, try just "ls -l", then type "ready".
+#create junk
+this is garbage
+#copyin
+#user
+#uncopyin
+#match ls -l
+#log
+#next
+0.1b 10
+
+L0.1b           445768620   100   205   100640  1419      `
+#print
+When you ask for "ls -l", the first line,
+which says "total N", is a measure of how much
+file space is used by the files in this directory.
+The part of the listing that says something like
+"-rw-rw-r--" tells you the read and write
+permissions for the file -- in effect,
+who can do what to it.
+The second field is the number of "links" to the file.
+We won't worry about these two right now.
+
+The name in the third field is the owner of the file.
+The fourth field is the size of the file in characters,
+which is often interesting.  The rest of the listing is
+the date and time the file was last changed, and its name.
+
+What is the largest file in this directory?
+(Don't use the previous list - I've changed things.)
+Type "answer name", where "name" is the name of the
+largest file.
+#create big
+stuff
+#create biggest
+not really
+#create X1
+morestuf
+#create m
+moremore moremore moremore moremore moremore moremore moremore moremore moremore
+moremore moremore moremore moremore moremore moremore moremore moremore moremore
+moremore moremore moremore moremore moremore moremore moremore moremore moremore
+moremore moremore moremore moremore moremore moremore moremore moremore moremore
+moremore moremore moremore moremore moremore moremore moremore moremore moremore
+#copyin
+#user
+#uncopyin
+#match m
+#bad biggest
+You didn't look at the sizes, did you?
+#bad big
+You didn't look at the sizes, did you?
+#log
+#next
+0.1c 10
+
+L0.1c           445768622   100   205   100640  291       `
+#print
+How many characters are there in the file whose name begins
+with "r"?  Type "answer N", where N is the number of characters
+you found.
+#create ref
+hello world
+#create Ref
+hello
+#copyin
+#user
+#uncopyin
+#match 12
+#bad 6
+"R" is ___not the same as "r".  Look again.
+#log
+#next
+0.1d 10
+
+L0.1d           445768623   100   205   100640  201       `
+#print
+Is the file "ref" bigger than the file "ref1"?
+Answer yes or no.
+#create ref
+now is the time.
+#create ref1
+now is the time for all good men.
+#copyin
+#user
+#uncopyin
+#match no
+#log
+#next
+0.1e 10
+
+L0.1e           445768625   100   205   100640  438       `
+#create X3
+stuff
+#print
+The list of file names from "ls" can also be obtained
+sorted by the date the file was most recently changed,
+with the newest files listed first.  This list is
+obtained by typing "ls -t".
+
+What is the oldest file in this directory?
+Type "answer name", where "name" is the oldest file.
+#create X1
+stuff
+#create X2
+stuff
+#copyin
+#user
+#uncopyin
+ls -t | tail -1 >X1
+tail -1 .copy >test
+#cmp X1 test
+#log
+#next
+0.1f 10
+L0.1f           445768627   100   205   100640  230       `
+#print
+You can combine the optional arguments to "ls"; for example
+you can get the "long" list sorted by time of last change
+by saying
+  ls -lt
+Try that, then type "ready".
+#copyin
+#user
+#uncopyin
+#match ls -lt
+#log
+#next
+0.1g 10
+L0.1g           445768628   100   205   100640  126       `
+#print
+Is "ls -tl" identical to "ls -lt"?  Try it,
+then type yes or no.
+#copyin
+#user
+#uncopyin
+#match yes
+#log
+#next
+1.1a 10
+L1.1a           445768631   100   205   100640  12648     `
+#print
+One of the more useful programs on Unix is "spell", which
+looks for spelling mistakes in a set of files.  Although spell
+is not perfect, it does a reasonable job of presenting you
+with a list of possibilities.  To look for mistakes in a set
+of files, you simply say
+
+   spell filenames
+
+and of course you can use shorthands like *, ? and [] to name
+the files.  For practice, there are some files whose names begin
+with "memo" in this directory; somewhere in one of them
+is a legitimate spelling mistake.  Use spell to find it, then
+type "answer word", where "word" is the mistake.
+Spell may also output a number of words
+that aren't mistakes; you may have to select real errors
+from the false ones.
+
+By the way, spell takes a minute to run;
+go get a cup of coffee or something while you wait.
+#create memo1
+(This comes from a federalist paper by alexander hamilton.)
+   It has been mentioned as one of the advantages to be expected
+from the cooperation of the Senate, in the business
+of appointments, that it would contribute to the
+stability of the administration.  The consent of that body
+would be necessary to displace as well as to appoint.  A
+change of the Chief Magistrate, therefore, would not occasion
+so violent or so general a revolution in the officers
+of the government as might be expected if he were the
+sole disposer of offices.  Where a man in any station had
+given satisfactory evidence of his fitness for it, a new
+President would be restrained from attempting a change
+in favor of a person more agreeable to him by the apprehension
+that a discountenance of the Senate might frustrate
+the attempt, and bring some degree of discredit
+upon himself.  Those who can best estimate the value of
+a steady administration will be most disposed to prize a
+provision which connects the official existence of public
+men with the approbation or disapprobation of that body
+which, from the greater permanency of its own composition,
+will in all probability be less subject to inconstancy
+than any other member of the government.
+   To this union of the Senate with the President, in the
+article of appointments, it has in some cases been suggested
+that it would serve to give the President an undue
+influence over the Senate, and in others that it would
+have an opposite tendency - a strong proof that neither
+suggestion is true.
+   To state the first in its proper form is to refute it.  It
+amounts to this:  the President would have an improper
+influence over the Senate, because the Senate would
+have the power of restraining him.  This is an absurdity in
+terms.  It cannot admit of a doubt that the entire power
+of appointment would enable him much more effectually
+to establish a dangerous empire over that body than a
+mere power of nomination subject to their control.
+    Let us take a view of the converse of the proposition:
+"the Senate would influence the executive."  As I have
+had occasion to remark in several other instances, the indistinctness
+of the objection forbids a precise answer.  In
+what manner is this influence to be exerted?  In relation
+to what objects?  The power of influencing a person, in
+the sense in which it is here used, must imply a power of
+conferring a benefit upon him.  How could the Senate
+confer a benefit upon the President by the manner of employing
+their right of negative upon his nominations?  If it
+be said they might sometimes gratify him by an acquiescence
+in a favorite choice, when public motives might dictate a
+different conduct, I answer that the instances in which the
+President could be personally interested in the result would
+be too few to admit of his being materially affected by the
+#create memo2
+compliances of the Senate.  Besides this, it is evident that
+the POWER which can originate the disposition of honors
+and emoluments is more likely to attract than to be attracted
+by the POWER which can merely obstruct their
+course.  If by influencing the President be want restraining
+him, this is precisely what must have been intended.
+And it has been shown that the restraint would be salutary,
+at the same time that it would not be such as to
+destroy a single advantage to be looked for from the uncontrolled
+agency of that magistrate.  The right of nomination
+would produce all the good, without the ill.
+   Upon a comparison of the plan for the appointment of
+the officers of the proposed government with that which
+is established by the constitution of this State, a decided
+preference must be given to the former.  In that plan the
+power of nomination is unequivocally vested in the executive.
+And as there would be a necessity for submitting
+each nomination to the judgment of an entire branch of
+the legislature, the circumstances attending an appointment,
+from the mode of conducting it, would naturally
+become matters of notoriety, and the public would
+be at no loss to determine what part had been performed
+by the different actors.  The blame of a bad nomination
+would fall upon the President singly and absolutely.  The
+censure of rejecting a good one would lie entirely at the
+door of the senate, aggravated by the consideration
+of their having counteracted the good intentions of the
+executive.  If an ill appointment should be made, the executive,
+for nominating, and the Senate, for approving,
+would participate, though in different degrees, in the
+opprobrium and disgrace.
+   The reverse of all this characterizes the manner of appointment
+in this State.  The council of appointment consists
+of from three to five persons, of whom the governor
+is always one.  This small body, shut up in a private
+apartment, impenetrable to the public eye, proceed to the
+execution of the trust committed to them.  It is known
+that the governor claims the right of nomination upon
+the strength of some ambiguous expressions in the Constitution;
+but it is not known to what extent, or in what
+manner he exercises it; nor upon what occasions he is
+contradicted or opposed.  The censure of a bad appointment,
+on account of the uncertainty of its author and for
+want of a determinate object, has neither poignancy nor
+duration.  And while an unbounded field for cabal and intrigue
+lies open, all idea of responsibility is lost.  The
+most that the public can know is that the governor
+claims the right of nomination; that two out of the inconsiderable
+number of four men can too often be managed
+without much difficulty; that if some of the members of a
+#create memo3
+particular council should happen to be of an uncomplying
+character, it is frequently not impossible to get rid of their
+opposition by regulating the times of meeting in such a
+manner as to render their attendance inconvenient; and
+that from whatever cause it may proceed, a great
+number of very improper appointments are from time to
+time made.  Whether a governor of this State avails himself
+of the ascendant, he must necessarily have in this
+delicate and important part of the administration to prefer
+to offices men who are best qualified for them; or
+whether he prostitutes that advantage to the advancement
+of persons whose chief merit is their implicit devotion to
+his will and to the support of a despicable and dangerous
+system of personal influence are questions which, unfortunately
+for the community, can only be the subjects
+of speculation and conjecture.
+   Every mere council of appointment, however constituted,
+will be a conclave in which cabal and intrigue will
+have their full scope.  Their number, without an unwarrantable
+increase of expense, cannot be large enough to
+preclude a facility of combination.  And as each member
+will have his friends and connections to provide for,
+the desire of mutual gratification will beget a scandalous
+bartering of votes and bargaining for places.  The private
+attachments of one man might easily be satisfied, but to
+satisfy the private attachments of a dozen, or of twenty
+men, would occasion a monopoly of all the principal employments
+of the government in a few families and
+would lead more directly to an aristocracy or an oligarchy
+than any measure that could be contrived.  If, to avoid an
+accumulation of offices, there was to be a frequent change
+in the persons who were to be a frequent change
+in the persons who were to compose the council, this
+would involve the mischiefs of a mutable administration
+in their full extent.  Such a council would also be more
+liable to executive influence than the Senate, because
+they would be fewer in number, and would act less immediately
+under the public inspection.  Such a council, in
+fine, as a substitute for the plan of the convention, would
+be productive of an increase of expense, a multiplication
+of the evils which spring from favoritism and intrigue in
+the distribution of public honors, a decrease of stability
+in the administration of the government, and a diminution
+of the security against an undue influence of the
+executive.  And yet such a council has been warmly contended
+for as an essential amendment in the proposed
+Constitution.
+   I could not with propriety conclude my observations
+on the subject of appointments without taking notice of
+a scheme for which there have appeared some, though
+#create memo4
+but a few advocates; I mean that of uniting the House of
+Representatives in the power of making them.  I shall,
+however, do little more than mention it, as I cannot
+imagine that it is likely to gain the countenance of any
+considerable part of the community.  A body so fluctuating
+and at the same time so numerous can never be
+deemed proper for the exercise of that power.  Its unfitness
+will appear manifest to all when it is recollected that
+in half a century it may consist of three or four hundred
+persons.  All the advantages of the stability, both of the
+Executive and of the Senate, would be defeated by this
+union, and infinite delays and embarrassments would be
+occasioned.  The exampled of most of the States in their
+local constitutions encourages us to reprobate the idea.
+   The only remaining powers of the executive are comprehended
+in giving information to Congress of the state
+of the Union; in recommending to their consideration
+such measures as he shall judge expedient; in convening
+them, or either branch, upon extraordinary occasions; in
+adjourning them when they cannot themselves agree upon
+the time of adjournment; in receiving ambassadors and
+other public ministers; in faithfully executing the laws;
+and in commissioning all the officers of the United States.
+   Except some cavils about the power of convening either
+house of the legislature, and that of receiving ambassadors,
+no objection has been made to this class of
+authorities; nor could they possibly admit of any.  It required,
+indeed, an insatiable avidity for censure to invent
+exceptions to the parts which have been excepted to.  In
+regard to the power of convening either house of the legislature
+I shall barely remark that in respect to the Senate,
+at least, we can readily discover a good reason for it.  As
+this body has a concurrent power with the executive in
+the article of treaties, it might often be necessary to call
+it together with a view to this object, when it would be
+unnecessary and improper to convene the House of Representatives.
+As to the reception of ambassadors, what I
+have said in a former paper will furnish a sufficient answer.
+   We have now completed a survy of the structure and
+powers of the executive department which, I have endeavored
+to show, combines, as far as republican principles
+will admit, all the requisites to energy.  The
+remaining inquiry is:  does it also combine the requisites
+to safety, in the republican sense - due dependence on
+the people, a due responsibility?  The answer to this question
+has been anticipated in the investigation of its other
+characteristics, and is satisfactorily deducible from these
+circumstances; the election of the President once in four
+years by persons immediately chosen by the people for
+that purpose, and his being at all times liable to impeachment,
+trial, dismission from office, incapacity to serve
+in any other, and to the forfeiture of life and estate by subsequent
+prosecution in the common course of law.  But
+these precautions, great as they are, are not the only
+ones which the plan of the convention has provided in
+favor of the public security.  In the only instances in which
+the abuse of the executive authority was materially to be
+feared, the chief Magistrate of the United States, would,
+by that plan, be subjected to the control of a branch of
+the legislative body.  What more can an enlightened and
+reasonable people desire?
+#copyin
+#user
+#uncopyin
+#match survy
+#log
+#next
+1.1b 10
+L1.1b           445768633   100   205   100640  12697     `
+#print
+Now that you know what word is wrong, you still have to find
+it in one of the memo files so you can correct it.  One way
+is to use the text editor "ex", but that is rather slow.  Better
+is to use the pattern-finding program "grep", which looks through
+a set of files to find a particular word.  To find all occurrences
+of "glop" in the files tom, dick and harry, you need only type
+
+   grep 'glop' tom dick harry
+
+The first thing is the word that grep is to search for;
+any remaining names are file names, which are searched in order.
+The quotes around the word to be searched for aren't
+always necessary, but it's a good habit to use them
+anyway.  Later on we'll see some examples where they are really
+needed.
+
+Use grep to find the memo file that contains the spelling error,
+and type "answer name", where "name" is the file you decide on.
+#create memo1
+(This comes from a federalist paper by alexander hamilton.)
+   It has been mentioned as one of the advantages to be expected
+from the cooperation of the Senate, in the business
+of appointments, that it would contribute to the
+stability of the administration.  The consent of that body
+would be necessary to displace as well as to appoint.  A
+change of the Chief Magistrate, therefore, would not occasion
+so violent or so general a revolution in the officers
+of the government as might be expected if he were the
+sole disposer of offices.  Where a man in any station had
+given satisfactory evidence of his fitness for it, a new
+President would be restrained from attempting a change
+in favor of a person more agreeable to him by the apprehension
+that a discountenance of the Senate might frustrate
+the attempt, and bring some degree of discredit
+upon himself.  Those who can best estimate the value of
+a steady administration will be most disposed to prize a
+provision which connects the official existence of public
+men with the approbation or disapprobation of that body
+which, from the greater permanency of its own composition,
+will in all probability be less subject to inconstancy
+than any other member of the government.
+   To this union of the Senate with the President, in the
+article of appointments, it has in some cases been suggested
+that it would serve to give the President an undue
+influence over the Senate, and in others that it would
+have an opposite tendency - a strong proof that neither
+suggestion is true.
+   To state the first in its proper form is to refute it.  It
+amounts to this:  the President would have an improper
+influence over the Senate, because the Senate would
+have the power of restraining him.  This is an absurdity in
+terms.  It cannot admit of a doubt that the entire power
+of appointment would enable him much more effectually
+to establish a dangerous empire over that body than a
+mere power of nomination subject to their control.
+    Let us take a view of the converse of the proposition:
+"the Senate would influence the executive."  As I have
+had occasion to remark in several other instances, the indistinctness
+of the objection forbids a precise answer.  In
+what manner is this influence to be exerted?  In relation
+to what objects?  The power of influencing a person, in
+the sense in which it is here used, must imply a power of
+conferring a benefit upon him.  How could the Senate
+confer a benefit upon the President by the manner of employing
+their right of negative upon his nominations?  If it
+be said they might sometimes gratify him by an acquiescence
+in a favorite choice, when public motives might dictate a
+different conduct, I answer that the instances in which the
+President could be personally interested in the result would
+be too few to admit of his being materially affected by the
+#create memo2
+compliances of the Senate.  Besides this, it is evident that
+the POWER which can originate the disposition of honors
+and emoluments is more likely to attract than to be attracted
+by the POWER which can merely obstruct their
+course.  If by influencing the President be want restraining
+him, this is precisely what must have been intended.
+And it has been shown that the restraint would be salutary,
+at the same time that it would not be such as to
+destroy a single advantage to be looked for from the uncontrolled
+agency of that magistrate.  The right of nomination
+would produce all the good, without the ill.
+   Upon a comparison of the plan for the appointment of
+the officers of the proposed government with that which
+is established by the constitution of this State, a decided
+preference must be given to the former.  In that plan the
+power of nomination is unequivocally vested in the executive.
+And as there would be a necessity for submitting
+each nomination to the judgment of an entire branch of
+the legislature, the circumstances attending an appointment,
+from the mode of conducting it, would naturally
+become matters of notoriety, and the public would
+be at no loss to determine what part had been performed
+by the different actors.  The blame of a bad nomination
+would fall upon the President singly and absolutely.  The
+censure of rejecting a good one would lie entirely at the
+door of the senate, aggravated by the consideration
+of their having counteracted the good intentions of the
+executive.  If an ill appointment should be made, the executive,
+for nominating, and the Senate, for approving,
+would participate, though in different degrees, in the
+opprobrium and disgrace.
+   The reverse of all this characterizes the manner of appointment
+in this State.  The council of appointment consists
+of from three to five persons, of whom the governor
+is always one.  This small body, shut up in a private
+apartment, impenetrable to the public eye, proceed to the
+execution of the trust committed to them.  It is known
+that the governor claims the right of nomination upon
+the strength of some ambiguous expressions in the Constitution;
+but it is not known to what extent, or in what
+manner he exercises it; nor upon what occasions he is
+contradicted or opposed.  The censure of a bad appointment,
+on account of the uncertainty of its author and for
+want of a determinate object, has neither poignancy nor
+duration.  And while an unbounded field for cabal and intrigue
+lies open, all idea of responsibility is lost.  The
+most that the public can know is that the governor
+claims the right of nomination; that two out of the inconsiderable
+number of four men can too often be managed
+without much difficulty; that if some of the members of a
+#create memo3
+particular council should happen to be of an uncomplying
+character, it is frequently not impossible to get rid of their
+opposition by regulating the times of meeting in such a
+manner as to render their attendance inconvenient; and
+that from whatever cause it may proceed, a great
+number of very improper appointments are from time to
+time made.  Whether a governor of this State avails himself
+of the ascendant, he must necessarily have in this
+delicate and important part of the administration to prefer
+to offices men who are best qualified for them; or
+whether he prostitutes that advantage to the advancement
+of persons whose chief merit is their implicit devotion to
+his will and to the support of a despicable and dangerous
+system of personal influence are questions which, unfortunately
+for the community, can only be the subjects
+of speculation and conjecture.
+   Every mere council of appointment, however constituted,
+will be a conclave in which cabal and intrigue will
+have their full scope.  Their number, without an unwarrantable
+increase of expense, cannot be large enough to
+preclude a facility of combination.  And as each member
+will have his friends and connections to provide for,
+the desire of mutual gratification will beget a scandalous
+bartering of votes and bargaining for places.  The private
+attachments of one man might easily be satisfied, but to
+satisfy the private attachments of a dozen, or of twenty
+men, would occasion a monopoly of all the principal employments
+of the government in a few families and
+would lead more directly to an aristocracy or an oligarchy
+than any measure that could be contrived.  If, to avoid an
+accumulation of offices, there was to be a frequent change
+in the persons who were to be a frequent change
+in the persons who were to compose the council, this
+would involve the mischiefs of a mutable administration
+in their full extent.  Such a council would also be more
+liable to executive influence than the Senate, because
+they would be fewer in number, and would act less immediately
+under the public inspection.  Such a council, in
+fine, as a substitute for the plan of the convention, would
+be productive of an increase of expense, a multiplication
+of the evils which spring from favoritism and intrigue in
+the distribution of public honors, a decrease of stability
+in the administration of the government, and a diminution
+of the security against an undue influence of the
+executive.  And yet such a council has been warmly contended
+for as an essential amendment in the proposed
+Constitution.
+   I could not with propriety conclude my observations
+on the subject of appointments without taking notice of
+a scheme for which there have appeared some, though
+#create memo4
+but a few advocates; I mean that of uniting the House of
+Representatives in the power of making them.  I shall,
+however, do little more than mention it, as I cannot
+imagine that it is likely to gain the countenance of any
+considerable part of the community.  A body so fluctuating
+and at the same time so numerous can never be
+deemed proper for the exercise of that power.  Its unfitness
+will appear manifest to all when it is recollected that
+in half a century it may consist of three or four hundred
+persons.  All the advantages of the stability, both of the
+Executive and of the Senate, would be defeated by this
+union, and infinite delays and embarrassments would be
+occasioned.  The exampled of most of the States in their
+local constitutions encourages us to reprobate the idea.
+   The only remaining powers of the executive are comprehended
+in giving information to Congress of the state
+of the Union; in recommending to their consideration
+such measures as he shall judge expedient; in convening
+them, or either branch, upon extraordinary occasions; in
+adjourning them when they cannot themselves agree upon
+the time of adjournment; in receiving ambassadors and
+other public ministers; in faithfully executing the laws;
+and in commissioning all the officers of the United States.
+   Except some cavils about the power of convening either
+house of the legislature, and that of receiving ambassadors,
+no objection has been made to this class of
+authorities; nor could they possibly admit of any.  It required,
+indeed, an insatiable avidity for censure to invent
+exceptions to the parts which have been excepted to.  In
+regard to the power of convening either house of the legislature
+I shall barely remark that in respect to the Senate,
+at least, we can readily discover a good reason for it.  As
+this body has a concurrent power with the executive in
+the article of treaties, it might often be necessary to call
+it together with a view to this object, when it would be
+unnecessary and improper to convene the House of Representatives.
+As to the reception of ambassadors, what I
+have said in a former paper will furnish a sufficient answer.
+   We have now completed a survy of the structure and
+powers of the executive department which, I have endeavored
+to show, combines, as far as republican principles
+will admit, all the requisites to energy.  The
+remaining inquiry is:  does it also combine the requisites
+to safety, in the republican sense - due dependence on
+the people, a due responsibility?  The answer to this question
+has been anticipated in the investigation of its other
+characteristics, and is satisfactorily deducible from these
+circumstances; the election of the President once in four
+years by persons immediately chosen by the people for
+that purpose, and his being at all times liable to impeachment,
+trial, dismission from office, incapacity to serve
+in any other, and to the forfeiture of life and estate by subsequent
+prosecution in the common course of law.  But
+these precautions, great as they are, are not the only
+ones which the plan of the convention has provided in
+favor of the public security.  In the only instances in which
+the abuse of the executive authority was materially to be
+feared, the chief Magistrate of the United States, would,
+by that plan, be subjected to the control of a branch of
+the legislative body.  What more can an enlightened and
+reasonable people desire?
+#copyin
+#user
+#uncopyin
+#match memo4
+#log
+#next
+1.1c 10
+
+L1.1c           445768635   100   205   100640  450       `
+#print
+In this directory is a file named for an unsuccessful king.
+Read it and do what it tells you.
+#create Elizabeth1
+1. She was not a king
+2. She was generally successful
+#create George3
+Does the file George3 contain the character control-a
+anywhere in it?  Figure it out with grep, then type
+"answer N", where N is the line number where you found it.
+Type "answer 0" if there is no control-a.
+#copyin
+#user
+#uncopyin
+#match 2
+#log
+#next
+1.1d 10
+L1.1d           445768636   100   205   100640  3594      `
+#print
+Suppose you want to print all lines in the file "memo"
+that contain a question mark "?".  Since the question mark
+is an abbreviation character (as in "ls ?"), you
+have to make sure that the command interpreter doesn't
+try to interpret it, but instead passes it to "grep"
+as a literal question mark. 
+
+The way to do this is simply to enclose it in quotes,
+as in
+  grep '?' files...
+
+Use "grep" to find all the lines with question marks,
+then type "ready".
+#create memo
+(This comes from a federalist paper by alexander hamilton.)
+   It has been mentioned as one of the advantages to be expected
+from the cooperation of the Senate, in the business
+of appointments, that it would contribute to the
+stability of the administration.  The consent of that body
+would be necessary to displace as well as to appoint.  A
+change of the Chief Magistrate, therefore, would not occasion
+so violent or so general a revolution in the officers
+of the government as might be expected if he were the
+sole disposer of offices.  Where a man in any station had
+given satisfactory evidence of his fitness for it, a new
+President would be restrained from attempting a change
+in favor of a person more agreeable to him by the apprehension
+that a discountenance of the Senate might frustrate
+the attempt, and bring some degree of discredit
+upon himself.  Those who can best estimate the value of
+a steady administration will be most disposed to prize a
+provision which connects the official existence of public
+men with the approbation or disapprobation of that body
+which, from the greater permanency of its own composition,
+will in all probability be less subject to inconstancy
+than any other member of the government.
+   To this union of the Senate with the President, in the
+article of appointments, it has in some cases been suggested
+that it would serve to give the President an undue
+influence over the Senate, and in others that it would
+have an opposite tendency - a strong proof that neither
+suggestion is true.
+   To state the first in its proper form is to refute it.  It
+amounts to this:  the President would have an improper
+influence over the Senate, because the Senate would
+have the power of restraining him.  This is an absurdity in
+terms.  It cannot admit of a doubt that the entire power
+of appointment would enable him much more effectually
+to establish a dangerous empire over that body than a
+mere power of nomination subject to their control.
+    Let us take a view of the converse of the proposition:
+"the Senate would influence the executive."  As I have
+had occasion to remark in several other instances, the indistinctness
+of the objection forbids a precise answer.  In
+what manner is this influence to be exerted?  In relation
+to what objects?  The power of influencing a person, in
+the sense in which it is here used, must imply a power of
+conferring a benefit upon him.  How could the Senate
+confer a benefit upon the President by the manner of employing
+their right of negative upon his nominations?  If it
+be said they might sometimes gratify him by an acquiescence
+in a favorite choice, when public motives might dictate a
+different conduct, I answer that the instances in which the
+President could be personally interested in the result would
+be too few to admit of his being materially affected by the
+#create Ref
+what manner is this influence to be exerted?  In relation
+to what objects?  The power of influencing a person, in
+their right of negative upon his nominations?  If it
+#create 1
+#create x
+#copyout
+#user
+#uncopyout
+tail -3 .ocopy >X1
+#cmp X1 Ref
+#log
+#next
+2.1a 10
+L2.1a           445768638   100   205   100640  899       `
+#print
+Most of the programs we have studied so far produce their
+output on the terminal -- examples are "ls", "spell", "grep",
+"date", "who", and so on.  (Of course, some do not, like
+"mv", "cp", and "rm".)  In any case, it is sometimes useful
+to be able to capture the output of a program in a file,
+so it can be used in some later processing.  This is very easy.
+For example, to get the current date and time in a file called
+"now", you need only type
+
+   date >now
+
+The symbol ">" tells the command interpreter that output
+is to go into the file whose name follows.  If the file already
+exists, its old contents will be clobbered, so use discretion.
+
+Your task is to make a list of the files in this directory
+in the file "foo".
+When you have finished, type "ready".
+#create X1
+#create junk
+#create glop
+#create junk1
+asdfadfaf
+#create junk2
+qerqerqrq
+#user
+ls >X1
+#cmp X1 foo
+#log
+#next
+2.1b 10
+
+L2.1b           445768639   100   205   100640  267       `
+#print
+Now make a list of the files in this directory whose
+names begin with "t" in the file "foo".
+Type "ready" when you are done.
+#create X1
+#create foo
+#create this
+#create Ref
+that
+theother
+this
+#create that
+#create theother
+#user
+#cmp foo Ref
+#log
+#next
+2.1c 10
+
+L2.1c           445768641   100   205   100640  342       `
+#print
+This time you have to get a list of the files whose names begin
+with "memo", but sorted in order of last change, most recent first,
+as produced by "ls -t".  Get the list in file "gorp",
+then type "ready".
+#create memo1
+first line
+#create memo3
+third line
+#create memo2
+second line
+#user
+ls -t memo* >X1
+#cmp X1 gorp
+#log
+#next
+2.1d 10
+L2.1d           445768642   100   205   100640  177       `
+#print
+If you type "ls >list", does the name "list" appear in the file
+called "list"?  Figure it out, then type yes or no.
+#copyin
+#user
+#uncopyin
+#match yes
+#log
+#next
+2.1e 10
+
+L2.1e           445768644   100   205   100640  529       `
+#print
+If you make a mistake and type something like
+
+   xxxxx >precious
+
+where "xxxxx" is ___not the name of a legal UNIX
+command, what happens to the file "precious"?
+
+In this directory, there are several precious files.
+Experiment to see what happens.  When you have decided,
+type "answer harmless" if nothing happens to the files,
+or "answer disaster" if the file is clobbered.
+#create precious
+I am precious.
+#create precious1
+So am I.
+#create precious2
+Me too.
+#copyin
+#user
+#uncopyin
+#match disaster
+#log
+#next
+2.1f 10
+
+L2.1f           445768645   100   205   100640  299       `
+#print
+Obtain a long listing (with "ls -l") of all files in this directory
+whose names begin with capital letters, in a file
+called "names". 
+Type "ready" when you're done.
+#create STUFF
+#create Nonsense
+this is junk
+#create abc
+#create def
+#
+ls -l [A-Z]* >x1
+#user
+#cmp x1 names
+#log
+#next
+3.1a 10
+
+L3.1a           445768647   100   205   100640  805       `
+#print
+The notation ">" can be used by most programs to capture
+output on a file.  For example, 
+
+   cat henry >james
+
+makes a copy of "henry" in the file "james"; in fact this is
+essentially identical to
+
+   cp henry james
+
+"cat" is a bit more flexible, though, since you can concatenate
+several files onto one output.  Remember that
+
+   cat tom dick harry
+
+copies all three files onto the terminal?
+In this directory is a file named "john".
+Make a file called "mary" that contains ___two copies of "john".
+Type "ready" when you're done.
+#create john
+Now is the time for all good
+men to come to the aid of their
+party
+#create X1
+Now is the time for all good
+men to come to the aid of their
+party
+Now is the time for all good
+men to come to the aid of their
+party
+#user
+#cmp X1 mary
+#log
+#next
+3.1b 10
+
+L3.1b           445768649   100   205   100640  377       `
+#print
+How many spelling mistakes are there in the file "Ref",
+according to "spell"?
+Type "answer N", where N is the number you decide on.
+#create Ref
+Bianchi
+Blue
+Feldman
+McIlroy
+Roome
+Rosin
+Rosler
+Aho
+Bourne
+Dvorak
+Haley
+Harris
+Holt
+Johnson
+Mashey
+Mitze
+Muha
+Nelson
+Pinson
+Plauger
+Spivack
+Thompson
+Weinberger
+Lesk
+Ossanna
+#copyin
+#user
+#uncopyin
+#match 16
+#log
+#next
+3.1c 10
+
+L3.1c           445768651   100   205   100640  1710      `
+#print
+So far the only printing program we have seen
+is "cat", which just copies one or more files
+onto the terminal (or perhaps onto a file when used
+with ">").
+The next step up is the program "pr", which
+prints files so that each file begins on a
+new page, and the top of each page contains the date
+and time the file was changed, and a running page number.
+Use a single "pr" to print the two files in this directory
+whose names begin with "fed". 
+What page number is printed on the last page? Type "answer N"
+where N is the page number.
+#create fed1
+   After an unequivocal experience of the inefficacy of
+the subsisting federal government, you are called upon to
+deliberate on a new Constitution for the United States
+of America.  The subject speaks its own importance;
+comprehending in its consequences nothing less than the
+existence of the union, the safety and welfare of the
+parts of which it is composed, the fate of an empire in many
+respects the most interesting in the world.
+#create fed2
+It has been frequently remarked that it seems to have been
+reserved to the people of this country, by their conduct and
+example, to decide the important question, whether
+societies of men are really capable or not of establishing
+good government from reflection and choice, or whether
+they are forever destined to depend for their political
+constitutions on accident and force.  If there be any truth
+in the remark, the crisis at which we are arrived may with
+propriety be regarded as the era in which that
+decision is to be made; and a wrong election of the part
+we shall act may, in this view, deserve to be considered as
+the general misfortune of mankind.
+#copyin
+#user
+#uncopyin
+#match 1
+#log
+#next
+3.1d
+L3.1d           445768652   100   205   100640  1719      `
+#print
+The pr command has a number of other capabilities besides simple
+printing of files.  Probably the most useful is that it can do
+multi-column printing.  This is controlled by an optional
+argument:
+  pr -3 filenames
+will print in 3-column format, and 
+  pr -5 filenames
+prints in five columns.  You can use any number in place of 3 and 5,
+although as you get more columns they become narrower
+so things will fit.
+Notice that the optional argument comes ______before the files names.
+
+In this directory there is a list of words.  Find the list, print
+it in two columns, and find out what word appears at the top
+of the second column.  Type "answer WORD", where WORD
+is the word you decide on.
+#create wordlist
+a
+aardvark
+aardwolf
+Aaron
+Aaronic
+Ab
+aba
+abaca
+abaci
+aback
+abacus
+abacuses
+abaft
+abalone
+abandon
+abandoned
+abandoner
+abandonment
+abase
+abasement
+abash
+abashment
+abate
+abatement
+abater
+abatis
+abatises
+abattoir
+abaxial
+abbacy
+Abbasid
+abbatial
+abbe'
+abbess
+Abbevillian
+abbey
+abbot
+abbreviate
+abbreviation
+abbreviator
+Abby
+Abc
+Abcs
+Abc's
+abdicable
+abdicate
+abdication
+abdicator
+abdomen
+abdominal
+abdominally
+abdominous
+abduce
+abducent
+abduct
+abduction
+abductor
+abeam
+abecedarian
+abed
+Abel
+abele
+abelmosk
+aberrance
+aberrancy
+aberrant
+aberrantly
+aberration
+aberrational
+abet
+abetment
+abetted
+abetter
+abetting
+abettor
+abeyance
+abeyant
+abhominable
+abhor
+abhorred
+abhorrence
+abhorrent
+abhorrently
+abhorrer
+abhorring
+Abib
+abidance
+abide
+abided
+abider
+abiding
+Abigail
+abigail
+ability
+abiogeneses
+abiogenesis
+abiogenetic
+abiogenetical
+abiogenetically
+abiogenist
+#copyin
+#user
+#uncopyin
+#create script
+/^a/s/.* //
+.w X1
+w
+q
+#
+pr -2 wordlist >foo
+ed - foo <script
+tail -1 .copy >X2
+#cmp X1 X2
+#log
+#next
+3.1e 10
+
+L3.1e           445768654   100   205   100640  1403      `
+#print
+Of course you can collect the output from "pr" in a file,
+just as you can with "cat".  For practice, there are several
+files in this directory whose names begin with "word".
+Prepare a list (with "pr", one file per page)
+of these files in the file "neat".
+Type "ready" when you have finished.
+#create word1
+a
+aard-vark
+aard-wolf
+Aar-on
+Aa-ron-ic
+Ab
+aba
+ab-a-ca
+aba-ci
+aback
+aba-cus
+aba-cus-es
+abaft
+ab-a-lo-ne
+aban-don
+aban-doned
+aban-don-er
+aban-don-ment
+abase
+abase-ment
+abash
+abash-ment
+abate
+abate-ment
+abat-er
+ab-a-tis
+ab-a-tis-es
+ab-at-toir
+ab-ax-i-al
+ab-ba-cy
+#create word2
+Ab-bas-id
+ab-ba-tial
+ab-be'
+ab-bess
+Abbe-vil-li-an
+ab-bey
+ab-bot
+ab-bre-vi-ate
+ab-bre-vi-a-tion
+ab-bre-vi-a-tor
+Abby
+Abc
+Abcs
+Abc's
+ab-di-ca-ble
+ab-di-cate
+ab-di-ca-tion
+ab-di-ca-tor
+ab-do-men
+ab-dom-i-nal
+ab-dom-i-nal-ly
+ab-dom-i-nous
+ab-duce
+ab-du-cent
+ab-duct
+ab-duc-tion
+ab-duc-tor
+abeam
+abe-ce-dar-i-an
+abed
+#create word3
+Abel
+abele
+abel-mosk
+ab-er-rance
+ab-er-ran-cy
+ab-er-rant
+ab-er-rant-ly
+ab-er-ra-tion
+ab-er-ra-tion-al
+abet
+abet-ment
+abet-ted
+abet-ter
+abet-ting
+abet-tor
+abey-ance
+abey-ant
+abhominable
+ab-hor
+ab-horred
+ab-hor-rence
+ab-hor-rent
+ab-hor-rent-ly
+ab-hor-rer
+ab-hor-ring
+Abib
+abid-ance
+abide
+abid-ed
+abid-er
+abid-ing
+Abigail
+ab-i-gail
+abil-i-ty
+abio-gen-e-ses
+abio-gen-e-sis
+abio-ge-net-ic
+abio-ge-net-i-cal
+abio-ge-net-i-cal-ly
+abi-og-e-nist
+#user
+pr word* >X1
+#cmp X1 neat
+#log
+#next
+3.1f 10
+
+L3.1f           445768656   100   205   100640  297       `
+#print
+In this directory there are two files whose names
+begin with "r".  Copy them onto a new file called 
+"combine".   Type "ready" when you're done.
+#create ref
+Now is the tuime
+#create ref1
+for all good men
+#create X1
+Now is the tuime
+for all good men
+#user
+#cmp X1 combine
+#log
+#next
+3.1g 10
+
+L3.1g           445768658   100   205   100640  2060      `
+#print
+This exercise combines several things you've learned already.
+In this directory is a file containing a list of words.
+Collect all of the words that contain "ly" into a file
+called "lywords".  (What program does that?)
+Then use "pr" to make another file called "neatly"
+that contains the list of words printed in one column.
+Type "ready" when you have made both files.
+#create words
+ampersand
+amphetamine
+amphiarthrosis
+amphibia
+amphibian
+amphibiotic
+amphibious
+amphibiously
+amphibiousness
+amphibole
+amphibolite
+amphibolitic
+amphibology
+amphibrach
+amphibrachic
+amphictyonic
+amphictyony
+amphidiploid
+amphidiploidy
+amphimacer
+amphimictic
+amphimictically
+amphimixis
+Amphion
+amphioxus
+amphiploid
+amphiploidy
+amphipod
+amphiprostyle
+amphiprostyle
+amphisbaena
+amphisbaenic
+amphistylar
+amphitheater
+amphitheatric
+amphitheatrical
+amphitheatrically
+Amphitrite
+amphitropous
+Amphitryon
+amphora
+amphorae
+amphoras
+amphoteric
+ample
+ampleness
+amplexicaul
+amplidyne
+amplification
+amplifier
+amplify
+amplitude
+amply
+ampoule
+ampul
+ampulla
+ampullae
+ampullar
+amputate
+amputation
+amputator
+amputee
+amtrac
+amtrack
+amuck
+amulet
+amuse
+amusement
+amuser
+amusing
+amusingly
+amusive
+Amy
+amygdalin
+amygdaloid
+amygdaloidal
+amyl
+amylaceous
+amylase
+amyloid
+amyloidal
+amylolysis
+amylolytic
+amylopsin
+amylose
+amylum
+amyotonia
+an
+an'
+ana
+an'a
+anabaptism
+Anabaptist
+anabases
+anabasis
+anabatic
+anabiosis
+anabiotic
+anabolic
+anabolism
+anabolite
+anabolitic
+anachronic
+anachronism
+anachronistic
+anachronistically
+anachronous
+anachronously
+anaclitic
+anacolutha
+anacoluthic
+anacoluthically
+anacoluthon
+anacoluthons
+anaconda
+Anacreontic
+anacreontic
+anacrusis
+anaculture
+anadem
+anadiplosis
+anadromous
+anaemia
+anaerobe
+anaerobic
+anaerobically
+anaesthesia
+anaesthetic
+anaglyph
+anaglyphic
+anagoge
+anagogic
+anagogical
+anagogically
+anagogy
+anagram
+anagrammatic
+anagrammatical
+anagrammatically
+anagrammatize
+anagrammed
+anagramming
+anal
+analcime
+analcite
+analects
+analemma
+analeptic
+analgesia
+analgesic
+analgetic
+#user
+grep ly words >X1
+pr lywords >X2
+cmp -s X1 lywords && cmp -s X2 neatly
+#log
+#next
+4.1a 10
+L4.1a           445768660   100   205   100640  621       `
+#print
+You have already had some practice in using ">" to capture
+the output of a program.  In much the same way, it
+is possible to arrange for a program to take its input not
+from the terminal but from a file.
+Most UNIX programs are written so that they will read either
+the terminal or from a list of filenames.
+To have a program read from a file instead of the terminal,
+use the "<", like this:
+  pr <file
+As a simple experiment, determine if
+  pr <file
+is absolutely identical to
+  pr file
+Answer yes or no.
+#create junk
+you can use this file to play with.
+#copyin
+#user
+#uncopyin
+#match no
+#log
+#next
+4.1b 10
+4.2a 5
+
+L4.1b           445768661   100   205   100640  1375      `
+#print
+Is there a difference between
+  grep the memo[12]
+and
+  cat memo[12] >temp
+  grep the <temp
+Answer yes or no.
+
+If you want to experiment, there are two files named "memo1" and
+"memo2" in this directory.
+#create memo1
+   There is not room enough in the leaves to hold all the food
+that plants make.  Much of the food has to be stored in other parts
+of the plant.
+   We eat the parts of plants where the most food is stored.  The
+carrot plant stores food in its roots.  We eat the roots of carrots.
+The celery plant stores food in its leaf stalks.  They are the parts
+we eat.  Many kinds of plants store food in their fruits.  We eat
+the fruits of these plants to get the stored food in them.
+   Some kinds of plants have ways of protecting their stored food.
+#create memo2
+   Goldfish grow very slowly in an aquarium.  They grow so slowly
+that it is hard to know that they grow at all.  If they are kept
+outdoors in a pool, they grow much faster and they grow much larger,
+too.  Sometimes they grow to be more than a foot long in an outdoor
+pool.
+   When goldfish are kept in an aquarium they often do not live very
+long.  Sometimes they die in a few weeks, but they may live as long
+as ten years.  Some people have kept goldfish in an outdoor pool for
+thirty years.
+   There are many different colors of goldfish.
+#copyin
+#user
+#uncopyin
+#match yes
+#log
+#next
+4.1c 10
+
+L4.1c           445768663   100   205   100640  1637      `
+#print
+There are two files called "story1" and "story2" in
+this directory.  Collect the outputs of
+  grep the story[12]
+and
+  cat story[12] >temp
+  grep the <temp
+on two files called "the1" and "the2".  Then
+run "diff" on "the1" and "the2", and
+collect the differences on a file called "difference".
+Type "ready" when you have finished all of this.
+#create story1
+   Some animals have six feet.  These animals are insects.
+Insects are little animals.  Insects creep with their six feet.
+Many insects have wings, too.
+   Ants are insects.  Many ants live together.  They live in ant
+hills.  Many ants travel together.  Ants creep on their six feet.
+Ants creep fast.  They creep around on the ground.  They creep in
+and out of ant hills.  They creep up and down plants.  They creep
+into houses.
+   Some ants have wings.  They do not have wings all the time.
+They grow wings to fly away.  They fly away to find new homes.
+Then they lose their wings.
+#create story2
+   "Will there be baby robins soon?" asked Bill.  "We will see,"
+said Miss Fox.  Joan said, "we have looked and looked.  I think
+there will be no baby birds."  Barbara said, "It takes many days.
+The eggs need to be warm all the time.  The mother bird warms them."
+Bill said, "The father bird helps, too."  Joan said, "I guess I did
+not think.  There may be baby birds after all."
+   One day Carl called, "Come and look.  I see four baby birds in
+the nest."  All the children ran to look.  "But they are not pretty,"  
+Joan said.  Bill said, "Joan is right."
+#user
+cat story[12] >X1
+grep the <X1 >X2
+grep the story[12] >X1
+diff X1 X2 >X3
+#cmp X3 difference
+#log
+#next
+4.1d 10
+
+L4.1d           445768665   100   205   100640  6323      `
+#print
+Unix has several rather simple programs that are useful
+in their own right and as building blocks in more complicated
+operations.   One of the most frequently used is "wc",
+which counts lines, words, and characters in files.
+If you say
+  wc file
+or 
+  wc <file
+wc will print three numbers: the number of
+lines, words and characters in the file.
+(Some systems have an obsolete version of "wc" that
+doesn't count the characters.)
+If there is more than one file, as in
+  wc file1 file2 file3 file4
+then wc will list the counts for each file separately,
+and the total.
+
+What is the total number of words
+in the two files whose names begin with "memo"?
+Type "answer N", where N is the number of words.
+#create memo1
+   It has been mentioned as one of the advantages to be expected
+from the cooperation of the Senate, in the business
+of appointments, that it would contribute to the
+stability of the administration.  The consent of that body
+would be necessary to displace as well as to appoint.  A
+change of the Chief Magistrate, therefore, would not occasion
+so violent or so general a revolution in the officers
+of the government as might be expected if he were the
+sole disposer of offices.  Where a man in any station had
+given satisfactory evidence of his fitness for it, a new
+President would be restrained from attempting a change
+in favor of a person more agreeable to him by the apprehension
+that a discountenance of the Senate might frustrate
+the attempt, and bring some degree of discredit
+upon himself.  Those who can best estimate the value of
+a steady administration will be most disposed to prize a
+provision which connects the official existence of public
+men with the approbation or disapprobation of that body
+which, from the greater permanency of its own composition,
+will in all probability be less subject to inconstancy
+than any other member of the government.
+   To this union of the Senate with the President, in the
+article of appointments, it has in some cases been suggested
+that it would serve to give the President an undue
+influence over the Senate, and in others that it would
+have an opposite tendency - a strong proof that neither
+suggestion is true.
+   To state the first in its proper form is to refute it.  It
+amounts to this:  the President would have an improper
+influence over the Senate, because the Senate would
+have the power of restraining him.  This is an absurdity in
+terms.  It cannot admit of a doubt that the entire power
+of appointment would enable him much more effectually
+to establish a dangerous empire over that body than a
+mere power of nomination subject to their control.
+    Let us take a view of the converse of the proposition:
+"the Senate would influence the executive."  As I have
+had occasion to remark in several other instances, the indistinctness
+of the objection forbids a precise answer.  In
+what manner is this influence to be exerted?  In relation
+to what objects?  The power of influencing a person, in
+the sense in which it is here used, must imply a power of
+conferring a benefit upon him.  How could the Senate
+confer a benefit upon the President by the manner of employing
+their right of negative upon his nominations?  If it
+be said they might sometimes gratify him by an acquiescence
+in a favorite choice, when public motives might dictate a
+different conduct, I answer that the instances in which the
+President could be personally interested in the result would
+be too few to admit of his being materially affected by the
+#create memo2
+compliances of the Senate.  Besides this, it is evident that
+the POWER which can originate the disposition of honors
+and emoluments is more likely to attract than to be attracted
+by the POWER which can merely obstruct their
+course.  If by influencing the President be want restraining
+him, this is precisely what must have been intended.
+And it has been shown that the restraint would be salutary,
+at the same time that it would not be such as to
+destroy a single advantage to be looked for from the uncontrolled
+agency of that magistrate.  The right of nomination
+would produce all the good, without the ill.
+   Upon a comparison of the plan for the appointment of
+the officers of the proposed government with that which
+is established by the constitution of this State, a decided
+preference must be given to the former.  In that plan the
+power of nomination is unequivocally vested in the executive.
+And as there would be a necessity for submitting
+each nomination to the judgment of an entire branch of
+the legislature, the circumstances attending an appointment,
+from the mode of conducting it, would naturally
+become matters of notoriety, and the public would
+be at no loss to determine what part had been performed
+by the different actors.  The blame of a bad nomination
+would fall upon the President singly and absolutely.  The
+censure of rejecting a good one would lie entirely at the
+door of the senate, aggravated by the consideration
+of their having counteracted the good intentions of the
+executive.  If an ill appointment should be made, the executive,
+for nominating, and the Senate, for approving,
+would participate, though in different degrees, in the
+opprobrium and disgrace.
+   The reverse of all this characterizes the manner of appointment
+in this State.  The council of appointment consists
+of from three to five persons, of whom the governor
+is always one.  This small body, shut up in a private
+apartment, impenetrable to the public eye, proceed to the
+execution of the trust committed to them.  It is known
+that the governor claims the right of nomination upon
+the strength of some ambiguous expressions in the Constitution;
+but it is not known to what extent, or in what
+manner he exercises it; nor upon what occasions he is
+contradicted or opposed.  The censure of a bad appointment,
+on account of the uncertainty of its author and for
+want of a determinate object, has neither poignancy nor
+duration.  And while an unbounded field for cabal and intrigue
+lies open, all idea of responsibility is lost.  The
+most that the public can know is that the governor
+claims the right of nomination; that two out of the inconsiderable
+number of four men can too often be managed
+without much difficulty; that if some of the members of a
+#copyin
+#user
+#uncopyin
+#match 949
+#log
+#next
+4.1e 10
+
+L4.1e           445768667   100   205   100640  1381      `
+#print
+How many lines total are there in the two files called
+"chema" and "chemb" in this directory?  Use "wc".
+Type "answer N", where N is the total number of lines.
+#create chema
+   The baker said, "Now I shall put just the right amounts of water and
+yeast with the flour that is in the mixer.  Flour, water, and yeast
+together make the sponge.  Making sponge is the first step in making
+bread."
+   The baker closed the mixer.  Inside the machine, the flour and
+yeast and water went around and around until they were well mixed.
+Then the baker opened the mixer and the sponge dropped into a greased
+tub called a trough.
+   The baker pushed the trough into a warm room to let the sponge 
+rise.  It looked like dough, but it did not as yet have everything
+in it.
+#create chemb
+   Wash the blackboard.  Watch it dry.  The water goes into the air.
+When water goes into the air it evaporates.
+   Tie a damp cloth to one end of a stick.  Tie a bottle to the
+other end.  Put water in the bottle until the stick is level.  Watch
+the stick for a few minutes.  It does not stay level.
+   Water goes into the air when it evaporates.  It changes into
+water vapor.  You cannot see water vapor, but it is in the air all
+around you.
+   Cut a hole in the bottom of a cardboard box.  Hold the box
+against a cold window and blow into the hole.
+#copyin
+#user
+#uncopyin
+#match 21
+#log
+#next
+4.1f 10
+
+L4.1f           445768668   100   205   100640  2284      `
+#print
+Another useful command is "tail", which will print the last
+10 lines of a file.  This is handy when you want to see how 
+far something got before it stopped, or what the last thing
+in a file is.  To use "tail", all you need to say is
+  tail file
+What is the first word on the next to last line of the file
+called "Ref" in this directory.
+Type "answer WORD", where WORD is the word you found.
+#create Ref
+   Now Abraham Lincoln was master of the White House.  But he was
+President of only part of the United States.  For the Southern
+States has taken down the Star-Spangled Banner and raised the flag
+of the Confederacy in its stead.  Sad and silent, Lincoln gazed
+through his spyglass at the Confederate flag that fluttered in the
+wind on the other side of the Potomac River in Virginia.  He pondered
+how to get the Southern States back into the Union.  He needed
+quiet to think what to do.  But from morning till night the White
+House was crowded with people seeking his help.
+   About a hundred and fifty years after the pilgrims settled in
+this country, a young hunter picked up his gun.  He tossed it onto
+his shoulder and followed a buffalo trail across the mountains into
+what is now Kentucky.
+   His name was Daniel Boone.
+   He found wild country.  There were no settlers, no roads.  Indians
+hunted in the woods for food.  The country was beautiful and dangerous.
+But here was rich, free land -- miles and miles of it.
+   Many settlers, besides the Pilgrims, had come to the shores of
+America.  But they had stayed on the safe land between the sea and
+the mountains.
+   Columbus discovered America in 1492.  Later, other explorers
+visited the new land.  They told people in Europe of the forests,
+furs, and fish they found.  Many Europeans decided to settle in
+this wonderful land.  But some of the first settlers starved to
+death during the hard winters.  Others lived to build settlements
+or colonies for their mother countries.  Colonial America was
+beginning.  In 1607, three ships brought men from England to what
+is now Jamestown, Virginia.  They were looking for gold.
+   The leader, Captain John Smith, taught the men to build houses
+of stakes and branches.  They plastered the walls of the houses with
+mud.
+#copyin
+#user
+#uncopyin
+#match of
+#log
+#next
+4.1g 10
+L4.1g           445768670   100   205   100640  2399      `
+#print
+By default, "tail" prints the last 10 lines of its input.
+You can change this default amount by specifying a different
+amount as an optional argument.  For example,
+  tail -5 file
+prints the last 5 lines of "file". 
+Collect the last line of the file "Ref" in a new file
+called "last".  Type "ready" when you have finished.
+(By the way, there is a limit to how big the number can be,
+but it's usually at least 60 or 70 lines of normal text.)
+#create Ref
+   About a hundred and fifty years after the pilgrims settled in
+   Columbus discovered America in 1492.  Later, other explorers
+   He found wild country.  There were no settlers, no roads.  Indians
+   His name was Daniel Boone.
+   Many settlers, besides the Pilgrims, had come to the shores of
+   Now Abraham Lincoln was master of the White House.  But he was
+   The leader, Captain John Smith, taught the men to build houses
+America.  But they had stayed on the safe land between the sea and
+But here was rich, free land -- miles and miles of it.
+House was crowded with people seeking his help.
+President of only part of the United States.  For the Southern
+States has taken down the Star-Spangled Banner and raised the flag
+beginning.  In 1607, three ships brought men from England to what
+death during the hard winters.  Others lived to build settlements
+furs, and fish they found.  Many Europeans decided to settle in
+his shoulder and followed a buffalo trail across the mountains into
+how to get the Southern States back into the Union.  He needed
+hunted in the woods for food.  The country was beautiful and dangerous.
+is now Jamestown, Virginia.  They were looking for gold.
+mud.
+of stakes and branches.  They plastered the walls of the houses with
+of the Confederacy in its stead.  Sad and silent, Lincoln gazed
+or colonies for their mother countries.  Colonial America was
+quiet to think what to do.  But from morning till night the White
+the mountains.
+this country, a young hunter picked up his gun.  He tossed it onto
+this wonderful land.  But some of the first settlers starved to
+through his spyglass at the Confederate flag that fluttered in the
+visited the new land.  They told people in Europe of the forests,
+what is now Kentucky.
+wind on the other side of the Potomac River in Virginia.  He pondered
+#create X1
+wind on the other side of the Potomac River in Virginia.  He pondered
+#user
+#cmp X1 last
+#log
+#next
+5.1a 10
+
+L4.2a           445768671   100   205   100640  130       `
+#print
+Is the command
+  cat <file
+identical to
+  cat file
+Answer yes or no.
+#copyin
+#user
+#uncopyin
+#match yes
+#log
+#next
+4.1b 10
+L5.1a           445768673   100   205   100640  591       `
+#print
+If you think back over some of the exercises you've done
+so far in this course, they have involved collecting the
+output of one program (like "cat" or "grep" or "ls") in
+a file, then using that file as the input to another
+program, like "pr" or "wc" or "grep".
+For example, you could use "ls" and "wc" to _____count
+the number of files in a directory.  Do that now,
+then type "answer N", where N is the number of files.
+#create X2
+#create X1
+#create this
+#create stuff
+#create foo
+#copyin
+#user
+#uncopyin
+ls | %s/../bin/lcount >X1
+tail -1 .copy >X2
+#cmp X1 X2
+#log
+#next
+5.1b 10
+
+L5.1b           445768674   100   205   100640  654       `
+#print
+It seems silly to use a temporary file when all that's really
+needed is to take the output from one program like "ls",
+and pass it directly to the input of another, like "wc".
+One of the original contributions of Unix is a clean
+way to do this, called a "pipe".  You can connect two
+programs with a pipe like this:
+  ls | wc
+and the output of the first program goes into the input of
+the second without any intervening file.
+
+Try this pair of commands in a pipeline.
+Try an ordinary "ls" command too, to verify that you
+got the right answer.  Then type "ready".
+#create X1
+#copyin
+#user
+#uncopyin
+grep 'ls *| *wc' .copy >/dev/null
+#log
+#next
+5.1c
+L5.1c           445768676   100   205   100640  714       `
+#print
+Another use for pipes is to replace a command sequence that we
+did earlier with "cat", "pr" and a temporary file.  If you have
+a bunch of small files, using "pr" on them directly wastes
+paper, since each file takes a page.  You could say
+  cat memo* >temp
+  pr temp
+  rm temp
+but this is a nuisance (and the output will
+have the title "temp" on each page).  So use
+a pipe instead.
+In this directory there are some files whose
+names begin with "word".  Use "cat", "pr" and a pipe
+to print them, then type "ready".
+#create word1
+now
+is
+the
+time
+for
+all
+#create word2
+good
+men
+to
+come
+to
+the
+aid
+#create word3
+of
+their
+party.
+#copyin
+#user
+#uncopyin
+grep 'cat word.*| *pr' <.copy >/dev/null
+#log
+#next
+5.1d 10
+L5.1d           445768678   100   205   100640  350       `
+#print
+How many lines of output does the command
+  cat word* | pr
+produce, as computed by "wc"?
+Type "answer N", where N is the number of lines.
+(Try to use a pipe, not a temporary file.)
+#create word1
+Now
+is
+the
+time
+#create word2
+for
+all
+good
+men
+#create word3
+to
+come
+to
+the
+aid
+of
+their
+party
+#copyin
+#user
+#uncopyin
+#match 66
+#log
+#next
+5.1e 10
+L5.1e           445768679   100   205   100640  331       `
+#print
+Use "ls", "pr" and a pipe to make a neat list of the files
+in this directory, sorted by time of last change.
+Do not use a temporary file.
+Type "ready" when you are done.
+#create x1
+adfasdfasdfaf
+
+#create junk
+qerqer
+#create foo
+fofofofofo
+#copyin
+#user
+#uncopyin
+grep 'ls -[l]*t.*| *pr' <.copy >/dev/null
+#log
+#next
+6.1a 10
+
+L6.1a           445768680   100   205   100640  1612      `
+#print
+Of course it is still possible to use files with "<" and ">"
+to supply input to one end of a pipeline and to
+collect the output from the other end.
+In this directory are two files whose names begin
+with "bio".  Collect the last 15 lines of these two files
+(combined) in a file called "last", then type "ready".
+#create bio1
+   Roughly speaking, your eye is made of three balls, or layers,
+fitted tightly one inside the other.  the tough white outermost
+layer's function is to protect the others.  the middle layer gives
+the front of your eye its brown, gray, or blue color.  The inside
+of this layer is dark and full of tiny blood vessels.  The innermost
+layer, called the retina, is made of very special nerve cells that
+are sensitive to light and color.  A nerve cord connects the retina
+of each eye to your brain.
+   The front of your eye's two outer layers (the cornea) is clear,
+or open, to let light enter.
+#create bio2
+   We do not know when life began on the earth, and it seems likely
+that the answer to this question will remain forever hidden from us.
+What we do know is that it was some 500 million years ago when the
+plants and animals of early geologic history had reached a stage of
+development where they produced hard parts capable of being preserved
+as fossils.
+   At this distant date there seemingly was no land life; all life
+was in the sea.  Moreover, there were no vertebrates, or backboned
+animals, living -- at least none of sufficient complexity that they
+left hard structures to be preserved in the form of fossils.
+#user
+cat bio* | tail -15 >X1
+#cmp X1 last
+#log
+#next
+6.1b 10
+L6.1b           445768682   100   205   100640  1883      `
+#print
+Several of the programs we have been using as examples,
+such as "grep" and "wc", have the property that when
+you use file names with them, the output includes
+the file names.  For example, if you say
+  grep pattern file1 file2 file3
+each line that contains "pattern" is printed out
+with "file1:" or whatever in front of it.
+
+Sometimes you would love to get rid of that file name, since
+you don't care a bit where the line came from,
+and the file name clutters up the output.
+One thing is to use "cat" to collect the files, and
+pipe into "grep"; in that case "grep" doesn't mention
+any file name because there isn't one.
+
+In this directory there are several files whose names end 
+in ".x".  Use a pipeline of "cat" and "grep" to print all the lines
+that contain the letters "ion", without any identifying filenames.
+Type "ready" when you're done.
+#create 0x
+ion, but this one is in the wrong file!
+#create 1.x
+o
+o'
+oaf
+oafish
+oafishly
+oafishness
+oak
+oaken
+oaks
+oakum
+oar
+oared
+oarfish
+oarlock
+oarsman
+oases
+oasis
+oat
+oatcake
+oaten
+oath
+oaths
+oatmeal
+obbligati
+obbligato
+obbligatos
+obconic
+obcordate
+obduracy
+obdurate
+#create 2.x
+obdurately
+obdurateness
+obeah
+obedience
+obedient
+obediently
+obeisance
+obeisant
+obeli
+obelisk
+obelize
+obelus
+obese
+obesity
+obey
+obeyer
+obfuscate
+obfuscation
+obfuscatory
+obi
+obit
+obituary
+object
+objectification
+objectify
+objection
+objectionable
+objectionableness
+objectionably
+objective
+#create 3.x
+objectively
+objectiveness
+objectivism
+objectivist
+objectivistic
+objectivity
+objectless
+objector
+objurgate
+objurgation
+objurgatory
+oblanceolate
+oblast
+oblate
+oblate
+oblateness
+oblation
+obligate
+obligately
+obligation
+obligatorily
+obligatory
+oblige
+obligee
+obliger
+obliging
+obligingly
+obligingness
+obligor
+oblique
+obliquely
+obliqueness
+obliquity
+obliterate
+#copyout
+#user
+#uncopyout
+grep ion <.ocopy >X1
+cat *.x | grep ion >X2
+#cmp X1 X2
+#log
+#next
+6.1c
+
+L6.1c           445768684   100   205   100640  559       `
+#print
+In much the same way that you used "cat" and a pipe to
+get rid of the file names from the output of "grep",
+you can use "cat" and a pipe to get rid of the sub-totals
+from "wc", if you so desire.
+What is the total number of lines in the files in
+this directory whose names begin with capital letters?
+Type "answer N", where N is the number of lines.
+#create X1
+just to make sure.
+#create Stuff
+this has some more.
+#create Junk
+asdfadfasdfasdfasdfasf
+#copyin
+#user
+#uncopyin
+cat [A-Z]* | %s/../bin/lcount >x1
+tail -1 .copy >x2
+#cmp x1 x2
+#log
+#next
+6.1d
+
+L6.1d           445768685   100   205   100640  2581      `
+#print
+How many of the lines in the files "bio*" and "chem*"
+contain the letters "the"?  Type "answer N", where
+N is the number of lines.
+#create bio1
+   Roughly speaking, your eye is made of three balls, or layers,
+fitted tightly one inside the other.  the tough white outermost
+layer's function is to protect the others.  the middle layer gives
+the front of your eye its brown, gray, or blue color.  The inside
+of this layer is dark and full of tiny blood vessels.  The innermost
+layer, called the retina, is made of very special nerve cells that
+are sensitive to light and color.  A nerve cord connects the retina
+of each eye to your brain.
+   The front of your eye's two outer layers (the cornea) is clear,
+or open, to let light enter.
+#create bio2
+   We do not know when life began on the earth, and it seems likely
+that the answer to this question will remain forever hidden from us.
+What we do know is that it was some 500 million years ago when the
+plants and animals of early geologic history had reached a stage of
+development where they produced hard parts capable of being preserved
+as fossils.
+   At this distant date there seemingly was no land life; all life
+was in the sea.  Moreover, there were no vertebrates, or backboned
+animals, living -- at least none of sufficient complexity that they
+left hard structures to be preserved in the form of fossils.
+#create chema
+   The baker said, "Now I shall put just the right amounts of water and
+yeast with the flour that is in the mixer.  Flour, water, and yeast
+together make the sponge.  Making sponge is the first step in making
+bread."
+   The baker closed the mixer.  Inside the machine, the flour and
+yeast and water went around and around until they were well mixed.
+Then the baker opened the mixer and the sponge dropped into a greased
+tub called a trough.
+   The baker pushed the trough into a warm room to let the sponge 
+rise.  It looked like dough, but it did not as yet have everything
+in it.
+#create chemb
+   Wash the blackboard.  Watch it dry.  The water goes into the air.
+When water goes into the air it evaporates.
+   Tie a damp cloth to one end of a stick.  Tie a bottle to the
+other end.  Put water in the bottle until the stick is level.  Watch
+the stick for a few minutes.  It does not stay level.
+   Water goes into the air when it evaporates.  It changes into
+water vapor.  You cannot see water vapor, but it is in the air all
+around you.
+   Cut a hold in the bottom of a cardboard box.  Hold the box
+against a cold window and blow into the hole.
+#copyin
+#user
+#uncopyin
+#match 30
+#log
+#next
+6.1e
+
+L6.1e           445768687   100   205   100640  1606      `
+#print
+By the way, you can also use "grep" to print out ___all ___but
+those lines that contain occurrences of a pattern:
+  grep -v pat files...
+prints all the lines in files... that don't contain
+any "pat".
+How many of the lines in "bio*" don't contain "the"?
+Type "answer N", where N is the number of lines.
+#create bio1
+   Roughly speaking, your eye is made of three balls, or layers,
+fitted tightly one inside the other.  the tough white outermost
+layer's function is to protect the others.  the middle layer gives
+the front of your eye its brown, gray, or blue color.  The inside
+of this layer is dark and full of tiny blood vessels.  The innermost
+layer, called the retina, is made of very special nerve cells that
+are sensitive to light and color.  A nerve cord connects the retina
+of each eye to your brain.
+   The front of your eye's two outer layers (the cornea) is clear,
+or open, to let light enter.
+#create bio2
+   We do not know when life began on the earth, and it seems likely
+that the answer to this question will remain forever hidden from us.
+What we do know is that it was some 500 million years ago when the
+plants and animals of early geologic history had reached a stage of
+development where they produced hard parts capable of being preserved
+as fossils.
+   At this distant date there seemingly was no land life; all life
+was in the sea.  Moreover, there were no vertebrates, or backboned
+animals, living -- at least none of sufficient complexity that they
+left hard structures to be preserved in the form of fossils.
+#copyin
+#user
+#uncopyin
+#match 6
+#log
+#next
+7.1a 10
+6.2e 5
+L6.2e           445768689   100   205   100640  1199      `
+#print
+How many words in the file "o" do not contain a
+slash "/"?  Type "answer N", where N is the number of words.
+#create o
+o
+o'
+oaf
+oaf/ish
+oaf/ish/ly
+oaf/ish/ness
+oak
+oak/en
+oaks
+oa/kum
+oar
+oared
+oar/fish
+oar/lock
+oars/man
+oa/ses
+oa/sis
+oat
+oat/cake
+oat/en
+oath
+oaths
+oat/meal
+ob/bli/ga/ti
+ob/bli/ga/to
+obbligatos
+ob/con/ic
+ob/cor/date
+ob/du/ra/cy
+ob/du/rate
+ob/du/rate/ly
+ob/du/rate/ness
+obe/ah
+obe/di/ence
+obe/di/ent
+obe/di/ent/ly
+obei/sance
+obei/sant
+ob/e/li
+ob/e/lisk
+ob/e/lize
+ob/e/lus
+obese
+obe/si/ty
+obey
+obey/er
+ob/fus/cate
+ob/fus/ca/tion
+ob/fus/ca/to/ry
+obi
+obit
+obit/u/ary
+ob/ject
+ob/jec/ti/fi/ca/tion
+ob/jec/ti/fy
+ob/jec/tion
+ob/jec/tion/able
+ob/jec/tion/able/ness
+ob/jec/tion/ably
+ob/jec/tive
+ob/jec/tive/ly
+ob/jec/tive/ness
+ob/jec/tiv/ism
+ob/jec/tiv/ist
+ob/jec/tiv/is/tic
+ob/jec/tiv/i/ty
+ob/ject/less
+ob/jec/tor
+ob/jur/gate
+ob/jur/ga/tion
+ob/jur/ga/to/ry
+ob/lan/ceo/late
+oblast
+ob/late
+oblate
+oblate/ness
+obla/tion
+ob/li/gate
+ob/li/gate/ly
+ob/li/ga/tion
+oblig/a/to/ri/ly
+oblig/a/to/ry
+oblige
+ob/li/gee
+oblig/er
+oblig/ing
+oblig/ing/ly
+oblig/ing/ness
+ob/li/gor
+oblique
+oblique/ly
+oblique/ness
+obliq/ui/ty
+oblit/er/ate
+oblit/er/a/tion
+#copyin
+#user
+#uncopyin
+#match 19
+#log
+#next
+7.1a
+
+L7.1a           445768691   100   205   100640  127       `
+#print
+Do you think that you have learned anything
+from this script?
+Answer yes or no.
+#copyin
+#user
+#uncopyin
+#match yes
+#log
+

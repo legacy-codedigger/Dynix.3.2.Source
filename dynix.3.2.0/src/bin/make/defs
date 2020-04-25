@@ -1,0 +1,166 @@
+/* $Copyright:	$
+ * Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+ * Sequent Computer Systems, Inc.   All rights reserved.
+ *  
+ * This software is furnished under a license and may be used
+ * only in accordance with the terms of that license and with the
+ * inclusion of the above copyright notice.   This software may not
+ * be provided or otherwise made available to, or used by, any
+ * other person.  No title to or ownership of the software is
+ * hereby transferred.
+ */
+
+/* $Header: defs 2.4 88/03/22 $ */
+
+#ifdef CCS
+#include "/usr/include/stdio.h"
+#include "/usr/include/ctype.h"
+#include "/usr/include/sys/param.h"
+#include "/usr/include/sys/dir.h"
+#else
+#include <stdio.h>
+#include <ctype.h>
+#include <sys/param.h>
+#include <sys/dir.h>
+#endif
+
+#define SHELLCOM "/bin/sh"
+
+typedef long int TIMETYPE;
+
+/*  to install metering, add a statement like
+ * #define METERFILE "/usr/sif/make/Meter"
+ * to turn metering on, set external variable meteron to 1.
+ */
+
+/* define FSTATIC to be static on systems with C compilers
+   supporting file-static; otherwise define it to be null
+*/
+#define FSTATIC static
+
+#define NO 0
+#define YES 1
+
+#define unequal strcmp
+#define HASHSIZE 10177
+#define NLEFTS 1024
+#define INMAX 12000
+#define OUTMAX 12000
+#define QBUFMAX 12000
+#define MAXDIR 10
+
+#define ALLDEPS  1
+#define SOMEDEPS 2
+
+#define META 01
+#define TERMINAL 02
+extern char funny[128];
+
+
+#define ALLOC(x) (struct x *) ckalloc(sizeof(struct x))
+
+extern int sigivalue;
+extern int sigqvalue;
+extern int waitpid;
+extern int dbgflag;
+extern int prtrflag;
+extern int silflag;
+extern int noexflag;
+extern int keepgoing;
+extern int noruleflag;
+extern int touchflag;
+extern int questflag;
+extern int ndocoms;
+extern int ignerr;
+extern int okdel;
+extern int inarglist;
+extern char *prompt;
+extern int nopdir;
+extern char junkname[ ];
+
+
+
+struct nameblock
+	{
+	struct nameblock *nxtnameblock;
+	char *namep;
+	char *alias;
+	struct lineblock *linep;
+	int done:3;
+	int septype:3;
+	TIMETYPE modtime;
+	};
+
+extern struct nameblock *mainname ;
+extern struct nameblock *firstname;
+
+struct lineblock
+	{
+	struct lineblock *nxtlineblock;
+	struct depblock *depp;
+	struct shblock *shp;
+	};
+extern struct lineblock *sufflist;
+
+struct depblock
+	{
+	struct depblock *nxtdepblock;
+	struct nameblock *depname;
+	char nowait;
+	};
+
+struct shblock
+	{
+	struct shblock *nxtshblock;
+	char *shbp;
+	};
+
+struct varblock
+	{
+	struct varblock *nxtvarblock;
+	char *varname;
+	char *varval;
+	int noreset:1;
+	int used:1;
+	};
+extern struct varblock *firstvar;
+
+struct pattern
+	{
+	struct pattern *nxtpattern;
+	char *patval;
+	};
+extern struct pattern *firstpat;
+
+struct dirhdr
+	{
+	struct dirhdr *nxtopendir;
+	DIR *dirfc;
+	char *dirn;
+	};
+extern struct dirhdr *firstod;
+
+
+struct chain
+	{
+	struct chain *nextp;
+	char *datap;
+	};
+
+/* data for processes */
+extern int proclimit;	/* maximum spawned processes allowed alive at one time */
+extern int proclive;	/* number of spawned processes awaited */
+extern int nproc;	/* next slot in process stack to use */
+extern struct process
+	{
+	struct process *link;
+	int pid;
+	int reclevel;
+	char nohalt;
+	char nowait;
+	} procstack[ ];
+
+char *copys(), *concat(), *subst();
+int *ckalloc();
+struct nameblock *srchname(), *makename();
+TIMETYPE exists();

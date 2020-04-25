@@ -1,0 +1,62 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: vhangup.2 1.8 90/02/07 $
+.TH VHANGUP 2 "\*(V)" "4BSD"
+.SH NAME
+vhangup \- virtually ``hangup'' the current control terminal
+.SH SYNOPSIS
+.B vhangup()
+.SH DESCRIPTION
+.I Vhangup
+is used by the initialization process
+.IR init (8)
+(among others) to arrange that users are given
+\*(lqclean\*(rq' terminals at login,
+by revoking access of the previous users' processes to the terminal.
+To effect this,
+.I vhangup
+searches the system tables for references to the control terminal
+of the invoking process, revoking access permissions
+on each instance of the terminal which it finds.
+Further attempts to access the terminal by the affected processes
+will yield i/o errors (EBADF).
+Finally,
+a hangup signal (SIGHUP) is sent to the process group of the
+control terminal.
+.PP
+The use of this call is restricted to the superuser.
+.SH "RETURN VALUE
+A 0 return value indicates success.  A \-1 return value
+indicates an error, and an error code is stored in
+.I errno.
+.SH ERRORS
+.TP 15
+[EPERM]
+The caller is not the superuser.
+.SH SEE ALSO
+init (8)
+.SH BUGS
+Access to
+the control terminal via
+.B /dev/tty
+is still possible.
+.PP
+If the device can be opened through two different inodes (distinct,
+non-hardlinked filenames created with separate
+.IR mknod (2)
+calls),
+processes that have the alternate inodes open do
+.B not
+receive the hangup signal.
+.PP
+This call should be replaced by an automatic mechanism which
+takes place on process exit.

@@ -1,0 +1,99 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: adduser.8 1.6 90/03/20 $
+.TH ADDUSER 8 "\*(V)" "4BSD"
+.SH NAME
+adduser \- procedure for adding new users
+.SH DESCRIPTION
+A new user must choose a unique login name, one that does not 
+already appear in
+.I /etc/passwd.
+To add an account, edit a line into the password file; be sure to lock 
+the password file with
+.BR vipw (8).
+.PP
+Assign the new user a group and user ID.
+The user ID should be unique, because it is used
+to control access to files.
+Typically, users working on
+similar projects are put in the same group.  Thus at UCB we have
+groups for system staff, faculty, graduate students, and a few special
+groups for large projects.  System staff is group \*(lq10\*(rq for historical
+reasons, and the superuser is in this group.
+.PP
+A skeletal account for a new user \*(lqernie\*(rq would look like this:
+.IP
+ernie*235:20:& Kovacs,508E,7925,6428202:/mnt/grad/ernie:/bin/csh
+.PP
+The first field is the login name \*(lqernie\*(rq.  The next field is the
+encrypted password, which is not given and must be initialized using
+.BR passwd (1).
+The next two fields are the user and group ID's.
+Traditionally, users in group 20 are graduate students and have account
+names with numbers in the 200's.
+The next field gives information about ernie's name, office number, and office
+and home phone.
+This information is used by the
+.BR finger (1)
+program.
+From this information we can tell that ernie's real name is
+\*(lqErnie Kovacs\*(rq (the & here serves to repeat \*(lqernie\*(rq
+with appropriate capitalization), his office is 508 Evans Hall,
+his extension is x2-7925, and his home phone number is 642-8202.
+You can modify the
+.BR finger (1)
+program if necessary to allow different information to be encoded in
+this field.  The UCB version of finger knows several things particular
+to Berkeley:  for example, phone extensions start with 2\-, offices ending
+in E are in Evans Hall and offices ending in C are
+in Cory Hall.
+.PP
+The final two fields give a login directory and a login shell name.
+Traditionally, user files live on a filesystem whose machine's
+single letter
+.BR net (1)
+address is the first of two characters.  Thus, on the Berkeley CS Department
+VAX, whose Berknet address is \f2csvax\f1 (abbreviated \f2v\f1), the user file
+systems are mounted on /va, /vb, etc.
+On each such filesystem are subdirectories for each group
+of users, i.e., /va/staff and /vb/prof.
+This is not strictly necessary but helps keep the number of files in the
+top-level directories small enough.
+.PP
+The login shell will default to \f2/bin/sh\f1 if none is given.
+Most users at Berkeley choose \f2/bin/csh\f1, so this is usually
+specified here.
+.PP
+It is useful to give new users some help in getting started, supplying
+them with a few skeletal files such as
+.I \&.profile
+if they use \f2/bin/sh\f1, or
+.I \&.cshrc
+and
+.I \&.login
+if they use \f2/bin/csh\f1.
+The directory
+\f2/usr/skel\f1 contains skeletal definitions of such files.
+New users should be given copies of these files which, for instance,
+arrange to use
+.BR tset (1)
+automatically at each login.
+.SH FILES
+.ta 2i
+\f2/etc/passwd\f1	password file
+.br
+\f2/usr/skel\f1	skeletal login directory
+.SH SEE ALSO
+passwd(1), finger(1), chsh(1), chfn(1), passwd(5), vipw(8)
+.SH BUGS
+User information should be stored in its own database separate from
+the password file.

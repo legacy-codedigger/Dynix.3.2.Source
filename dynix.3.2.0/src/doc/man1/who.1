@@ -1,0 +1,56 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: who.1 1.4 86/05/13 $
+.TH WHO 1 "\*(V)" "7th Edition"
+.SH NAME
+who \- who is on the system
+.SH SYNOPSIS
+.B who
+[ who-file ] [
+.B "am I"
+]
+.SH DESCRIPTION
+.I Who,
+without an argument,
+lists the login name, terminal name, and login time
+for each current UNIX user.
+.PP
+Without an argument,
+.I who
+examines the
+.I /etc/utmp
+file to obtain its information.
+If a file is given, that file is examined.
+Typically the given file will be /usr/adm/wtmp,
+which contains a record of all the logins since it
+was created.
+Then
+.I who
+lists
+logins, logouts, and crashes since the creation of
+the wtmp file.
+Each login is listed with user name,
+terminal name (with `/dev/'
+suppressed),
+and date and time.
+When an argument is given, logouts produce a similar line without a user name.
+Reboots produce a line with `x' in the place of the device name,
+and a fossil time indicative of when the system went down.
+.PP
+With two arguments,
+as in `who am I' (and also `who are you'),
+.I who
+tells who you are logged in as.
+.SH FILES
+/etc/utmp
+.SH "SEE ALSO"
+getuid(2), utmp(5)

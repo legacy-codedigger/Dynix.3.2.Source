@@ -1,0 +1,12 @@
+;
+;	named.local
+;
+
+@	IN	SOA	MACHINE.COMPANYNAME.com  root.MACHINE.COMPANYNAME.com (
+								1.1     ; Serial
+								3600    ; Refresh
+								300     ; Retry
+								3600000 ; Expire
+								14400 )  ; Minimum
+	IN	NS	MACHINE.COMPANYNAME.com.
+1	IN	PTR	localhost.

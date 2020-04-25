@@ -1,0 +1,48 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: times.3c.so 1.10 89/11/06 $
+.TH TIMES 3C "\*(V)" "4BSD"
+.SH NAME
+times \- get process times
+.SH SYNOPSIS
+.nf
+.B "#include <sys/types.h>
+.B "#include <sys/times.h>
+.PP
+.B times(buffer)
+.B struct tms *buffer;
+.fi
+.SH DESCRIPTION
+.ft 3
+This interface is obsoleted by getrusage(2).
+.ft 1
+.PP
+.I Times
+returns time-accounting information
+for the current process
+and for the terminated child processes
+of the current process.
+All times are in 60ths of a second
+(even in installations configured for 50 Hz powerline frequency).
+.PP
+This is the structure returned by
+.IR times :
+.PP
+.nf
+.so times.h
+.PP
+.fi
+The children times are the sum
+of the children's process times and
+their children's times.
+.SH "SEE ALSO"
+time(1), getrusage(2), wait3(2), time(3)

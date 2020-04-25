@@ -1,0 +1,37 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: reset.1 1.4 86/05/13 $
+.TH RESET 1 "\*(V)" "4BSD"
+.SH NAME
+reset \- reset the teletype bits to a sensible state
+.SH SYNOPSIS
+.B reset
+.SH DESCRIPTION
+.I Reset
+sets the terminal to cooked mode, turns off cbreak and raw modes,
+turns on nl, and restores special characters that are undefined
+to their default values.
+.PP
+This is most useful after a program dies leaving a terminal in a funny
+state; you have to type ``<LF>reset<LF>'' to get it to work then to the
+shell, as <CR> often doesn't work; often none of this will echo.
+.PP
+It is a good idea to follow
+.I reset
+with
+.IR tset (1)
+.SH SEE ALSO
+stty(1), tset(1)
+.SH BUGS
+Doesn't set tabs properly; it can't intuit personal choices for interrupt
+and line kill characters, so it leaves these set to the local system
+standards.

@@ -1,0 +1,28 @@
+----------------------------
+Sun Dec 30 04:04:24 PST 1990  bruce@ogccse
+
+Files or directories in DO_NOT_USE subdirectories have been replaced by other
+versions, typically supported by symlinks, e.g.:
+
+Individual files are symlinked through "SRC":
+
+    man.c -> SRC/man.c
+    
+where SRC is defined by symlink "waypoints" in the same directory, such as:
+
+    SRC       -> SRC.4.3mtxinu
+    SRC.4.3mtxinu -> /usr/src.4.3mtxinu/ucb/
+
+
+Direct symlinks such as man.c -> /usr/src.4.3mtxinu/ucb/man.c are not used
+because they appear very obscure in long listings and are hard to change.
+The indirection through a generic "SRC" is used to make changes much
+easier -- the individual links (man.c -> SRC/man.c) don't change, just
+the SRC -> xxx.
+
+Exceptions, e.g., where one file has to be the Dynix version, are handled
+by something like this:
+
+    printf.c -> DYNIX/printf.c
+    DYNIX    -> /usr/src/dynix/src/bin/DO_NOT_USE/csh/
+

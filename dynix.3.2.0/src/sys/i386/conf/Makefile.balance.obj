@@ -1,0 +1,140 @@
+# $Copyright:	$
+# Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+# Sequent Computer Systems, Inc.   All rights reserved.
+#  
+# This software is furnished under a license and may be used
+# only in accordance with the terms of that license and with the
+# inclusion of the above copyright notice.   This software may not
+# be provided or otherwise made available to, or used by, any
+# other person.  No title to or ownership of the software is
+# hereby transferred.
+
+# $Header: Makefile.balance.obj 1.10 90/11/12 $
+#
+# Makefile for Sequent Dynix kernel
+#
+# This makefile is constructed from a machine description:
+#	config machine
+# Most changes should be made in the machine description
+#	/sys/conf/``machineid''
+# after which you should do
+#	config machineid
+#	make depend
+#	make all
+#
+
+AR=	ar
+C2=	/lib/c2
+LD=	/bin/ld
+CPP=	/lib/cpp
+SIZE=	size
+SYMORDER= symorder
+TAGS=	ctags -w
+SEDCMD=	sed -f ../machine/asm.sed
+COPTS=	 -I. -I../h ${INCLUDE} ${IDENT} -DKERNEL
+CPPOPTS=  -I. -I../h ${INCLUDE} ${IDENT} -DKERNEL
+CFLAGS=	 -O ${COPTS}
+CAFLAGS= 
+SAFLAGS= 
+LDFLAGS=-T 4000
+DEBUGLIBS= crash.o
+
+%SRCOBJS
+
+%CFILES
+
+%IOCHF
+
+OBJS=	../conf/OBJSlib.a
+
+
+%LOAD
+
+clean:
+	rm -f assym.h *.o vers.c ioconf.c conf.c param.c
+
+symbols.sort: Makefile ../conf/symbols.raw
+	${CPP} ${IDENT} ${CPUDEF} ../conf/symbols.raw | \
+		sed -e '/^#/d' -e '/^[ 	]*$$/d' | sort -u > symbols.sort
+
+ioconf.o: ioconf.c ../h/param.h ../h/mutex.h ../h/systm.h ../machine/ioconf.h \
+	${IOCHF}
+	${CC} -c ${CFLAGS} ioconf.c
+
+conf.o:	conf.c ../h/param.h ../h/systm.h ../h/mutex.h ../h/buf.h ../h/tty.h ../h/conf.h
+	${CC} -c ${CFLAGS} conf.c
+
+param.c: ../conf/param.c
+	rm -f param.c; cp ../conf/param.c .
+
+param.o: param.c Makefile
+	${CC} -c ${CFLAGS} ${PARAM} param.c
+
+# options NFS added to config file uses code in these files
+conf_nfs.o conf_vfs.o: Makefile
+
+swapgeneric.o crash.o: ../conf/OBJSlib.a
+	@${AR} xv ../conf/OBJSlib.a $@
+
+genassym: ../machine/genassym
+	rm -f genassym; cp ../machine/genassym .
+	chmod +x genassym
+
+assym.h:	genassym
+	rm -f assym.h
+	./genassym > assym.h
+
+vers.c:
+	sh ../conf/newvers.sh
+	${CC} ${CFLAGS} -c vers.c
+
+# depend:
+#	Generates list of #include dependencies, also including nested
+#	#includes.
+#
+# The for-loop generates a list of "file.o: header.h" dependencies, using
+# cpp to expand nested includes.  The egrep picks out those lines that
+# reference an include file.  The sed does: extract only the header-file,
+# insert the object file name, changes redundant occurances of
+# "../something/.." to ".." and "something/../somethingelse" to
+# "somethingelse" up to two times.  This whole mess is sorted (uniq'd),
+# and handed to awk to compress them on to 78-char lines.  The uniq is
+# needed due to cpp output redundantly listing the same header file.
+#
+depend:
+	echo '# DO NOT DELETE THIS LINE -- make depend uses it' > makedep
+	-for file in ${CFILES} ../conf/param.c; \
+	do \
+		obj=`basename $$file .c`.o; \
+		${CC} ${COPTS} -E $$file | \
+		egrep '^#[ 	]+[0-9]+[ 	]+".*\.h"' | \
+		sed -e 's/^.*"\(.*\)".*$$/\1/' \
+		    -e "s/^/$$obj: /" \
+		    -e 's;\.\./[^./]*/\.\.;..;' \
+		    -e 's;[^./][^./]*/\.\./\([^./]*\);\1;' \
+		    -e 's;[^./][^./]*/\.\./\([^./]*\);\1;' \
+		    -e 's;\.\/\.\.;..;'; \
+	done | sort -u | \
+	awk ' { if ($$1 != prev) { print rec; rec = $$0; prev = $$1; } \
+		else { if (length(rec $$2) > 78) { print rec; rec = $$0; } \
+		       else rec = rec " " $$2 } } \
+	      END { print rec } ' >> makedep
+	echo '/^# DO NOT DELETE THIS LINE/,$$d' >eddep
+	echo '$$r makedep' >>eddep
+	echo 'w' >>eddep
+	rm -f Makefile.bak
+	cp Makefile Makefile.bak
+	ed - Makefile < eddep
+	rm eddep makedep
+
+compiler_check:
+	@if ${CC} ${CFLAGS} -V >/dev/null 2>&1; then \
+		echo "Error: Cannot use ATS C compiler to build Dynix."; \
+		echo "       See ATS C release notes for more information."; \
+		exit 1; \
+	else exit 0;\
+	fi;
+
+%RULES
+
+# DO NOT DELETE THIS LINE -- make depend uses it

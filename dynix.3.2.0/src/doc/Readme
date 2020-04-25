@@ -1,0 +1,73 @@
+This directory tree contains sources for documents ported from existing
+4.2BSD Users Manuals, Volumes 1, 2A, 2B, and 2C.
+
+"ccsmake install" in this directory invokes "ccsmake install" in each
+subdirectory of this directory.  "ccsmake install" in those directories
+causes the files from that directory to be copied over to a
+corresponding place in the "/tmpos/..." tree.  Some files exist in
+these directories that do NOT get copied over; they are to support the
+"ccsmake print" operation (described later).
+
+"ccsmake clean" in this directory blows away all document source files
+from "/tmpos/...".  Subdirectories do not support the "ccsmake clean"
+operation.
+
+"ccsmake print" in this directory invokes "ccsmake print"
+in each subdirectory of this directory.  "ccsmake print" in those
+directories cause each document or manpage to be printed on the Imagen.
+
+"ccsmake print.man" and "ccsmake print.doc" format the manpages and
+Volume 2 papers separately, respectively.  Similarly, "ccsmake
+install.man" and "ccsmake install.doc" install manpages or papers
+separately.
+
+Subdirectory and file descriptions:
+
+Fontfix			xroff support: used to remove \f[RIB] indicators
+			from some of the subdirectories
+Mail/			Mail Reference Manual
+Makefile		The controlling Makefile
+Readme			This file
+adv.ed/			Advanced Editing Manual
+cacm/			Unix paper (appeared in CACM)
+config/			Config Manual
+csh/			Csh Reference Manual
+curses/			Curses Manual
+diction/		Style/Diction Manual
+edtut/			Editing Tutorial Manual
+eqn/			Eqn Manual
+ex/			Ex/Vi/Edit Manuals/Tutorials/Refcards
+fs/			Fast File System paper
+fsck/			Fsck Manual
+gprof/			Gprof Manual
+ipc/			IPC Primer Manual
+liberal			.fp commands for Times Roman font
+lisp/			Franz Lisp manuals
+lpd/			Line Printer Setup Manual
+man.aliases		Alias file for the manpages
+man.macs		xroff support: defines version control macros
+			for manpages during formatting
+man0/			Front matter for Programmer's Manual
+man1/			manpages, volume 1
+man2/			manpages, volume 2
+man3/			manpages, volume 3
+man4/			manpages, volume 4
+man5/			manpages, volume 5
+man6/			manpages, volume 6
+man7/			manpages, volume 7
+man8/			manpages, volume 8
+memacros/		-me Macros Manual
+misc/			TOC, copyright notices for Volume 2C
+msmacros/		-ms Macros Manual (and UCB updates)
+pascal/			Berkeley Pascal User's Manual
+refer/			Refer Manual
+sendmail/		Sendmail Manuals
+shell/			/bin/sh Manual
+sysman/			4.2BSD System Manual
+troff/			nroff/troff Manuals/Refcards
+trofftut/		nroff/troff Tutorial Manual
+uchanges/		4.1 to 4.2 Differences List Manual
+uprog/			Guide to Unix Programming Manual
+usr.doc/		Stuff from /usr/doc/ directory (see usr.doc/Readme)
+uucp/			Uucp Manual
+yacc/			Yacc Manual

@@ -1,0 +1,105 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+."Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989 
+."Sequent Computer Systems, Inc.   All rights reserved.
+." 
+."This software is furnished under a license and may be used
+."only in accordance with the terms of that license and with the
+."inclusion of the above copyright notice.   This software may not
+."be provided or otherwise made available to, or used by, any
+."other person.  No title to or ownership of the software is
+."hereby transferred.
+.\"
+...
+.V= $Header: mkfs.8 1.6 90/01/24 $
+.TH MKFS 8 "\*(V)" "7th Edition"
+.SH NAME
+mkfs \- construct a filesystem
+.SH SYNOPSIS
+.B /etc/mkfs
+special size
+[ nsect
+[ ntrack
+[ blksize
+[ fragsize
+[ ncpg
+[ minfree
+[ rps
+[ nbpi ] ] ] ] ] ] ] ]
+.SH DESCRIPTION
+.B mkfs
+constructs a filesystem
+by writing on the special file
+.IR special .
+.B mkfs
+is actually a compatibility interface to the
+.BR newfs (8)
+command; in general the
+.BR newfs (8)
+is preferred.
+The numeric size specifies the number of sectors in the filesystem.
+.B mkfs
+builds a filesystem with a root directory;
+.B mkfs
+no longer builds a
+.I lost+found
+directory, as the
+.BR fsck (8)
+command is now capable of creating this when needed.
+The number of inodes is calculated as a function
+of the filesystem size.
+.PP
+The following optional arguments allow finer control over the
+parameters of the filesystem:
+.TP 12
+.B nsect
+Specifies the number of sectors per track on the disk.
+.TP 12
+.B ntrack
+Specifies the number of tracks per cylinder on the disk.
+.TP 12
+.B blksize
+Gives the primary block size for files on the filesystem.
+It must be a power of two,
+selected from 4096 or 8192.
+.TP 12
+.B fragsize
+Gives the fragment size for files on the filesystem.
+Represents the smallest amount of disk space
+that will be allocated to a file.
+It must be a power of two,
+selected from the range 512 to 8192.
+.TP 12
+.B ncpg
+Specifies the number of disk cylinders per cylinder group.
+.TP 12
+.B minfree
+Specifies the minimum percentage of free disk space allowed.
+Once the filesystem capacity reaches this threshold,
+only the superuser is allowed to allocate disk blocks.
+The default value is 10%.
+.TP 12
+.B rps
+Specifies the number of revolutions per second,
+if a disk does not revolve at 60 revolutions per second.
+.TP 12
+.B nbpi
+Specifies the number of bytes per inode,
+if a filesystem will have more or less
+than the average number of files.
+Used to increase or decrease the number of inodes that are created.
+.SH "SEE ALSO"
+newfs(8),
+fsck(8),
+tunefs(8),
+dir(5), fs(5) 
+.SH BUGS
+There should be some way to specify bad blocks.

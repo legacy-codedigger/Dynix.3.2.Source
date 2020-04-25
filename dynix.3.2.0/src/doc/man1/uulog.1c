@@ -1,0 +1,67 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: uulog.1c 1.2 87/06/17 $
+.TH UULOG 1C "\*(V)" "4BSD"
+.\"
+.\"	@(#)uulog.1c	6.1 (Berkeley) 4/24/86
+.\"
+.UC 6
+.SH NAME
+uulog \- display \s-1UUCP\s0 log files
+.SH SYNOPSIS
+.B uulog
+[
+.B \-s
+.I sys
+] [
+.B \-u
+.I user
+]
+.SH DESCRIPTION
+.I Uulog
+queries a log
+of 
+.IR uucp (1C)
+and
+.IR uux (1C)
+transactions in the file
+.B /usr/spool/uucp/\s-1LOGFILE.\s0
+.PP
+The options command 
+.I uulog
+to print logging information:
+.TP 8
+.BI \-s sys\^
+Print information about work involving system
+.IR sys .
+.TP 8
+.BI \-u user\^
+Print information about work done for the specified
+.IR user .
+.SH FILES
+/usr/spool/uucp/\s-1LOGFILE\s0
+.SH "SEE ALSO"
+uucp(1C),
+uux(1C)
+.SH NOTES
+Very early releases of \s-1UUCP\s0 used separate log files
+for each of the \s-1UUCP\s0 utilities;
+.I uulog
+was used to merge the individual logs into a master file.
+This capability has not been necessary for some time and is
+no longer supported.
+.SH BUGS
+\s-1UUCP\s0's recording of which user issued a request is unreliable.
+.PP
+.I Uulog
+is little more than an overspecialized version of
+.IR grep (1).

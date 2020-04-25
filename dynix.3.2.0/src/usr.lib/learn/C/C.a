@@ -1,0 +1,2423 @@
+!<arch>
+L0              445767675   100   205   100640  14        `
+#next
+0.1a 10
+L0.1a           445767677   100   205   100640  418       `
+#print
+This script is loosely based on the material in
+"The C Programming Language", by Brian Kernighan
+and Dennis Ritchie (Prentice-Hall, 1978).
+You may find it helpful to have that at hand.
+Some of the lessons will indicate
+the section that they are based on.
+
+Do you have a copy at hand?  Answer yes or no.
+#copyin
+#user
+#uncopyin
+#match yes
+Fine.
+#match no
+It might help, but it's not critical.
+#log
+#next
+1.1a 10
+L1.1a           445767678   100   205   100640  412       `
+#print
+(Section 1.1)
+The way you compile a C program is to say
+  cc name.c 
+where name.c is the name of the file the program
+is on.  Here is a short C program that prints
+out a line containing "hello".  Type it in and
+compile it.  Call it anything you want but
+don't rename the output.
+When done, type "ready".
+
+main()
+{
+	printf("hello\n");
+}
+#once #create Ref
+hello
+#user
+a.out >x
+#cmp x Ref
+#log
+#next
+1.1b 10
+L1.1b           445767679   100   205   100640  555       `
+#print
+(Section 1.1)
+Now write a C program that prints two lines,
+the first of which says "hello" and the second
+"goodbye".  Don't forget those \n delimiters.
+Compile and test it.  When satisfied,
+type "ready".
+#once #create Ref
+hello
+goodbye
+#user
+a.out >test
+#cmp test Ref
+#succeed
+Here is one possible solution to compare against yours.
+
+main()
+{
+	printf("hello\n");
+	printf("goodbye\n");
+}
+
+You could also combine the two messages into one
+call to printf, like
+
+	printf("hello\ngoodbye\n");
+
+but this is harder to read at a glance.
+#log
+#next
+1.1c 10
+
+L1.1c           445767681   100   205   100640  227       `
+#print
+(Section 1.1)
+The program in Ref.c has an error in it.
+Find it, fix it, and run it.
+Then type ready.
+#once #create Ref.c
+main()
+{
+	printf("hello\");
+}
+#once #create Ref
+hello
+#user
+a.out >x
+#cmp x Ref
+#log
+#next
+1.1d 10
+
+L1.1d           445767683   100   205   100640  510       `
+#print
+(Section 1.1)
+Write a program which prints these four lines,
+exactly as shown:
+A tab is \t
+A backspace is \b
+A quote is \"
+A backslash is \\
+
+Compile it, test it, then type ready.
+#once #create Ref
+A tab is \t
+A backspace is \b
+A quote is \"
+A backslash is \\
+#user
+a.out >x
+#cmp x Ref
+#succeed
+One solution:
+
+main()
+{
+	printf("A tab is \\t\n");
+	printf("A backspace is \\b\n");
+	printf("A quote is \\\"\n");
+	printf("A backslash is \\\\\n");
+}
+#fail
+Watch out for those backslashes.
+#log
+#next
+1.1e 10
+L1.1e           445767684   100   205   100640  215       `
+#print
+What will be printed by the following printf statement?
+
+	printf("\"#@\"");
+
+Type "answer XXX", where XXX is the set of characters
+that will be printed.
+#copyin
+#user
+#uncopyin
+#match "#@"
+#log
+#next
+1.1f 10
+
+L1.1f           445767686   100   205   100640  254       `
+#print
+(Section 1.2)
+Write a program to print
+the value of the character 'X' in
+octal.  Compile it and run it.
+Then type ready.
+#user
+a.out >test
+grep 130 test >/dev/null
+#succeed
+A possible solution:
+
+main()
+{
+	printf("%o\n", 'X');
+}
+#log
+#next
+2.1a 10
+L10             445767687   100   205   100640  375       `
+#print
+The lessons from this point on are from the old C script.
+They have not been cleaned up as much as they could, so some
+are not very illuminating, and the code they illustrate
+is not always the best. You're welcome to try them nonetheless,
+but be warned.
+If you want to proceed, type yes;
+otherwise, type bye.
+#copyin
+#user
+#uncopyin
+#match yes
+#next 
+11.1a 10
+11.2a 5
+
+L11.1a          445767689   100   205   100640  770       `
+#print
+With your 'cc' command you can give the name of
+an object file to be loaded with your program.
+For example
+   cc x.c y.o
+will load the previously compiled program 'y' along with
+the program 'x' to be compiled now.
+
+The file "getnum.o" contains a subroutine "getnum" which
+reads an integer and returns its value.
+Write a program which reads a number and decides
+whether or not it is a multiple of 23.  If so print
+"yes" and otherwise print "no".
+Compile and test; then type "ready".
+#once #create Ref1
+23000
+#once #create Ref2
+23001
+#once cp %s/getnum.o .
+#user
+a.out <Ref1 >z1
+a.out <Ref2 >z2
+grep yes z1 >/dev/null || grep no z2 >/dev/null
+#succeed
+/*	One way: */
+
+main() {
+	if (getnum()%23 == 0)
+		printf("yes\n");
+	else
+		printf("no\n");
+}
+#log
+#next
+12.1a 10
+L11.2a          445767690   100   205   100640  681       `
+#print
+With your 'cc' command you can give the name of
+an object file to be loaded with your program.
+For example
+   cc x.c y.o
+will load the previously compiled program 'y' along with
+the program 'x' to be compiled now.
+There is a file in this directory named "getnum.o"
+that contains a subroutine "getnum" that will read digits
+from the standard input, convert them to binary, and
+return an integer value.
+
+Write a program which reads an integer and prints
+it back in octal.  Compile and test as usual.
+#once #create Ref
+254
+#once cp %s/getnum.o .
+#user
+a.out <Ref >test
+grep 376 test >/dev/null
+#succeed
+/*	One way: */
+
+main() {
+	printf("%o\n", getnum());
+}
+#log
+#next
+11.1a 10
+
+L12.1a          445767692   100   205   100640  579       `
+#print
+Write a program which reads two numbers and
+prints the larger one in decimal. Use the same
+"getnum" subroutine.  Compile, test and type
+"ready" as usual.
+#once #create Ref1
+14039 89
+#once #create Ref2
+20022 23001
+#once cp %s/getnum.o .
+#user
+a.out <Ref1 >x1
+a.out <Ref2 >x2
+grep 14039 x1 >/dev/null || grep 23001 x2 >/dev/null
+#succeed
+/*	One way: */
+
+main() {
+	int n1, n2;
+
+	n1 = getnum();
+	n2 = getnum();
+	printf("%d\n", n1 > n2 ? n1 : n2);
+}
+
+/* You could also use something like
+
+	if (n1 > n2)
+		printf("%d\n", n1);
+	else
+		printf("%d\n", n2);
+ */
+#log
+#next
+12.1b 10
+
+L12.1b          445767693   100   205   100640  1063      `
+#print
+The function getnum actually returns -1 when it
+encounters end of file. (The source is in getnum.c
+if you're interested.)
+Write, compile and run a program that
+reads numbers one per line with getnum
+and, for each, prints:
+
+small	if the number is >0 and <=100
+big	if the number is >100 and <=1000
+huge	if the number is >1000.
+
+Type "ready" when you're done.
+#once cp %s/getnum.o .
+#once cp %s/getnum.c .
+#once #create Ref
+1001
+1000
+999
+101
+100
+1
+#once #create Ref1
+huge
+big
+big
+big
+small
+small
+#user
+a.out <Ref >test
+#cmp Ref1 test
+#succeed
+/* One way:*/
+
+main() {
+	int n;
+
+	while ((n = getnum()) >= 0)
+		if (n > 0 && n <= 100)
+			printf("small\n");
+		else if (n > 100 && n <= 1000)
+			printf("big\n");
+		else if (n > 1000)
+			printf("huge\n");
+}
+
+/* 	Notice that in principle n could be negative,
+	so we need the last case to say
+		else if (n > 1000)
+	instead of just falling into it with a bare
+		else
+
+	Also it's a good idea to indent the else-if's
+	exactly the way they are here; otherwise
+	you'll lose track of what's going on.
+**/
+#log
+#next
+13.1a 10
+
+L13.1a          445767695   100   205   100640  959       `
+#print
+Write a program which reads
+its input and counts the number of
+characters and the number of spaces
+(where a space is either a blank or
+a tab or a newline).  Print both numbers.
+Compile, test, and type "ready".
+#once #create Ref
+hoboken harrison newark roseville avenue grove street
+east orange brick church orange highland avenue
+mountain station south orange maplewood millburn short hills
+summit chatham madison convent station morristown
+new providence	murray hill berkeley heights
+gillette stirling millington lyons basking ridge
+bernardsville far hills peapack gladstone
+#user
+a.out <Ref >x1
+a.out <Ref >x2
+grep 348 x1 >/dev/null || grep 45 x2 >/dev/null
+#succeed
+ #include <stdio.h>
+/* One way: */
+
+main() {
+	int nchar, nspace;
+	char c;
+
+	nchar = nspace = 0;
+	while ((c = getchar()) != EOF) {
+		nchar++;
+		if (c == ' ' || c == '\t' || c == '\n')
+			nspace++;
+	}
+	printf("spaces = %d, chars = %d\n", nspace, nchar);
+}
+#log
+#next
+14.1a 10
+14.2a 5
+
+L14.1a          445767696   100   205   100640  644       `
+#print
+Using the familar "getnum.o" routine
+write a program that reads numbers one per line and determines
+for each if it is prime. Print "prime"
+for a prime number and "composite" for a non-prime number.
+Compile, test, and type "ready".
+#once #create Ref
+10039
+17947
+#once #create Ref1
+prime
+composite
+#once cp %s/getnum.o .
+#user
+a.out <Ref >x1
+#cmp x1 Ref1
+#succeed
+/* A slow but sure prime-tester */
+main()
+{
+	int p, i, comp;
+
+	while ((p = getnum()) >= 0) {
+		comp = 0;
+		for (i = 2; i*i <= p; i++)
+			if (p%i == 0) {
+				comp = 1;
+				break;
+			}
+		if (comp)
+			printf("composite\n");
+		else
+			printf("prime\n");
+	}
+}
+#log
+#next
+15.1a 10
+L14.2a          445767698   100   205   100640  520       `
+#print
+Using the "getnum" routine on "getnum.o", write a program
+that reads a list of positive numbers and prints their sum.  Stop reading
+numbers when "getnum" returns a negative or zero value.
+Compile and test your program; then type "ready".
+#once #create Ref
+5 43 293 400 75 832 903 33
+#once cp %s/getnum.o .
+#user
+a.out <Ref >xxx
+grep 2584 xxx >/dev/null
+#succeed
+/* Read numbers and count */
+main()
+{
+	int s, n;
+
+	s = 0;
+	while ((n=getnum()) > 0)
+		s += n;
+	printf("Sum is %d\n", s);
+}
+#log
+#next
+14.2b 5
+15.1a 10
+L14.2b          445767699   100   205   100640  992       `
+#print
+Write a program which counts the number of five letter
+words in its input (define a word as anything between
+blanks, tabs or newlines).  Compile and run it, then type "ready".
+Note that all that is wanted is the total number of
+five letter words - nothing was said about distinct
+words.  Just count the number of times exactly five
+characters appear between spaces.
+#once #create Ref
+This is a passage of text which contains
+exactly twelve words of five letters.
+Words may appear at the start or at the final
+part of a line.  Other words show up in
+the middle.  Avoid counting seven or eight letters
+but every five must be noted.
+#user
+a.out <Ref >xxx
+grep 12 xxx >/dev/null
+#succeed
+/*	one way to count five letter words */
+ #include <stdio.h>
+
+main()
+{
+	int since, wdnum, c;
+
+	since = 0;
+	while ((c=getchar()) != EOF) {
+		if (c == ' ' || c == '\t' || c == '\n') {
+			if (since == 5)
+				wdnum++;
+			since = 0;
+		}
+		else
+			since++;
+	}
+	printf("%d\n", wdnum);
+}
+#log
+#next
+15.1a 10
+L15.1a          445767701   100   205   100640  698       `
+#print
+Write a program that reads in lines one at a time,
+and prints them out if their length (including
+the newline) is odd.
+You can use the function getline if you like; the object
+file is in getline.o.
+Compile and run it, then type "ready".
+#once #create Ref1
+this line contains an odd number of letters!
+this line, however, contains an even number of letters!
+#once #create Ref2
+this line contains an odd number of letters!
+#once cp %s/getline.o .
+#user
+a.out <Ref1 >x1
+#cmp x1 Ref2
+#succeed
+/* It's certainly easiest with getline: */
+
+ #include <stdio.h>
+
+main()
+{
+	char line[500];
+	int n;
+
+	while ((n = getline(line, 500)) > 0)
+		if (n % 2 == 1)
+			printf("%s", line);
+}
+#log
+#next
+15.1b 10
+L15.1b          445767702   100   205   100640  605       `
+#print
+Write a program that reads in lines, and prints each out
+in reverse order (except that the newline should be
+at the end).
+Thus the line
+cat food
+should come out as
+doof tac
+Compile it and run it, then type "ready".
+#once #create Ref1
+This is odd.
+This is even.
+
+#once #create Ref2
+.ddo si sihT
+.neve si sihT
+
+#once cp %s/getline.o .
+#user
+a.out <Ref1 >x1
+#cmp x1 Ref2
+#succeed
+/*	one way to do this */
+ #include <stdio.h>
+
+main()
+{
+	char line[500];
+	int n;
+
+	while ((n = getline(line, 500)) > 0) {
+		for (n -= 2; n >= 0; n--)
+			putchar(line[n]);
+		putchar('\n');
+	}
+}
+#log
+#next
+17.1a 10
+16.2a 5
+
+L16.2a          445767704   100   205   100640  1680      `
+#print
+Write a program which reads a file with lines of up
+to 200 characters and shortens them to 60 characters
+by throwing away any characters past the first 60.
+Compile and test it; then type "ready".
+#once #create Ref
+hoboken harrison newark roseville avenue grove street
+east orange brick church orange highland avenue east orange 
+mountain station south orange maplewood millburn short hills
+summit chatham madison convent station morristown summit cha
+new providence murray hill berkeley heights
+
+gillette stirling millingon lyons basking ridgexxxxxxxxxxxxx
+bernardsville far hills peapack gladstone
+#once #create badin
+hoboken harrison newark roseville avenue grove street
+east orange brick church orange highland avenue east orange brick church orange highland avenue east orange brick church orange highland avenue
+mountain station south orange maplewood millburn short hills
+summit chatham madison convent station morristown summit chatham madison convent station morristown summit chatham madison convent station morristown
+new providence murray hill berkeley heights
+
+gillette stirling millingon lyons basking ridgexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+bernardsville far hills peapack gladstone
+#user
+a.out <badin >xxx
+#cmp Ref xxx
+#succeed
+/*	one way to do this */
+ #include <stdio.h>
+
+main()
+{
+	char line[61];
+	int c, k;
+
+	k = 0;
+	while ((c = getchar()) != EOF) {
+		if (c == '\n') {
+			line[k] = 0;
+			printf("%s\n", line);
+			k = 0;
+		}
+		else if (k < 60)
+			line[k++] = c;
+	}
+}
+
+/* Note that this version works regardless of
+how long the lines are.  If you use getline,
+is the same thing true??
+ */
+#log
+#next
+16.2b 10
+L16.2b          445767705   100   205   100640  999       `
+#print
+Write a program which copies all lines containng
+the letter 'p' from its input to its output.
+Compile and test it; then type "ready".
+#once #create Ref
+mountain station south orange maplewood millburn short hills
+new providence murray hill berkeley heights
+bernardsville far hills peapack gladstone
+#once #create badin
+hoboken harrison newark roseville avenue grove street
+east orange brick church orange highland avenue
+mountain station south orange maplewood millburn short hills
+summit chatham madison convent station morristown
+new providence murray hill berkeley heights
+gillette stirling millington lyons basking ridge
+bernardsville far hills peapack gladstone
+#once cp %s/getline.o .
+#user
+a.out <badin >xxx
+#cmp Ref xxx
+#succeed
+/*	a way to find lines with 'p' */
+ #include <stdio.h>
+
+main()
+{
+	char line[500];
+	int k;
+
+	while (getline(line, 500) > 0)
+		for (k = 0; line[k] != '\0'; k++)
+			if (line[k] == 'p') {
+				printf("%s", line);
+				break;
+			}
+}
+#log
+#next
+16.2c 5
+17.1a 10
+
+L16.2c          445767707   100   205   100640  1947      `
+#print
+Write a program to read its input and find the
+word in it with the most vowels (instances of a,e,i,o, or u).
+Print out that word. Compile and test your
+program, then type ready.
+#once #create Ref
+When in the course of human events, it becomes
+necessary for one people to dissolve the political bands which have
+connected them with another, and to assume among the 
+powers of the earth the separate and equal station to which
+the laws of Nature and of Nature's God entitle them, a decent
+respect to the opinions of mankind requires that they should
+declare the causes which impel them to the separation.
+  We hold these truths to be self evident, that all men
+are created equal, that they are endowed by their creator
+with certain unalienable rights, that among these are life, liberty,
+and the pursuit of happiness.  That to secure these rights,
+governments are instituted among men, deriving their just
+powers from the consent of the governed.  That whenever
+any form of government becomes destructive of these ends,
+it is the right of the people to alter or to abolish it, and
+to institute new government, laying its foundation on such
+principles and organizing its powers in such form, as to them
+shall seem most likely to effect their safety and happiness.
+#user
+a.out <Ref >xxx
+grep unalienable xxx >/dev/null
+#succeed
+/*	a way to find a word with lots of vowels */
+ #include <stdio.h>
+
+main()
+{
+	char bigword[100], thisword[100];
+	int nvow, maxvow, c, k;
+
+	maxvow = k = 0;
+	while ((c = getchar()) != EOF) {
+		if (c == '\n' || c == ' ') {
+			if (nvow > maxvow) {
+				copy(thisword, bigword, k);
+				maxvow = nvow;
+			}
+			nvow = k = 0;
+		} else {
+			thisword[k++] = c;
+			switch (c) {
+			case 'a': case 'e': case 'i': case 'o': case 'u':
+				nvow++;
+			}
+		}
+	}
+	printf("the word %s had %d vowels\n", bigword, maxvow);
+}
+
+copy(a, b, n)
+char a[], b[];
+{
+	int i;
+
+	for(i = 0; i < n; i++)
+		b[i] = a[i];
+	b[i] = 0;
+}
+#log
+#next
+17.1a 10
+
+L17.1a          445767708   100   205   100640  2951      `
+#print
+Write in a program which reads its input and writes it
+out line numbered, with a three-digit line number (starting at one)
+followed by a single space and then by the original line.
+Note: the printf format specification %3d will print a three
+digit number.
+You might try the function fgets (part of the standard library).
+	fgets(buf, size, stdin)
+reads from the terminal ("stdin") up to size characters
+into buf.  It returns NULL on end of file.
+
+Compile and test your program; then type "ready".
+#once #create Ref
+When in the course of human events, it becomes
+necessary for one people to dissolve the political bands which have
+connected them with another, and to assume among the 
+powers of the earth the separate and equal station to which
+the laws of Nature and of Nature's God entitle them, a decent
+respect to the opinions of mankind requires that they should
+declare the causes which impel them to the separation.
+  We hold these truths to be self evident, that all men
+are created equal, that they are endowed by their creator
+with certain unalienable rights, that among these are life, liberty,
+and the pursuit of happiness.  That to secure these rights,
+governments are instituted among men, deriving their just
+powers from the consent of the governed.  That whenever
+any form of government becomes destructive of these ends,
+it is the right of the people to alter or to abolish it, and
+to institute new government, laying its foundation on such
+principles and organizing its powers in such form, as to them
+shall seem most likely to effect their safety and happiness.
+#once #create reffed
+  1 When in the course of human events, it becomes
+  2 necessary for one people to dissolve the political bands which have
+  3 connected them with another, and to assume among the 
+  4 powers of the earth the separate and equal station to which
+  5 the laws of Nature and of Nature's God entitle them, a decent
+  6 respect to the opinions of mankind requires that they should
+  7 declare the causes which impel them to the separation.
+  8   We hold these truths to be self evident, that all men
+  9 are created equal, that they are endowed by their creator
+ 10 with certain unalienable rights, that among these are life, liberty,
+ 11 and the pursuit of happiness.  That to secure these rights,
+ 12 governments are instituted among men, deriving their just
+ 13 powers from the consent of the governed.  That whenever
+ 14 any form of government becomes destructive of these ends,
+ 15 it is the right of the people to alter or to abolish it, and
+ 16 to institute new government, laying its foundation on such
+ 17 principles and organizing its powers in such form, as to them
+ 18 shall seem most likely to effect their safety and happiness.
+#user
+a.out <Ref >xxx
+#cmp xxx reffed
+#succeed
+
+
+ #include <stdio.h>
+
+main()
+{
+	char s[200];
+	int k;
+
+	k = 0;
+	while (fgets(s, 200, stdin) != NULL)
+		printf("%3d %s", ++k, s);
+}
+#log
+#next
+18.1a 10
+17.1c 5
+
+L17.1c          445767710   100   205   100640  707       `
+#print
+Print the 20 Fibonacci numbers beginning with 2
+(the sequence is 2,3,5,8,... where each number
+is the sum of the immediately preceding pair of numbers.
+Start with the pair 1,1).
+Print each number on a separate line as a five digit
+number (remember %3d in printf? %5d does five digits).
+Compile and test your program; then type "ready".
+#once #create Ref
+    2
+    3
+    5
+    8
+   13
+   21
+   34
+   55
+   89
+  144
+  233
+  377
+  610
+  987
+ 1597
+ 2584
+ 4181
+ 6765
+10946
+17711
+#user
+a.out >xxx
+#cmp xxx Ref
+#succeed
+/*	 one way */
+main()
+{
+	int f1, f2, t, count;
+
+	f1 = 1;
+	f2 = 1;
+	for (count = 0; count < 20; count++) {
+		t = f1+f2;
+		f1 = f2;
+		f2 = t;
+		printf("%5d\n", t);
+	}
+}
+#log
+#next
+18.1a 10
+
+L18.1a          445767712   100   205   100640  933       `
+#print
+There is nothing to force you to write a main program
+on each file; just as I supplied "getnum" on a separate file,
+you can put different routines on different files.  Write
+a function "length(s)" which if given a character array argument
+"s" returns the length of that string.
+Put this on a file named "length.c", and leave
+the object file in "length.o".
+Write the main program for
+testing this somewhere else.  Type "ready" when you have compiled
+and tested your program and are happy with it.
+#once #create Ref
+This file contains several lines of quite different lengths.
+
+You should get
+all of them exactly
+r
+right.
+#once #create answer
+60
+0
+14
+19
+1
+6
+#once #create tzaqc.c
+main() {
+	char s[200];
+	while (gets(s))
+		printf("%d\n", length(s));
+}
+#user
+cc tzaqc.c length.c 
+a.out <Ref >value
+#cmp value answer
+#succeed
+/*	 one way */
+length(s)
+char *s;
+{
+	int k;
+
+	for (k=0; s[k]; k++)
+		;
+	return(k);
+}
+#log
+#next
+19.1a 10
+
+L19.1a          445767714   100   205   100640  498       `
+#print
+Write a subroutine which counts the number of times it has
+been called and returns that count each time.  Name it
+"count()".  Write it on a file named "count.c".  Compile
+and test it; type "ready" when happy.
+#once #create Ref
+23080
+#once #create tzaqc.c
+main() {
+	int i;
+	for (i = 0; i < 23079; i++)
+		count();
+	printf("%d\n", count());
+}
+#user
+cc tzaqc.c count.o
+a.out  >value
+#cmp value Ref
+#succeed
+/*  one way */
+count()
+{
+	static int n = 0;
+	return(++n);
+}
+#log
+#next
+30.1a 10
+20.1a 5
+L2.1a           445767716   100   205   100640  957       `
+#print
+(Section 1.2)
+The file Ref.c contains a copy of
+a program to convert Fahrenheit to
+Celsius. Modify it to print this
+heading at the top:
+Fahrenheit-Celsius Conversion
+  F:     C:
+Type ready when you're satisfied.
+#once #create Ref
+Fahrenheit-Celsius Conversion
+  F:     C:
+   0  -17.8
+  20   -6.7
+  40    4.4
+  60   15.6
+  80   26.7
+ 100   37.8
+ 120   48.9
+ 140   60.0
+ 160   71.1
+ 180   82.2
+ 200   93.3
+ 220  104.4
+ 240  115.6
+ 260  126.7
+ 280  137.8
+ 300  148.9
+#once #create Ref.c
+/* print Fahrenheit-Celsius table 
+	for f = 0, 20, ..., 300 */
+main()
+{
+	int lower, upper, step;
+	float fahr, celsius;
+
+	lower = 0;	/* lower limit of temperature table */
+	upper = 300;	/* upper limit */
+	step = 20;	/* step size */
+
+	fahr = lower;
+	while (fahr <= upper) {
+		celsius = (5.0/9.0) * (fahr-32.0);
+		printf("%4.0f %6.1f\n", fahr, celsius);
+		fahr = fahr + step;
+	}
+}
+#user
+a.out >x
+#cmp Ref x
+#fail
+Make sure you get the spacing right.
+#log
+#next
+2.1b 10
+
+L2.1b           445767717   100   205   100640  445       `
+#print
+(Section 1.2)
+Write a C program that prints a number which is
+the sum of three numbers: 23, 197, and the product
+of 23 and 197.  Again, compile and test
+it.  Please do the computation with the program -
+if you do it by hand, I'll give you credit for the
+work, but it's just stupid.
+#user
+a.out >test
+grep 4751 test >/dev/null
+#succeed
+/* Here is one possible solution */
+
+main()
+{
+	printf("%d\n", 23 + 197 + 23*197);
+}
+#log
+#next
+2.1c 10
+
+L2.1c           445767718   100   205   100640  231       `
+#print
+(Section 1.2)
+What value is printed by this printf statement?
+
+	printf("%.3f", 3.141592654);
+
+Type "answer XXX", where XXX is the value.
+#copyin
+#user
+#uncopyin
+#match 3.142
+#fail
+Remember about rounding?
+#log
+#next
+2.1d 10
+
+L2.1d           445767720   100   205   100640  215       `
+#print
+What value is printed by this printf statement?
+
+	printf("%%3.1f", 3.141592654);
+
+Type "answer XXX", where XXX is the value.
+#copyin
+#user
+#uncopyin
+#match %3.1f
+#fail
+Look again - it's %%
+#log
+#next
+2.1e 10
+
+L2.1e           445767721   100   205   100640  211       `
+#print
+Is there any difference between
+
+   printf("%s", s);
+
+and
+
+   printf(s);
+
+Answer yes or no.
+#copyin
+#user
+#uncopyin
+#match yes
+#fail
+Consider the string "50% of the answers are wrong."
+#log
+#next
+3.1a 10
+
+L20.1a          445767723   100   205   100640  1840      `
+#print
+Write a program to read a list of positive numbers
+and sort them into ascending order.  Print
+the sorted list of numbers one per line
+as five digit numbers (%5d in printf).
+Stop reading numbers when getnum returns -1.
+Compile and test your program; then type "ready".
+#once #create Ref
+    1
+    3
+    4
+    9
+   11
+   12
+   13
+   14
+   15
+   16
+   17
+   20
+   34
+   71
+  200
+  225
+  250
+  275
+  300
+ 4095
+ 7111
+16384
+#once cp %s/getnum.o .
+#once #create input
+4 20 3 200 16384 4095 71 11 12 13 14
+15 16 17 34 9 7111 300 275 250 225 1
+#user
+a.out  <input >xxx
+#cmp xxx Ref
+#succeed
+main()
+{
+	int n;
+	int list[1000];
+
+	n = getlist(list);
+	shellsort(list, n);
+	printlist(list, n);
+}
+
+getlist(list)
+int list[];
+{
+	int n;
+
+	n = 0;
+	while ((list[n]=getnum()) >= 0)
+		n++;
+	return(n);
+}
+
+/* this is a shell sort, stripped down to process a list
+   of integers only.  Although you probably don't know
+   how to write this offhand, you should know where to find
+   it - it is only marginally more code than a bubble sort
+   and much faster (n**1.5 vs. n**2) in time. */
+shellsort(v, n)  /* sort v[0]...v[n-1] into increasing order */
+int v[], n;
+{
+    int gap, i, j, temp;
+
+    for (gap = n/2; gap > 0; gap /= 2)
+        for (i = gap; i < n; i++)
+            for (j=i-gap; j>=0 && v[j]>v[j+gap]; j-=gap) {
+                temp = v[j];
+                v[j] = v[j+gap];
+                v[j+gap] = temp;
+            }
+}
+
+printlist(list, n)
+int list[], n;
+{
+	int i;
+	for(i=0; i<n; i++)
+		printf("%5d\n",list[i]);
+}
+/* this is a crummy bubble sort which
+   would work perfectly well for this
+   problem but can not be recommended
+   for large jobs. 
+sortlist()
+{
+	int i, j, k;
+
+	for(i=0; i<n; i++)
+		for(j=n-1; j>0; j--)
+			if (list[j-1] > list[j]) {
+				k = list[j];
+				list[j] = list[j-1];
+				list[j-1] = k;
+			}
+}
+ ****/
+#log
+#next
+30.1a 10
+L3.1a           445767724   100   205   100640  1123      `
+#print
+(Section 1.3)
+The file Ref.c contains a copy of
+a program to convert Fahrenheit to
+Celsius that prints from 0 to 300
+degrees in steps of 20.
+Modify it to print from 300 down to 0
+in steps of 50. Type ready when you're done.
+#once #create Ref
+ 300  148.9
+ 250  121.1
+ 200   93.3
+ 150   65.6
+ 100   37.8
+  50   10.0
+   0  -17.8
+#once #create Ref.c
+/* print Fahrenheit-Celsius table 
+	for f = 0, 20, ..., 300 */
+main()
+{
+	int lower, upper, step;
+	float fahr, celsius;
+
+	lower = 0;	/* lower limit of temperature table */
+	upper = 300;	/* upper limit */
+	step = 20;	/* step size */
+
+	fahr = lower;
+	while (fahr <= upper) {
+		celsius = (5.0/9.0) * (fahr-32.0);
+		printf("%4.0f %6.1f\n", fahr, celsius);
+		fahr = fahr + step;
+	}
+}
+#user
+a.out >x
+#cmp Ref x
+#succeed
+Here's our solution:
+
+main()	/* Fahrenheit-Celsius 300 ... 0 by 50 */
+{
+	int lower, upper, step;
+	float fahr;
+
+	lower = 0;	/* lower limit of temperature table */
+	upper = 300;	/* upper limit */
+	step = 50;	/* step size */
+
+	for (fahr = upper; fahr >= lower; fahr = fahr - step)
+		printf("%4.0f %6.1f\n", fahr, (5.0/9.0) * (fahr-32.0));
+}
+#log
+#next
+3.1b 10
+
+L3.1b           445767726   100   205   100640  211       `
+#print
+What is the value of i after this
+___for statement executes?
+Type "answer N", where N is the value of i.
+
+  for (i = 0; i < 10; i = i + 3)
+       ;
+#copyin
+#user
+#uncopyin
+#match 12
+#log
+#next
+4.1a 10
+
+L30.1a          445767727   100   205   100640  946       `
+#print
+Write a subroutine named "locn(s,c)" which expects two
+arguments: the first is a pointer to characters 's' which
+points to a null-terminated string, and the second
+is a character 'c' which is to be searched for in the
+string 's'.  If the character 'c' does not
+appear in the string return 0; otherwise return a pointer
+to the position of 'c' in the string. Name the program "locn.c";
+as usual, compile and test it and then type "ready".
+#once #create Ref
+0
+19
+0
+25
+0
+#once #create tzaqc.c
+char *alpha "abcdefghijklmnopqrstuvwxyz";
+main()
+{
+	extern char *locn();
+	printf("%d\n", locn(alpha, '+'));
+	printf("%d\n",locn(alpha, 't')-alpha);
+	printf("%d\n",locn(alpha, 'a')-alpha);
+	printf("%d\n",locn(alpha, 'z')-alpha);
+	printf("%d\n",locn("", 'z'));
+}
+#user
+cc tzaqc.c locn.o
+a.out  >value
+#cmp value Ref
+#succeed
+/* Try this: */
+
+char *
+locn (s, c)
+char *s;
+{
+	for( ; *s; s++)
+		if (*s == c)
+			return(s);
+	return(0);
+}
+#log
+#next
+31.1a 10
+L31.1a          445767728   100   205   100640  642       `
+#print
+Write a function named "rev(s)" which reverses
+the string "s" in place. Name the file that contains
+the function "rev.c".
+When you're satisfied, type "ready".
+#once #create Ref
+cbax0987654321
+#once #create tzaqc.c
+main(){
+	char *s1, *s2, *s3, *s4;
+	s1 = "abc";
+	s2 = "x";
+	s3 = "";
+	s4 = "1234567890";
+	rev(s1);
+	rev(s2);
+	rev(s3);
+	rev(s4);
+	printf(s1);
+	printf(s2);
+	printf(s3);
+	printf(s4);
+	printf("\n");
+}
+#user
+cc tzaqc.c rev.o
+a.out >value
+#cmp value Ref
+#succeed
+/* One way:*/
+
+rev (s)
+char *s;
+{
+	char *p;
+	int t;
+	
+	for (p=s; *p; p++)
+		;
+	for (p--; p > s; p--, s++) {
+		t = *p;
+		*p = *s;
+		*s = t;
+	}
+}
+#log
+#next
+32.1a 10
+L32.1a          445767730   100   205   100640  736       `
+#print
+Write a program
+   pair(a,b)
+which accepts as arguments two pointers to integers
+and swaps the integers if necessary so that the
+first argument points to the larger one; that is
+	int x,y;
+	x = 9;
+	y = 15;
+	pair( &x, &y);
+results in x being 15 and y 9.  Leave the program
+on file "pair.c"; compile, test it, and type "ready".
+#once #create tzaqc.c
+main()
+{
+	int x,y;
+
+	y=200;
+	x = 0;
+	pair(&y, &x);
+	if (x != 0 || y != 200) 
+		return(1);
+	pair(&x,&y);
+	if (x != 200 || y != 0) 
+		return(1);
+	x = 30;
+	y = 23097;
+	pair(&x,&y);
+	if (x != 23097 || y !=  30) 
+		return(1);
+	return(0);
+}
+#user
+cc tzaqc.c pair.o
+a.out 
+#succeed
+pair(a, b)
+int *a, *b;
+{
+	int t;
+
+	if (*a <= *b) {
+		t = *a;
+		*a = *b;
+		*b = t;
+	}
+}
+#log
+#next
+33.1a 10
+L33.1a          445767731   100   205   100640  442       `
+#print
+Write a main program which counts the number of command-line arguments
+it has which begin with the letter 'b'.  Print the
+result in decimal.  Compile and test it as usual.
+Then type "ready".
+#user
+a.out abc bcd efg rpq b bbvd  >xxx
+grep 3 xxx >/dev/null
+#succeed
+/*  a possible solution */
+main(argc, argv)
+char *argv[];
+{
+	int i, k;
+
+	for(i=k=0; i<argc; i++)
+		if (argv[i][0] == 'b')
+			k++;
+	printf("%d\n", k);
+}
+#log
+#next
+37.1a 10
+L35.1a          445767733   100   205   100640  775       `
+#print
+Write a program which prints the number of vowels
+(instances of 'a', 'e', 'i', 'o', and 'u')
+in the input.
+#once #create Ref
+hoboken harrison newark roseville avenue grove street
+east orange brick church orange highland avenue
+mountain station south orange maplewood millburn short hills
+summit chatham madison convent station morristown
+new providence murray hill berkeley heights
+gillette stirling millington lyons basking ridge
+bernardsville far hills peapack gladstone
+#user
+a.out <Ref >xxx
+grep 109 xxx >/dev/null
+#succeed
+/*  a possible solution */
+ #include <stdio.h>
+
+main()
+{
+	int k, c;
+
+	k = 0;
+	while ((c = getchar()) != EOF)
+		switch (c) {
+		case 'a': case 'e':case 'i': case 'o': case 'u':
+			k++;
+			break;
+		}
+	printf("%d\n", k);
+}
+#log
+#next
+37.1a 10
+
+L37.1a          445767734   100   205   100640  1064      `
+#print
+Let's try a recursive function.  Write a subroutine
+    power(x,n)
+which computes x to the power n by the following
+algorithm:
+ 1. if n is zero return 1.
+ 2. if n is odd return x*power(x,n-1).
+ 3. if n is even return the square of
+    power(x,n/2).
+You may assume than x and n are integers, n>=0.
+If n is negative return 0 for an answer.
+Put your routine on a file "power.c".  Compile
+it and test it; then type "ready".
+#once #create tzaqc.c
+main()
+{
+if (power(-1,-1) != 0) 
+		return(1);
+	if (power(-3,2) != 9) 
+		return(1);
+	if (power(2,12) != 4096) 
+		return(1);
+	if (power(3,5) !=  243) 
+		return(1);
+	if (power(-5, 5) != -3125) 
+		return(1);
+	if (power(7,3) != 343) 
+		return(1);
+	if (power(7,4) != 2401) 
+		return(1);
+	if (power(3,7) != 2187) 
+		return(1);
+	if (power(2,10) != 1024) 
+		return(1);
+	return(0);
+}
+#user
+cc tzaqc.c power.o
+a.out
+#succeed
+/*  a possible solution */
+power(x, n)
+{
+	int k;
+
+	if (n < 0)
+		return(0);
+	if (n == 0)
+		return(1);
+	if (n%2 == 1)
+		return(x * power(x, n-1));
+	k = power(x, n/2);
+	return(k*k);
+}
+#log
+#next
+40.1a 10
+L4.1a           445767736   100   205   100640  151       `
+#print
+Does the # of a "#define" statement absolutely
+have to go in column 1?  Answer yes or no.
+#copyin
+#user
+#uncopyin
+#match yes
+#log
+#next
+5.1a 10
+
+L40.1a          445767737   100   205   100640  862       `
+#print
+Write a subroutine
+	errmess(n)
+which looks at its argument and prints
+one of the following messages:
+  n     message (follow it by a newline)
+  1       ?
+  2       syntax error
+  3       bad syntax error
+  4       fatal error
+  5       I give up.
+anything else	eh?
+Leave the routine on errmess.c, compiled and tested
+as usual.  Then type "ready".
+#once #create Ref
+eh?
+eh?
+I give up.
+fatal error
+bad syntax error
+syntax error
+?
+#once #create tzaqc.c
+main()
+{
+	errmess (23069);
+	errmess (-2000);
+	errmess (5);
+	errmess (4);
+	errmess (3);
+	errmess (2);
+	errmess (1);
+}
+#user
+cc tzaqc.c errmess.o
+a.out >xxx
+#cmp Ref xxx
+#succeed
+/*  a possible solution */
+char *message[] = {
+	"eh?",
+	"?",
+	"syntax error",
+	"bad syntax error",
+	"fatal error",
+	"I give up.",
+	};
+errmess(n)
+{
+	if (n < 0 || n > 5)
+		n = 0;
+	printf("%s\n", message[n]);
+}
+#log
+#next
+41.1a 10
+L41.1a          445767739   100   205   100640  1266      `
+#print
+The problem is to produce a function
+	bitct(x)
+which examines the bits in x, returning a count of
+the number of 1-bits.  There are various ways of doing
+this job: here are two.
+(1) a sane way.  Shift the word x right 16 times (you are
+on UNIX) and check the rightmost bit each time, counting
+the number of times it is '1'.
+(2) a machine-independent (sort of) way.  The logical
+bitwise AND of x and x-1 contains one fewer one bit than x itself.
+Loop anding x and x-1 until you get zero.
+Program either algorithm.  Compile and test it.  Leave it on
+a file bitct.c and type "ready".
+#once #create tzaqc.c
+main()
+{
+	int x;
+	x=23069;
+	if (bitct(x) != goodct(x)) 
+		return(1);
+	x=0;
+	if (bitct(x) != goodct(x)) 
+		return(1);
+	x=16384;
+	if (bitct(x) != goodct(x)) 
+		return(1);
+	x = -1;
+	if (bitct(x) != goodct(x)) 
+		return(1);
+	x= -200;
+	if (bitct(x) != goodct(x)) 
+		return(1);
+	return(0);
+}
+goodct(x)
+{
+	int k, i;
+	for(k=i=0; i<16; i++)
+		{
+		k =+ (x&1);
+		x= x>>1;
+		}
+	return(k);
+}
+#user
+cc tzaqc.c bitct.o
+a.out
+#succeed
+/*  a possible solution */
+bitct(x)
+{
+	int k, i;
+
+	for(i=k=0; i<16; i++) {
+		if (x&1)
+			k++;
+		x >>= 1;
+	}
+	return(k);
+}
+/* by the way, if you really care about
+this problem a table lookup by whole bytes
+is faster */
+#log
+#next
+42.1a 10
+L42.1a          445767740   100   205   100640  1018      `
+#print
+Write a function 
+	inprod(a,b,n)
+that computes the inner product of two integer vectors
+a and b which are n items long.  Name the file "inprod.c"
+and compile and test it; then type ready.
+You may assume that the result and all intermediate
+values fit in a 16-bit integer, not usually a safe assumption.
+#once #create tzaqc.c
+main()
+{
+	int x[100], y[100];
+	int k;
+	for(k=0; k<100; k++)
+	   {
+		x[k] = k%10;
+		y[k] = (k*k)%3;
+	   }
+	if (inprod(x,y,100) != xprod(x,y,100)) return(1);
+	return(0);
+}
+xprod(x,y,n)
+  int *x, *y;
+{
+	int k, sum;
+	for(sum=k=0; k<n; k++)
+	   sum=+ *x++ * *y++;
+	return(sum);
+}
+#user
+cc tzaqc.c inprod.o
+a.out
+#succeed
+/* one way */
+inprod(a, b, n)
+int *a, *b;
+{
+	int s;
+
+	s = 0;
+	while (n--)
+		s += *a++ * *b++;
+
+/* none of the spaces in the line above are necessary but
+   would you really want to read
+      s+=*a++**b++;
+   and try to parse it?  Even clearer than what I have,
+   but slower, would be
+     for(i=0; i<n; i++)
+      s += a[i]*b[i];
+*/
+
+	return(s);
+}
+#log
+#next
+43.1a 10
+L43.1a          445767742   100   205   100640  1061      `
+#print
+Write a function 
+	cubrt(x)
+that returns the cube root of a floating point number.
+Put it on a file named "cubrt.c"; compile and test it,
+then type "ready".
+(If you don't know how to compute cube roots, try Newton's method).
+#once #create reldif.c
+double reldif(a,b)
+ double a,b;
+{
+double c,d;
+if (a==0. && b==0.) return(0.);
+c = a>0 ? a : -a;
+d = b>0 ? b : -b;
+c = c>d ? c : d;
+return( (a-b)/c );
+}
+#once #create tzaqc.c
+main()
+{
+	double cubrt();
+	double reldif();
+	double a, b, eps;
+
+	a = 8.;
+	b = 2.;
+	eps = 1e-5;
+	if (reldif(cubrt(a), b) > eps)
+		exit(1);
+
+	a = 0.;
+	b = 0.;
+	if (reldif(cubrt(a), b) > eps)
+		exit(1);
+
+	a = 1e6;
+	b = 1e2;
+	if (reldif(cubrt(a), b) > eps)
+		exit(1);
+	exit(0);
+}
+#user
+cc tzaqc.c cubrt.o reldif.c
+a.out
+#succeed
+/* one way */
+double cubrt(x)
+double x;
+{
+	/* Newton's method:    x <- x - (x**3-a)/(3*x*x) */
+	double y, yn, dabs();
+	y = 0.;
+	yn = x;
+	while (dabs(y-yn) > y*1.e-8) {
+		y = yn;
+		yn = y - (y*y*y-x)/(3*y*y);
+	}
+	return(yn);
+}
+
+double dabs(x)
+double x;
+{
+	return(x>0 ? x : -x);
+}
+#log
+#next
+50.1a 10
+43.1b 5
+
+L43.1b          445767744   100   205   100640  1212      `
+#print
+Write a subroutine myexp(x) which expects a floating
+argument x and returns the floating point value
+of e to the x.  An adequate algorithm
+for the purpose is the standard Maclaurin series
+
+   x            2       3       4
+  e  = 1 + x + x /2! + x /3! + x /4! + ...
+Name your routine myexp(), not exp().  You can test it, then,
+by comparing it with the system routine as well as by
+comparing it with tables.  Leave it on file
+myexp.c, and then type "ready".
+#once #create reldif.c
+double reldif(a,b)
+ double a,b;
+{
+double c,d;
+if (a==0. && b==0.) return(0.);
+c = a>0 ? a : -a;
+d = b>0 ? b : -b;
+c = c>d ? c : d;
+return( (a-b)/c );
+}
+#once #create tzaqc.c
+main()
+{
+double x,y, log(), myexp(), reldif();
+for(x=1.; x<5.; x=+ 0.2)
+  {
+  y = myexp(x);
+ if (reldif(x, log(y)) >1.e-5) return(1);
+  }
+return(0);
+}
+exp()
+{
+printf("Cheat! you called the system routine\n");
+return(1.2);
+}
+#user
+cc tzaqc.c myexp.o reldif.c
+a.out
+#succeed
+/* one way */
+double myexp(x)
+double x;
+{
+	double term, sum, dabs();
+	int n;
+	
+	term = sum = 1.0;
+	n = 1;
+	while (dabs(term) > dabs(sum)/1.e8) {
+		term = term * x / n++;
+		sum += term;
+	}
+	return(sum);
+}
+
+double dabs(x)
+double x;
+{
+	return(x>0 ? x : -x);
+}
+#log
+#next
+50.1a 10
+L5.1a           445767746   100   205   100640  377       `
+#print
+(Section 1.5)
+Write a program that copies exactly three characters
+from its input to its output.
+When compiled and tested, type ready.
+#once #create Ref
+XY
+#once #create z1
+XY
+marks the spot.
+#user
+a.out <z1 >z2
+#cmp z2 Ref
+#succeed
+/* Here is one possible solution */
+
+main()
+{
+	putchar(getchar());
+	putchar(getchar());
+	putchar(getchar());
+}
+#log
+#next
+5.1b 10
+5.2a 5
+
+L5.1b           445767747   100   205   100640  474       `
+#print
+(Section 1.5)
+Write a program that will read the first character
+from its input and print it out in octal.
+Compile it, test it, and then type ready.
+#once #create Ref
++
+#user
+a.out <Ref >test
+grep 53 test >/dev/null
+#succeed
+A possible solution:
+
+main()
+{
+	printf("%o\n", getchar());
+}
+
+	Remember that you can use a function value almost
+	any place that you could use a variable like x.
+	Thus many times there's no need for extra variables.
+#log
+#next
+5.1c 10
+5.2b 5
+L5.1c           445767749   100   205   100640  608       `
+#print
+(Section 1.5)
+Write a program which reads one character from
+its input; if that character is ? it prints "yes",
+otherwise it prints "no".
+Compile it, test it, and then type ready.
+#once #create Ref1
+? is here
+#once #create Ref2
+no ? at beginning
+#user
+a.out <Ref1 >test1
+a.out <Ref2 >test2
+grep yes test1 >/dev/null || grep no test2 >/dev/null
+#succeed
+This is one possible solution
+
+main()
+{
+	if (getchar() == '?')
+		printf("yes\n");
+	else
+		printf("no\n");
+}
+
+The indenting and general formatting of C programs
+should be done so you make the structure clear,
+like the code above.
+#log
+#next
+5.1d 10
+L5.1d           445767750   100   205   100640  852       `
+#print
+Write a program that counts the blanks, tabs, and newlines
+in its input, and prints the total.  Don't forget to
+define the value of EOF at the beginning of your program.
+The best way is to add
+
+ #include <stdio.h>
+
+as the first line of your program.
+The ____must be in column 1.
+(See page 143 of the C book.)
+You may also have to say
+
+cc name.c -lS
+
+to compile the program.
+#once #create Ref
+This is some junk that
+contains
+	blanks
+	tabs
+	and newlines.
+#user
+a.out <Ref >test1
+a.out </dev/null >test2
+grep 13 test1 >/dev/null || grep 0 test2 >/dev/null
+#succeed
+One possible solution:
+
+ #include <stdio.h>
+
+main()
+{
+	int n, c;
+
+	n = 0;
+	while ((c = getchar()) != EOF)
+		if (c == ' ' || c == '\t' || c == '\n')
+			n++;
+	printf("%d\n", n);
+}
+
+This program won't work on huge files, because an int
+isn't big enough.
+#log
+#next
+5.1e 10
+5.2e 5
+L5.1e           445767752   100   205   100640  639       `
+#print
+Write a program that counts the number of vowels 
+in its input (excluding 'y').  Don't forget to define
+the value of EOF at the beginning of your program.
+#once #create Ref
+This line contains some vowels, including
+the letter 'y'. It also has a capital letter, I think.
+#user
+a.out <Ref >test
+grep 28 test >/dev/null
+#succeed
+Here is one solution.
+
+ #include <stdio.h>
+
+main()
+{
+	int nv, c;
+
+	nv = 0;
+	while ((c = getchar()) != EOF)
+		if (c=='a' || c=='e' || c=='i' || c=='o' || c=='u'
+		 || c=='A' || c=='E' || c=='I' || c=='O' || c=='U')
+			nv++;
+	printf("%d\n", nv);
+}
+#fail
+Did you remember capital letters?
+#log
+#next
+5.1f 10
+
+L5.1f           445767753   100   205   100640  428       `
+#print
+(Section 1.5)
+Write a program to replace each tab by the
+three-character sequence >, backspace, -,
+which prints as >-.  The program should also replace
+each backspace by the sequence <, backspace, -.
+Compile it, test it, then type ready.
+#once #create Ref
+This contain s a back space and a	tab.
+#once #create Ref1
+This contain <-s a back <-space and a>-tab.
+#user
+a.out <Ref >test
+#cmp test Ref1
+#log
+#next
+5.1g 10
+L5.1g           445767755   100   205   100640  622       `
+#print
+Write a program to copy its input to its output,
+replacing each string of one or more blanks by
+a single blank.
+#once #create Ref
+   This    has   lines   with several     blanks    
+including some in  funny places.    
+#once #create Ref1
+          
+#once #create Answer
+ This has lines with several blanks 
+including some in funny places. 
+ 
+#user
+a.out <Ref >test
+a.out <Ref1 >>test
+#cmp test Answer
+#succeed
+One way:
+
+ #include <stdio.h>
+
+main()
+{
+	int c;
+
+	for (c = getchar(); c != EOF; ) {
+		putchar(c);
+		if (c == ' ')
+			while ((c = getchar()) == ' ')
+				;
+		else
+			c = getchar();
+	}
+}
+#log
+#next
+9.1a 10
+L5.2a           445767756   100   205   100640  543       `
+#print
+Write a program which reads a character from its
+input and prints "high" if that character is
+larger than 100 in numeric value (decimal) and "low"
+if it is less than or equal to 100 in numeric value.
+Compile it as usual and then type "ready".
+#once #create Ref1
+u is a big letter
+#once #create Ref2
+B is a small letter
+#user
+a.out <Ref1 >test1
+a.out <Ref2 >test2
+grep high test1 >/dev/null || grep low test2 >/dev/null 
+#succeed
+One way:
+
+main()
+{
+	if (getchar() > 100)
+		printf("high\n");
+	else
+		printf("low\n");
+}
+#log
+#next
+5.1b 10
+
+L5.2b           445767758   100   205   100640  581       `
+#print
+(Section 1.5)
+Write a program which reads a character from its
+input and tests whether that character is larger than
+100 in numeric value.  If so, read two more
+characters, and print the value of the second of them
+in octal.  Compile and test your program, then type "ready".
+#once #create Ref1
+u V has value 126
+#once #create Ref2
+. V should not be processed
+#user
+a.out <Ref1 >test1
+a.out <Ref2 >test2
+grep 126 test1 >/dev/null || cmp -s test2 /dev/null
+#succeed
+One way:
+
+main()
+{
+	if (getchar() > 100) {
+		getchar();
+		printf("%o\n", getchar());
+	}
+}
+#log
+#next
+5.1c 10
+
+L5.2e           445767759   100   205   100640  1579      `
+#print
+(Section 1.5)
+Write a program which copies its input to its output
+doubling each character (i.e. each input character
+is written twice on the output).  Compile and test
+it.  Then type ready.  Don't forget
+
+ #include <stdio.h>
+
+at the beginning of your program, and
+
+cc x.c -lS
+
+to compile it.
+#once #create Ref
+hoboken harrison newark roseville avenue grove street
+east orange brick church orange highland avenue
+mountain station south orange maplewood millburn short hills
+summit chatham madison convent station morristown
+new providence murray hill berkeley heights
+gillette stirling millington lyons basking ridge
+bernardsville far hills peapack gladstone
+#once #create Answer
+hhoobbookkeenn  hhaarrrriissoonn  nneewwaarrkk  rroosseevviillllee  aavveennuuee  ggrroovvee  ssttrreeeett
+
+eeaasstt  oorraannggee  bbrriicckk  cchhuurrcchh  oorraannggee  hhiigghhllaanndd  aavveennuuee
+
+mmoouunnttaaiinn  ssttaattiioonn  ssoouutthh  oorraannggee  mmaapplleewwoooodd  mmiillllbbuurrnn  sshhoorrtt  hhiillllss
+
+ssuummmmiitt  cchhaatthhaamm  mmaaddiissoonn  ccoonnvveenntt  ssttaattiioonn  mmoorrrriissttoowwnn
+
+nneeww  pprroovviiddeennccee  mmuurrrraayy  hhiillll  bbeerrkkeelleeyy  hheeiigghhttss
+
+ggiilllleettttee  ssttiirrlliinngg  mmiilllliinnggttoonn  llyyoonnss  bbaasskkiinngg  rriiddggee
+
+bbeerrnnaarrddssvviillllee  ffaarr  hhiillllss  ppeeaappaacckk  ggllaaddssttoonnee
+
+#user
+a.out <Ref >xxx
+#cmp Answer xxx
+#succeed
+/*	One way: */
+
+ #include <stdio.h>
+
+main()
+{
+	int c;
+
+	while ((c = getchar()) != EOF) {
+		putchar(c);
+		putchar(c);
+	}
+}
+#log
+#next
+5.1e 5
+5.3e 2
+
+L5.3e           445767761   100   205   100640  663       `
+#print
+Let's try something easier.
+Write a program which copies its input to
+its output.  Compile and test it.   Then type ready.
+#once #create Ref
+hoboken harrison newark roseville avenue grove street
+east orange brick church orange highland avenue
+mountain station south orange maplewood millburn short hills
+summit chatham madison convent station morristown
+new providence murray hill berkeley heights
+gillette stirling millington lyons basking ridge
+bernardsville far hills peapack gladstone
+#user
+a.out <Ref >xxx
+#cmp Ref xxx
+#succeed
+/*	One way: */
+
+ #include <stdio.h>
+
+main() {
+	int c;
+
+	while ((c = getchar()) != EOF)
+		putchar(c);
+}
+#log
+#next
+5.1e 10
+
+L50.1a          445767763   100   205   100640  4556      `
+#print
+(Everything)
+Write a program that reads an input file and
+prints out the most frequently appearing word in it.
+Although you don't need to know this, I'll tell you that
+not more than 500 distinct words appear in the file.
+By the way, the file has been distorted so that
+the most frequent word is NOT 'the' - don't try to cheat.
+Compile and test your program.
+#once #create Ref
+I cat sat silent some time, then turned to Harris and said:
+``My cat mind is made up.''
+Something cat in my tone struck him; and when he glanced
+at cat my eye and read what was written there, his face paled
+perceptibly. cat  He hesitated a moment, then said:
+``Speak.''
+I cat answered, with perfect calmness:
+``I cat WILL ASCEND THE RIFFELBERG.''
+If cat I had shot my poor friend he could not have fallen from
+his cat chair more suddenly.  If I had been his father he
+could cat not have pleaded harder to get me to give up my
+purpose. cat  But I turned a deaf ear to all he said.  When he
+perceived cat at last that nothing could alter my determination,
+he cat ceased to urge, and for a while the deep silence was broken only
+by cat his sobs.  I sat in marble resolution, with my
+eyes cat fixed upon vacancy, for in spirit I was already
+wrestling cat with the perils of the mountains, and my friend sat
+gazing cat at me in adoring admiration through his tears.  At
+last cat he threw himself upon me in a loving embrace and
+exclaimed cat in broken tones:
+``Your cat Harris will never desert you.  We will die together!''
+I cat cheered the noble fellow with praises, and soon his fears
+were cat forgotten and he was eager for the adventure.  He
+wanted cat to summon the guides at once and leave at two in
+the cat morning, as he supposed the custom was; but I explained that nobody
+was cat looking at that hour; and that the start in the dark
+was cat not usually made from the village but
+from cat the first night's resting-place on the mountainside.  I
+said cat we would leave the village at 3 or 4 p.m. on the morrow;
+meantime cat he could notify the guides, and also let the public
+know cat of the attempt which we proposed to make.
+I cat went to bed, but not to sleep.  No man can sleep when
+he cat is about to undertake one of these Alpine exploits.  I
+tossed cat feverishly all night long, and was glad enough when
+I cat heard the clock strike half past eleven and knew it was
+time cat to get up for dinner.  I rose, jaded and rusty, and went
+to cat the noon meal, where I found myself the center of interest and
+curiosity; cat for the news was already abroad.  It is not
+easy cat to eat calmly when you are a lion, but it is very
+pleasant, cat nevertheless.
+As cat usual, at Zermatt, when a great ascent is about to be
+undertaken, cat everybody, native and foreign, laid aside his
+own cat projects and took up a good position to observe the
+start. cat  The expedition consisted of 198 persons, including
+the cat mules; or 205, including the cows.
+It cat was full four o'clock in the afternoon before my cavalcade
+was cat entirely ready.  At that hour it began to move.  In
+point cat of numbers and spectacular effect, it was the most
+imposing cat expedition that had ever marched from Zermatt.
+I cat commanded the chief guide to arrange the men and
+#user
+a.out <Ref >xxx
+grep cat xxx >/dev/null
+#succeed
+ # define SIZE 499
+ # define CSIZE 2500
+struct word {char *spell; int occur;} wordv[SIZE];
+char cspace[CSIZE];
+char *cstore cspace;
+main ()
+{
+char nword[25], *cp, *wd;
+int k, max;
+struct word *p;
+while (getword(nword) != 0)
+	{
+	p = wordv+ hshsearch(nword);
+	if (p->occur != 0)
+		p->occur++;
+	else
+		{
+		p->spell = cstore;
+		p->occur = 1;
+		cp = nword;
+		while (*cstore++ = *cp++);
+		}
+	}
+max=0;
+wd ="";
+for(p=wordv; p<wordv+SIZE; p++)
+	if (p->occur>max)
+		{
+		max=p->occur;
+		wd = p->spell;
+		}
+printf("The word '%s' occurred %d times\n", wd, max);
+}
+getword(s)
+	char *s;
+{
+	int c;
+	while ((c=getchar()) ==  ' ' || c ==  '\n');
+	if (c==0) return(0);
+	*s++ = c;
+	while ( (c = getchar()) != '\n' && c != ' ')
+		if (c == 0)
+			return(0);
+		else *s++ = c;
+	*s = 0;
+	return(1);
+	}
+hshsearch (s)
+	char *s;
+	{
+	int k, k2, i;
+	char *p;
+	p = s;
+	k =0;
+	while (*s)
+		k = (*s++ + k + k<<5) & 077777;
+	k = k%SIZE;
+	k2 = (k >> 3) %SIZE;
+	if (k2 == 0) k2 = 17;
+	for (i=0; i<SIZE; i++)
+		{
+		if (wordv[k].occur == 0)
+			return(k);
+		if (comp(wordv[k].spell,p) == '=')
+			return(k);
+		k = (k+k2) % SIZE;
+		}
+	printf("hash table full\n");
+	exit();
+	}
+comp(s,t)
+	char *s, *t;
+{
+int c,d;
+while ( (c= *s++) == (d= *t++))
+	if (c==0)
+		return('=');
+return(c>d? '>': '<');
+}
+#log
+#next
+L9.1a           445767766   100   205   100640  587       `
+#print
+(Section 1.9 -- read 1.6-1.8 too.)
+Write a program that removes trailing blanks
+and tabs from each line of input, and deletes
+entirely blank lines.  To make your job easier,
+you can use the function getline; its source
+is in getline.c.
+Type ready when you are done.
+#once #create Ref
+  This  file  contains
+some trailing     		
+blanks 
+and tabs
+
+
+	
+ 	 
+and some empty lines.
+#once #create Ref1
+  This  file  contains
+some trailing
+blanks
+and tabs
+and some empty lines.
+#once cp %s/getline.c .
+#user
+a.out <Ref >test
+#cmp test Ref1
+#succeed
+No answer yet - sorry.
+#log
+#next
+10 10
+

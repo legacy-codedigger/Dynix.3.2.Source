@@ -1,0 +1,124 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+.\"
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: brk.2 1.13 87/06/26 $
+.TH BRK 2 "\*(V)" "4BSD"
+.SH NAME
+brk, sbrk \- change data segment size
+.SH SYNOPSIS
+.nf
+.ft 3
+#include <sys/types.h>
+.sp
+caddr_t brk(addr)
+caddr_t addr;
+.PP
+.ft 3
+caddr_t sbrk(incr)
+int incr;
+.fi
+.SH DESCRIPTION
+.I Brk
+sets the system's idea of the lowest data segment
+location not used by the program (called the break)
+to
+.I addr
+(rounded up to the next multiple of the system's page size).
+Locations greater than or equal to
+.I addr
+and below the stack pointer
+are not in the address space and will thus
+cause a memory violation if accessed.
+.PP
+In the alternate function
+.IR sbrk ,
+.I incr
+more bytes are added to the
+program's data space and a pointer to the
+start of the new area is returned.
+.PP
+When a program begins execution via
+.I execve
+the break is set at the
+highest location defined by the program
+and data storage areas.
+Ordinarily, therefore, only programs with growing
+data areas need to use
+.IR sbrk .
+.PP
+The
+.IR getrlimit (2)
+system call may be used to determine
+the maximum permissible size of the
+.I data
+segment;
+it will not be possible to set the break
+beyond the
+.I rlim_max
+value returned from a call to
+.IR getrlimit ,
+e.g. \*(lqetext + rlp->rlim_max.\*(rq
+(See
+.IR end (3)
+for the definition of
+.IR etext .)
+.PP
+When \f2brk\fP and \f2sbrk\fP increase a program's address
+space, they also attempt to increase its allowable resident set size.
+.SH "RETURN VALUE
+Zero is returned if the
+.I brk
+could be set;
+\-1 if the program requests more
+memory than the system limit.
+.I Sbrk
+returns \-1 if the break could not be set.
+.SH ERRORS
+.I Brk
+and
+.I sbrk
+will fail and no additional memory will be allocated if
+one of the following are true:
+.TP 15
+[ENOMEM]
+The limit, as set by
+.IR setrlimit (2),
+was exceeded.
+.TP 15
+[ENOMEM]
+The maximum possible size of a data segment (compiled into the
+system) was exceeded.
+.TP 15
+[ENOMEM]
+Insufficient space existed in the swap area
+to support the expansion.
+.SH "SEE ALSO"
+execve(2), getrlimit(2), malloc(3), end(3), vm_ctl(2),
+vmtune(8)
+.SH BUGS
+Setting the break may fail due to a temporary lack of
+swap space.  It is not possible to distinguish this
+from a failure caused by exceeding the maximum size of
+the data segment without consulting
+.IR getrlimit .
+.PP
+Attempting to set the break below
+.I _end
+results in setting the break at
+.I _end
+with no error indication.

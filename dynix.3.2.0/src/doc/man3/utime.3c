@@ -1,0 +1,55 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: utime.3c 1.6 90/02/07 $
+.TH UTIME 3C "\*(V)" "4BSD"
+.SH NAME
+utime \- set file times
+.SH SYNOPSIS
+.nf
+.B #include <sys/types.h>
+.PP
+.B utime(file, timep)
+.B char *file;
+.B time_t timep[2];
+.fi
+.SH DESCRIPTION
+.ft 3
+This interface is obsoleted by utimes(2).
+.ft 1
+.PP
+The
+.I utime
+call
+uses the
+`accessed' and `updated' times in that order
+from the
+.I timep
+vector
+to set the corresponding recorded times for
+.IR file .
+.PP
+The caller must be the owner of the file or the super-user.
+The `inode-changed' time of the file is set to the current time.
+.SH RETURN VALUE
+Upon successful completion, a value of 0 is returned.
+Otherwise, a value of \-1 is returned and
+.I errno
+is set to indicate the error.
+.SH ERRORS
+.I utime
+is a compatibility interface built on top of
+.I utimes;
+refer to the man page of
+.I utimes
+for a list of possible error values.
+.SH SEE ALSO
+utimes(2), stat(2)

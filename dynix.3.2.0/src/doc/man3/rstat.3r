@@ -1,0 +1,142 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: rstat.3r 1.2 91/01/12 $
+.\" @(#)rstat.3r	1.1 88/05/08 4.0NFSSRC SMI
+.\" @(#) from SUN 1.10
+.TH RSTAT 3R "\*(V)" "4BSD"
+.SH NAME
+rstat \- get performance data from a remote kernel
+.SH DESCRIPTION
+.IX rstat "" "\fLrstat\fR \(em performance data from remote kernel"
+.IX havedisk "" "\fLhavedisk\fR \(em disk inquiry of remote kernel"
+.IX "remote kernel performance"
+The
+.B rstat(\|)
+protocol gathers statistics from a remote kernel.
+(Statistics are available on items such as
+paging, swapping and cpu utilization.)
+.SH RPC INFO
+.nf
+program number:
+	RSTATPROG
+
+.sp .5
+xdr routines:
+	xdr_stats(xdrs, statp);
+		XDR *xdrs;
+		struct stats *statp;
+	xdr_statusswtch(xdrs, statp);
+		XDR *xdrs;
+		struct statsswtch *statp;
+	xdr_statstime(xdrs, statp);
+		XDR *xdrs;
+		struct statstime *statp;
+
+procs:
+	RSTATPROC_STATS
+	RSTATPROC_HAVEDISK
+
+.sp .5
+versions:
+	RSTATVERS_ORIG
+	RSTATVERS_SWTCH
+	RSTATVERS_TIME
+
+structures:
+	struct stats {                          /* version 1 */
+		int cp_time[CPUSTATES];
+		int dk_xfer[DK_NDRIVE];
+		unsigned v_pgpgin;      /* these are cumulative sum */
+		unsigned v_pgpgout;
+		unsigned v_pswpin;
+		unsigned v_pswpout;
+		unsigned v_intr;
+		int if_ipackets;
+		int if_ierrors;
+		int if_opackets;
+		int if_oerrors;
+		int if_collisions;
+	};
+
+	struct statsswtch {                             /* version 2 */
+		int cp_time[CPUSTATES];
+		int dk_xfer[DK_NDRIVE];
+		unsigned v_pgpgin;      /* these are cumulative sum */
+		unsigned v_pgpgout;
+		unsigned v_pswpin;
+		unsigned v_pswpout;
+		unsigned v_intr;
+		int if_ipackets;
+		int if_ierrors;
+		int if_opackets;
+		int if_oerrors;
+		int if_collisions;
+		unsigned v_swtch;
+		long avenrun[3];
+		timeval_t boottime;
+	};
+
+	struct statstime {                              /* version 3 */
+		int cp_time[CPUSTATES];
+		int dk_xfer[DK_NDRIVE];
+		unsigned v_pgpgin;      /* these are cumulative sum */
+		unsigned v_pgpgout;
+		unsigned v_pswpin;
+		unsigned v_pswpout;
+		unsigned v_intr;
+		int if_ipackets;
+		int if_ierrors;
+		int if_opackets;
+		int if_oerrors;
+		int if_collisions;
+		unsigned v_swtch;
+		long avenrun[3];
+		timeval_t boottime;
+		timeval_t curtime;
+	};
+.fi
+.SH PROGRAMMING
+.nf
+.B #include <rpcsvc/rstat.h>
+.LP
+.B havedisk(host)
+.B	char *host;
+.LP
+.B rstat(host, statp)
+.B	char *host;
+.B	struct statstime *statp;
+.fi
+.LP
+.B havedisk(\|)
+returns 1 if
+.I host
+has a disk, 0 if it does not,
+and \-1 if it cannot be determined whether \f2host\fP has a disk.
+.B rstat(\|)
+fills in the
+.B statstime
+structure for
+.IR host 
+and returns 0 if it was successful.
+.L
+The following
+.SM XDR
+routines are available in
+.BR  librpcsvc :
+.nf
+.B xdr_statstime
+.B xdr_statsswtch
+.B xdr_stats
+.fi
+.SH SEE ALSO
+.BR rup\^(1C),
+.BR rstatd\^(8C)

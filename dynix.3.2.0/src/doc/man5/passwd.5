@@ -1,0 +1,168 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: passwd.5 1.11 1991/08/06 22:49:28 $
+.\" @(#)passwd.5 1.1 85/12/28 SMI; from UCB 4.2
+.TH PASSWD 5 "\*(V)" "4BSD"
+.SH NAME
+passwd \- password file
+.SH SYNOPSIS
+.B /etc/passwd
+.SH DESCRIPTION
+.IX  "passwd file"  ""  "\fLpasswd\fP \(em password file"
+.LP
+For each user,
+the
+.I passwd
+file contains the following information:
+.TP 10
+.I login
+This is the user's login name.
+It contains less than nine lower-case characters.
+.TP 10
+.I password
+This is the encrypted password.
+.TP 10
+.I "user ID"
+This is the user's unique, system ID number.
+This can range from zero (reserved for root) to 65,536.
+.TP 10
+.I "group ID"
+This is the group number of the group to which the user belongs.
+This also ranges from zero (again reserved) to 65,536.
+.TP 10
+.I name
+In some versions of \s-2UNIX\s0, such as \s-2DYNIX\s0,
+this field can contain the user's office number,
+office telephone extension number, home telephone number, or default universe.
+For historical reasons, this field is sometimes called the \s-2GCOS\s0 (General
+Electric's timesharing system) field.
+.TP 10
+.I directory
+The directory within which the user is placed when they log in.
+This is known as the
+.B home
+directory.
+.TP 10
+.I shell
+program to use as Shell when the user logs in.
+.LP
+The user's
+.I name
+field can contain
+\f3&\f1,
+meaning insert the
+.I login
+name.
+.LP
+The password file is an
+.SM ASCII
+file.  Each field within each user's entry
+is separated from the next by a colon.  Each user is separated from the
+next by a new-line.
+If the
+.I password
+field is null, no password is demanded;
+if the
+.I shell
+field is null,
+.I /bin/sh
+is used.
+.LP
+The
+.I passwd
+file can also have line beginning with a plus (+),
+which means to incorporate entries from the yellow pages.
+There are three styles of + entries:
+.Ls B
+.Li
+By itself, + means to insert the entire contents
+of the yellow pages password file at that point;
+.Li
+.I +name
+means to insert the entry (if any) for
+.I name
+from the yellow pages at that point;
+.Li
+.I +@name
+means to insert the entries for all members of the network group
+.I name
+at that point.
+.Le
+If a + entry has a non-null
+\f2password\f1,
+\f2directory\f1,
+\f2name\f1,
+or
+.I shell
+field,
+they override what is contained in the yellow pages.
+The numerical user ID and group ID fields cannot be overridden.
+.SH EXAMPLE
+.LP
+Here is a sample
+.I /etc/passwd
+file:
+.IP
+.\" .ft L
+.nf
+root:q.mJzTnu8icF.:0:10:Bob:/:/bin/csh
+tut:6k/7KCFRPNVXg:508:10:Bill Tuthill:/usr2/tut:/bin/csh
++john:
++@documentation:no-login:
++:::Guest
+.fi
+.LP
+In this example, there are specific entries for users
+.I root
+and
+.IR tut ,
+in case the yellow pages are out of order.
+The user
+.I john
+has his password entry in the yellow pages
+incorporated without change;
+anyone in the netgroup
+.I documentation
+has their password field disabled,
+and anyone else is able to log in with their usual
+\f2password\f1,
+\f2shell\f1,
+and
+\f2directory\f1,
+but with a
+.I name
+field of
+.I Guest.
+.LP
+The password file resides in the
+.I /etc 
+directory.
+Because the passwords are encrypted,
+.I /etc/passwd
+has general read permission and can be used
+to map numerical user ID's to names, for example.
+.LP
+Appropriate precautions must be taken to lock the 
+.I /etc/passwd
+file against simultaneous changes if it is to be edited with a text editor;
+.IR vipw (8)
+does the necessary locking.
+.SH FILES
+/etc/passwd
+.SH "SEE ALSO"
+login(1),
+passwd(1),
+crypt(3),
+getpwent(3),
+group(5),
+adduser(8),
+vipw(8)

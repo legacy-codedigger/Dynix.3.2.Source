@@ -1,0 +1,68 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987 Sequent Computer Systems, Inc.
+.\" All rights reserved
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: rup.1c 1.5 87/04/30 $
+.\" @(#)rup.1c 1.1 85/12/28 SMI;
+.TH RUP 1C "5 July 1985"
+.SH NAME
+rup \- show host status of local machines (RPC version)
+.SH SYNOPSIS
+.B rup
+[
+.B \-h
+] [
+.B \-l
+] [
+.B \-t
+] [
+host \fB.\|.\|.\fP
+]
+.SH DESCRIPTION
+.\".IX  "rup command"  ""  "\f2rup\fP \(em display status of local hosts"
+.\".IX  "display status of local hosts"  ""  "display status of local hosts \(em \f2rup\fP"
+.I Rup
+gives a status similar to
+.I uptime
+for remote machines;  It broadcasts on the local network, and displays
+the responses it receives.
+.LP
+Normally, the listing is in the order that responses are received,
+but this order can be
+changed by specifying one of the options listed below.
+.LP
+When \fIhost\fP arguments are given, rather than broadcasting
+.I rup
+will only query the list of specified hosts.
+.LP
+A remote host will only respond if it is running the
+.I rstatd
+daemon, which is normally started up from
+.I inetd(8C).
+.SH OPTIONS
+.TP 5
+.B \-h
+sort the display alphabetically by host name.
+.TP 5
+.B \-l
+sort the display by load average
+.TP 5
+.B \-t
+sort the display by up time.
+.SH FILES
+.DT
+/etc/servers
+.SH SEE ALSO
+ruptime(1C),
+inetd(8C),
+rstatd(8C)
+.SH BUGS
+.LP
+Broadcasting does not work through gateways.

@@ -1,0 +1,80 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: tunefs.8 1.8 87/06/18 $
+.TH TUNEFS 8 "\*(V)" "4BSD"
+.SH NAME
+tunefs \- tune up an existing file system
+.SH SYNOPSIS
+.B /usr/etc/tunefs
+.I tuneup-options
+.IR special | filesys
+.SH DESCRIPTION
+.I Tunefs
+changes the dynamic layout parameters of a file system.
+The parameters are:
+.IP "\f3\-a\f2 maxcontig\fP"
+.br
+The maximum number of contiguous blocks that
+are laid out before forcing a rotational delay (see
+.BR \-d ).
+The default value is one, since most device drivers require
+an interrupt per disk transfer.
+Device drivers that can chain several buffers together in a single
+transfer should set this to the maximum chain length.
+.IP "\f3\-d\f2 rotdelay\fP"
+.br
+The expected time (in milliseconds) to service a transfer completion
+interrupt and initiate a new transfer on the same disk.
+.I Rotdelay
+is also a factor in the rotational spacing between
+successive blocks in a file.
+.IP "\f3\-e\f2 maxbpg\fP"
+.br
+The maximum number of blocks a file can
+be allocated out of a cylinder group before it is
+allocated blocks from another cylinder group.
+Typically this is one-fourth of the number of blocks in a cylinder group.
+This prevents all of the blocks in a single cylinder group
+from being allocated to one file,
+which degrades the access time for all other files allocated 
+to that cylinder group.
+This increases the number of long seeks on large files,
+For file systems with large files exclusively,
+.I maxbpg
+should be set higher.
+.IP "\f3\-m\f2 minfree\fP"
+.br
+The percentage of space withheld
+from normal users; the minimum free-space threshold.
+The default value is 10%.
+This value can be set to zero; however,
+throughput at a level of zero is approximately
+one-third of the throughput at a 10% threshold.
+Note that if the value is raised above the current usage level,
+users will be unable to allocate files until enough files have
+been deleted to get under the higher threshold.
+.SH "SEE ALSO"
+fs(5),
+mkfs(8),
+newfs(8),
+.I "A Fast File System for Unix"
+.SH BUGS
+.I Tunefs
+should work on mounted and active file systems.
+Because the super-block is not kept in the buffer cache,
+the changes take effect only if
+.I tunefs
+is run on dismounted file systems.
+If
+.I tunefs
+is run on the root file system,
+the system must be rebooted.

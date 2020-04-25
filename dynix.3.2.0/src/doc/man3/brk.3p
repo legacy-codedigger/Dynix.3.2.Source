@@ -1,0 +1,105 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986 Sequent Computer Systems, Inc.
+.\" All rights reserved
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: brk.3p 1.7 87/06/26 $
+.TH BRK 3P "\*(V)" "DYNIX"
+.SH NAME
+brk, sbrk \- change private data segment size
+.SH SYNOPSIS
+.PP
+.nf
+\f2C syntax:\fP
+.PP
+.ft 3
+#include <parallel/parallel.h>
+caddr_t brk(addr)
+caddr_t addr;
+.PP
+.ft 3
+caddr_t sbrk(incr)
+int incr;
+.PP
+\f2Pascal syntax\fP
+.PP
+none
+.PP
+\f2FORTRAN syntax\fP
+.PP
+none
+.PP
+.fi
+.SH DESCRIPTION
+These routines are identical to the standard
+.I brk
+and
+.I sbrk 
+(see
+.IR brk(2) )
+routines except that these routines verify that the
+private data segment does not overlap the shared data segment
+which follows it.
+If the 
+.I brk
+or
+.I sbrk
+call will cause the segments to overlap, the routine issues
+an error.
+.SH ERRORS
+If an error occurs, the return value is -1 and the variable
+.I errno
+contains the error code.
+.I Brk
+and
+.I sbrk
+can return the following error codes:
+.TP 15
+[ENOMEM]
+The requested private data segment will overlap the shared
+data segment.
+.TP 15
+[ENOMEM]
+The routine cannot allocate file system space to expand the
+file which has been memory mapped to the shared data segment
+(see
+.IR mmap(2) ).
+The routine tries to allocate file system space from
+directories in the following order:
+.sp
+1. the directory indicated by the $TMPPATH environmental
+variable
+.br
+2. the current directory
+.br
+3. the user's home directory
+.br
+4. the directory
+.I /usr/tmp
+.br
+5. the directory
+.I /tmp
+.TP 15
+[ENOMEM]
+The limit, as set by
+.IR setrlimit ,
+was exceeded.
+.SH "SEE ALSO"
+execve(2), getrlimit(2), malloc(3), end(3), vm_ctl(2), \f2Guide
+to Parallel Programming\fP
+.SH "NOTES"
+The gap between the private data segment and the shared data
+segment can be adjusted by using the 
+.B \-Z
+linker option (see
+.IR ld (1)).
+.PP
+When \f2brk\fP and \f2sbrk\fP increase a program's address
+space, they also attempt to increase its allowable resident set size
+(see \f2vm_ctl\fP(2)).

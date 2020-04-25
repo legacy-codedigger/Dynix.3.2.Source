@@ -1,0 +1,422 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: make.1 1.15 87/08/05 $
+.TH MAKE 1 "\*(V)" "4BSD/DYNIX"
+.SH NAME
+make \- maintain program groups
+.SH SYNOPSIS
+.B make
+[
+.B \-f
+makefile ] [ option ] ...
+file ...
+.SH DESCRIPTION
+.I Make
+executes commands in
+.I makefile
+to update
+one or more target
+.IR names .
+.I Name
+is typically a program.
+If no
+.B \-f
+option is present, `makefile' and `Makefile' are
+tried in order.
+If
+.I makefile
+is `\-', the standard input is taken.
+More than one
+.B \-f
+option may appear.
+.PP
+.I Make
+updates a target if it depends on prerequisite files
+that have been modified since the target was last modified,
+or if the target does not exist.
+.PP
+.I Makefile
+contains a sequence of entries that specify dependencies.
+The first line of an entry is a
+blank-separated list of targets, then a colon,
+then a list of prerequisite files.
+Text following a semicolon, and all following lines
+that begin with a tab, are shell commands
+to be executed to update the target.
+If a name appears on the left of more than one `colon' line, then it depends
+on all of the names on the right of the colon on those lines, but only
+one command sequence may be specified for it.
+If a name appears on a line with a double colon
+.B "::"
+then the command sequence following that line is performed
+only if the name is out of date with respect to the names to the right
+of the double colon, and is not affected by other double colon lines
+on which that name may appear.
+.PP
+Two special forms of a name are recognized.
+A name like
+.IR a ( b )
+means the file named
+.I b
+stored in the archive named
+.I a.
+A name like
+.IR a (( b ))
+means the file stored in archive
+.I a
+containing the entry point
+.I b.
+.PP
+Sharp and newline surround comments.
+.PP
+The following makefile says that `pgm' depends on two
+files `a.o' and `b.o', and that they in turn depend on
+`.c' files and a common file `incl'.
+.Ps 
+pgm: a.o b.o
+cc a.o b.o \-lm \-o pgm
+.sp
+a.o: incl a.c
+cc \-c a.c
+.sp
+b.o: incl b.c
+cc \-c b.c
+.Pe
+.I Makefile
+entries of the form
+.PP
+.IP
+string1 = string2
+.PP
+are macro definitions.
+Subsequent appearances of 
+.RI $( string1 )
+or
+.RI ${ string1 }
+are replaced by
+.IR string2 .
+If
+.I string1
+is a single character, the parentheses or braces
+are optional.
+.PP
+.I Make 
+infers prerequisites for files for which
+.I makefile
+gives no construction commands.
+For example, a
+`.c' file may be inferred as prerequisite for a `.o' file
+and be compiled to produce the `.o' file.
+Thus the preceding example can be done more briefly:
+.Ps
+pgm: a.o b.o
+cc a.o b.o \-lm \-o pgm
+.sp
+a.o b.o: incl
+.Pe
+Prerequisites are inferred according to selected suffixes
+listed as the `prerequisites' for the special name `.SUFFIXES';
+multiple lists accumulate;
+an empty list clears what came before.
+Order is significant; the first possible name for which both
+a file and a rule as described in the next paragraph exist
+is inferred.
+The default list is
+.IP
+\&.SUFFIXES: .out .o .c .e .r .f .y .l .s .p
+.PP
+The rule to create a file with suffix
+.I s2
+that depends on a similarly named file with suffix
+.I s1
+is specified as an entry
+for the `target'
+.IR s1s2 .
+In such an entry, the special macro $* stands for
+the target name with suffix deleted, $@ for the full target name,
+$< for the complete list of prerequisites,
+and
+$? for the list of prerequisites that are out of date.
+For example, a rule for making
+optimized `.o' files from `.c' files is
+.IP
+\&.c.o: ; cc \-c \-O \-o $@ $*.c
+.PP
+Certain macros are used by the default inference rules
+to communicate optional arguments to
+any resulting compilations.
+In particular,
+`CFLAGS' is used for
+.IR cc (1)
+options,
+`FFLAGS' for
+.IR fortran (1)
+options,
+`PFLAGS' for
+.IR pascal (1)
+options,
+and `LFLAGS' and `YFLAGS' for 
+.I lex
+and
+.IR yacc (1)
+options.  In addition, the macro `MFLAGS' is filled in
+with the initial command line options supplied to 
+.IR make .
+This simplifies maintaining a hierarchy of makefiles as
+one may then invoke 
+.I make
+on makefiles in subdirectories and pass along useful options
+such as
+.BR \-k .
+.PP
+Another special macro is `VPATH'.
+The `VPATH' macro should be set to a list of directories separated by colons.
+When
+.I make
+searches for a file as a result of a dependency relation, it will
+first search the current directory and then each of the directories on the
+`VPATH' list.
+If the file is found, the actual path to the file will be used, rather than
+just the filename.
+If `VPATH' is not defined, then only the current directory is searched.
+.PP
+One use for `VPATH' is when one has several programs that compile from the
+same source.
+The source can be kept in one directory and each set of
+object files (along with a separate
+.IR makefile )
+would be in a separate subdirectory.
+The `VPATH' macro would point to the source directory in this case.
+.PP
+Command lines are executed one at a time, each by its
+own shell.
+A line is printed when it is executed unless
+the special target `.SILENT'
+is in 
+.I makefile,
+or the first character of the command is `@'.
+.PP
+Commands returning nonzero status (see
+.IR intro (1))
+cause
+.I make
+to terminate unless
+the special target `.IGNORE' is in
+.I makefile
+or the command begins with
+<tab><hyphen>.
+.PP
+Interrupt and quit cause the target to be deleted
+unless the target is a directory or
+depends on the special name `.PRECIOUS'.
+.PP
+Other options:
+.TP
+.BI \-P n
+Permit
+.I n
+command sequences to be done in parallel with `&'.
+See
+.B "PARALLEL SUPPORT"
+section below.
+If this option is present multiple times on the command line,
+the least value for
+.I n
+supercedes the others.
+If this option is missing,
+.I make
+looks for the environment variable
+.B
+.SM PARALLEL
+and uses its numeric value for
+.I n.
+If this fails,
+.I n
+defaults to 3.
+.TP
+.B \-i
+Equivalent to the special entry `.IGNORE:'.
+.TP
+.B \-k
+When a command returns nonzero status,
+abandon work on the current entry, but
+continue on branches that do not depend on the current entry.
+.TP
+.B \-n
+Trace and print, but do not execute the commands
+needed to update the targets.
+.TP
+.B \-t
+Touch, i.e. update the modified date of targets, without
+executing any commands.
+.TP
+.B \-r
+Equivalent to an initial special entry `.SUFFIXES:'
+with no list.
+.TP 
+.B \-s
+Equivalent to the special entry
+`.SILENT:'.
+.SH "PARALLEL SUPPORT"
+.I Make
+includes a parallel processing ability.
+If the string separating a target from its prerequisites is
+`:&' or `::&',
+.I make
+can run the command sequences to make the prerequisites simultaneously.
+If two names are separated by an ampersand on the right side of a colon,
+those two may be created in parallel.
+.PP
+In this example Makefile,
+if the objects `a.o', `b.o', and `c.o' are out of date,
+they are built in parallel:
+.Ps
+pgm: &	a.o b.o c.o
+	cc -o pgm a.o b.o c.o
+a.o:	a.c defs.h
+b.o:	b.c defs.h
+c.o:	c.c defs.h
+.Pe
+In this example, only `a.o' and `b.o' are built in parallel, with `c.o'
+being started after the other two complete:
+.Ps
+pgm:	a.o & b.o c.o
+	cc -o pgm a.o b.o c.o
+a.o:	a.c defs.h
+b.o:	b.c defs.h
+c.o:	c.c defs.h
+.Pe
+Since the
+.B \-P
+option is not compatible with other versions of
+.IR make ,
+you can avoid problems by creating a shell script called
+.IR make ,
+and placing it in
+.IR /usr/local :
+.Ps
+#!/bin/sh
+
+if [ $# != 0 ]
+then
+	exec /bin/make P='&' "$@"
+else
+	exec /bin/make P='&'
+fi
+.Pe
+and changing your targets from their present construct:
+.Ps
+FILES : headers.o main.o
+.Pe
+to a portable form:
+.Ps
+FILES :$(P) headers.o main.o
+.Pe
+If you use this technique,
+.I make
+is portable between systems.
+The
+.B \-P
+option controls the number of simultaneous command streams.
+.I Make
+invoked with an argument of
+.B \-P1
+selects no parallelism, and is useful when error messages
+from parallel command sequences are intermingled,
+obscuring the actual source of error.
+(A useful technique for searching the output for error messages is
+to look for lines that do not begin with a tab character.)
+.PP
+To execute command sequences in parallel,
+.I make
+forks off processes without waiting for them,
+and indicates they've been forked by appending
+an ampersand and the process ID while printing the command
+(similar to using the ampersand to indicate asynchronous jobs in the shell).
+If the forked-off command sequence returns a non-zero exit status,
+.I make
+precedes the error (or warning) message with the process ID,
+to help determine the source of the error.
+.PP
+Not all command sequences can be made parallel.
+Some command sequences generate filenames in the current directory that
+do not depend on the file being built.
+For example, operations involving two or more usages of
+.IR yacc ,
+.IR lex ,
+or
+.I xstr
+in the same directory cannot be made parallel.
+.PP
+While building the prerequisites in parallel, only the last (or only)
+command in a multiple command sequence is eligible to be forked
+for asynchronous execution.
+Other commands are executed sequentially.
+For example, in the following Makefile, only `lastcommand' is run in parallel;
+`firstcommand' and `secondcommand' are processed before any of the commands
+to build `b' are invoked:
+.Ps
+pgm:& a b
+a:
+	firstcommand
+	secondcommand
+	lastcommand
+b:
+	b-firstcommand
+	b-secondcommand
+	b-lastcommand
+.Pe
+To circumvent this, make all the commands be considered as one
+long shell command, as in:
+.Ps
+pgm:& a b
+a:
+	firstcommand; \e
+	secondcommand; \e
+	lastcommand
+b:
+	b-firstcommand; \e
+	b-secondcommand; \e
+	b-lastcommand
+.Pe
+The backslash at the end of a command line causes the following line
+to be regarded as a continuation.
+A Makefile set up in this way will have all the commands to build `a'
+be run in parallel with all the commands to build `b'.
+Note that all three commands to build `a' are now executed by the same shell
+(rather than three separate invocations of the shell).
+Commands interpreted by the shell directly
+(to change directory, for example)
+are no longer isolated to one particular command line.
+This should be taken into consideration when altering the Makefiles in this way.
+.SH FILES
+makefile, Makefile
+.SH "SEE ALSO"
+fortran(1),
+pascal(1),
+sh(1),
+touch(1),
+.I "Make \- A Program for Maintaining Computer Programs"
+.SH BUGS
+Some commands return nonzero status inappropriately.
+Use
+.B \-i
+to overcome the difficulty.
+.br
+Commands that are directly executed by the shell,
+notably
+.IR  cd (1),
+are ineffectual across newlines in
+.I make.
+.PP
+`VPATH' is intended to act like the System V `VPATH' support,
+but there is no guarantee that it functions identically.

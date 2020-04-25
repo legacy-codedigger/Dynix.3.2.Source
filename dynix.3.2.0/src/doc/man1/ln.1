@@ -1,0 +1,136 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+.\"
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.  This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: ln.1 1.10 87/02/27 $
+.TH LN 1 "\*(V)" "4BSD/DYNIX"
+.SH NAME
+ln \- make links
+.SH SYNOPSIS
+.B ln
+[
+.B \-s
+]
+name1 [ name2 ]
+.br
+.B ln
+[
+.B \-s
+]
+name ... directory
+.br
+.B ln
+[
+.B \-f
+]
+name ... directory
+.br
+.B ln
+.B \-c
+att=name1 ucb=name2 name3
+.SH DESCRIPTION
+A link is a directory entry referring to a file;
+the same file
+(together with its size,
+all its protection information,
+etc.)
+may have several links to it.
+There are three kinds of links:
+hard links,
+symbolic links,
+and conditional symbolic links.
+.PP
+By default
+.I ln
+makes hard links.
+A hard link to a file is indistinguishable
+from the original directory entry;
+any changes to a file are effective
+independent of the name used to reference the file.
+Hard links may not span file systems and may not refer to directories,
+except the superuser can force a hard link to a directory with the
+.B \-f
+option.
+.PP
+The
+.B \-s
+option causes
+.I ln
+to create symbolic links.
+A symbolic link contains the name of the file to which it is linked,
+and is interpreted with respect to the directory in which it is created.
+Therefore,
+you must either
+.IR cd (1)
+to the directory where the symbolic link is to reside
+(before creating the link),
+or you must specify the absolute pathname(s) of the linked-to file(s)
+(when creating the link).
+The referenced file is used when an
+.IR open (2)
+operation is performed on the link.
+A
+.IR stat (2)
+on a symbolic link will return the linked-to file;
+an
+.IR lstat (2)
+must be done to obtain information about the link.
+The
+.IR readlink (2)
+call may be used to read the contents of a symbolic link.
+Symbolic links may span file systems and may refer to directories.
+.PP
+Given one or two arguments,
+.I ln
+creates a link to an existing file
+.IR name1 .
+If
+.I name2
+is given,
+the link has that name;
+.I name2
+may also be a directory in which to place the link;
+otherwise it is placed in the current directory.
+If only the directory is specified,
+the link will be made to the last component of
+.IR name1 .
+.PP
+Given more than two arguments,
+.I ln
+makes links to all the named files in the named directory.
+The links made will have the same name as the files being linked to.
+.PP
+A conditional symbolic link is a symbolic link
+whose value depends on the current universe setting
+(see
+.IR universe (1)).
+The
+.B \-c
+option causes
+.I ln
+to create symbolic links.
+The values for the conditional symbolic link must be given,
+preceded by the corresponding universe identifier (`att=' or `ucb=').
+The values may be given in either order.
+.SH "SEE ALSO"
+cp(1),
+link(2),
+mv(1),
+readlink(2),
+rm(1),
+stat(2),
+symlink(2)

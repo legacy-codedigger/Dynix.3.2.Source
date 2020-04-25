@@ -1,0 +1,37 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: getpass.3 1.4 86/05/13 $
+.TH GETPASS 3 "\*(V)" "7th Edition"
+.SH NAME
+getpass \- read a password
+.SH SYNOPSIS
+.nf
+.B char *getpass(prompt)
+.B char *prompt;
+.fi
+.SH DESCRIPTION
+.I Getpass
+reads a password from the file
+.IR /dev/tty ,
+or if that cannot be opened, from the standard input,
+after prompting with the null-terminated string
+.I prompt
+and disabling echoing.
+A pointer is returned to a null-terminated string
+of at most 8 characters.
+.SH FILES
+/dev/tty
+.SH "SEE ALSO"
+crypt(3)
+.SH BUGS
+The return value points to static data
+whose content is overwritten by each call.

@@ -1,0 +1,24 @@
+cd /usr/spool/mqueue
+rm -f syslog.7
+if [ -f syslog.6 ]; then mv -f syslog.6  syslog.7; fi
+if [ -f syslog.5 ]; then mv -f syslog.5  syslog.6; fi
+if [ -f syslog.4 ]; then mv -f syslog.4  syslog.5; fi
+if [ -f syslog.3 ]; then mv -f syslog.3  syslog.4; fi
+if [ -f syslog.2 ]; then mv -f syslog.2  syslog.3; fi
+if [ -f syslog.1 ]; then mv -f syslog.1  syslog.2; fi
+if [ -f syslog.0 ]; then mv -f syslog.0  syslog.1; fi
+mv -f /usr/spool/adm/syslog    syslog.0
+> /usr/spool/adm/syslog
+chmod 644    /usr/spool/adm/syslog
+rm -f critical.7
+if [ -f critical.6 ]; then mv -f critical.6  critical.7; fi
+if [ -f critical.5 ]; then mv -f critical.5  critical.6; fi
+if [ -f critical.4 ]; then mv -f critical.4  critical.5; fi
+if [ -f critical.3 ]; then mv -f critical.3  critical.4; fi
+if [ -f critical.2 ]; then mv -f critical.2  critical.3; fi
+if [ -f critical.1 ]; then mv -f critical.1  critical.2; fi
+if [ -f critical.0 ]; then mv -f critical.0  critical.1; fi
+mv -f /usr/adm/critical    critical.0
+> /usr/adm/critical
+chmod 644    /usr/adm/critical
+kill -1 `cat /etc/syslog.pid`

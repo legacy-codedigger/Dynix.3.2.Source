@@ -1,0 +1,52 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: eyacc.1 1.4 86/05/13 $
+.TH EYACC 1 "\*(V)" "4BSD"
+.SH NAME
+eyacc \- modified yacc allowing much improved error recovery
+.SH SYNOPSIS
+.B eyacc
+[
+.B \-v
+]
+[ grammar ]
+.SH DESCRIPTION
+.I Eyacc
+is an old version of
+.IR yacc (1),
+which produces tables used by the Pascal system and its error recovery
+routines.
+.I Eyacc
+fully enumerates test actions in its parser when an error token
+is in the look-ahead set.
+This prevents the parser from making undesirable reductions
+when an error occurs before the error is detected.
+The table format is different in
+.I eyacc
+than it was in the old
+.I yacc,
+as minor changes had been made for efficiency reasons.
+.SH "SEE ALSO"
+yacc(1)
+.br
+``Practical LR Error Recovery'' by Susan L. Graham, Charles B. Haley
+and W. N. Joy; SIGPLAN Conference on Compiler Construction, August 1979.
+.SH AUTHOR
+S. C. Johnson
+.PP
+.I Eyacc
+modifications by Charles Haley and William Joy.
+.SH BUGS
+.I Pc
+and its error recovery routines should be made into a library
+of routines for the new
+.I yacc.

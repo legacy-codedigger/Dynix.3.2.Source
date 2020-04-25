@@ -1,0 +1,57 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: services.5 1.4 86/05/13 $
+.TH SERVICES 5 "\*(V)" "4BSD"
+.SH NAME
+services \- service name data base
+.SH DESCRIPTION
+The
+.I services
+file contains information regarding
+the known services available in the DARPA Internet.
+For each service a single line should be present
+with the following information:
+.HP 10
+official service name
+.br
+.ns
+.HP 10
+port number
+.br
+.ns
+.HP 10
+protocol name
+.br
+.ns
+.HP 10
+aliases
+.PP
+Items are separated by any number of blanks and/or
+tab characters.  The port number and protocol name
+are considered a single 
+.IR item ;
+a ``/'' is used to
+separate the port and protocol (e.g. ``512/tcp'').
+A ``#'' indicates the beginning of
+a comment; characters up to the end of the line are
+not interpreted by routines which search the file.
+.PP
+Service names may contain any printable
+character other than a field delimiter, newline,
+or comment character.
+.SH FILES
+/etc/services
+.SH "SEE ALSO"
+getservent(3N)
+.SH BUGS
+A name server should be used instead of a static file.
+A binary indexed file format should be available for fast access.

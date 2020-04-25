@@ -1,0 +1,173 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: login.1 1.14 1991/08/06 19:06:15 $
+.TH LOGIN 1 "\*(V)" "4BSD/DYNIX"
+.SH NAME
+login \- sign on
+.SH SYNOPSIS
+.B login
+[
+.B \-p
+] [ username ]
+.br
+.B login
+[
+.B \-p
+] [
+.B \-h
+hostname
+] [
+.B \-f
+] [
+username
+]
+.SH DESCRIPTION
+The
+.I login
+command
+is used when a user initially
+signs on, or it may be used at any time to change
+from one user to another.
+The latter case is the one summarized above and
+described here.
+See \*(lqHow to Get Started\*(rq for how to dial up initially.
+.PP
+If
+.I login
+is invoked without an argument,
+it asks for a user name, and, if
+appropriate, a password.
+Echoing is turned off (if possible) during the typing of the password,
+so it will not appear on the written record of the
+session.
+.PP
+After a successful login,
+accounting files are updated and
+the user is informed of the
+existence of mail,
+and
+the message of the day is printed,
+as is the time he last logged in (unless he has a \*(lq.hushlogin\*(rq
+file in his home directory \- this
+is mostly used to make life easier for non-human users, such as
+.IR uucp ).
+.PP
+.I Login
+initializes the user and group IDs and the working directory,
+then executes a command interpreter (usually
+.IR  sh (1))
+according to specifications found in a password file.
+Argument 0 of the command interpreter is \*(lq\-sh\*(rq, or
+more generally the name of the command interpreter with
+a leading dash (\*(lq\-\*(rq) prepended.
+.PP
+Login also modifies the
+environment
+.IR environ (7)
+with information specifying home directory ($HOME),
+command interpreter ($SHELL),
+terminal type (if available\-$TERM),
+user name ($USER, $LOGNAME),
+search path ($PATH),
+mail file ($MAIL),
+timezone ($TZ), 
+and per universe path ($UCBPATH, $ATTPATH)
+and shell ($UCBSHELL, $ATTSHELL) information.
+The `\-p' argument causes the remainder of the environment to be preserved,
+otherwise any previous environment is discarded.
+.PP
+Login sets the universe (see
+.IR universe (1))
+to \*(lqucb\*(rq by default;
+this can be changed to \*(lqatt\*(rq
+by having the string \*(lquniverse(att)\*(rq
+appear anywhere in the \*(lqGCOS\*(rq field (field 5)
+of the /etc/passwd entry for the user (see
+.IR passwd (5)).
+.PP
+If the file 
+.IR /etc/nologin
+exists,
+.I login
+prints its contents on the user's terminal and exits. This is
+used by
+.IR shutdown (8)
+to stop users logging in when the system is about to go down.
+Attempts to log in as \*(lqroot\*(rq
+on terminals that are not listed in the file
+.IR /etc/securetty 
+will fail.
+If
+.I /etc/securetty
+does not exist, ``root'' may log in on any terminal.
+.PP
+Login is recognized by
+.IR sh (1)
+and
+.IR csh (1)
+and executed directly (without forking).
+.PP
+There are several additional options to
+.I login
+for use at initial login.
+With one exception, these options are available only to the superuser.
+The
+.B \-h
+option is used by
+.IR telnetd (8C)
+and other servers to list the host from which
+the connection was received.
+The
+.B \-f
+option is used with a username on the command line
+to indicate that proper authentication has already been done
+and that no password need be requested.
+This option may be used by the superuser
+or by the user specified on the command line.
+.SH FILES
+.ta \w'/usr/spool/mail/*\ \ 'u
+/etc/utmp	accounting
+.br
+/usr/adm/wtmp	accounting
+.br
+/usr/adm/lastlog	stores last user login 
+	(also used by finger(1) and uucp(8c))
+.br
+/usr/spool/mail/*	mail
+.br
+/etc/motd	message-of-the-day
+.br
+/etc/passwd	password file
+.br
+/etc/nologin	stops logins
+.br
+\&.hushlogin	makes login quieter
+.br
+/etc/securetty	lists ttys that root may log in on
+.SH "SEE ALSO"
+init(8), getty(8), mail(1), passwd(1), passwd(5), environ(7),
+universe(1), shutdown(8)
+.SH DIAGNOSTICS
+\*(lqLogin incorrect,\*(rq
+if the name or the password is bad.
+.br
+\*(lqNo Shell\*(rq, \*(lqcannot open password file\*(rq,
+\*(lqno directory\*(rq:
+consult your system administrator.
+.SH BUGS
+An undocumented option,
+.B \-r
+is used by the remote login server,
+.IR rlogind (8C)
+to force
+.I login
+to enter into an initial connection protocol.

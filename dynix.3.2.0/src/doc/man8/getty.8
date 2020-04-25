@@ -1,0 +1,101 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: getty.8 1.10 91/01/21 $
+.TH GETTY 8 "\*(V)" "4BSD"
+.SH NAME
+getty  \- set terminal mode
+.SH SYNOPSIS
+.B /etc/getty
+[ type ]
+.SH DESCRIPTION
+.B Getty
+attempts to adapt the system to the type of terminal being used.
+.B Getty
+is called by
+.BR  init (8)
+immediately after making a connection.
+.B Init
+first reads the entry in the
+.I /etc/ttys
+file for the terminal line being opened
+and then calls
+.BR getty ,
+passing the second character in the entry as an argument.
+.B Getty
+uses this character to select an entry from the
+.I /etc/gettytab
+file.
+This entry describes characteristics of the terminal,
+including its baud rate.
+If there is no argument or no such table, the
+default
+table is used.
+If there is no
+.I /etc/gettytab
+file,
+a set of system defaults is used.
+.PP
+If indicated by the table located,
+.B getty
+will clear the terminal screen,
+print a banner heading,
+and prompt for a login name.
+Usually either the banner or the login prompt will include
+the system hostname.
+Then the user's name is read, one character at a time.
+If a null character is received, it is assumed to be the result
+of the user having pushed the break (interrupt) key.
+The speed is usually 
+changed and the login is typed again;
+a second break changes the speed again and the login
+is typed once more.
+Successive break characters cycle through the
+same standard set of speeds.
+.PP
+The user's name is terminated by a newline or
+carriage-return character.
+The latter results in the system being set to
+treat carriage returns appropriately (see
+.BR  tty (4)).
+.PP
+The user's name is scanned to see if
+it contains any lowercase alphabetic characters; if not,
+and if the name is nonempty, the
+system is told to map any future uppercase characters
+into the corresponding lowercase characters.
+.PP
+Finally, login is called with the user's name as argument.
+.PP
+Most of the default actions of
+.B getty
+can be circumvented, or modified, by a suitable
+.I gettytab
+table.
+.PP
+.B Getty
+can be set to time out after an interval;
+if the login name is not entered within a reasonable 
+amount of time, the dial-up lines will hang up.
+.SH FILES
+/etc/gettytab
+.SH "SEE ALSO"
+gettytab(5), init(8), login(1), ioctl(2), tty(4), ttys(5)
+.br
+.I "DYNIX System Administration Guide"
+.SH BUGS
+Currently, the format of
+.I /etc/ttys
+limits the permitted table names to a single character;
+this should be expanded.
+.PP
+.I /etc/ttys
+should be replaced completely.

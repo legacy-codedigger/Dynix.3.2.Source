@@ -1,0 +1,85 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: group.5 1.7 1991/08/06 22:49:23 $
+.\" @(#)group.5 1.1 85/12/28 SMI; from UCB 4.2
+.TH GROUP 5 "\*(V)" "4BSD"
+.SH NAME
+group \- group file
+.SH SYNOPSIS
+.B /etc/group
+.SH DESCRIPTION
+.IX  "group file"  ""  "\fLgroup\fP \(em group file format"
+For each group,
+.I group
+contains the following fields:
+group name,
+encrypted password,
+numerical group ID,
+and a comma separated list of all users allowed in the group.
+.PP
+This is an
+.SM ASCII
+file.  The fields are separated by colons;
+each group is separated from the next by a new-line.
+If the password field is null, no password is demanded.
+.PP
+Because the passwords are encrypted,
+the file has general read permission and can be
+used to map numerical group ID's to names, for example.
+.PP
+A group file can have a line beginning with a plus (+),
+which means to incorporate entries from the yellow pages.
+There are two styles of + entries:
+All by itself, + means to insert the entire contents
+of the yellow pages group file at that point;
+.I +name
+means to insert the entry (if any) for
+.I name
+from the yellow pages at that point.
+If a + entry has a non-null password or group member field,
+the contents of that field override
+what is contained in the yellow pages.
+The numerical group ID field cannot be overridden.
+.SH EXAMPLE
+.PP
+.\" .ft L
+.nf
++myproject:::bill, steve
++:
+.fi
+.PP
+If these entries appear at the end of a group file,
+the group
+.I myproject
+has members
+.I bill
+and
+.IR steve ,
+and the password and group ID of the yellow pages entry for the group
+.IR myproject .
+All of the groups listed in the yellow pages
+are pulled in and placed after the entry for
+.IR myproject .
+.SH FILES
+/etc/group
+.br
+/etc/yp/group
+.SH "SEE ALSO"
+passwd(1),
+setgroups(2),
+crypt(3),
+initgroups(3),
+passwd(5)
+.SH BUGS
+The
+.IR passwd (1)
+command won't change group passwords.

@@ -1,0 +1,1359 @@
+/* $Copyright: $
+ * Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+ * Sequent Computer Systems, Inc.   All rights reserved.
+ *  
+ * This software is furnished under a license and may be used
+ * only in accordance with the terms of that license and with the
+ * inclusion of the above copyright notice.   This software may not
+ * be provided or otherwise made available to, or used by, any
+ * other person.  No title to or ownership of the software is
+ * hereby transferred.
+ */
+
+#ifndef lint
+static char rcsid[] = "$Header: /usr/src/dynix.3.2.0/src/bin/RCS/ps.c,v 1.3 1993/01/12 10:16:29 bruce Exp $";
+#endif
+
+int	debug;
+#define	dprintf	if(debug)printf
+
+#include <stdio.h>
+#include <ctype.h>
+#include <nlist.h>
+#include <pwd.h>
+#include <sys/param.h>
+#include <sys/ioctl.h>
+#include <sys/tty.h>
+#include <sys/dir.h>
+#include <sys/vm.h>
+#include <sys/user.h>
+#include <sys/proc.h>
+#include <machine/pte.h>
+#include <sys/vmmac.h>
+#include <sys/stat.h>
+#include <sys/mbuf.h>
+#include <math.h>
+
+#ifndef imin
+/* This is needed for the SZPT() macro from Balance */
+#define imin(x, y) (((x) < (y)) ? (x) : (y))
+#endif
+
+struct nlist nl[] = {
+	{ "_proc" },
+#define	X_PROC		0
+	{ "_procmax" },
+#define	X_PROCMAX	1
+	{ "_dmmin" },
+#define X_DMMIN		2
+	{ "_dmmax" },
+#define X_DMMAX		3
+	{ "_ecmx" },
+#define X_ECMX		4
+	{ "_ccpu" },
+#define X_CCPU		5
+	{ "_maxslp" },
+#define X_MAXSLP	6
+	{ "_version" },
+#define X_VERSION	7
+	{ "" },
+};
+
+#define MAXTTYNAMLEN	 7
+
+struct	savcom {
+	union {
+		struct	lsav *lp;
+		float	u_pctcpu;
+		struct	vsav *vp;
+		int	s_ssiz;
+	} s_un;
+	struct	asav *ap;
+} *savcom;
+
+struct	asav {
+	char	*a_cmdp;
+	int	a_flag;
+	short	a_stat, a_pid, a_nice, a_pri, a_slptime, a_time;
+	uid_t	a_uid;
+	short	a_engno;	/* engine running on */
+	size_t	a_size, 	/* Data portion of virtual size */
+		a_tsiz,		/* Text portion of virtual size */
+		a_rss; 		/* Memory resident size */
+	char	a_tty[MAXTTYNAMLEN+1];
+	dev_t	a_ttyd;
+	time_t	a_cpu;
+	size_t	a_maxrss;
+	struct pte
+		*a_ul2pt;	/* Pointer to user PTEs */
+	size_t	a_szpt;		/* # PTEs in this area */
+};
+
+char	*lhdr;
+struct	lsav {
+	short	l_ppid;
+	char	l_cpu;
+	int	l_addr;
+	caddr_t	l_wchan;
+};
+
+char	*uhdr;
+char	*shdr;
+
+char	*vhdr;
+struct	vsav {
+	u_int	v_majflt;
+	float	v_pctcpu;
+};
+
+#define RD_PROCS	64
+struct	proc proc[RD_PROCS];	/* RD_PROCS = a few, for less syscalls */
+struct	proc *mproc;
+struct	user *u;
+struct dmapext *dmep;
+int sizeof_dmapext;
+long sizeof_dmapext_disk;
+
+int	chkpid;
+int	aflg, cflg, eflg, gflg, kflg, lflg, sflg,
+	uflg, vflg, xflg;
+char	*tptr;
+char	*gettty(), *getcmd(), *getname(), *savestr(), *alloc(), *state();
+char	*rindex(), *calloc(), *sbrk(), *strcpy(), *strcat(), *strncat();
+char	*index(), *ttyname(), *malloc(), *valloc(), *realloc(), mytty[16];
+long	lseek();
+double	pcpu(), pmem();
+int	pscomp();
+int	maxslp;
+double	ccpu;
+int	ecmx;
+int	nproc;
+int	dmmin, dmmax;
+char	version[100];
+char	Kversion[100];
+
+struct	ttys {
+	char	name[MAXTTYNAMLEN+1];
+	dev_t	ttyd;
+} *allttys;
+
+int	npr;
+
+int	cmdstart;
+int	twidth;
+char	*kmemf, *memf, *swapf, *nlistf;
+int	kmem, mem, swap = -1;
+int	rawcpu, sumcpu;
+
+int	u_addr;
+int	argaddr;
+
+#define	pgtok(a)	(((a)*NBPG)/1024)
+#define cltok(a)	(((a)*getpagesize())/1024)
+
+main(argc, argv)
+	char **argv;
+{
+	register int i, j;
+	register char *ap;
+	uid_t uid;
+	off_t procp, procmax;
+	extern char _sobuf[];
+
+	setbuf(stdout, _sobuf);
+
+	u = (struct user *)valloc(UPAGES*NBPG);
+	if (u == NULL) {
+		fprintf(stderr, "Cannot valloc u.\n");
+		exit(1);
+	}
+	bzero((char *)u, UPAGES*NBPG);
+	twidth = 80;
+	setsize();
+	argc--, argv++;
+	if (argc > 0) {
+		ap = argv[0];
+		while (*ap) switch (*ap++) {
+
+		case 'd':		/* Why not... */
+			debug++;
+			break;
+		case 'C':		/* Undocumented */
+			rawcpu++;
+			break;
+		case 'S':		/* Undocumented */
+			sumcpu++;
+			break;
+		case 'a':
+			aflg++;
+			break;
+		case 'c':
+			cflg = !cflg;
+			break;
+		case 'e':
+			eflg++;
+			break;
+		case 'g':
+			gflg++;
+			break;
+		case 'k':
+			kflg++;
+			break;
+		case 'l':
+			lflg++;
+			break;
+		case 's':
+			sflg++;
+			break;
+		case 't':
+			if (*ap) {
+				tptr = ap;
+			} else if ((tptr = ttyname(2)) != 0) {
+				char *ptr;
+				ptr = rindex(tptr,'/');
+				strcpy(mytty, tptr);
+				if (strcmp(++ptr,"console") == 0) {
+					tptr = "c0";
+				} else { 
+					if ((tptr = index(mytty,'y')) != 0)
+						tptr++;
+				}
+			}
+			aflg++;
+			gflg++;
+			if (tptr && *tptr == '?')
+				xflg++;
+			while (*ap)
+				ap++;
+			break;
+		case 'u': 
+			uflg++;
+			break;
+		case 'v':
+			cflg = 1;
+			vflg++;
+			break;
+		case 'w':
+			if (twidth < 132)
+				twidth = 132;
+			else
+				twidth = BUFSIZ;
+			break;
+		case 'x':
+			xflg++;
+			break;
+		default:
+			if (!isdigit(ap[-1]))
+				break;
+			chkpid = atoi(--ap);
+			*ap = 0;
+			aflg++;
+			xflg++;
+			break;
+		}
+	}
+	openfiles(argc, argv);
+	nlistf = argc > 1 ? argv[1] : "/dynix";
+	getpsdata();
+	getkvars(argc, argv);
+	init_dmap();
+	uid = getuid();
+	printhdr();
+	procp = getw(nl[X_PROC].n_value);
+	procmax = getw(nl[X_PROCMAX].n_value);
+	nproc = (struct proc *)procmax - (struct proc *)procp;
+	savcom = (struct savcom *)calloc(nproc, sizeof (*savcom));
+	for (i=0; i<nproc; i += RD_PROCS) {
+		lseek(kmem, (long)procp, 0);
+		j = nproc - i;
+		if (j > RD_PROCS)
+			j = RD_PROCS;
+		j *= sizeof (struct proc);
+		if (read(kmem, (char *)proc, j) != j)
+			cantread("proc table", kmemf); /* no return */
+		procp += j;
+		for (j = j / sizeof (struct proc) - 1; j >= 0; j--) {
+			mproc = &proc[j];
+			if (mproc->p_stat == 0 ||
+			    mproc->p_pgrp == 0 && xflg == 0)
+				continue;
+			if (tptr == 0 && gflg == 0 && xflg == 0 &&
+			    mproc->p_ppid == 1) {
+				continue;
+			}
+			if (uid != (uid_t)mproc->p_uid && aflg==0 ||
+			    chkpid != 0 && chkpid != mproc->p_pid)
+				continue;
+			if (vflg && gflg == 0 && xflg == 0) {
+				if (mproc->p_stat == SZOMB)
+					continue;
+				if (mproc->p_slptime > MAXSLP &&
+				    (mproc->p_stat == SSLEEP ||
+				     mproc->p_stat == SSTOP))
+				continue;
+			}
+			save();
+		}
+	}
+	qsort(savcom, npr, sizeof(savcom[0]), pscomp);
+	for (i=0; i<npr; i++) {
+		register struct savcom *sp = &savcom[i];
+		if (lflg)
+			lpr(sp);
+		else if (vflg)
+			vpr(sp);
+		else if (uflg)
+			upr(sp);
+		else
+			spr(sp);
+		if (sp->ap->a_stat == SZOMB)
+			printf(" <defunct>");
+		else if (sp->ap->a_pid == 0)
+			printf(" swapper");
+		else if (sp->ap->a_pid == 2)
+			printf(" pagedaemon");
+		else
+			printf(" %.*s", twidth - cmdstart - 2, sp->ap->a_cmdp);
+		printf("\n");
+	}
+	exit(npr == 0);
+}
+
+/*
+ * init_dmap()
+ *	Initialize dmap related values.
+ */
+
+init_dmap()
+{
+	register int blk;
+	register u_int vaddr;
+	register int dm_nemap = 0;
+
+	/* 
+	 * Determine number of entries in dmapext array (dm_nemap),
+	 * and size of dmapext object (sizeof_dmapext).
+	 */
+
+	for (blk = dmmin, vaddr = 0; vaddr < MAXADDR; ) {
+		++dm_nemap;
+		vaddr += ctob(dtoc(blk));
+		if (blk < dmmax)
+			blk *= 2;
+	}
+
+#ifdef	i386
+	/*
+	 * Kludge to get sizeof_dmapext to not overflow into next page by
+	 * only a few bytes -- assuming dmmin == 16k, dmmax == 256k, need
+	 * to compensate for 6 longs (2 from struct dmapext and 4 from
+	 * the short blocks).  In practice, this drops about 1.5Meg from
+	 * the max size segment, and since stack consumes at least 4Meg
+	 * of virtual space (due to virtual hole, data can't grow into
+	 * top 4Meg of 256Meg), this is a don't care.
+	 *
+	 * Not an issue on ns32000, since 16Meg address space and 256k max
+	 * chunk doesn't fill a HW page.
+	 */
+	dm_nemap -= 6;
+#endif	i386
+
+	sizeof_dmapext = sizeof(struct dmapext) + sizeof(swblk_t)*(dm_nemap-1);
+	sizeof_dmapext_disk = ctod(clrnd(btoc(sizeof_dmapext)));
+	dmep = (struct dmapext *)valloc(dtob(sizeof_dmapext_disk));
+}
+
+
+getw(loc)
+	unsigned long loc;
+{
+	long word;
+
+	lseek(kmem, (long)loc, 0);
+	if (read(kmem, (char *)&word, sizeof (word)) != sizeof (word))
+		printf("error reading kmem at %x\n", loc);
+	return (word);
+}
+
+openfiles(argc, argv)
+	char **argv;
+{
+
+	kmemf = "/dev/kmem";
+	if (kflg)
+		kmemf = argc > 2 ? argv[2] : "/vmcore";
+	kmem = open(kmemf, 0);
+	if (kmem < 0) {
+		perror(kmemf);
+		exit(1);
+	}
+	if (kflg)  {
+		mem = kmem;
+		memf = kmemf;
+	} else {
+		memf = "/dev/mem";
+		mem = open(memf, 0);
+		if (mem < 0) {
+			perror(memf);
+			exit(1);
+		}
+	}
+	if (kflg == 0 || argc > 3) {
+		swapf = argc>3 ? argv[3]: "/dev/drum";
+		swap = open(swapf, 0);
+		if (swap < 0) {
+			perror(swapf);
+			exit(1);
+		}
+	}
+}
+
+getkvars(argc, argv)
+	char **argv;
+{
+	long lccpu;
+
+	lseek(kmem, (long)nl[X_VERSION].n_value, 0);
+	if (read(kmem, version, 100) != 100) {
+		cantread("version", kmemf); /* no return */
+	}
+	if (strncmp(version,Kversion,sizeof(version)) != 0) {
+		fprintf(stderr, "ps: Kernel version mismatch. Specify kernel file as last argument \n");
+		exit(1);
+	}
+		
+	lseek(kmem, (long)nl[X_MAXSLP].n_value, 0);
+	if (read(kmem, (char *)&maxslp, sizeof (maxslp)) != sizeof (maxslp))
+		cantread("maxslp", kmemf); /* no return */
+	lseek(kmem, (long)nl[X_CCPU].n_value, 0);
+	if (read(kmem, (char *)&lccpu, sizeof (lccpu)) != sizeof (lccpu))
+		cantread("ccpu", kmemf); /* no return */
+	ccpu = (double)lccpu / FSCALE;
+	lseek(kmem, (long)nl[X_ECMX].n_value, 0);
+	if (read(kmem, (char *)&ecmx, sizeof (ecmx)) != sizeof (ecmx))
+		cantread("ecmx", kmemf); /* no return */
+	dmmin = getw(nl[X_DMMIN].n_value);
+	dmmax = getw(nl[X_DMMAX].n_value);
+}
+
+printhdr()
+{
+	char *hdr;
+
+	if (sflg+lflg+vflg+uflg > 1) {
+		fprintf(stderr, "ps: specify only one of s,l,v and u\n");
+		exit(1);
+	}
+	hdr = lflg ? lhdr : 
+			(vflg ? vhdr : 
+				(uflg ? uhdr : shdr));
+	if (lflg+vflg+uflg+sflg == 0)
+		hdr += strlen("SSIZ ");
+	cmdstart = strlen(hdr);
+	printf("%s COMMAND\n", hdr);
+	(void) fflush(stdout);
+}
+
+cantread(what, fromwhat)
+	char *what, *fromwhat;
+{
+
+	fprintf(stderr, "ps: error reading %s from %s\n", what, fromwhat);
+	exit(1);
+}
+
+#define TTYSINCR	16
+struct	direct *dbuf;
+struct ttys *tp;
+int ttys_allocated;		/* # of ttys structures allocated */
+int nttys;			/* # of ttys saved from /dev */
+int ttycmp();
+
+#define NUIDINCR	20
+#define	NMAX	8	/* sizeof loginname (should be sizeof (utmp.ut_name)) */
+int uids_allocated;		/* # of ttys structures allocated */
+
+int nuid;
+struct nametable {
+	char	nt_name[NMAX+1];
+	uid_t	nt_uid;
+} *nametable;
+
+/*
+ * TMPDIR is distinct from /tmp .  If it is just /tmp, then the
+ *  unlink()/rename() of TMPFILE will fail if /tmp is "sticky"
+ *  (sticky directories allow only the owner of a file to remove it).
+ *  And note that DYNIX is distributed with /tmp sticky.
+ * TMPDIR should be in the same filesystem as /tmp (so the rename()
+ *  of pstmp will succeed).
+ */
+#define TMPDIR		"/tmp/.ps"
+#define TMPFILE		"/tmp/.ps/data"
+extern int errno;
+extern FILE *fopen();
+
+getpsdata()
+{
+	register DIR *df;
+	int no_tmp = 0;		/* Set if TMPDIR is inaccessible */
+	int fsize;
+	FILE *fp = NULL;
+	char pstmp[80];		/* tmp file used when creating TMPFILE */
+	struct stat dev_st, pass_st, tmp_st, kernel_st;
+	int	dynixfd;
+
+	/*
+	 * Stat /dev, /etc/passwd, kernel (nlistf) and the tmp file of ttys
+	 */
+	if (stat("/dev", &dev_st) != 0) {
+		perror("/dev");
+		exit(1);
+	}
+	if (stat("/etc/passwd", &pass_st) != 0) {
+		perror("/etc/passwd");
+		exit(1);
+	}
+	if (stat(nlistf, &kernel_st) != 0) {
+		perror(nlistf);
+		exit(1);
+	}
+
+	/*
+	 * Assume this program is setgid, so group-writable will suffice.
+	 */
+	if (access(TMPDIR, 0775) != 0)
+		no_tmp = 1;
+	else if (stat(TMPFILE, &tmp_st) != 0) {
+		if (errno != ENOENT) {
+			perror(TMPFILE);
+			exit(1);
+		}
+		tmp_st.st_mtime = 0;
+	} else {
+		fp = fopen(TMPFILE, "r");
+		if (fp != NULL) {
+			fread(&fsize, sizeof(fsize), 1, fp);
+		}
+	}
+	/*
+	 * if any of stat'd files are newer than tmp file 
+	 * or the size of tmp file doesn't agree with size
+	 * stored inside file then recreate the tmp file
+	 * else just read in the tmp file
+	 */
+	if (no_tmp || dev_st.st_mtime > tmp_st.st_mtime ||
+	    pass_st.st_mtime > tmp_st.st_mtime ||
+	    kernel_st.st_mtime > tmp_st.st_mtime ||
+	    fsize != tmp_st.st_size) {
+		if (fp != NULL)
+			fclose(fp);
+		nlist(nlistf, nl);
+		if (nl[0].n_type == 0) {
+			fprintf(stderr, "%s: No namelist\n", nlistf);
+			exit(1);
+		}
+		if (chdir("/dev") < 0) {
+			perror("/dev");
+			exit(1);
+		}
+		if ((df = opendir(".")) == NULL) {
+			fprintf(stderr, "Can't open . in /dev\n");
+			exit(1);
+		}
+		/*
+		 * initial allocation for ttys info
+		 */
+		allttys = (struct ttys *)malloc(TTYSINCR * sizeof(struct ttys));
+		tp = allttys;
+		ttys_allocated = TTYSINCR;
+		while ((dbuf = readdir(df)) != NULL) 
+			maybetty();
+		closedir(df);
+		qsort(allttys, nttys, sizeof(struct ttys), ttycmp);
+		getpasswd();
+		fsize = sizeof(fsize) +
+			sizeof(nttys) +
+			sizeof(struct ttys) * nttys +
+			sizeof(nuid) +
+			sizeof(struct nametable) * nuid +
+			sizeof(nl);
+		if (!no_tmp) {
+			/*
+			 * Write the ttys and the passwd data out
+			 */
+			sprintf(pstmp, "/tmp/ps%d", getpid());
+			fp = fopen(pstmp, "w");
+			fwrite(&fsize, sizeof(fsize), 1, fp);
+			fwrite(&nttys, sizeof(nttys), 1, fp);
+			fwrite(allttys, sizeof(struct ttys), nttys, fp);
+			fwrite(&nuid, sizeof(nuid), 1, fp);
+			fwrite(nametable, sizeof(struct nametable), nuid, fp);
+			fwrite(nl, sizeof(nl), 1, fp);
+			fclose(fp);
+			unlink(TMPFILE);
+			rename(pstmp, TMPFILE);
+			chmod(TMPFILE,0444);
+		}
+	} else {
+		/*
+		 * Read in the data structures from tmp file
+		 * TMPFILE was opened above.
+		 */
+		fread(&nttys, sizeof(nttys), 1, fp);
+		allttys = (struct ttys *)malloc(nttys * sizeof(struct ttys));
+		fread(allttys, sizeof(struct ttys), nttys, fp);
+		fread(&nuid, sizeof(nuid), 1, fp);
+		nametable = (struct nametable *)malloc(nuid * sizeof(struct nametable));
+		fread(nametable, sizeof(struct nametable), nuid, fp);
+		fread(nl, sizeof(nl), 1, fp);
+		fclose(fp);
+	}
+	if ((dynixfd = open(nlistf, 0)) == -1 ) {
+		perror(nlistf);
+		exit(1);
+	}
+	lseek(dynixfd, (long) nl[X_VERSION].n_value, 0 );
+	if (read(dynixfd, Kversion, sizeof (Kversion)-1) != sizeof (Kversion)-1)
+		printf("Warning: read error on dynix version string\n");
+	close(dynixfd);
+}
+
+
+maybetty()
+{
+	register char *cp = dbuf->d_name;
+	struct stat stb;
+
+	/*
+	 * If it is not "co*" or "tty*" then ignore it
+	 */
+	if ( strncmp(cp, "co", 2) && strncmp(cp, "tty", 3) )
+		return;
+
+	if (stat(cp, &stb) != 0) {
+		perror(cp);
+		exit(1);
+	}
+
+	tp->ttyd = stb.st_rdev;
+	strncpy(tp->name,cp,7);
+	nttys++;
+	if ( (unsigned)++tp >= (unsigned)&allttys[ttys_allocated] ) {
+		ttys_allocated += TTYSINCR;
+		allttys = (struct ttys *) realloc(allttys, ttys_allocated * sizeof(struct ttys));
+		tp = &allttys[ttys_allocated-TTYSINCR];
+	}
+}
+
+ttycmp(t1,t2)
+struct ttys *t1;
+struct ttys *t2;
+{
+	unsigned d1, d2;
+
+	d1 = t1->ttyd;
+	d2 = t2->ttyd;
+	if ( d1 < d2 )
+		return(-1);
+	else if ( d1 > d2 )
+		return(1);
+	else
+		return(0);
+}
+
+char *
+gettty()
+{
+	register int high, middle, low;
+	register int ttyd, v;
+	char *p;
+
+	if (u->u_ttyp == 0)
+		return("?");
+	ttyd = u->u_ttyd;
+	high = nttys-1;
+	low = 0;
+	do {
+		middle = low + (high - low) / 2;
+		v = allttys[middle].ttyd;
+		if ( ttyd == v ) {
+			p = allttys[middle].name;
+			if (p[0]=='t' && p[1]=='t' && p[2]=='y')
+				p += 3;
+			return (p);
+		} else if ( ttyd < v ) {
+			high = middle - 1;
+		} else {	/* ttyd > v */
+			low = middle + 1;
+		}
+	} while ( high >= low );
+	return ("?");
+}
+
+save()
+{
+	register struct savcom *sp;
+	register struct asav *ap;
+	register char *cp;
+	char *ttyp, *cmdp;
+
+	if (mproc->p_stat != SZOMB && getu() == 0)
+		return;
+	ttyp = gettty();
+	if (xflg == 0 && ttyp[0] == '?' || tptr && strncmp(tptr, ttyp, 2)) {
+		return;
+	}
+	sp = &savcom[npr];
+	cmdp = getcmd();
+	if (cmdp == 0)
+		return;
+	sp->ap = ap = (struct asav *)alloc(sizeof (struct asav));
+	sp->ap->a_cmdp = cmdp;
+#define e(a,b) ap->a = mproc->b
+	e(a_flag, p_flag); e(a_stat, p_stat); e(a_nice, p_nice);
+	e(a_uid, p_uid); e(a_pid, p_pid); e(a_pri, p_pri);
+	e(a_slptime, p_slptime); e(a_time, p_time);
+	ap->a_tty[0] = ttyp[0];
+	ap->a_tty[1] = ttyp[1] ? ttyp[1] : ' ';
+	if (ap->a_stat == SZOMB) {
+		ap->a_cpu = 0;
+	} else {
+		ap->a_size = mproc->p_dsize + mproc->p_ssize;
+		ap->a_tsiz = u->u_tsize;
+		ap->a_rss = mproc->p_rssize * CLSIZE;
+		ap->a_ttyd = u->u_ttyd;
+		ap->a_cpu = u->u_ru.ru_utime.tv_sec + u->u_ru.ru_stime.tv_sec;
+		if (sumcpu)
+			ap->a_cpu += u->u_cru.ru_utime.tv_sec + u->u_cru.ru_stime.tv_sec;
+	}
+
+	/* To get virtual sizes, need to hold the proc's PTEs */
+	if (vflg) {
+		int size;
+
+		size = sizeof(struct pte) * (SZPT(mproc) * NPTEPG);
+		ap->a_ul2pt = (struct pte *)alloc(size);
+		ap->a_szpt = size/sizeof(struct pte);
+		(void) lseek(kmem, (long)mproc->p_ul2pt, 0);
+		if (read(kmem, (char *)ap->a_ul2pt, size) != size) {
+			dprintf("ps: cant read ptes for pid %d from %s\n",
+				mproc->p_pid, kmemf);
+			bzero(ap->a_ul2pt, size);
+		}
+	}
+#undef e
+	ap->a_maxrss = mproc->p_maxrss;
+	if (lflg) {
+		register struct lsav *lp;
+
+		sp->s_un.lp = lp = (struct lsav *)alloc(sizeof (struct lsav));
+#define e(a,b) lp->a = mproc->b
+		e(l_ppid, p_ppid); e(l_cpu, p_cpu);
+		if (ap->a_stat != SZOMB)
+			lp->l_wchan = (caddr_t) mproc->p_wchan;
+#undef e
+		lp->l_addr = u_addr;
+	} else if (vflg) {
+		register struct vsav *vp;
+
+		sp->s_un.vp = vp = (struct vsav *)alloc(sizeof (struct vsav));
+		if (ap->a_stat != SZOMB) {
+			vp->v_majflt = u->u_ru.ru_majflt;
+		}
+		vp->v_pctcpu = pcpu();
+	} else if (uflg)
+		sp->s_un.u_pctcpu = pcpu();
+	else if (sflg) {
+		if (ap->a_stat != SZOMB) {
+		/*
+			for (cp = (char *)u->u_stack;
+			    cp < &user.upages[UPAGES][0]; )
+				if (*cp++)
+					break;
+			sp->s_un.s_ssiz = (&user.upages[UPAGES][0] - cp);
+		*/
+			sp->s_un.s_ssiz = 0;
+		}
+	}
+	if (uflg|vflg)
+		ap->a_engno = (ap->a_stat == SONPROC) ? mproc->p_engno : -1;
+
+	npr++;
+}
+
+double
+pmem(ap)
+	register struct asav *ap;
+{
+	double fracmem;
+	int szptudot;
+
+	if ((ap->a_flag&SLOAD) == 0)
+		fracmem = 0.0;
+	else {
+		szptudot = UPAGES + clrnd(ctopt(ap->a_size+ap->a_tsiz));
+		fracmem = ((float)ap->a_rss+szptudot)/CLSIZE/ecmx;
+	}
+	return (100.0 * fracmem);
+}
+
+double
+pcpu()
+{
+	time_t time;
+
+	time = mproc->p_time;
+	if (time == 0 || (mproc->p_flag&SLOAD) == 0)
+		return (0.0);
+	/*
+	 * I don't understand how kernel manages to
+	 * make p_pctcpu > 1000.
+	 */
+	if (debug && (double)mproc->p_pctcpu > FSCALE)
+		printf("pctcpu == %d/1000\n", mproc->p_pctcpu);
+	if (rawcpu)
+		return (100.0 * (double)mproc->p_pctcpu)/FSCALE;
+	return ((100.0 * ((double)mproc->p_pctcpu / FSCALE)) /
+		(1.0 - exp(time * log(ccpu / FSCALE))));
+}
+
+getu()
+{
+	struct pte *pteaddr, apte;
+	int size;
+
+	size = sflg ? ctob(UPAGES) : sizeof(struct user);
+	if ((mproc->p_flag & SLOAD) == 0) {	/* swapped out */
+		size = roundup(size, DEV_BSIZE);
+		if (swap < 0)
+			return (0);
+		(void) lseek(swap, (long)dtob(mproc->p_swaddr), 0);
+		if (read(swap, (char *)u, size) != size) {
+			dprintf( "ps: cant read u for pid %d from %s (block %d)\n",
+				mproc->p_pid, swapf, dtob(mproc->p_swaddr));
+			return (0);
+		}
+		(void) lseek(swap, (long)dtob(u->u_smap.dm_daddr), 0);
+		if (u->u_smap.dm_ext) {
+			if (read(swap, (char *)dmep, dtob(sizeof_dmapext_disk))
+			    != dtob(sizeof_dmapext_disk)) {
+				dprintf( "ps: cant read dmapext for pid %d from %s (block %d)\n",
+					mproc->p_pid, swapf, dtob(u->u_smap.dm_daddr));
+				return (0);
+			}
+			u->u_smap.dm_ext = dmep;
+		}
+		u_addr = 0;
+		argaddr = 0;
+		return (1);
+	}
+	if (kflg) {		/* TODO */
+		fprintf(stderr, "ps: read of u area from core files not implemented\n");
+		return(0);
+	}
+	(void) lseek(kmem, (long)mproc->p_uarea, 0);
+	if (read(kmem, (char *)u, size) != size) {
+		dprintf("ps: cant read u for pid %d from %s\n",
+			mproc->p_pid, kmemf);
+		return (0);
+	}
+	(void) lseek(kmem, (long)u->u_smap.dm_ext, 0);
+	if (u->u_smap.dm_ext) {
+		if (read(kmem, (char *)dmep, sizeof_dmapext)
+		    != sizeof_dmapext) {
+			dprintf( "ps: cant read dmapext for pid %d from %s\n",
+				mproc->p_pid, kmemf);
+			return (0);
+		}
+		u->u_smap.dm_ext = dmep;
+	}
+	if (mproc->p_pid == 0 && (mproc->p_flag&SSYS) ) {
+		if (lflg)
+			u_addr = (unsigned int)mproc->p_uarea / NBPG;
+		else
+			u_addr = 0;
+		argaddr = 0;
+		return (1);
+	}
+	if (!cflg) {
+		/*
+		 * For a22 NS32032 chip bug workaround, the stack starts
+		 * USRSTACKADJ bytes below the highest mapped address.
+		 * Thus, add USRSTACKADJ below to get start of 1st K
+		 * of users stack.
+		 */
+		pteaddr = sptopte(mproc, USRSTACKADJ/NBPG+CLSIZE-1);
+		(void) lseek(kmem, (long)pteaddr, 0);
+		if (read(kmem, (char *)&apte, sizeof(apte)) != sizeof(apte)) {
+			/* proc 0 blows up here... */
+			dprintf("ps: bad pte (0x%x) for stack, (pid %d)\n", 
+				pteaddr, mproc->p_pid);
+			return(0);
+		}
+		argaddr = PTETOPHYS(apte); 
+	}
+	if (lflg)
+		u_addr = (unsigned int)mproc->p_uarea / NBPG;
+	return (1);
+}
+
+char *
+getcmd()
+{
+	char cmdbuf[CLSIZE*NBPG];
+	char pagealign[CLSIZE*NBPG+(CLBYTES-1)];
+	union argunion {
+		char	argc[CLSIZE*NBPG];
+		int	argi[CLSIZE*NBPG/sizeof (int)];
+	} *argspac = (union argunion *)(((int)pagealign + (CLBYTES-1)) &~ (CLBYTES-1));
+	register char *cp;
+	register int *ip;
+	char c;
+	struct dblock db;
+	char *file;
+
+	if (mproc->p_stat == SZOMB || (mproc->p_flag&SSYS))
+		return ("");
+	if (cflg) {
+		return (savestr(u->u_comm));
+	}
+	if ((mproc->p_flag & SLOAD) == 0 || argaddr == 0) {
+		int size = roundup(sizeof(*argspac), DEV_BSIZE);
+		file = swapf;
+		if (swap < 0 || mproc->p_ssize == 0)
+			goto retucomm;
+		/*
+		 * For a22 NS32032 chip bug work around, the stack starts
+		 * USRSTACKADJ bytes below the highest mapped address.
+		 * Thus, we pass a vsbase of USRSTACKADJ/NBPG to vstodb()
+		 * instead of 0.
+		 */
+		vstodb(ctod(USRSTACKADJ/NBPG), ctod(CLSIZE), &u->u_smap, &db, 1);
+		dprintf("reading args swapped at 0x%x\n", 
+			(long)dtob(db.db_base));
+		(void) lseek(swap, (long)dtob(db.db_base), 0);
+		if (read(swap, (char *)argspac, size) != size) {
+			dprintf("ps: error locating command name for pid %d from %s\n", mproc->p_pid, file);
+			return("");
+		}
+	} else {
+		file = memf;
+		lseek(mem, (long)argaddr, 0);
+		if (read(mem, (char *)argspac, sizeof(*argspac)) != sizeof(*argspac)) {
+			dprintf("ps: error locating command name for pid %d from %s\n",
+					mproc->p_pid, file);
+			return("");
+		}
+	}
+#ifdef	DEBUG
+	if (debug)
+	{ int i;  char *s = (char *)argspac;
+		for (i=0; i < sizeof (*argspac);) {
+			printf(" %02x", s[i] & 0xff);
+			if ( (++i % 40) == 0)
+				printf("\n");
+		}
+		printf("\n");
+		for (i=0; i < sizeof(*argspac);) {
+			if ( s[i] < ' ' || s[i] > 0176)
+				printf("   ");
+			else
+				printf("  %c", s[i]);
+			if ( (++i % 40) == 0)
+				printf("\n");
+		}
+		printf("\n");
+	}
+#endif
+	ip = &argspac->argi[CLSIZE*NBPG/sizeof (int)];
+	ip -= 2;		/* last arg word and .long 0 */
+	while (*--ip)
+		if (ip == argspac->argi)
+			goto retucomm;
+	*(char *)ip = ' ';
+	ip++;
+	for (cp = (char *)ip; cp < &argspac->argc[CLSIZE*NBPG]; cp++) {
+		c = *cp & 0177;
+		if (c == 0)
+			*cp = ' ';
+		else if (c < ' ' || c > 0176) {
+			goto retucomm;
+		} else if (eflg == 0 && c == '=') {
+			while (*--cp != ' ')
+				if (cp <= (char *)ip)
+					break;
+			break;
+		}
+	}
+	*cp = 0;
+	while (*--cp == ' ')
+		*cp = 0;
+	cp = (char *)ip;
+	/* use strncat to avoid zero padding */
+	cmdbuf[0] = '\0';
+	(void) strncat(cmdbuf, cp, &argspac->argc[CLSIZE*NBPG] - cp);
+	if (cp[0] == '-' || cp[0] == '?' || cp[0] <= ' ') {
+		(void) strcat(cmdbuf, " (");
+		(void) strncat(cmdbuf, u->u_comm, sizeof(u->u_comm));
+		(void) strcat(cmdbuf, ")");
+	}
+/*
+	if (xflg == 0 && gflg == 0 && tptr == 0 && cp[0] == '-')
+		return (0);
+*/
+	return (savestr(cmdbuf));
+
+retucomm:
+	(void) strcpy(cmdbuf," (");
+	(void) strncat(cmdbuf, u->u_comm, sizeof(u->u_comm));
+	(void) strcat(cmdbuf, ")");
+	return (savestr(cmdbuf));
+}
+
+char	*lhdr =
+"      F UID   PID  PPID CP PRI NI ADDR  SZ  RSS    WCHAN STAT TT  TIME";
+lpr(sp)
+	struct savcom *sp;
+{
+	register struct asav *ap = sp->ap;
+	register struct lsav *lp = sp->s_un.lp;
+
+	printf("%7x%4d%6u%6u%3d%4d%3d%5x%4d%5d",
+	    ap->a_flag, ap->a_uid,
+	    ap->a_pid, lp->l_ppid, lp->l_cpu&0377, ap->a_pri-PZERO,
+	    ap->a_nice-NZERO, lp->l_addr, pgtok(ap->a_size+ap->a_tsiz),
+	    pgtok(ap->a_rss));
+	printf(lp->l_wchan ? " %8x" : "         ", (int)lp->l_wchan&0xffffffff);
+	printf(" %4.4s ", state(ap));
+	ptty(ap->a_tty);
+	ptime(ap);
+}
+
+ptty(tp)
+	char *tp;
+{
+
+	printf("%-2.2s", tp);
+}
+
+ptime(ap)
+	struct asav *ap;
+{
+
+	printf("%3ld:%02ld", ap->a_cpu / 60, ap->a_cpu % 60);
+}
+
+char	*uhdr = "USER       PID  %CPU %MEM   SZ  RSS TT STAT ENG   TIME";
+
+upr(sp)
+	struct savcom *sp;
+{
+	register struct asav *ap = sp->ap;
+	int vmsize, rmsize;
+
+	vmsize = pgtok((ap->a_size + ap->a_tsiz));
+	rmsize = pgtok(ap->a_rss);
+	printf("%-8.8s %5d%6.1f%5.1f%5d%5d",
+	    getname(ap->a_uid), ap->a_pid, sp->s_un.u_pctcpu, pmem(ap),
+	    vmsize, rmsize);
+	putchar(' ');
+	ptty(ap->a_tty);
+	printf(" %4.4s", state(ap));
+	if (ap->a_engno == -1)
+		printf("     ");
+	else
+		printf("%4d ", ap->a_engno);
+	ptime(ap);
+}
+
+/*
+ * Calculate the number of pages which are covered by invalid PTEs--i.e.,
+ * the amount of "virtual space" in region zero of the proc which is in
+ * fact not used for virtual objects
+ */
+lossage(ap, sz)
+	struct asav *ap;
+	int sz;
+{
+	register int *pt = (int *)ap->a_ul2pt;
+	register int x, loss = 0;
+	int size;
+
+	if (sz > ap->a_szpt)
+		size = ap->a_szpt;
+	else
+		size = sz;
+	for (x = 0; x < size; ++x)
+		if (*pt++ == PG_INVAL)
+			loss += 1;
+	if (loss > sz)
+		loss = sz;
+	return(loss);
+}
+
+char *vhdr =
+" SIZE  PID TT STAT ENG   TIME SL RE PAGEIN SIZE  RSS   LIM TSIZ %CPU %MEM"+5;
+vpr(sp)
+	struct savcom *sp;
+{
+	register struct vsav *vp = sp->s_un.vp;
+	register struct asav *ap = sp->ap;
+	int sz;
+
+	printf("%5u ", ap->a_pid);
+	ptty(ap->a_tty);
+	printf(" %4.4s", state(ap));
+	if (ap->a_engno == -1)
+		printf("     ");
+	else
+		printf("%4d ", ap->a_engno);
+	ptime(ap);
+	sz = ap->a_size + ap->a_tsiz;
+	printf("%3d%3d%7d%5d%5d",
+	   ap->a_slptime > 99 ? 99 : ap-> a_slptime,
+	   ap->a_time > 99 ? 99 : ap->a_time, vp->v_majflt,
+	   pgtok(sz - lossage(ap, sz)), pgtok(ap->a_rss));
+	if (ap->a_maxrss == (RLIM_INFINITY/CLBYTES))	/* was NBPG in VAX 4.2 */
+		printf("    xx");
+	else
+		printf("%6d", cltok(ap->a_maxrss));
+	printf("%5d%5.1f%5.1f",
+	   pgtok(ap->a_tsiz), vp->v_pctcpu, pmem(ap));
+}
+
+char	*shdr =
+"SSIZ   PID TT STAT  TIME";
+spr(sp)
+	struct savcom *sp;
+{
+	register struct asav *ap = sp->ap;
+
+	if (sflg)
+		printf("%4d ", sp->s_un.s_ssiz);
+	printf("%5u", ap->a_pid);
+	putchar(' ');
+	ptty(ap->a_tty);
+	printf(" %4.4s", state(ap));
+	ptime(ap);
+}
+
+char *
+state(ap)
+	register struct asav *ap;
+{
+	char stat, load, nice, anom;
+	static char res[5];
+
+	switch (ap->a_stat) {
+
+	case SSTOP:
+		stat = 'T';
+		break;
+
+	case SSLEEP:
+		if (ap->a_pri >= PZERO)
+			if (ap->a_slptime >= MAXSLP)
+				stat = 'I';
+			else
+				stat = 'S';
+		else
+			stat = 'D';
+		break;
+
+	case SWAIT:
+	case SRUN:
+	case SONPROC:
+	case SIDL:
+		stat = 'R';
+		break;
+
+	case SZOMB:
+		stat = 'Z';
+		break;
+
+	default:
+		stat = '?';
+	}
+	load = ap->a_flag & SLOAD ? (ap->a_rss>ap->a_maxrss ? '>' : ' ') : 'W';
+	if (ap->a_nice < NZERO)
+		nice = '<';
+	else if (ap->a_nice > NZERO)
+		nice = 'N';
+	else
+		nice = ' ';
+	anom = ' ';
+	res[0] = stat; res[1] = load; res[2] = nice; res[3] = anom;
+	return (res);
+}
+
+/*
+ * vstodb()
+ *	Given a base/size pair in virtual swap area,
+ *	return a physical base/size pair which is the
+ *	(largest) initial, physically contiguous block.
+ */
+
+vstodb(vsbase, vssize, dmp, dbp, rev)
+	register int	vsbase;
+	register int	vssize;
+	struct dmap	*dmp;
+	register struct dblock *dbp;
+	int		rev;
+{
+	register swblk_t *ip;
+	register int blk;
+
+	if (dmp->dm_ext)
+		ip = dmp->dm_ext->dme_map;
+	else
+		ip = dmp->dm_map;
+
+	blk = dmmin;
+	while (vsbase >= blk) {
+		ip++;
+		vsbase -= blk;
+		if (blk < dmmax)
+			blk *= 2;
+		else {				/* reached constant size blks */
+			ip += (vsbase / blk);
+			vsbase %= blk;
+			break;
+		}
+	}
+	dbp->db_size = min(vssize, blk - vsbase);
+	dbp->db_base = *ip + (rev ? blk - (vsbase + dbp->db_size) : vsbase);
+}
+
+min(a, b)
+{
+
+	return (a < b ? a : b);
+}
+
+pscomp(s1, s2)
+	struct savcom *s1, *s2;
+{
+	register int i;
+
+	if (uflg)
+		return (s2->s_un.u_pctcpu > s1->s_un.u_pctcpu ? 1 : -1);
+
+#define	vsize(s)	((s)->ap->a_rss)
+	if (vflg)
+		return (vsize(s2) - vsize(s1));
+#undef vsize
+
+	i = s1->ap->a_ttyd - s2->ap->a_ttyd;
+	if (i == 0)
+		i = s1->ap->a_pid - s2->ap->a_pid;
+	return (i);
+}
+
+
+int uidcmp();
+
+/*
+ * Get the data from passwd file into nametable data structure
+ */
+getpasswd()
+{
+	register struct passwd		*pw;
+	struct passwd			*getpwent();
+	register struct nametable	*n;
+
+	nametable = (struct nametable *)malloc(NUIDINCR * sizeof(struct nametable));
+	uids_allocated = NUIDINCR;
+	setpwent();
+	nuid = 0;
+	n = nametable;
+	while (pw = getpwent()) {
+		if (nuid >= uids_allocated) {
+			uids_allocated += NUIDINCR;
+			nametable = (struct nametable *) realloc(nametable, uids_allocated * sizeof(struct nametable));
+			n = &nametable[uids_allocated-NUIDINCR];
+		}
+		strncpy(n->nt_name, pw->pw_name, NMAX);
+		n->nt_uid = pw->pw_uid;
+		nuid++;
+		n++;
+	}
+	endpwent();
+	qsort(nametable, nuid, sizeof(struct nametable), uidcmp);
+}
+
+uidcmp(n1,n2)
+struct nametable *n1;
+struct nametable *n2;
+{
+	return(n1->nt_uid - n2->nt_uid);
+}
+
+char *
+getname(uid)
+	register uid_t uid;
+{
+	register int high, middle, low;
+	register int v;
+
+	high = nuid-1;
+	low = 0;
+	do {
+		middle = low + (high - low) / 2;
+		v = nametable[middle].nt_uid;
+		if ( uid == v ) {
+			return(nametable[middle].nt_name);
+		} else if ( uid < v ) {
+			high = middle - 1;
+		} else {	/* ttyd > v */
+			low = middle + 1;
+		}
+	} while ( high >= low );
+	return ("");
+}
+
+char	*freebase;
+int	nleft;
+
+char *
+alloc(size)
+	int size;
+{
+	register char *cp;
+	register int i;
+
+	if (size > nleft) {
+		freebase = (char *)sbrk((int)(i = size > 2048 ? size : 2048));
+		if (freebase == (char *)-1) {
+			fprintf(stderr, "ps: ran out of memory\n");
+			exit(1);
+		}
+		nleft = i - size;
+	} else
+		nleft -= size;
+	cp = freebase;
+	for (i = size; --i >= 0; )
+		*cp++ = 0;
+	freebase = cp;
+	return (cp - size);
+}
+
+char *
+savestr(cp)
+	char *cp;
+{
+	register int len;
+	register char *dp;
+
+	len = strlen(cp);
+	dp = (char *)alloc(len+1);
+	(void) strcpy(dp, cp);
+	return (dp);
+}
+
+setsize()
+{
+	struct	winsize win;
+
+	if (ioctl(1, TIOCGWINSZ, &win) >= 0 && win.ws_col > 0)
+			twidth = win.ws_col;
+}

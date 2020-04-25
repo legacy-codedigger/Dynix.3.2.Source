@@ -1,0 +1,55 @@
+## describe valid controller types 
+##	In general there's no need to touch this file unless you are
+##	creating a controller of a new type.
+##
+##   Column 1: "type" marks these lines as controller type descriptions.
+##   Column 2:	name of the new controller type
+##	following these are keywords for configuration parameters for devices 
+##		attached to a controller of this type.  See documentation 
+##		on configuring system for more information regarding this.  
+##		Key words index and bin have special meaning.
+##
+##	define "mbad" (multibus adapter) controller type.
+##		keyword "maps" must have value between 0 and 256.
+##		keyword	"intr" must have  value between 0 and 7.
+type mbad  index csr flags maps[0,256] bin intr[0,7] 
+##
+##	define "sec" (scsi/ether board) controller type.
+##		keyword "target" must have value between -1 and 10.
+##			default value for target is -1.
+type sec   flags bin req doneq index target[-1,7]=-1 unit 
+##
+##	define "zdc" (zdc board) controller type.
+##		keyword "index" is unit number.  range:  0, 63
+##		keyword	"drive" is drive number. range: -1,  7
+##		keyword "drive_type" is value of zdd_drive_type in the
+##			disk description table. Legal values are:
+##			ZDT_M2333K	0
+##			ZDT_M2351A	1
+##			ZDT_M2344K	2
+##			ZDT_CDC9715_340	16
+##			ZDT_CDC9771_800	17
+##			ZDT_CDC9720_1230 20
+##			ZDT_SABRE5_1230  21
+##			Note: wild-card will match whatever type is found.
+type zdc index[0,63] drive[-1,7] drive_type[-1,21]
+##
+##	define "ssm" controller type.
+##		keyword "bin" is the slic bin for interrupts from the device.
+##		keyword "maps" number of mapping entries the driver wants
+##		keyword "index" ssm number, -1 if wildcarded with a "?".
+##	VME devices should also specify:
+##		keyword "mspace" address modifier bits for dma mappings.
+##		keyword "csr" address of control status register.
+##		keyword "cspace" address modifier bits for csr mappings.
+##		keyword "level" hardware interrupt level.
+##		keyword "vec" software interrupt vector.
+##	SCSI devices should also specify or wildcard 
+##		keyword "target" target adapter number.
+##		keyword "unit" unit number on target adapter.
+##	CONSOLE devices should also specify 
+##		keyword "unit" unit number.
+type ssm  index  bin[0,7]  maps[0,1024]=0  mspace[0,63]=0  csr  cspace[0,63]=0  level[0,7]=0  vec[0,255]=0  target[-1,7]=-1  unit[-1,7]=-1
+##
+##	define custA controller type, for prototype development
+type custA index bin vala valb valc vald vale valf valg

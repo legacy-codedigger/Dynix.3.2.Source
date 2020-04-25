@@ -1,0 +1,42 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: chgrp.1 1.4 86/05/13 $
+.TH CHGRP 1 "\*(V)" "4BSD"
+.SH NAME
+chgrp \- change group
+.SH SYNOPSIS
+.B chgrp
+[ -f ]
+group file ...
+.SH DESCRIPTION
+.I Chgrp
+changes the group-ID of the
+.I files
+to
+.IR group .
+The group may be either a decimal GID or
+a group name found in the group-ID file.
+.PP
+The user invoking 
+.I chgrp
+must belong
+to the specified group and be the owner of the file, or be the super-user.
+.PP
+No errors are reported when the
+.B \-f
+(force) option is given.
+.SH FILES
+/etc/group
+.SH "SEE ALSO"
+chown(2),
+passwd(5),
+group(5)

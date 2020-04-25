@@ -1,0 +1,104 @@
+.\" $Copyright:	$
+."Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+."Sequent Computer Systems, Inc.   All rights reserved.
+." 
+."This software is furnished under a license and may be used
+."only in accordance with the terms of that license and with the
+."inclusion of the above copyright notice.   This software may not
+."be provided or otherwise made available to, or used by, any
+."other person.  No title to or ownership of the software is
+."hereby transferred.
+.\"
+...
+.V= $Header: 4.2talk.1 1.4 90/10/25 $
+.TH 4.2TALK 1 "\*(V)" "4BSD"
+.SH NAME
+4.2talk \- talk to another user (4.2BSD)
+.SH SYNOPSIS
+.B 4.2talk
+person [ ttyname ]
+.SH DESCRIPTION
+.I 4.2Talk
+is a visual communication program which
+copies lines from your terminal to that of
+another user.
+.PP 
+If you wish to talk to someone on you own machine, then
+.I person
+is just the person's login name. If you wish to talk to
+a user on another host, then
+.I person
+is of the form :
+.sp
+.in +2.0i
+.I host!user
+\ or
+.br
+.I host.user
+\ or
+.br
+.I host:user
+\ or
+.br
+.I user@host
+.br
+.in -2.0i
+.sp
+though
+.I user@host
+is perhaps preferred.
+.PP
+If you want to talk to a user who is logged in more than once,
+the
+.I ttyname
+argument may be used to indicate the
+appropriate terminal name.
+.PP
+When first called,
+it sends the message
+.PP
+     Message from TalkDaemon@his_machine...
+     talk: connection requested by your_name@your_machine.
+     talk: respond with: talk your_name@your_machine
+.PP
+to the user you wish to talk to. At this point, the recipient
+of the message should reply by 
+typing 
+.PP
+     4.2talk \ your_name@your_machine
+.PP
+It doesn't matter from 
+which machine the recipient replies, as long as his login-name is
+the same.
+Once communication is established, the two parties may type 
+simultaneously, with their output appearing in separate windows. 
+Typing control L will cause the screen to be reprinted, while your 
+erase, kill, and word kill characters will work in talk as normal.
+To exit,
+just type your interrupt character;
+.I 4.2talk
+then moves the cursor to the bottom of the screen and restores 
+the terminal.
+.PP
+Permission to talk may be denied or granted by use of the
+.I mesg
+command.
+At the outset talking is allowed.
+Certain commands, in particular
+.I nroff
+and
+.IR  pr (1)
+disallow
+messages in order to prevent messy output.
+.PP
+.SH FILES
+/etc/hosts	to find the recipient's machine
+.br
+/etc/utmp	to find the recipient's tty
+.SH "SEE ALSO"
+talk(1), mesg(1), who(1), mail(1), write(1)
+.SH BUGS
+The version of \fItalk\fP(1) released with 4.3BSD, as well as DYNIX(R) 3.0.17 
+and later, uses a protocol that
+is incompatible with the protocol used in earlier releases.
+To talk with a 4.3BSD based system, you must use the talk(1) command.

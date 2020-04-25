@@ -1,0 +1,11 @@
+#
+# Sample Host Database
+#
+127.1		localhost myhost
+#
+# Local Network stuff
+#
+97.0.0.01	host1 
+97.0.0.02	host2
+97.0.0.03	host3 
+97.0.0.04	host4	gwhost

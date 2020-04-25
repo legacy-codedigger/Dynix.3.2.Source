@@ -1,0 +1,59 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: copy2.8s 1.9 1991/06/19 22:21:31 $
+.TH COPY2 8S "\*(V)" "DYNIX"
+.SH NAME
+copy2 \- perform a standalone data transfer
+.SH SYNOPSIS
+.BR "From the powerup monitor" :
+.br
+.sp
+.in +1
+.IR "on SCED-based systems" :
+.br
+*
+.B b 0
+.IR dv ( un , su )\c
+.B stand/copy2
+.br
+.sp
+.IR "on SSM-based systems" :
+.br
+--->
+.B bh 
+.IR dv ( un , su )\c
+.B stand/copy2
+.SH DESCRIPTION
+.I Copy2
+transfers data from one device (or device partition) to another.
+.I Copy2
+prompts for the two device names,
+which are specified in standalone file notation (see
+.IR boot (8S)).
+.I Copy2
+also prompts for whether verification is selected (if selected,
+the data will be reread and verified after it is written),
+the offsets at which the transfer will begin,
+and the maximum number of blocks to copy.
+Messages are intended to be self-explanatory.
+.SH "SEE ALSO"
+cp(1), boot(8S), cat(8S), copy(8S), ls(8S),
+.I "DYNIX System Administration Guide"
+.SH "BUGS"
+Caution should be used when using
+.I copy2.
+There exists a bug that will allow
+.I copy2
+to return success when copying to a non-existent device.  Be sure
+of the existence of the devices given to
+.I copy2.
+

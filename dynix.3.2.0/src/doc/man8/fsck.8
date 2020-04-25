@@ -1,0 +1,281 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+."Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989 
+."Sequent Computer Systems, Inc.   All rights reserved.
+." 
+."This software is furnished under a license and may be used
+."only in accordance with the terms of that license and with the
+."inclusion of the above copyright notice.   This software may not
+."be provided or otherwise made available to, or used by, any
+."other person.  No title to or ownership of the software is
+."hereby transferred.
+.V= $Header: fsck.8 1.8 1991/07/12 15:09:03 $
+.de us
+\\$1\l'|0\(ul'
+..
+.TH FSCK 8 "\*(V)" "7th Edition"
+.SH NAME
+fsck \- filesystem consistency check and interactive repair
+.SH SYNOPSIS
+.B /etc/fsck
+.B \-p
+[
+filesystem ...
+]
+.br
+.B /etc/fsck
+[
+.B \-b
+block#
+] [
+.B \-c
+] [
+.B \-y
+] [
+.B \-n
+] [
+filesystem 
+] ...
+.SH DESCRIPTION
+.B fsck
+with the 
+.B \-p
+option preens (checks and repairs) a standard set of filesystems
+or the specified filesystems.
+It is normally used in the script
+.B /etc/rc
+during automatic reboot.
+In this case
+.B fsck
+reads the table
+.I /etc/fstab
+to determine which filesystems to check.
+It uses the information there to inspect groups of disks in parallel taking
+maximum advantage of I/O overlap to check the filesystems
+as quickly as possible.
+To maximize I/O overlap, 
+.B fsck
+creates a list of partitions for each physical device to be checked.
+.B fsck
+tries to keep one instance of
+.B fsck
+active on one partition of each
+physical device to be checked.
+When one partition on a physical device has completed 
+.BR fsck ,
+another
+partition on that device is started immediately.
+.PP
+The system allows a restricted class of inconsistencies
+unless hardware or software failures intervene.
+These inconsistencies are limited to the following:
+.IP
+Unreferenced inodes
+.ns
+.IP
+Link counts in inodes too large
+.ns
+.IP
+Missing blocks in the free list
+.ns
+.IP
+Blocks in the free list also in files
+.ns
+.IP
+Counts in the superblock wrong
+.PP
+These are the only inconsistencies which
+.B fsck
+with the
+.B \-p
+option will correct.  If it encounters other inconsistencies, it exits
+with an abnormal return status and an automatic reboot then fails.
+For each corrected inconsistency, one or more lines are printed
+identifying the filesystem on which the correction will take place
+and the nature of the correction.  After successfully correcting a filesystem,
+.B fsck
+prints the number of files on that filesystem, the number of
+used and free blocks, and the percentage of fragmentation.
+.PP
+Without the
+.B \-p
+option,
+.B fsck
+audits and interactively repairs inconsistent conditions for filesystems. 
+If the filesystem is inconsistent, the operator is prompted for agreement
+before each correction is attempted.
+Note that a number of the corrective actions which cannot be fixed
+under the
+.B \-p
+option result in some loss of data.
+The amount and severity of data lost can
+be determined from the diagnostic output.
+The default action for each consistency correction
+is to wait for the operator to respond \f(CWyes\fP or \f(CWno\fP.
+If the operator does not have write permission, 
+.B fsck
+defaults to the 
+.B \-n
+option.
+.PP
+.B fsck
+has more consistency checks than
+its predecessors
+.BR "check, dcheck, fcheck, " "and" " icheck"
+combined.
+.PP
+The following options can be specified with
+.BR fsck :
+.TP 6
+.B \-b
+Use the block specified immediately after the flag as
+the superblock for the filesystem.  Block 32 is always
+an alternate superblock.
+.TP 6
+.B  \-y
+Assume a \f(CWyes\f1 response to all questions asked by 
+.BR fsck .
+This should be used with great caution as this allows 
+.B fsck
+to continue after essentially unlimited trouble has been encountered.
+.TP 6
+.B  \-n
+Assume a \f(CWno\f1 response to all questions asked by 
+.B fsck;
+do not open the filesystem for writing.
+.TP 6
+.B  \-c
+Convert the files system to the new (dynamic table) format,
+if it is in the old (static table) format.
+If the file system is in the new format,
+convert it to the old format provided the old format
+can support the filesystem configuration.
+In interactive mode,
+.B fsck
+lists the direction the conversion is to be made
+and asks whether the conversion should be done.
+If a negative answer is given,
+no further operations are done on the filesystem.
+With the 
+.B \-p
+option,
+the direction of the conversion is listed and done if
+possible without user interaction.
+Conversion with
+.B \-p
+is best used when all the file systems
+are being converted at once.
+The format of a file system can be determined from the
+first line of output from 
+.BR dumpfs (8).
+.PP
+If no filesystems are given to 
+.BR fsck ,
+a default list of filesystems is read from
+the file
+.IR /etc/fstab .
+.PP
+.ne 10
+Inconsistencies checked are as follows:
+.TP 6
+1.
+Blocks claimed by more than one inode or the free list.
+.br
+.ns
+.TP 6
+2.
+Blocks claimed by an inode or the free list outside the range of the filesystem.
+.br
+.ns
+.TP 6
+3.
+Incorrect link counts.
+.br
+.ns
+.TP 6
+4.
+Size checks:
+.br
+.ns
+.IP "" 12
+Directory size not of proper format.
+.br
+.ns
+.TP 6
+5.
+Bad inode format.
+.br
+.ns
+.TP 6
+6.
+Blocks not accounted for anywhere.
+.br
+.ns
+.TP 6
+7.
+Directory checks:
+.br
+.ns
+.IP "" 12
+File pointing to unallocated inode.
+.br
+Inode number out of range.
+.br
+.br
+.ns
+.TP 6
+8.
+Superblock checks:
+.br
+.br
+.ns
+.IP "" 12
+More blocks for inodes than there are in the filesystem.
+.br
+.br
+.ns
+.TP 6
+9.
+Bad free block list format.
+.br
+.br
+.ns
+.TP 6
+10.
+Total free block and/or free inode count incorrect.
+.PP
+Orphaned files and directories (allocated but unreferenced) are,
+with the operator's agreement, reconnected by
+placing them in the 
+.I lost+found
+directory.
+The name assigned is the inode number. If the
+.I lost+found
+directory does not exist, it is created.
+If there is insufficient space in
+.I lost+found,
+its size is increased.
+.PP
+Checking the raw device is almost always faster.
+.SH FILES
+.TP 15
+/etc/fstab
+Contains default list of filesystems to check
+.SH DIAGNOSTICS
+The diagnostics produced by 
+.B fsck
+are intended to be self-explanatory.
+.SH "SEE ALSO"
+crash(8),
+dumpfs(8),
+mkfs(8),
+fs(5),
+fstab(5)

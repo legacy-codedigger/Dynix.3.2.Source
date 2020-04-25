@@ -1,0 +1,107 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: addbad.8 1.13 87/08/03 $
+.TH ADDBAD 8 "\*(V)" "4BSD"
+.SH NAME
+addbad \- modify dec standard 144 bad sector information
+.SH SYNOPSIS
+.B /etc/addbad
+disktype disk
+\-m
+[
+bad ...
+]
+.SH DESCRIPTION
+.I Addbad
+is used to identify bad sectors on a disk
+containing otherwise good file systems.
+It can also be used to inspect the information stored on a disk that is used by
+the disk drivers to implement bad sector forwarding.  The format of
+the information is specified by DEC standard 144 (as extended by Sequent),
+as follows.
+.PP
+The bad sector data is located in the last track of the disk.
+There are five identical copies of each block of the data.
+The first block, relative block 0,
+is located in the first 5 even-numbered sectors of the track.
+The second block (if any) is located in the first five odd-numbered sectors
+of the track.
+The third block (if any) is located in sectors 10-14 of the track.
+Subsequent blocks (if any) are located in
+subsequent five-block contiguous groups.
+.PP
+Replacement sectors are allocated starting with the first sector before
+the bad sector information and working backwards towards the beginning
+of the disk.
+The position
+of the bad sector in the bad sector table determines which replacement
+sector it corresponds to.
+The bad sectors must be listed in ascending order.
+.PP
+The bad sector information and replacement sectors are conventionally
+only accessible through the ``c'' file system partition of the disk.  If
+that partition is used for a file system, the user is responsible for
+making sure that it does not overlap the bad sector information or any
+replacement sectors.
+.PP
+The bad sector structure is described in /usr/sys/mbad/dkbad.h.
+.PP
+.I Addbad
+is invoked by giving a device type (e.g. eagle), and a device
+name (e.g. xp0, xp1, etc.).
+If there are no other arguments, it reads the first sector of the last track
+of the corresponding disk and prints out the bad sector information.
+Otherwise, 
+it takes a list of bad sectors, 
+and will mark the sectors bad and add them to the list on disk.
+The bad sectors are identified in error messages that are generated
+by DYNIX.
+These error messages are described in
+.IR xp (4).
+.I Addbad
+rearranges the replacement sectors as needed, and attempts to copy each
+of the listed sectors to a replacement sector.
+The contents of all files on the disk are preserved.
+.PP
+\f3NOTE:  this can only be done safely when there is no other disk activity\fP,
+preferably while running single-user.
+.PP
+Sectors can only be marked bad by root.
+It is necessary to reboot before the change will take effect.
+.PP
+This program should be used with care, since sectors marked bad cannot
+be made good again without reformatting the disk.
+The initial bad sector list should be generated using the disk formatter,
+or if that is not possible, with bad144.
+.PP
+The
+.B \-m
+flag instructs
+.B addbad
+to display the manufacturer's bad-block sectors
+in cylinder/track/byte-offset format.
+This information is needed to reformat the disk.
+.SH SEE ALSO
+xp(4),
+zd(4),
+bad144(8),
+badsect(8),
+xpformat(8S),
+zdformat(8S)
+.SH BUGS
+It should be possible to format disks on-line under UNIX.
+.PP
+Sector numbers are
+.I physical
+sectors, not
+.I logical
+block numbers (as usually reported by DYNIX).

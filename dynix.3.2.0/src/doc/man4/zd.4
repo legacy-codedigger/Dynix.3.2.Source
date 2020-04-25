@@ -1,0 +1,737 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986 Sequent Computer Systems, Inc.
+.\" All rights reserved
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: zd.4 1.15 1991/08/13 20:42:05 $
+.TH ZD 4 "\*(V)" "DYNIX"
+.SH NAME
+zd \- Sequent Dual-Channel Disk Controller
+.SH SYNOPSIS
+.B "device zd0 at zdc? drive ? drive_type ?"
+.SH DESCRIPTION
+This device driver controls SMD drives on the Sequent Dual-Channel Disk
+Controller (DCC).
+Each DCC can control up to eight SMD disk drives split across two DMA
+channels.
+All of the drives on the same channel must be identical in type and format.
+.PP
+The lower 3 bits of the minor of the special file refers to partitions
+0-7 while the next 8 bits refers to the drive number, the remaining 5 bits
+complete the partition number.
+The standard device names begin with ``zd'' followed by
+the drive number and then a letter a-p for partitions 0-15
+respectively \(em e.g., ``zd0a''.
+A special minor exists that allows access to the whole disk and uses
+the name of the disk without a partition letter. e.g. ``rzd0''.
+.PP
+The block devices access the disk via the system's normal
+buffering mechanism and may be read and written without regard to
+physical disk records.
+There is also a `raw' interface
+which provides for direct transmission between the disk
+and the user's read or write buffer.
+A single read or write call results in exactly one I/O operation
+and therefore raw I/O is considerably more efficient when
+many words are transmitted.
+The names of the raw files
+conventionally begin with an extra `r' \(em e.g., ``rzd0a''.
+.PP
+All raw I/O counts must be a multiple of 512 bytes (a disk sector)
+and must begin on 16-byte aligned memory addresses.
+.PP
+A drive may be spun up
+.I after
+DYNIX is booted
+if the configuration for the drive is
+.I anchored
+(controller and drive numbers explicitly specified
+in the kernel configuration file)
+and there are no
+.I wildcarded
+drives configured before the
+.I anchored
+drive.
+This is possible since the state of the disk drive and configuration is
+reassessed at each first open of the device.
+.PP
+This device driver does not keep the "milliseconds per seek" statistic.
+Specifically, the
+.IR dk_bps
+and
+.IR dk_seek
+fields of the dk structure defined in
+.I /usr/include/sys/dk.h
+are not maintained.
+Thus,
+.IR iostat (1)
+always reports zero for this statistic.
+.PP
+The driver will recognise drives with and without 
+VTOC
+(Volume Table of Contents).
+If the disk does not contain a 
+VTOC
+the driver will use the compatibility information hard coded in the driver.
+.SH COMPATIBILITY BINARY CONFIGURATION
+When building a kernel with DCC disks configured, be sure that
+the binary configuration information in
+.I /sys/conf/conf_zd.c
+is up to date.
+If you change a partition table, the stand-alone configuration file
+.I /stand/conf_zd.c
+must also be changed.
+The constants and variables defined in
+.I conf_zd.c
+include:
+.IP "m2333k"
+Partition table for the Fujitsu M2333K (Swallow) disk drive.
+.IP "m2351a"
+Partition table for the Fujitsu M2351A (Eagle) disk drive.
+.IP "m2344k"
+Partition table for the Fujitsu M2344K (Swallow 4) disk drive.
+.IP "m2382k"
+Partition table for the Fujitsu M2382K (swallow 5) disk drive.
+.IP "m2392k"
+Partition table for the Fujitsu M2392K (swallow 6) disk drive.
+.IP "cdc9720_850"
+Partition table for the CDC 9720 disk drive.
+.IP "zdparts"
+This is an array indexed by drive type.
+It should be changed only if new drive types are added.
+.IP "zdc_iovpercb"
+This is the number of iovecs allocated per DCC command block.
+See
+.IR /usr/include/zdc/zdc.h.
+If the value is set to zero, the driver will allocate enough iovecs to handle
+the system's notion of the maximum raw I/O transfer size (i.e., max_RAW_IO).
+Each iovec contains the physical address
+of a page in memory. The driver minphys routine (zdminphys()) uses this
+variable to set the maximum raw I/O transfer size.
+.IP "zdretry"
+The maximum number of times to retry errors.
+.PP
+The driver assumes that all disks of a given type
+(i.e., m2333k, m2344k, m2351a, m2382k, m2392k or cdc9720_850)
+without a 
+VTOC 
+will use the same partition table.
+A disk's type is stored on the disk when it is formatted.
+The driver reads this value from the disk
+and uses it
+as an index into
+.I zdparts[]
+to select the appropriate partition table in
+.IR /sys/conf/conf_zd.c .
+.SH "COMPATIBILITY DISK SUPPORT"
+The driver supports the
+Fujitsu M2333K ``Swallow'', the Fujitsu M2344K ``Swallow 4'',
+the Fujitsu M2382K ``Swallow 5'',
+the Fujitsu M2392K ``Swallow 6'',
+the Fujitsu M2351A ``Eagle'', and the CDC 9720-850 disk drives.
+Other drives may be added to the configuration tables.
+The origin and size (in sectors) of the partitions
+on each drive are as follows:
+.PP
+.nf
+.ta .5i +\w'000000    'u +\w'000000    'u +\w'000000    'u +\w'000000    'u
+.PP
+Fujitsu ``Swallow'' partitions
+	partition	length		start	cyls
+	a	\025*66*10	335	335 - 359
+	b	102*66*10	360	360 - 461
+	c	820*66*10	\0\01	\0\01 - 820
+	d	410*66*10	\0\01	\0\01 - 410
+	e	410*66*10	411	411 - 820
+	f	359*66*10	\0\01	\0\01 - 359
+	g	359*66*10	462	462 - 820
+	h	334*66*10	\0\01	\0\01 - 334
+.PP
+Fujitsu ``Eagle'' partitions
+	partition	length		start	cyls
+	a	\018*46*20	366	366 - 383
+	b	\073*46*20	384	384 - 456
+	c	839*46*20	\0\01	\0\01 - 839
+	d	419*46*20	\0\01	\0\01 - 419
+	e	419*46*20	420	420 - 838
+	f	383*46*20	\0\01	\0\01 - 383
+	g	383*46*20	457	457 - 839
+	h	365*46*20	\0\01	\0\01 - 365
+.PP
+Fujitsu ``Swallow 4'' partitions
+	partition	length		start	cyls
+	a	\010*66*27	282	282 - 291
+	b	\038*66*27	292	292 - 329
+	c	621*66*27	\0\01	\0\01 - 621
+	d	310*66*27	\0\01	\0\01 - 310
+	e	311*66*27	311	311 - 621
+	f	291*66*27	\0\01	\0\01 - 291
+	g	292*66*27	330	330 - 621
+	h	281*66*27	\0\01	\0\01 - 281
+.PP
+Fujitsu ``Swallow 5'' partitions
+	partition	length		start	cyls
+	a	\0\08*81*27	348	348 - 355
+	b	\032*81*27	356	356 - 387
+	c	742*81*27	\0\01	\0\01 - 742
+	d	371*81*27	\0\01	\0\01 - 371
+	e	371*81*27	372	372 - 742
+	f	355*81*27	\0\01	\0\01 - 355
+	g	355*81*27	388	388 - 742
+	h	347*81*27	\0\01	\0\01 - 347
+.PP
+Fujitsu ``Swallow 6'' partitions
+	partition	length		start	cyls
+	a	\012*81*21	931	931 - 942
+	b	\041*81*21	943	943 - 983
+	c	1913*81*21	\0\01	\0\01 - 1913
+	d	956*81*21	\0\01	\0\01 - 956
+	e	957*81*21	957	957 - 1913
+	f	942*81*21	\0\01	\0\01 - 942
+	g	930*81*21	984	984 - 1913
+	h	930*81*21	\0\01	\0\01 - 930
+.PP
+CDC 9720-850 partitions
+	partition	length		start	cyls
+	a	\0\017*68*15	640	640 - \0656
+	b	\0\066*68*15	657	657 - \0722
+	c	1378*68*15	\0\01	\0\01 - 1378
+	d	\0689*68*15	\0\01	\0\01 - \0689
+	e	\0689*68*15	690	690 - 1378
+	f	\0656*68*15	\0\01	\0\01 - \0656
+	g	\0656*68*15	723	723 - 1378
+	h	\0639*68*15	\0\01	\0\01 - \0639
+.DT
+.fi
+.PP
+Notice that the 'a' partition resides in the middle of the disk and the 'c'
+partition starts at cylinder 1 (not 0).
+.PP
+It is unwise to keep around the special files for unused disk partitions,
+since there is overlap in addresses and protection becomes
+a sticky matter.
+The 'a' partition is normally used for the root file system,
+the 'b' partition as a paging area,
+and the 'c' partition for pack-to-pack copying as it maps the entire disk.
+The first cylinder (cylinder 0) is reserved to contain the bad block lists
+and disk description data.
+The last 2 cylinders are reserved for diagnostics.
+No partition contains any of these reserved cylinders.
+Note that 'c' is also where the bootstrap program resides, if the disk
+contains a root file system.
+See
+.IR newfs (8).
+.SH "VTOC DISK SUPPORT"
+A 
+VTOC
+may be added to the disk using
+.IR mkvtoc(8)
+The 'a' partition is normally used for the root file system,
+the 'b' partition as a paging area,
+the 'c' partition is normally used for the usr file system.
+The whole disk can be accesed via partition 14 using the special file
+``zd?o''.
+The bootstrap program need not reside in any normal partition.
+There is no need to have overlapping partitions on a 
+VTOC
+disk.
+.SH FILES
+.ta 2i
+/dev/zd[0-63][a-h]	block files
+.br
+/dev/rzd[0-63][a-h]	raw files
+.br
+/sys/conf/conf_zd.c	binary configuration file
+.SH "STAND-ALONE EQUIVALENCE"
+The convention for specifing a DDC disk from stand-alone code is:
+.br
+		zd(\f3u\fP,\f3p\fP)
+.br
+where \f3u\fP refers to the unit number and \f3p\fP refers to the 
+partition number. Each DDC controller may have 16 unit numbers
+(currently only 8 of which may be attatched), the partition is
+a number 0-256, (partition 256 refers to the whole disk).
+.nf
+	\f3u\fP = DCC number x 16
+	          + drive number.
+	\f3p\fP = partition number.
+.fi
+
+.SH SEE ALSO
+newfs(8), zdformat(8S), format(8), prtvtoc(8), mkvtoc(8), vtoc(5),
+.br
+``Building DYNIX Systems with Config''
+.br
+.I "DYNIX System Administration Guide"
+.SH DIAGNOSTICS
+Errors during normal operation are signaled to the driver via
+completion codes in the command block or by controller error interrupts.
+In response to an error,
+the driver makes every reasonable attempt to complete the I/O request
+and to avoid panicking the system.
+Therefore, the driver will choose to shut down a DCC channel or
+entire DCC controller rather than panic the system.
+To shut down a DCC channel or controller means that all the drives
+on the DCC channel or controller are marked as bad and all the queued
+I/O requests are failed. 
+.PP
+Most completion code errors are reported in the following form:
+.PP
+.nf
+.B "zd%d%c: Error (specific error message); cmd 0x%x at (%d, %d, %d)."
+.B "zd%d%c: Filesystem blkno = %d."
+.B "zd%d%c: cbstatus: 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x"
+.fi
+.sp 1
+where
+``zd%d%c''
+defines the controller (zd), driver (%d) and partition (%c);
+``cmd 0x%x''
+is the DCC command active when the error occurred;
+and
+``(%d, %d, %d)''
+is the disk address (cylinder, track, sector) where the error occurred.
+.PP
+The following list describes the types of errors reported
+(and the corresponding action taken) by the driver.
+.PP
+.nf
+.BR "zd%d%c: Hard Error (Write protect fault); cmd 0x%x at (%d, %d, %d)."
+.BR "zd%d%c: Filesystem blkno = %d."
+.BR "zd%d%c: cbstatus: 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x"
+.fi
+.RS
+Attempted to write to a write protected disk!
+The driver logs the failure and fails the I/O request.
+.RE
+.PP
+.nf
+.BR "zd%d%c: Error (Drive Fault); cmd 0x%x at (%d, %d, %d)."
+.BR "zd%d%c: Filesystem blkno = %d."
+.BR "zd%d%c: cbstatus: 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x"
+.fi
+.RS
+A drive fault was reported from the disk drive.
+Frequent occurrences indicate a suspect disk drive.
+The driver logs the failure, issues a ZDC_RESET command, and retries
+the request
+.I zdretry
+times.
+The ZDC_RESET command is issued on every retry.
+If the failure persists, the drive is marked as bad and the current
+request as well as all I/O requests queued to the drive are failed.
+.RE
+.PP
+.nf
+.BR "zd%d%c: Error (Seek error); cmd 0x%x at (%d, %d, %d)."
+.BR "zd%d%c: Filesystem blkno = %d."
+.BR "zd%d%c: cbstatus: 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x"
+.fi
+.RS
+A seek error was reported from the disk drive. Frequent occurrences
+indicate a suspect disk drive.
+The driver logs the failure, issues a ZDC_RESET command, and retries
+the request
+.I zdretry
+times.
+The ZDC_RESET command is issued on every retry.
+If the failure persists, the drive is marked as bad and the current
+request as well as all I/O requests queued to the drive are failed.
+.RE
+.PP
+.nf
+.BR "zd%d%c: Error (Seek timeout); cmd 0x%x at (%d, %d, %d)."
+.BR "zd%d%c: Filesystem blkno = %d."
+.fi
+.RS
+A seek was started and has not completed. This may indicate a
+problem with either the disk drive or the DCC hardware.
+The driver logs the failure, issues a ZDC_RESET command, and retries
+the request
+.I zdretry
+times.
+The ZDC_RESET command is issued on every retry.
+If the failure persists, the drive is marked as bad and the current
+request as well as all I/O requests queued to the drive are failed.
+.RE
+.PP
+.nf
+.BR "zd%d%c: Error (Channel timeout); cmd 0x%x at (%d, %d, %d)."
+.BR "zd%d%c: Filesystem blkno = %d."
+.fi
+.RS
+A channel operation was started for which an interrupt was not
+received within 100 milliseconds. This indicates that this DCC channel
+hardware is suspect.
+The driver logs the failure and retries the request
+.I zdretry
+times.
+If the failure persists, the I/O request is failed and the driver
+proceeds to shut down the channel.
+That is, all drives on the channel are marked as bad and all queued
+I/O requests to the drives on the channel are failed.
+.RE
+.PP
+.nf
+.BR "zd%d%c: Hard Error (DMA timeout); cmd 0x%x at (%d, %d, %d)."
+.BR "zd%d%c: Filesystem blkno = %d."
+.fi
+.RS
+A DMA transfer was started for which an interrupt was not received
+within 100 milliseconds. This indicates suspect DMA hardware on the DCC.
+The driver logs the failure and fails the I/O request.
+The driver then proceeds to shut down the channel.
+That is, all drives on the channel are marked as bad and all queued
+I/O requests to the drives on the channel are failed.
+.RE
+.PP
+.nf
+.BR "zd%d%c: Error (Header ECC error); cmd 0x%x at (%d, %d, %d)."
+.BR "zd%d%c: Filesystem blkno = %d."
+.BR "zd%d%c: cbstatus: 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x"
+.fi
+.RS
+A CRC error in the header of the sector was detected.
+If this sector on this disk continues to receive such errors, the sector
+should be added to the bad block list via the
+.B addbad
+option of the stand-alone
+.I zdformat
+program.
+The driver logs the failure, issues a ZDC_RESET command, and retries the
+request
+.I zdretry
+times. The ZDC_RESET command is issued on every retry.
+If the failure persists, the I/O request is failed.
+.RE
+.PP
+.nf
+.BR "zd%d%c: Soft ECC error at (%d, %d, %d)."
+.BR "zd%d%c: Filesystem blkno = %d."
+.BR "zd%d%c: cbstatus: 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x"
+.fi
+.RS
+An ECC error in the data portion of the sector was detected and
+successfully read via retries without correction. If this sector
+on this disk continues to receive such errors, the sector should be added
+to the bad block list via the
+.B addbad
+option of the stand-alone
+.I zdformat
+program.
+The driver logs this failure and completes the I/O request.
+.RE
+.PP
+.nf
+.BR "zd%d%c: Correctable ECC error at (%d, %d, %d)."
+.BR "zd%d%c: Filesystem blkno = %d."
+.BR "zd%d%c: cbstatus: 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x"
+.fi
+.RS
+An ECC error in the data portion of the sector was detected and
+successfully corrected. If this sector
+on this disk continues to receive such errors, the sector should be added
+to the bad block list via the
+.B addbad
+option of the stand-alone
+.I zdformat
+program.
+The driver logs this failure and completes the I/O request.
+.RE
+.PP
+.nf
+.BR "zd%d%c: Hard Error (Uncorrectable ECC error); cmd 0x%x at (%d, %d, %d)."
+.BR "zd%d%c: Filesystem blkno = %d."
+.BR "zd%d%c: cbstatus: 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x"
+.fi
+.RS
+An ECC error in the data portion of the sector was detected and
+could not be corrected.
+The sector denoted by (%d, %d, %d) is corrupted and should be added to
+the bad block list via the
+.B addbad
+option of the stand-alone
+.I zdformat
+program.
+The driver logs the failure and fails the I/O request.
+.RE
+.PP
+.nf
+.BR "zd%d%c: Error (Sector not found); cmd 0x%x at (%d, %d, %d)."
+.BR "zd%d%c: Filesystem blkno = %d."
+.BR "zd%d%c: cbstatus: 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x"
+.fi
+.RS
+This indicates that the DCC was unable to locate a sector with the header
+bytes matching the address (%d, %d, %d). This may be caused by either
+a bad header or a seek to the wrong cylinder. If this sector
+on this disk continues to receive such errors, the sector should be added
+to the bad block list via the
+.B addbad
+option of the stand-alone
+.I zdformat
+program.
+The type given to
+.B addbad
+should be that of an error in the header.
+The driver logs the failure, issues a ZDC_RESET command, and retries the
+request
+.I zdretry
+times. The ZDC_RESET command is issued on every retry.
+If the failure persists, the I/O request is failed.
+.RE
+.PP
+.nf
+.BR "zd%d%c: Hard Error (Bad data sector); cmd 0x%x at (%d, %d, %d)."
+.BR "zd%d%c: Filesystem blkno = %d."
+.BR "zd%d%c: cbstatus: 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x"
+.fi
+.RS
+This indicates that auto-revectoring was inhibited.
+Since this is
+never done by the driver, DCC microcode is suspect.
+The driver logs the failure and proceeds to shut down the controller.
+.RE
+.PP
+.nf
+.BR "zd%d%c: Error (Sector overrun); cmd 0x%x at (%d, %d, %d)."
+.BR "zd%d%c: Filesystem blkno = %d."
+.BR "zd%d%c: cbstatus: 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x"
+.fi
+.RS
+This indicates that the DCC unexpectedly encounters a sector pulse.
+If this sector on this disk continues to receive such errors, the sector
+should be added to the bad block list via the
+.B addbad
+option of the stand-alone
+.I zdformat
+program. The type given to
+.B addbad
+should be that of an error in the header.
+The driver logs the failure, issues a ZDC_RESET command, and retries the
+request
+.I zdretry
+times. The ZDC_RESET command is issued on every retry.
+If the failure persists, the I/O request is failed.
+.RE
+.PP
+.nf
+.BR "zd%d%c: Error (No data synch); cmd 0x%x at (%d, %d, %d)."
+.BR "zd%d%c: Filesystem blkno = %d."
+.BR "zd%d%c: cbstatus: 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x"
+.fi
+.RS
+This sector on disk is suspect. If this sector on this disk continues to
+receive such errors, the sector should be added to the bad block list
+via the
+.B addbad
+option of the stand-alone
+.I zdformat
+program. The error
+type given to
+.B addbad
+should be that of an error in data.
+The driver logs the failure, issues a ZDC_RESET command, and retries the
+request
+.I zdretry
+times. The ZDC_RESET command is issued on every retry.
+If the failure persists, the I/O request is failed.
+.RE
+.PP
+.nf
+.BR "zd%d%c: Error (Fifo data lost); cmd 0x%x at (%d, %d, %d)."
+.BR "zd%d%c: Filesystem blkno = %d."
+.BR "zd%d%c: cbstatus: 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x"
+.fi
+.RS
+Repeated occurrences of this error indicate a suspect channel on the DCC.
+The driver logs the failure and retries the request
+.I zdretry
+times.
+If the failure persists, the I/O request is failed and the driver
+proceeds to shut down the channel.
+That is, all drives on the channel are marked as bad and all queued
+I/O requests to the drives on the channel are failed.
+.RE
+.PP
+.nf
+.BR "zd%d%c: Hard Error (Illegal cb_cmd); cmd 0x%x at (%d, %d, %d)."
+.BR "zd%d%c: Filesystem blkno = %d."
+.fi
+.RS
+The driver logs the failure. If the command block contains a valid command the
+driver assumes the DCC is unreliable and proceeds to shut down the controller.
+If the command block contains an invalid command, the driver panics the system.
+.RE
+.PP
+.nf
+.BR "zd%d%c: Hard Error (Illegal cb_mod); cmd 0x%x at (%d, %d, %d)."
+.BR "zd%d%c: Filesystem blkno = %d."
+.fi
+.RS
+The driver logs the failure. If the command block
+contains a valid command modifier, the
+driver assumes the DCC is unreliable and proceeds to shut down the controller.
+If the command block
+contains an invalid command modifier, the driver panics the system.
+.RE
+.PP
+.nf
+.BR "zd%d%c: Hard Error (Illegal disk address); cmd 0x%x at (%d, %d, %d)."
+.BR "zd%d%c: Filesystem blkno = %d."
+.fi
+.RS
+The driver logs the failure. If the command block
+contains a valid disk address, the
+driver assumes the DCC is unreliable and proceeds to shut down the controller.
+If the command block
+contains an invalid disk address, the driver panics the system.
+.RE
+.PP
+.nf
+.BR "zd%d%c: Hard Error (cb_addr not 16-byte aligned); cmd 0x%x at (%d, %d, %d)."
+.BR "zd%d%c: Filesystem blkno = %d."
+.fi
+.RS
+The driver logs the failure. If the contents of the command block
+field "cb_addr"
+is 16-byte aligned, the
+driver assumes the DCC is unreliable and proceeds to shut down the controller.
+If the contents of the command block field "cb_addr" is not 16-byte aligned,
+the driver panics the system.
+.RE
+.PP
+.nf
+.BR "zd%d%c: Hard Error (Illegal cb_count); cmd 0x%x at (%d, %d, %d)."
+.BR "zd%d%c: Filesystem blkno = %d."
+.fi
+.RS
+The driver logs the failure. If the contents of the command block field
+"cb_count" is non-zero and is a multiple of 16, the
+driver assumes the DCC is unreliable and proceeds to shut down the controller.
+If the command block contains an invalid count, the driver panics the system.
+.RE
+.PP
+.nf
+.BR "zd%d%c: Hard Error (cb_iovec not 32-byte aligned); cmd 0x%x at (%d, %d, %d)."
+.BR "zd%d%c: Filesystem blkno = %d."
+.fi
+.RS
+The driver logs the failure. If the contents of the command block
+field "cb_iovec" is
+32-byte aligned, the
+driver assumes the DCC is unreliable and proceeds to shut down the controller.
+If the contents of the command block field "cb_iovec" is not 32-byte aligned,
+the driver panics the system.
+.RE
+.PP
+.nf
+.BR "zd%d%c: Hard Error (Non-zero cb_iovec and page size invalid); cmd 0x%x at (%d, %d, %d)."
+.BR "zd%d%c: Filesystem blkno = %d."
+.fi
+.RS
+This indicates that the DCC microcode was not initialized with the system
+page size.
+Since the DCC is initialized with the system page size, the DCC 
+is suspect.
+The driver logs the failure and proceeds to shut down the controller.
+.RE
+.PP
+.nf
+.BR "zd%d%c: Hard Error (Illegal icb_pagesize); cmd 0x%x at (%d, %d, %d)."
+.BR "zd%d%c: Filesystem blkno = %d."
+.fi
+.RS
+This indicates the DCC was initialized with an illegal page size.
+The DCC is suspect.
+The driver logs the failure and proceeds to shut down the controller.
+.RE
+.PP
+.nf
+.BR "zd%d%c: Hard Error (icb_dumpaddr not 16-byte aligned); cmd 0x%x at (%d, %d, %d)."
+.BR "zd%d%c: Filesystem blkno = %d."
+.fi
+.RS
+This error can occur only during initialization. The DCC is suspect.
+The driver logs the failure and proceeds to shut down the controller.
+.RE
+.PP
+.nf
+.BR "zd%d%c: Hard Error (Bad drive); cmd 0x%x at (%d, %d, %d)."
+.BR "zd%d%c: Filesystem blkno = %d."
+.fi
+.RS
+This indicates that the disk drive is not online and formatted, matching
+the channel format. It is typically the case that the drive went offline
+unexpectedly.
+The driver logs the failure, the drive is marked as bad, and the current
+I/O request as well as all queued requests are failed.
+.RE
+.PP
+.nf
+.BR "zd%d%c: Hard Error (In-use CB reused); cmd 0x%x at (%d, %d, %d)."
+.BR "zd%d%c: Filesystem blkno = %d."
+.fi
+.RS
+The DCC received a request on an active command block. This indicates
+suspect software or DCC microcode.
+The driver logs the failure and immediately panics the system.
+.RE
+.PP
+.nf
+.BR "zd%d: Access error on transfer starting at physical address 0x%x."
+.BR "Access Error Register = %x"
+.BR "Timeout error on write with memory access."
+.fi
+.RS
+This can be caused from either a software/microcode bug or hardware failure.
+The driver logs the failure. If the failure is due to an uncorrectable
+memory error, the driver panics the system. Otherwise the driver fails
+the current I/O request and marks all drives on the DCC channel as bad.
+All I/O requests queued to the drives on the channel are failed. The
+driver then clears the DCC's access error register to notify the DCC
+microcode that the access error has been cleared.
+.RE
+.PP
+.nf
+.BR "zd%d%c: Hard Error (Channel was reset); cmd 0x%x at (%d, %d, %d)."
+.BR "zd%d%c: Filesystem blkno = %d."
+.fi
+.RS
+This indicates a suspect disk drive.
+The driver logs the failure, the drive is marked as bad, and the current
+I/O request as well as all queued requests are failed.
+.RE
+.PP
+.nf
+.BR "zd%d%c: Hard Error (Unexpected status from DDC); cmd 0x%x at (%d, %d, %d)."
+.BR "zd%d%c: Filesystem blkno = %d."
+.BR "zd%d%c: cbstatus: 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x"
+.fi
+.RS
+This indicates a suspect disk drive.
+The driver logs the failure, the drive is marked as bad, and the current
+I/O request as well as all queued requests are failed.
+.RE
+.sp 1
+.PP
+Controller error interrupts cause the driver to shut down
+the complete controller.
+The driver logs the error with the following message:
+.PP
+.nf
+.BR "zdc%d: controller interrupt - SL_Z_STATUS == 0x%x."
+.fi
+.sp 1
+The SL_Z_STATUS register contains the encoded error code.
+These codes are defined in the header file
+.IR /usr/include/zdc/zdc.h.
+If the SL_Z_STATUS value is ZDC_OBCB, the driver assumes that the
+DCC received a stray interrupt and ignores the error.
+All other cases cause the controller to be shut down.

@@ -1,0 +1,43 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: setregid.2 1.7 1991/08/06 22:37:48 $
+.TH SETREGID 2 "\*(V)" "4BSD"
+.SH NAME
+setregid \- set real and effective group ID
+.SH SYNOPSIS
+.ft 3
+setregid(rgid, egid)
+.br
+int rgid, egid;
+.ft 1
+.SH DESCRIPTION
+The real and effective group ID's of the current process
+are set to the arguments.
+Only the super-user may change the real group ID
+of a process.  Unprivileged users may change the
+effective group ID to the real group ID, but to
+no other.
+.PP
+Supplying a value of \-1 for either the real or effective
+group ID forces the system to substitute the current
+ID in place of the \-1 parameter.
+.SH "RETURN VALUE
+Upon successful completion, a value of 0 is returned.  Otherwise,
+a value of \-1 is returned and \f2errno\fP is set to indicate the error.
+.SH "ERRORS
+.TP 15
+[EPERM]
+The current process is not the super-user and a change
+other than changing the effective group-id to the real group-id
+was specified.
+.SH "SEE ALSO"
+getgid(2), setreuid(2), setgid(3)

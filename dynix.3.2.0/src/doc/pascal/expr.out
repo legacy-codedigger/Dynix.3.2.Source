@@ -1,0 +1,13 @@
+Thu Mar 19 09:42 1987  expr.p:
+E 14 - Constant string too long
+E 15 - Left operand of and must be Boolean, not set
+E 16 - Cannot mix sets with integers and reals as operands of *
+E 17 - files may not participate in comparisons
+E 18 - pointers and integers cannot be compared - operator was <=
+E 19 - Strings not same length in = comparison
+E 20 - scalars and Booleans cannot be compared - operator was =
+e 21 - Input is used but not defined in the program statement
+In program x:
+  w - constant green is never used
+  w - constant blue is never used
+  w - variable B is used but never set

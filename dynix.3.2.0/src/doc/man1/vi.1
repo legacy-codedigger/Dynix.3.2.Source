@@ -1,0 +1,201 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: vi.1 1.13 87/03/04 $
+.TH VI 1 "\*(V)" "3BSD"
+.SH NAME
+vi, view \- screen oriented (visual) display editor based on ex
+.SH SYNOPSIS
+.B vi
+[
+.B \-t
+.I tag
+] [
+.B \-r
+] [
+.B \-l
+] [
+\f3-w\f2n\f1
+] [
+.B \-x
+] [
+.B \-R
+] [
+\f3+\f1\f2command\f1
+]
+.I name ...
+.SH DESCRIPTION
+.I Vi
+(visual) is a display oriented text editor based on
+.IR ex (1).
+.I Ex
+and
+.I vi
+run the same code; it is possible to get to
+the command mode of
+.I ex
+from within
+.I vi
+by entering
+\f3Q\f1,
+and it is possible to get to the visual mode of
+.I vi
+from within
+.I ex
+by entering
+.B vi
+at the
+.B :
+prompt.
+.PP
+The
+.I "Vi Quick Reference"
+card and the
+.I "Introduction to Display Editing with Vi"
+provide full details on using
+.I vi.
+.PP
+This version of
+.I vi
+supports multiple instances of a tag in a tags file.  Multiple
+tags cause
+.I vi
+to enter a special mode and present a list of tags.
+The user can then scan through the list and select the desired tag
+using the following commands:
+.TP "\w`ESC  `u"
+j
+move down in the list    
+.TP
+k
+move up in the list    
+.TP
+CR
+accept the displayed tag
+.TP
+n
+check next tag file 
+.TP
+ESC
+abort the tags command
+.PP
+Other keystrokes will give an error indication.
+.PP
+The
+.B \-t
+option is equivalent to an initial
+.I tag
+command, editing the file containing the
+.I tag
+and positioning the editor at its definition.
+The
+.B \-r
+option is used in recovering after an editor or system crash,
+retrieving the last saved version of the named file or,
+if no file is specified,
+typing a list of saved files.
+The
+.B \-l
+option sets up for editing \s-2LISP\s0, setting the
+.I showmatch
+and
+.I lisp
+options.
+The
+.B \-w
+option sets the default window size to
+.I n,
+and is useful on dialups to start in small windows.
+The
+.B \-x
+option causes
+.I vi
+to prompt for a
+.I key
+that is used to encrypt and decrypt the contents of the file,
+which should already be encrypted using the same key (see
+.I crypt (1)).
+The
+.B \-R
+option is equivalent to using
+.I view
+rather than
+.I vi
+and sets the
+.I readonly
+option at the start.
+The
+.I name ...
+arguments indicate files to be edited.
+An argument of the form
+\f3+\f2command\f1
+indicates that the editor should begin by executing the specified command.
+If
+.I command
+is omitted, then it defaults to ``$'', positioning the editor at the last
+line of the first file initially.  Other useful commands here are scanning
+patterns of the form ``/pat'' or line numbers, e.g. ``+100'' starting
+at line 100.
+.SH FILES
+See
+.IR ex (1).
+.SH SEE ALSO
+ex (1), edit (1), ``Vi Quick Reference'' card,
+``An Introduction to Display Editing with Vi''.
+.SH AUTHOR
+William Joy
+.br
+Mark Horton added macros to \f2visual\f1 mode and is maintaining version 3
+.SH BUGS
+The
+.I x
+command
+and
+.B \-x
+command line option are available only when
+the DYNIX Cryptographic Software option has been installed.
+.PP
+Software tabs using \f3^T\f1 work only immediately after the
+.I autoindent.
+.PP
+Left and right shifts on intelligent terminals don't make use of
+insert and delete character operations in the terminal.
+.PP
+The
+.I wrapmargin
+option can be fooled since it looks at output columns when blanks are typed.
+If a long word passes through the margin and onto the next line without a 
+break, then the line won't be broken.
+.PP
+Insert/delete within a line can be slow if tabs are present on intelligent
+terminals, since the terminals need help in doing this correctly.
+.PP
+Saving text on deletes in the named buffers is somewhat inefficient.
+.PP
+The
+.I source
+command does not work when executed as \f3:source\f1;
+there is no way to use the \f3:append\f1, \f3:change\f1,
+and \f3:insert\f1 commands, since it is not possible to give
+more than one line of input to a \f3:\f1 escape.  To use these
+on a \f3:global\f1 you must \f3Q\f1 to \f2ex\f1 command mode,
+execute them, and then reenter the screen editor with
+.I vi
+or
+.I open.
+.PP
+If you invoke 
+.B vi 
+and the system crashes,
+you may or may not be able to recover your file.
+If your file is still in memory
+(the file is less than 64-Kbytes long and has fewer than 12 changes) 
+the recover program will fail to work properly.

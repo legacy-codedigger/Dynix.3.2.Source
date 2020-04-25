@@ -1,0 +1,6 @@
+----------------------------
+Mon Mar 29 05:10:52 PST 1993  bruce@ogicse
+
+route is now installed in /etc, so it is available to /etc/rc.boot,
+    before /usr is mounted.
+

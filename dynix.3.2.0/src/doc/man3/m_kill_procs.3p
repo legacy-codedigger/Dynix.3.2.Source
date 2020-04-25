@@ -1,0 +1,60 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986 Sequent Computer Systems, Inc.
+.\" All rights reserved
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: m_kill_procs.3p 1.6 90/02/07 $
+.TH M_KILL_PROCS 3P "\*(V)" "DYNIX"
+.SH NAME
+m_kill_procs \- kill child processes
+.SH SYNOPSIS
+.nf
+\f2C syntax:\fP
+.PP
+\f3#include <parallel/microtask.h>
+m_kill_procs();\fP
+.PP
+\f2Pascal syntax\fP
+.PP
+\f3procedure m_kill_procs ;
+cexternal ;\fP
+.PP
+\f2FORTRAN syntax\fP
+.PP
+\f3subroutine m_kill_procs\fP
+.fi
+.SH DESCRIPTION
+The 
+.I m_kill_procs 
+routine terminates the child processes created by a previous call to
+.IR m_fork .
+.PP
+The
+.I m_kill_procs 
+routine fails if it is called from a subprogram
+invoked by an
+.I m_fork
+call.
+.SH RETURN VALUE
+Upon successful completion, a value of 0 is returned.
+Otherwise, a value of \-1 is returned and
+.I errno
+is set to indicate the error.
+.SH ERRORS
+The
+.I m_kill_procs
+call fails if the
+following error condition occurs:
+.TP 15
+[EINVAL]
+Some child processes are still executing within an
+.I m_fork
+call.
+.SH "SEE ALSO"
+m_fork(3P), \f2Guide to Parallel Programming\fP

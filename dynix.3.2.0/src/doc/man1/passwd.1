@@ -1,0 +1,75 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: passwd.1 1.7 90/03/30 $
+.TH PASSWD 1 "\*(V)" "4BSD"
+.SH NAME
+passwd \- change login password
+.SH SYNOPSIS
+.B passwd
+[
+.B \-f
+\f2filename\f1
+] [
+\f2username\f1
+]
+.SH DESCRIPTION
+This command installs or changes a password
+associated with the user's
+.IR username
+(your own by default).
+.PP
+.B Passwd
+prompts for the old password and then for the new one.
+You must type the new password twice 
+to forestall mistakes.
+.PP
+A password is truncated if longer than 8 characters, but \f3passwd\f1
+doesn't complain if you enter a longer password.     
+If a password combines upper- and lowercase characters, it should be
+at least five characters long; if it is in monocase, it should be
+at least six characters long.
+A shorter password compromises your security.
+.PP
+Only the owner of the name or the superuser may change a password;
+the owner must prove knowledge of the old password.
+.PP
+Use
+.B yppasswd
+to change your password in the network Yellow Pages.
+This will not affect either your local password or your
+password on any remote machines on which you have accounts.
+.SH OPTIONS
+.IP \-f
+Treat
+.IR filename
+as the password file.
+.SH FILES
+/etc/passwd
+.br
+/etc/yp/passwd
+.SH "SEE ALSO"
+login(1), passwd(5), yppasswd(1), crypt(3)
+.br
+Robert Morris and Ken Thompson,
+.I UNIX password security
+.SH BUGS
+Password file information should be kept in a different data structure
+allowing indexed access;
+.IR dbm (3X)
+would probably be suitable.
+.PP
+.B passwd
+changes a local password, but not a password in
+the network Yellow Pages.
+Refer to
+.BR yppasswd (1)
+for information on how to change a Yellow Pages password.

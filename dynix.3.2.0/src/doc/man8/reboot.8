@@ -1,0 +1,188 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: reboot.8 1.13 1991/06/12 00:53:08 $
+.TH REBOOT 8 "\*(V)" "DYNIX"
+.SH NAME
+reboot \- DYNIX bootstrapping procedures
+.SH SYNOPSIS
+.B /etc/reboot
+[
+.B \-n
+] [
+.B \-q
+] [
+.B \-l
+]
+.SH DESCRIPTION
+.PP
+The operating system is bootstrapped by placing it in memory and
+transferring control to it.
+Since the operating system is not reenterable,
+it is necessary to read it in from disk or tape
+each time it is to be booted.
+.PP
+.B Rebooting a running system.
+When the operating system is running and a reboot is desired, the
+.B shutdown
+command is normally used.
+If there are no users,
+the
+.B reboot
+command can be used.
+This command calls the command script
+.B rc.shutdown
+with the argument
+.IR reboot ,
+executes a
+.B sync
+system call,
+and initiates
+a multiuser
+reboot (as described below).  The system is
+booted and an automatic disk check is performed.  If all this succeeds,
+the system is brought up to multiuser operation.
+.PP
+Options to
+.B reboot
+are:
+.TP
+.B \-q
+reboots quickly and ungracefully, without shutting down running
+processes first, and without calling the shutdown script.
+.TP
+.B \-n
+avoids
+.IR sync ing
+the disks.
+A typical use of this option is when a manual
+.B fsck
+modifies the
+.I root
+filesystem.  The
+.B \-q
+option should be used with
+.B \-n
+if the
+.B rc.shutdown
+script runs commands that 
+.I sync
+the disks (such as
+.BR umount (8)).
+.TP
+.B \-l
+.B reboot
+normally logs the reboot using
+.BR syslog (8).
+This action is inhibited if the
+.B \-l 
+option is present.
+.PP
+.B Reboot
+places a shutdown record in the login accounting file
+.I /usr/adm/wtmp
+unless the
+.B \-n
+or
+.B \-q
+options are present.
+.PP
+.B "Power fail and crash recovery."
+Normally, the system will reboot itself after a crash.
+The system will also reboot itself on powerup if AUTO is selected
+on the front panel.
+After reboot,
+an automatic consistency check of the file systems is performed
+and, unless this fails, the system will resume multiuser operations.
+.PP
+.B Cold starts.
+Typing
+.B b
+in response to the powerup monitor asterisk prompt should bring the system up
+to multiuser operation.
+If that doesn't work, the default parameters may be set wrong.
+In this case (or if you need to boot from an alternate device
+or file), enter a monitor boot command of the form:
+.PP
+.IP
+b 0
+.I " device-specification"
+.PP
+to bring the system up to multiuser operation.
+(Replace the 0 with 2 to come up in single-user operation instead.)
+.PP
+A device specification has the following form:
+.IP
+.I "device(unit,minor)filename"
+.PP
+where
+.I device
+is the type of the device to be searched,
+.I unit
+is device-dependent,
+.I minor
+is the minor device index,
+and
+.I filename
+(optional) is the path to the specified file (filesystem devices only).
+The following list of supported devices may vary from installation to
+installation:
+.PP
+.ta 5 10
+	rs	RS-232 line via the
+.B host
+program
+.br
+	sd	SCSI disk
+.br
+	ts	tape unit
+.PP
+For disks, the minor device index is the partition
+(0 is partition
+.IR a ,
+1 is
+partition
+.IR b ,
+and so on).  For tapes, the minor device index gives a file offset.
+.if t .bp  \"BREAK PAGE IN TROFF OUTPUT
+.SH FILES
+.if n .ta 2i
+.if t .ta 1.5i
+.I "/dynix	"
+system code
+.br
+.I "/boot	"
+system bootstrap
+.br
+.I "/etc/rc.shutdown	"
+system shutdown script
+.br
+.I "/usr/adm/wtmp	"
+login accounting file
+.SH "SEE ALSO"
+.BR fastboot (8),
+.BR fsck (8),
+.BR init (8),
+.BR rc (8),
+.BR shutdown (8),
+.BR halt (8),
+.BR newfs (8),
+.BR syslogd (8),
+.BR sync (2),
+.BR host (8)
+.SH BUGS
+The shutdown script should know not to 
+.I sync
+the disks when 
+.B reboot
+is given the
+.B \-n
+option.

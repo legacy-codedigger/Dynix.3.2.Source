@@ -1,0 +1,485 @@
+#! /bin/sh
+#
+# Device "make" file.  Valid arguments:
+#	std		standard devices
+#	local		configuration specific devices
+#	generic 	generic devices
+# Disks:
+#	sd*	SCSI disks
+#	xp*	Fujitsu Eagle on Xylogics 450 on multibus
+#	zd*	ZDC disks
+#	ds*	DCC disk striping
+#	mr*	DCC disk mirroring
+#       wd*     SCSI disks on SSM
+# Tapes:
+#	xt*	Cipher 1600 bpi *or* Fujitsu GCR on Xylogics 472 on multibus
+#	ts*	Streamer tape on SCSI
+#       tm*     SCSI Streamer tape on SSM
+#       tg*     SCSI 1/2" tape on SSM
+# Printers:
+#	lp*	Systech MLP-2000 parallel line printer interface
+#       sp*     SSM parallel line printer interface
+# Terminals:
+#	st*	Systech 8-16 line mux on Multibus
+#	co*	SCED console terminal lines
+#       sc*     SSM terminal lines
+# Pseudo terminals:
+#	pty*	set of master and slave pseudo terminals
+# PC Interconnect pseudo devices:
+#	pci	Set of PC interconnect network devices
+# Atomic Lock Memory:
+#	alm	set of minor devices in the alm directory
+# System Controller dependent pseudo drivers:
+#       console console tty line
+#       smemco  system controller memory and special function driver
+#       sm      SCED controller memory driver
+#       ss      SSM controller memory driver
+# Permissions:
+#	Std is on a per device basis, with memory devices group deamon mode 640
+#	Disks are owned by root, group daemon, and mode 640
+#	Tapes are mode 666
+#	Permission on terminals will be set by login
+#
+umask 77
+for i
+do
+case $i in
+
+# These should be 'sort of' in sync with /sys/conf/GENERIC
+generic)
+	sh MAKEDEV std 
+# note: co0, sc0 and sm0 are included in 'std' above
+        sh MAKEDEV     sc1
+	sh MAKEDEV     co1 co2 co3
+	sh MAKEDEV     sm1 sm2 sm3
+	sh MAKEDEV     ss1 ss2 ss3
+	sh MAKEDEV sd0 sd1 sd2 sd3 sd4 sd5 sd6 sd7
+	sh MAKEDEV wd0 wd1 wd2 wd3 wd4 wd5 wd6 wd7
+	sh MAKEDEV xp0 xp1 xp2 xp3 xp4 xp5 xp6 xp7
+	sh MAKEDEV zd0 zd1 zd2 zd3 zd4 zd5 zd6 zd7
+	sh MAKEDEV mr0 mr1 mr2 mr3 mr4 mr5 mr6 mr7
+	sh MAKEDEV st0 st1 st2 st3
+	sh MAKEDEV ts0 ts1 ts2 ts3
+	sh MAKEDEV tm0 tm1 tm2 tm3
+	sh MAKEDEV tg0 tg1 
+	sh MAKEDEV xt0 xt1 xt2 xt3
+	sh MAKEDEV pty0
+	;;
+
+std)
+	/etc/mknod console	c 1  64	; chmod 622 console
+	/etc/mknod smemco	c 28 64	; chmod 660 smemco;	chgrp daemon smemco
+	sh MAKEDEV co0 sm0 ss0 sc0
+	/etc/mknod tty		c 2  0	; chmod 666 tty
+	/etc/mknod mem		c 3  0	; chmod 640 mem;	chgrp daemon mem
+	/etc/mknod kmem		c 3  1	; chmod 640 kmem;	chgrp daemon kmem
+	/etc/mknod null		c 3  2	; chmod 666 null
+	/etc/mknod kMWmem	c 3  3	; chmod 600 kMWmem;	chgrp daemon kMWmem
+	/etc/mknod kMBmem	c 3  4	; chmod 600 kMBmem;	chgrp daemon kMBmem
+	/etc/mknod drum		c 4  0	; chmod 660 drum;	chgrp daemon drum
+	/etc/mknod vlsi		c 21  0	; chmod 640 vlsi;	chgrp daemon vlsi
+	sh MAKEDEV ctape
+	;;
+
+sm*)
+	unit=`expr $i : "sm\(.*\)"`
+	case $unit in
+	[0-3])	/etc/mknod smem$unit c 10 $unit
+		chmod 660 smem$unit
+		chgrp daemon smem$unit ;;
+	*) echo bad unit for sm in: $i ;;
+	esac
+	;;
+
+ss*)
+	unit=`expr $i : "ss\(.*\)"`
+	case $unit in
+	[0-3])  /etc/mknod ssmem$unit c 26 $unit
+		chmod 660 ssmem$unit
+		chgrp daemon ssmem$unit ;;
+	*) echo bad unit for ss in: $i ;;
+	esac
+	;;
+
+xt*)
+	umask 0 ; unit=`expr $i : '..\(.*\)'`
+	case $i in
+	xt*) blk=6; chr=13;;
+	esac
+	case $unit in
+	0|1|2|3)
+		four=`expr $unit + 4` ; eight=`expr $unit + 8`
+		twelve=`expr $unit + 12`;
+		# /etc/mknod mt$unit	b $blk $unit
+		# /etc/mknod mt$four	b $blk $four
+		/etc/mknod mt$eight	b $blk $eight
+		/etc/mknod mt$twelve	b $blk $twelve
+		# /etc/mknod nmt$unit	b $blk $four ;: sanity w/pdp11 v7
+		/etc/mknod nmt$eight	b $blk $twelve ;: ditto
+		# /etc/mknod nrmt$unit	c $chr $four ;: sanity w/pdp11 v7
+		/etc/mknod nrmt$eight	c $chr $twelve ;: ditto
+		# /etc/mknod rmt$unit	c $chr $unit
+		# /etc/mknod rmt$four	c $chr $four
+		/etc/mknod rmt$eight	c $chr $eight
+		/etc/mknod rmt$twelve	c $chr $twelve
+		umask 77
+		;;
+	*)
+		echo bad unit for tape in: $1
+		;;
+	esac
+	;;
+
+ts*|tm*)
+	umask 0; unit=`expr $i : '..\(.*\)'`
+	case $i in
+	ts*) name=ts; blk=3; chr=9 ;;
+	tm*) name=tm; blk=8; chr=23 ;;
+	esac
+	case $unit in
+	[0123])
+		zero=`expr $unit + 0`; eight=`expr $unit + 8`
+#		/etc/mknod  $name$zero  b $blk $zero
+#		/etc/mknod  $name$eight b $blk $eight
+		/etc/mknod r$name$zero  c $chr $zero
+		/etc/mknod r$name$eight c $chr $eight
+		umask 77
+		;;
+	*)
+		echo bad unit for tape in: $1
+		;;
+	esac
+	;;
+
+tg*)
+	umask 0; unit=`expr $i : '..\(.*\)'`
+	case $i in
+	tg*) name=tg; blk=10; chr=29 ;;
+	esac
+	case $unit in
+	[01234567])
+
+		rewa=`expr $unit + 0` ; rewb=`expr $unit + 16`
+		rewc=`expr $unit + 32`
+		norewa=`expr $unit + 8` ; norewb=`expr $unit + 24`
+		norewc=`expr $unit + 40`
+		rew1=`expr $unit \* 256 + 0` ; rew2=`expr $unit \* 256 + 2`
+		rew3=`expr $unit \* 256 + 3`
+		norew1=`expr $unit \* 256 + 128` ; 
+		norew2=`expr $unit \* 256 + 130`
+		norew3=`expr $unit \* 256 + 131`;
+
+		/etc/mknod tg$rewa	b $blk $rew1
+		/etc/mknod tg$rewb	b $blk $rew2
+		/etc/mknod tg$rewc	b $blk $rew3
+		/etc/mknod tg$norewa	b $blk $norew1
+		/etc/mknod tg$norewb	b $blk $norew2
+		/etc/mknod tg$norewc	b $blk $norew3
+
+		/etc/mknod rtg$rewa	c $chr $rew1
+		/etc/mknod rtg$rewb	c $chr $rew2
+		/etc/mknod rtg$rewc	c $chr $rew3
+		/etc/mknod rtg$norewa	c $chr $norew1
+		/etc/mknod rtg$norewb	c $chr $norew2
+		/etc/mknod rtg$norewc	c $chr $norew3
+		umask 77
+		;;
+	*)
+		echo bad unit for tape in: $1
+		;;
+	esac
+	;;
+ds*)
+	unit=`expr $i : '..\(.*\)'`
+	/etc/mknod ds$unit	b	11	$unit
+	/etc/mknod rds$unit	c	30	$unit
+	chgrp daemon ds$unit
+	chmod 640 ds$unit
+	chgrp daemon rds$unit
+	chmod 640 rds$unit
+	;;
+
+mr*)
+	unit=`expr $i : '..\(.*\)'`
+	/etc/mknod mr$unit	b	8	$unit
+	/etc/mknod rmr$unit	c	20	$unit
+	chgrp daemon mr$unit
+	chmod 640 mr$unit
+	chgrp daemon rmr$unit
+	chmod 640 rmr$unit
+	;;
+
+sd*|xp*|zd*|wd*)
+	unit=`expr $i : '..\(.*\)'`
+	# (see VUNIT() and VPART() in vtoc.h)
+	# unit number is bits 3-11
+	# partition number is bit 0-2,12-16 ie (P&~0x3 << 8) + (P&0x3)
+	#				    or (P/8 << 11) + (P%8)
+	# all  is partition 255               = 248 << 8 + 7 = 63495
+	# default layouts:
+	# (see /etc/vtoc/* for actual partitions)
+	# fw   is partition 12(m) (SCSI only) =   8 << 8 + 4 =  2052
+	# boot is partition 14(o)             =   8 << 8 + 6 =  2054
+	# vtoc is partition 15(p)             =   8 << 8 + 7 =  2055
+	case $i in
+	sd*) name=sd; blk=1; chr=8;;
+	xp*) name=xp; blk=5; chr=12;;
+	zd*) name=zd; blk=7; chr=17;;
+	wd*) name=wd; blk=2; chr=22;;
+	esac
+	case $unit in
+	[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9]|6[0-3])
+		/etc/mknod ${name}${unit}a  b $blk `expr $unit '*' 8 + 0`
+		/etc/mknod ${name}${unit}b  b $blk `expr $unit '*' 8 + 1`
+		/etc/mknod ${name}${unit}c  b $blk `expr $unit '*' 8 + 2`
+		/etc/mknod ${name}${unit}g  b $blk `expr $unit '*' 8 + 6`
+		/etc/mknod ${name}${unit}d  b $blk `expr $unit '*' 8 + 3`
+		/etc/mknod ${name}${unit}e  b $blk `expr $unit '*' 8 + 4`
+		/etc/mknod ${name}${unit}f  b $blk `expr $unit '*' 8 + 5`
+		/etc/mknod ${name}${unit}h  b $blk `expr $unit '*' 8 + 7`
+		/etc/mknod ${name}${unit}i  b $blk `expr $unit '*' 8 + 2048 + 0`
+		/etc/mknod ${name}${unit}j  b $blk `expr $unit '*' 8 + 2048 + 1`
+		/etc/mknod ${name}${unit}k  b $blk `expr $unit '*' 8 + 2048 + 2`
+		/etc/mknod ${name}${unit}l  b $blk `expr $unit '*' 8 + 2048 + 3`
+		/etc/mknod ${name}${unit}m  b $blk `expr $unit '*' 8 + 2048 + 4`
+		/etc/mknod ${name}${unit}n  b $blk `expr $unit '*' 8 + 2048 + 5`
+		/etc/mknod ${name}${unit}o  b $blk `expr $unit '*' 8 + 2048 + 6`
+		/etc/mknod ${name}${unit}p  b $blk `expr $unit '*' 8 + 2048 + 7`
+		/etc/mknod r${name}${unit}a c $chr `expr $unit '*' 8 + 0`
+		/etc/mknod r${name}${unit}b c $chr `expr $unit '*' 8 + 1`
+		/etc/mknod r${name}${unit}c c $chr `expr $unit '*' 8 + 2`
+		/etc/mknod r${name}${unit}g c $chr `expr $unit '*' 8 + 6`
+		/etc/mknod r${name}${unit}d c $chr `expr $unit '*' 8 + 3`
+		/etc/mknod r${name}${unit}e c $chr `expr $unit '*' 8 + 4`
+		/etc/mknod r${name}${unit}f c $chr `expr $unit '*' 8 + 5`
+		/etc/mknod r${name}${unit}h c $chr `expr $unit '*' 8 + 7`
+		/etc/mknod r${name}${unit}i c $chr `expr $unit '*' 8 + 2048 + 0`
+		/etc/mknod r${name}${unit}j c $chr `expr $unit '*' 8 + 2048 + 1`
+		/etc/mknod r${name}${unit}k c $chr `expr $unit '*' 8 + 2048 + 2`
+		/etc/mknod r${name}${unit}l c $chr `expr $unit '*' 8 + 2048 + 3`
+		/etc/mknod r${name}${unit}m c $chr `expr $unit '*' 8 + 2048 + 4`
+		/etc/mknod r${name}${unit}n c $chr `expr $unit '*' 8 + 2048 + 5`
+		/etc/mknod r${name}${unit}o c $chr `expr $unit '*' 8 + 2048 + 6`
+		/etc/mknod r${name}${unit}p c $chr `expr $unit '*' 8 + 2048 + 7`
+		/etc/mknod r${name}${unit}  c $chr `expr $unit '*' 8 + 63495`
+		for j in a b c d e f g h i j k l m n o p; do
+			chgrp daemon ${name}${unit}$j
+			chmod 640 ${name}${unit}$j
+		done
+		for j in a b c d e f g h i j k l m n o p ""; do
+			chgrp daemon r${name}${unit}$j
+			chmod 640 r${name}${unit}$j
+		done
+		;;
+	*)
+		echo bad unit for disk in: $i
+		;;
+	esac
+	;;
+
+st*)
+	case $i in
+	st*) name=st; major=7;;
+	esac
+	unit=`expr $i : "$name\(.*\)"`
+	case $unit in
+	0) ch=h ;; 1) ch=i ;; 2) ch=j ;; 3) ch=k ;;
+	4) ch=l ;; 5) ch=m ;; 6) ch=n ;; 7) ch=o ;;
+	 8) ch=H ;;  9) ch=I ;; 10) ch=J ;; 11) ch=K ;;
+	12) ch=L ;; 13) ch=M ;; 14) ch=N ;; 15) ch=O ;;
+	*) echo bad unit for $name in: $i ;;
+	esac
+	case $ch in
+	h|i|j|k|l|m|n|o|H|I|J|K|L|M|N|O)
+		eval `echo $ch $unit $major |
+		  awk ' { ch = $1; u = 16 * $2; m = $3 } END {
+		    for (i = 0; i < 16; i++)
+			printf("/etc/mknod tty%s%x c %d %d; ",ch,i,m,u+i); }'`
+		;;
+	esac
+	;;
+
+lp*)
+	case $i in
+	lp*) name=lp; major=16;;
+	esac
+	unit=`expr $i : "$name\(.*\)"`
+	case $unit in
+	0|1|2|3)
+		umask 7
+		eval `echo $unit $major |
+	  		awk '{ u = 2 * $1; m = $2; } END {
+	    		printf("/etc/mknod lp%d c %d %d; \
+			      chgrp daemon lp%d; ", u,m,u,u);
+	    		printf("/etc/mknod lp%d c %d %d; \
+			      chgrp daemon lp%d; ", u+1,m,u+1,u+1); }'`
+		umask 77
+		;;
+	*) echo bad unit for $name in: $i;;
+	esac
+	;;
+
+sp*)
+	unit=`expr $i : "..\(.*\)"`
+	case $unit in
+	0|1|2|3)
+		umask 7
+		/etc/mknod sp$unit c 25 $unit; \
+		chgrp daemon sp$unit
+		umask 77
+		;;
+	*) echo bad unit for sp in: $i;;
+	esac
+	;;
+
+co*)
+	unit=`expr $i : "co\(.*\)"`
+	case $unit in
+	[0-3])	offset=`expr $unit '*' 2`;;
+	*) echo bad unit for co in: $i ;;
+	esac
+	case $unit in
+	[0-3])	for port in 0 1; do
+			realunit=`expr $offset + $port`
+			/etc/mknod ttyc$realunit c 27 $realunit
+			chmod 622 ttyc$realunit
+		done
+		;;
+	esac
+	;;
+
+sc*)
+	unit=`expr $i : "sc\(.*\)"`
+	case $unit in
+	0|1)
+		/etc/mknod ttyb$unit c 24 $unit
+		chmod 644 ttyb$unit
+		;;
+	*)
+		echo bad unit for sc in: $i
+		;;
+	esac
+	;;
+
+pty*)
+	class=`expr $i : 'pty\(.*\)'`
+	case $class in
+	0) offset=0  name=p;; 1) offset=62 name=q;;
+	2) offset=124 name=r;; 3) offset=186 name=s;;
+	4) offset=248 name=t;; 5) offset=310 name=u;;
+	6) offset=372 name=v;; 7) offset=434 name=w;;
+	8) offset=496 name=P;; 9) offset=558 name=Q;;
+	10) offset=620 name=R;; 11) offset=682 name=S;;
+	12) offset=744 name=T;; 13) offset=806 name=U;;
+	14) offset=868 name=V;; 15) offset=930 name=W;;
+	*) echo bad unit for pty in: $i;;
+	esac
+	case $class in
+	0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15)
+		umask 0
+		eval `echo $offset $name | awk ' { b=$1; n=$2 } END {
+			if (b == 0)
+				printf("/etc/mknod getpty c 6 -1; ");
+	m = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+			for (i = 0; i < 62; i++)
+				printf("/etc/mknod tty%s%s c 5 %d; \
+					/etc/mknod pty%s%s c 6 %d; ", \
+					n, substr(m, i+1, 1), b+i, \
+					n, substr(m, i+1, 1), b+i); }'`
+		umask 77
+		;;
+	esac
+	;;
+
+pci)
+	/etc/mknod eshare	c 14 1
+	/etc/mknod email	c 14 2
+	/etc/mknod eprint	c 14 3
+	/etc/mknod eadmin	c 14 5
+	/etc/mknod eremote	c 14 7
+	chmod 600 eshare email eprint eadmin eremote
+	;;
+alm)
+	if [ "`/etc/showcfg | grep 'MBAD  *0 .*\.01\.'`" != "" ]
+	then
+		echo "OLD REV MBAD, NO ALM SUPPORT -- CAN'T INSTALL ALM DEVICES"
+		exit 1
+	fi
+	if /etc/showcfg | grep -s MBAD
+	then :
+	else
+		echo "NO MBAD'S PRESENT -- CAN'T INSTALL ALM DEVICES"
+		exit 1
+	fi
+	mkdir alm
+	chmod 755 alm
+	if [ "`pagesize`" -lt 4096 ]
+	then
+		alms="00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 \
+			 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31"
+	else
+		alms="00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15"
+	fi
+	for i in $alms
+	do
+		/etc/mknod alm/alm$i c 11 $i
+	done
+	chmod 666 alm/alm*
+	/etc/chown root alm alm/*
+	chgrp daemon alm alm/*
+	;;
+usclk)
+	/etc/mknod usclk c 19 0
+	chmod 444 usclk
+	/etc/chown root usclk
+	chgrp daemon usclk
+	;;
+local)
+	sh MAKEDEV.local
+	;;
+ctape|mtape)
+	if /etc/showcfg | grep -i -s ssm; then
+		sh MAKEDEV SSM_SA
+	else
+		sh MAKEDEV SCED_SA
+	fi
+	;;
+#---
+#--- The following section will make the appropriate device links
+#--- for installation scripts.
+#---
+SCED_SA)
+	rm -f ctape0 ctape8 mtape0 mtape8
+	if [ -f "rts8" ]; then
+		ln rts8 ctape8
+	fi
+	if [ -f "rts0" ]; then
+		ln rts0 ctape0
+	fi
+	if [ -f "rmt8" ]; then
+		ln rmt8 mtape0
+	fi
+	if [ -f "rmt12" ]; then
+		ln rmt12 mtape8
+	fi
+	;;
+
+SSM_SA)
+	rm -f ctape0 ctape8 rts0 rts8 mtape0 mtape8
+	if [ -f "rtm8" ]; then
+		ln rtm8 ctape8
+		ln rtm8 rts8
+	fi
+	if [ -f "rtm0" ]; then
+		ln rtm0 ctape0
+		ln rtm0 rts0
+	fi
+	if [ -f "rtg0" ]; then
+		ln rtg0 mtape0
+	fi
+	if [ -f "rtg8" ]; then
+		ln rtg8 mtape8
+	fi
+	;;
+esac
+done

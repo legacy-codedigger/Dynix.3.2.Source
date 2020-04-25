@@ -1,0 +1,61 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+.\"
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: frexp.3 1.6 86/08/13 $
+.TH FREXP 3 "\*(V)" "7th Edition"
+.SH NAME
+frexp, ldexp, modf \- split into mantissa and exponent
+.SH SYNOPSIS
+.nf
+.B double frexp(value, eptr)
+.B double value;
+.B int *eptr;
+.PP
+.B double ldexp(value, exp)
+.B double value;
+.PP
+.B double modf(value, iptr)
+.B double value, *iptr;
+.SH DESCRIPTION
+.I Frexp
+returns the mantissa of a double
+.I value
+as a double quantity,
+.I x,
+of magnitude less than 1
+and stores an integer
+.I n
+such that
+.I value
+=
+.ie t \f2x\fP\|\(**\|2\u\f2n\fP\d
+.el \f2x\fP\|\(**\|2**\f2n\fP
+indirectly through
+.I eptr.
+.PP
+.I Ldexp
+returns the quantity
+.ie t \f2value\|\(**\|2\u\f2exp\fP\d.
+.el \f2value\|\(**\|2**\f2exp\fP.
+.PP
+.I Modf
+returns the positive fractional part of
+.I value
+and stores the integer part indirectly
+through
+.I iptr.

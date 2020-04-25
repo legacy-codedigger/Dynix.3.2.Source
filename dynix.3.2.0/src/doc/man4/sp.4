@@ -1,0 +1,144 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986 Sequent Computer Systems, Inc.
+.\" All rights reserved
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+.V= $Header: sp.4 1.1 90/09/20 $
+.TH SP 4 "\*(V)" "DYNIX"
+.SH NAME
+sp \- SSM parallel line printer interface
+.SH SYNOPSIS
+.B "device sp0 at ssm? bin 5 unit ?"
+.SH DESCRIPTION
+The
+.I sp
+device driver supports the SSM controller for
+line printers using the Centronics or Dataproducts parallel interfaces.
+It supports one line printer per controller.
+.PP
+The unit number of the printer is specified by the minor device number.
+The standard device names consist of ``sp'' followed by the line
+printer unit number
+(e.g. sp0, sp1).
+.I sp
+devices are exclusive-access devices; that is, only one
+process may open a device at a time.
+.SH CONFIGURATION
+The default characteristics
+include aligning to top of form on an open or close, 132 columns, and
+66 lines per page.
+Lines longer than the maximum line length are truncated silently. 
+.PP
+Each printer can be configured for special characteristics,
+including line lengths, special modes, and interface type. 
+The special modes are:
+upper-case only mode and
+raw mode.
+.PP
+In normal mode,
+the driver interprets
+newlines, backspaces, tabs, and form feeds.
+Tab stops are every 8 columns starting at column 8 (8, 16, 24...).
+Most printers can operate in both print and plot modes
+using the normal operation mode.
+.PP
+In the upper-case only mode, lower-case letters are mapped
+into upper case.  Other characters are mapped to similar characters
+overstruck with ``-'' according to the following table:
+.PP
+.TS
+center;
+c c.
+Input	Mapped to
+
+{	\o"-("
+}	\o"-)"
+\`	\o"-\'"
+|	\o"\-!"
+~	\o"\-^"
+.TE
+.PP
+Raw mode provides an eight-bit data path to the printer.
+Tabs, formfeeds, newlines and other special characters
+are not expanded, and no line or page adjustments are made.
+.PP
+The interface type is defined as follows:
+.PP
+.TS
+center;
+l l.
+Value	Definition
+
+0	Centronics interface
+1	Data Products interface
+.TE
+.PP
+The configuration options are specified in a table in the binary
+configuration file,
+.IR /sys/conf/conf_sp.c .
+The first column specifies the line length.  The second column
+specifies the number of lines per page.  The third column specifies
+the mode.
+The printer characteristics are indexed by the minor number
+of the device. If the minor number is greater than the 
+number of entries in
+the array, the configuration options for the last entry in the table
+are used.
+.PP
+For example, suppose that you had the
+following hardware configuration:
+.sp
+.TS
+tab (+);
+l r r lw(2i) l.
+printer 0+80 columns+upper-case only+Centronics 
+printer 1+132 columns+raw+Data Products
+printer 2+132 columns+normal+Data Products
+printer 3+80 columns+normal+Centronics
+printer 4+132 columns+normal+Centronics
+printer 5+132 columns+normal+Centronics
+.TE
+.sp
+For this configuration, you could use the
+following configuration table:
+.sp
+.TS
+tab (:);
+l l l l l r.
+struct:sp_printer:spconfig[] = {:::
+
+/*:cols,:special_map,:interface::*/	
+{:80,:SPCAPS,:0:} ,:/* 0 */	
+{:132,:SPRAW,:1:} ,:/* 1 */	
+{:132,:SPDEFAULT,:1:} ,:/* 2 */	
+{:80,:SPDEFAULT,:0:} ,:/* 3 */	
+{:132,:SPDEFAULT,:0:} ,:/* 4 */	
+};:::::
+.TE
+.PP
+Note that the sixth printer (number 5) is not specified
+in the configuration but will have the same
+characteristics as printer number 4.
+.PP
+The default configuration is as follows:
+.sp
+.TS
+tab (:);
+l l l l l r.
+struct:sp_printer:spconfig[] = {:::
+
+/*:cols,:special_map,:interface::*/	
+{:132,:SPDEFAULT,:0:} ,:/* 0 */	
+};:::::
+.TE
+.SH FILES
+/dev/sp*
+.br
+/sys/conf/conf_sp.c 
+.SH "SEE ALSO"
+lpr(1), pr(1), printcap(5)

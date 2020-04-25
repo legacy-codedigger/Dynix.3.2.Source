@@ -1,0 +1,37 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: sigsetmask.2 1.4 86/05/13 $
+.TH SIGSETMASK 2 "\*(V)" "4BSD"
+.SH NAME
+sigsetmask \- set current signal mask
+.SH SYNOPSIS
+.nf
+.B sigsetmask(mask);
+.B int mask;
+.SH DESCRIPTION
+.I Sigsetmask
+sets the current signal mask (those signals
+which are blocked from delivery).  Signal
+.I i
+is blocked if the
+.IR i -th
+bit in 
+.I mask
+is a 1.
+.PP
+The system
+quietly disallows SIGKILL, SIGSTOP, or SIGCONT to
+be blocked.
+.SH "RETURN VALUE
+The previous set of masked signals is returned.
+.SH "SEE ALSO"
+kill(2), sigvec(2), sigblock(2), sigpause(2)

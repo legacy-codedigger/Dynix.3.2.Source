@@ -1,0 +1,105 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: csymlink.2 1.6 87/02/19 $
+.TH CSYMLINK 2 "\*(V)" "DYNIX"
+.SH NAME
+csymlink \- make conditional symbolic link to a file
+.SH SYNOPSIS
+.nf
+.ft 3
+csymlink(ucb_target, att_target, linkname)
+char *ucb_target, *att_target, *linkname;
+.fi
+.ft 1
+.SH DESCRIPTION
+A conditional symbolic link
+.I linkname
+is created to
+.I ucb_target
+and
+.IR att_target .
+.RI ( Linkname
+is the name of the file created;
+the target strings are used to create the conditional symbolic link.)
+Any of the names may be an arbitrary path name; the files need not
+be on the same file system.
+.PP
+When a conditional symbolic link is encountered during pathname parsing,
+the link is treated as an ordinary symbolic link.
+However, the value of the link depends on the process's selected universe
+(U_UCB or U_ATT).
+If the universe is U_UCB,
+the value of the symbolic link is
+.IR ucb_target .
+If the universe is U_ATT,
+the value of the symbolic link is
+.IR att_target .
+.SH "RETURN VALUE
+Upon successful completion, a zero value is returned.
+If an error occurs, the error code is stored in
+.I errno
+and a \-1 value is returned.
+.SH "ERRORS
+The conditional symbolic link is made unless one or more of the
+following are true:
+.TP 15
+[EPERM]
+Any of the arguments contain
+a character with the high-order bit set.
+.TP 15
+[ENOENT]
+One of the pathnames specified was too long.
+.TP 15
+[ENOTDIR]
+A component of the
+.I linkname
+prefix is not a directory.
+.TP 15
+[EEXIST]
+.I Linkname
+already exists.
+.TP 15
+[EACCES]
+A component of the
+.I linkname
+path prefix denies search permission.
+.TP 15
+[EROFS]
+The file
+.I linkname
+would reside on a read-only file system.
+.TP 15
+[EFAULT]
+Any of the parameters
+point outside the process's allocated address space.
+.TP 15
+[ELOOP]
+Too may symbolic links were encountered in translating the pathname.
+.TP 15
+[ENOSPC]
+The directory in which the entry for the new symbolic link is being placed
+cannot be extended because there is no space left on the file system containing
+the directory.
+.TP 15
+[ENOSPC]
+The new symbolic link cannot be created because there is no space left
+on the file system which will contain the link.
+.TP 15
+[ENOSPC]
+There are no free inodes on the file system on which the
+symbolic link is being created.
+.TP 15
+[EIO]
+An I/O error occurred while reading from or writing to the file system.
+.SH "SEE ALSO"
+ln(1), universe(1),
+readclink(2), readlink(2), symlink(2), universe(2), unlink(2)

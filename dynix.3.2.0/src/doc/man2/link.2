@@ -1,0 +1,108 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: link.2 1.7 86/05/13 $
+.TH LINK 2 "\*(V)" "4BSD"
+.SH NAME
+link \- make a hard link to a file
+.SH SYNOPSIS
+.nf
+.ft 3
+link(name1, name2)
+char *name1, *name2;
+.fi
+.ft 1
+.SH DESCRIPTION
+A hard link
+to
+.I name1
+is created;
+the link has the name
+.IR name2 .
+.I Name1
+must exist.
+.PP
+With hard links,
+both
+.I name1
+and
+.I name2
+must be in the same file system.
+Unless the caller is the super-user,
+.I name1
+must not be a directory.
+Both the old and the new
+.I link
+share equal access and rights to
+the underlying object.
+.SH "RETURN VALUE
+Upon successful completion, a value of 0 is returned.  Otherwise,
+a value of \-1 is returned and
+.I errno
+is set to indicate the error.
+.SH "ERRORS
+.I Link
+will fail and no link will be created if one or more of the following
+are true:
+.TP 15
+[EPERM]
+Either pathname contains a byte with the high-order bit set.
+.TP 15
+[ENOENT]
+Either pathname was too long.
+.TP 15
+[ENOTDIR]
+A component of either path prefix is not a directory.
+.TP 15
+[ENOENT]
+A component of either path prefix does not exist.
+.TP 15
+[EACCES]
+A component of either path prefix denies search permission.
+.TP 15
+[ENOENT]
+The file named by \f2name1\fP does not exist.
+.TP 15
+[EEXIST]
+The link named by \f2name2\fP does exist.
+.TP 15
+[EPERM]
+The file named by \f2name1\fP is a directory and the effective
+user ID is not super-user.
+.TP 15
+[EXDEV]
+The link named by \f2name2\fP and the file named by \f2name1\fP
+are on different file systems.
+.TP 15
+[EACCES]
+The requested link requires writing in a directory with a mode
+that denies write permission.
+.TP 15
+[EROFS]
+The requested link requires writing in a directory on a read-only file
+system.
+.TP 15
+[EFAULT]
+One of the pathnames specified
+is outside the process's allocated address space.
+.TP 15
+[ELOOP]
+Too many symbolic links were encountered in translating the pathname.
+.TP 15
+[ENOSPC]
+The directory in which the entry for the new link is being placed
+cannot be extended because there is no space left on the file system
+containing the directory.
+.TP 15
+[EIO]
+An I/O error occurred while reading from or writing to the file system.
+.SH "SEE ALSO"
+symlink(2), unlink(2)

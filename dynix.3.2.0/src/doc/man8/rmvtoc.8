@@ -1,0 +1,36 @@
+.\" $Copyright:	$
+.\"Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989 
+.\"Sequent Computer Systems, Inc.   All rights reserved.
+.\" 
+.\"This software is furnished under a license and may be used
+.\"only in accordance with the terms of that license and with the
+.\"inclusion of the above copyright notice.   This software may not
+.\"be provided or otherwise made available to, or used by, any
+.\"other person.  No title to or ownership of the software is
+.\"hereby transferred.
+.\"
+...
+.V= $Header: rmvtoc.8 1.2 90/09/02 $
+.TH RMVTOC 8 "\*(V)" "DYNIX"
+.SH NAME
+rmvtoc \- remove VTOC from disks
+.SH SYNOPSIS
+.B /usr/etc/rmvtoc
+device
+.SH DESCRIPTION
+.B rmvtoc
+removes the
+VTOC (volume table of contents) on disks. If the disk does not contain
+a VTOC, no changes are made to the disk and a warning message is
+printed to that effect.
+.PP
+.B rmvtoc
+refuses to remove VTOCs on mounted disks.
+.SH EXAMPLE
+.nf
+\f3
+     /usr/etc/rmvtoc /dev/rzd0
+\fP
+.fi
+.SH SEE ALSO
+mkvtoc(8), prtvtoc(8), rmvtoc(8S)

@@ -1,0 +1,26 @@
+*
+*#ident	"$Header: m2382k 1.1 90/01/30 $"
+* Fujitsu M2382K (Swallow 5) with 81 sectors
+*
+* Dimensions:
+*   512 bytes/sector
+*    81 sectors/track
+*    27 tracks/cylinder
+*   745 cylinders
+*   742 user accessible cylinders
+*
+* Types:
+*	00	No Partition
+*	01	Regular Partition
+*	02	Boot Block
+*	03	Reserved Disk Area
+*
+* Partition	Type	Start Sector	Size in Sectors	   Block Sz    Frag Sz
+   00		1	761076		50301		   8192        1024
+   01		1	811377		205578		   8192        1024
+   02		1	1016955		607986		   8192        1024
+   03		1	2219		758857		   8192        1024
+   12		3	0		2187		   0           0
+   13		3	1624941		4374		   0           0
+   14		2	2187		16		   0           0
+   15		3	2203		16		   0           0

@@ -1,0 +1,135 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: finger.1 1.13 1991/06/13 18:19:29 $
+.TH FINGER 1 "\*(V)" "4BSD"
+.SH NAME
+f, finger \- user information lookup program
+.SH SYNOPSIS
+.B f
+[
+options
+]
+[
+name ...
+]
+.br
+   or
+.br
+.B finger
+[
+options
+] 
+[
+name ...
+]
+.SH DESCRIPTION
+By default
+.B finger
+lists the login name, full name, terminal name, and write status
+(producing an asterisk (*) before the terminal name 
+if write permission is denied),
+idle time, login time, and office location and phone number
+(if known) for each current UNIX user.
+(Idle time is minutes if a single integer is given, hours and minutes
+with a colon (:), or 
+days and hours if d is given.)
+.PP
+A longer format is used 
+when a list of people's names is given.  (Account names as well as
+first and last names of users are accepted.)
+This format is multiline, and includes all the information described above
+as well as the user's home
+directory, login shell, and login universe,
+any plan the user has placed in the file
+.I \&.plan
+in the home
+directory, and the project on which the user is working from the file
+.IR \&.project ,
+also in the home directory.
+.PP
+.I Finger
+may be used to lookup users on a remote machine.  The format is to specify
+the user as ``user@host.''  If the user name is left off, the
+standard format listing is provided on the remote machine.  Note that
+this feature of
+.I finger
+only works when invoked with the "-n" flag.
+.SH OPTIONS
+.TP
+.B \-m
+Match arguments only on user name.
+.TP
+.B \-l
+Force long output format.
+.TP
+.B \-p
+Suppress printing of the
+.I \&.plan
+files.
+.TP
+.B \-s
+Force short output format.
+.TP
+.B \-q
+Give quick list of users.
+.TP
+.B \-i
+Give quick list with idle times.
+.TP
+.B \-b
+Briefer long form list of users.
+.TP
+.B \-f
+Suppress printing of column headings.
+.TP
+.B \-h
+Suppress printing of
+.I \&.project
+files.
+.TP
+.B \-w
+Narrow short form list of users.
+.TP
+.B \-n
+Act like 4.3 BSD
+.I finger,
+including network
+.I finger
+support.  By default
+.I finger
+will behave as it did in older version of DYNIX.
+.SH FILES
+.ta 2i
+/etc/utmp	who file
+.br
+/etc/passwd	for users names, offices, ...
+.br
+/usr/adm/lastlog	last login times
+.br
+~/.plan	plans
+.br
+~/.project	projects
+.SH "SEE ALSO"
+w(1), who(1), chfn(1)
+.SH AUTHOR
+Earl T. Cohen
+.SH BUGS
+Only the first line of the
+.I .project
+file is printed.
+.PP
+There is no way to pass arguments to the remote machine as
+.I finger
+uses an internet standard port.
+.PP
+.I Finger
+is not case sensitive.

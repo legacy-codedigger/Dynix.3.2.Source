@@ -1,0 +1,45 @@
+.\" $Copyright:	$
+."Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989 
+."Sequent Computer Systems, Inc.   All rights reserved.
+." 
+."This software is furnished under a license and may be used
+."only in accordance with the terms of that license and with the
+."inclusion of the above copyright notice.   This software may not
+."be provided or otherwise made available to, or used by, any
+."other person.  No title to or ownership of the software is
+."hereby transferred.
+.\"
+...
+.V= $Header: fsstat.8 1.1 90/01/24 $
+.TH FSSTAT 8 "\*(V)" "7th Edition"
+.SH NAME
+fsstat \- report filesystem status
+.SH SYNOPSIS
+.B /usr/etc/fsstat
+special_file
+.SH DESCRIPTION
+.B fsstat\^
+reports on the status of the filesystem on
+.IR special_file\^ .
+It may be used to interactively query
+the state of a disk.
+.B fsstat\^
+succeeds if the filesystem is unmounted and
+is marked clean.
+For the root filesystem, it succeeds if
+the filesystem is active and not marked bad.
+For pre-Dynix 3.1 file systems, it will
+always report them as not clean, as there is
+no flag in such file systems to say otherwise.
+.SH "SEE ALSO"
+fs(5) 
+.SH DIAGNOSTICS
+The command has the following exit codes:
+.PP
+.nf
+0 -- The filesystem is not mounted and appears okay
+     (except for root, where 0 means mounted and okay).
+1 -- The filesystem is not mounted and needs to be checked.
+2 -- The filesystem is mounted.
+3 -- The command failed.
+.fi

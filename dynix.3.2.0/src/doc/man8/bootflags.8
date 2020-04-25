@@ -1,0 +1,99 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: bootflags.8 1.5 86/09/05 $
+.TH BOOTFLAGS 8 "\*(V)" "DYNIX"
+.SH NAME
+bootflags \- display/change system boot flags
+.SH SYNOPSIS
+.B bootflags
+[-p] [-c] [-v] [flag=value] ...
+.SH DESCRIPTION
+.I Bootflags
+displays or changes the flags
+that control system boot and reboot actions.
+Unless the
+.B \-p
+option is specified,
+only the temporary flags are affected.
+.TP
+.B \-p
+Display or change the permanent boot flags
+rather than the temporary boot flags.
+.TP
+.B \-c
+Copy temporary boot flags to the permanent boot flags.
+If the
+.B \-p
+flag is given,
+copy the permanent boot flags into the temporary boot flags.
+The copy is done after all the changes to flags have been made.
+.TP
+.B \-v
+Display the flags after they have been changed.
+.PP
+The assignments are as follows.
+All numeric values (f, ra0, ra1), are assumed to be in decimal unless
+they start with ``0x'', in which case they are taken in hexadecimal.
+String values (n0, n1), are taken literally as character strings.
+.PP
+.br
+.ns
+.TP 15
+.I assignment
+.I effect
+.br
+.ns
+.TP 
+.RI n0= string
+Change primary boot name to
+.I string.
+.br
+.ns
+.TP 
+.RI n1= string
+Change secondary boot name to
+.I string.
+.br
+.ns
+.TP 
+.RI f= n
+Set boot flags to
+.I n.
+.br
+.ns
+.TP 
+.RI ra0= n
+Change primary reboot reconfiguration structure address to
+.I n.
+.br
+.ns
+.TP 
+.RI ra1= n
+Change secondary reboot reconfiguration structure address to
+.I n.
+.ns
+.PP
+For example, to change the permanent boot flags so that the secondary
+boot name is ``sd(48,0)stand/dump sd(48,1) 1000 /dev/sd0b'', and 
+the secondary reboot reconfiguration structure address is 0x30000,
+.IP
+.nf
+bootflags -p 'n1=sd(48,0)stand/dump sd(48,1) 1000 /dev/sd0b' 'ra1=0x30000'
+.fi
+.PP
+Note the use of quotes to collect the arguments of the assignments
+together.
+.SH FILES
+.TP 15
+/dev/smemco
+Console SCSI/Ether memory.
+.SH "SEE ALSO"

@@ -1,0 +1,56 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: getgroups.2 1.9 1991/08/06 22:37:15 $
+.TH GETGROUPS 2 "\*(V)" "4BSD"  \" from craig@BBN-UNIX.ARPA
+.SH NAME
+getgroups \- get group access list
+.SH SYNOPSIS
+.nf
+.ft 3
+#include <sys/param.h>
+.PP
+.ft 3
+ngrps = getgroups(gsize, gidset)
+int ngrps, gsize, *gidset;
+.fi
+.SH DESCRIPTION
+.I Getgroups
+gets the current group access list of the user process
+and stores it in the array 
+.IR gidset .
+The parameter
+.I gsize
+indicates the number of entries which may be placed in 
+.I gidset .
+The return value is the number of entries in
+.I gidset
+that were filled.
+No more than NGROUPS, as defined in
+.RI < sys/param.h >,
+will ever
+be returned.
+.SH "RETURN VALUE
+A value of \-1 indicates that an error occurred, and the error
+code is stored in the global variable \f2errno\fP\|.
+.SH "ERRORS
+The possible errors for \f2getgroups\fP are:
+.TP 15
+[EFAULT]
+The argument \f2gidset\fP is an invalid address.
+.TP 15
+[EINVAL]
+The size of \f2gidset\fP as specified by \f2gsize\fP is too small to
+accommodate the entire group access list.
+.SH "SEE ALSO
+setgroups(2), initgroups(3)
+
+

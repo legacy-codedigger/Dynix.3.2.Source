@@ -1,0 +1,162 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986 Sequent Computer Systems, Inc.
+.\" All rights reserved
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: m_fork.3p 1.8 1991/06/26 17:26:38 $
+.TH M_FORK 3P "\*(V)" "DYNIX"
+.SH NAME
+m_fork \- execute a subprogram in parallel
+.SH SYNOPSIS
+.PP
+\f2C syntax:\fP
+.PP
+.nf
+\f3#include <parallel/microtask.h>
+m_fork(func[,arg,...]);
+void (*func)();
+sometype args;\fP
+.PP
+\f2Pascal syntax\fP
+.PP
+\f3function m_pfork(procedure f[(args : sometype); args : sometype]) : integer;
+cexternal;
+procedure func[(args : sometype)];
+i:=m_pfork(func[,arg,...]);\fP
+.PP
+\f2FORTRAN syntax\fP
+.PP
+\f3external func
+integer*4 m_fork
+i=m_fork(func[,arg,...])
+...
+subroutine func(arg,...)\fP
+.fi
+.SH DESCRIPTION
+The 
+.I m_fork
+routine assigns a subprogram to child processes, which then cooperate in
+executing the subprogram in parallel. 
+The number of child processes used by the
+.I m_fork
+call can be set with a previous call to
+.IR m_set_procs .
+If 
+.I m_set_procs
+has not been called, the number of child processes defaults to
+.IR "(number of CPUs on-line) /2.
+If the program has no child processes from previous
+.I m_fork
+calls,
+the call creates the child processes. 
+If there are already child processes from a previous call,
+.I m_fork
+re-uses the existing processes.
+.PP
+When an
+.I m_fork
+call creates child processes, each child process is given a
+private integer variable called
+.IR m_myid ,
+which identifies it within the set of child
+processes being created.
+The parent process's identification number is always zero.
+The first child process's identification is 1, the second's is
+2, and so on.
+You can call the routine
+.I m_get_myid
+to find out the identification number of a child process (see
+.IR m_get_myid (3P)).
+.PP
+For C programs, the header file
+.I /parallel/microtask.h
+contains an external declaration of the variable
+.I m_myid
+and the variable
+.IR m_numprocs ,
+which indicates the total number of processes executing the
+subprogram (including all the child processes
+and the parent process).
+.PP
+Once child processes are available, 
+.I m_fork 
+starts them executing the subprogram
+.I func
+with the given arguments.
+(For Pascal programs, \f2func\fP must be an inner scope
+procedure.)
+The child processes execute the subprogram until they all
+return from it.
+At this point, the program returns from the 
+.I m_fork
+call and the child processes spin, waiting for more work.
+The program can either kill the child processes with a call
+to the routine
+.IR m_kill_procs ,
+suspend them with a call to 
+.IR m_park_procs ,
+or let the child processes spin until they are re-used
+by another 
+.I m_fork
+call.
+If the child processes are to be re-used, the
+.I m_park_procs
+offers the most efficient use of the Sequent system, because it
+saves the CPU usage of having the processes spin and it
+saves the overhead of having to recreate processes on the
+next
+.I m_fork 
+call.
+.PP
+You must ensure that arguments passed to the subprogram
+.I func
+are either \*(lqcall-by-value\*(rq arguments or addresses
+of data in shared memory.
+They must not be addresses in the parent's private data
+segment.
+.SH ERRORS
+The
+.I m_fork
+call fails and no child processes are created if one of the
+following error conditions occurs:
+.TP 15
+[EINVAL]
+This call to 
+.I m_fork
+is nested within a previous call.
+.TP 15
+[EAGAIN]
+The 
+.I m_fork
+call would exceed
+.IR nproc ,
+the system's limit on the total number of
+executing processes.
+.TP 15
+[EAGAIN]
+The 
+.I m_fork
+call would exceed 
+.IR maxuprc ,
+the system's limit on executing processes
+for a single user.
+.PP
+.SH "NOTES"
+.I m_fork
+and
+.I fork
+are not compatible and should not be used together in the same program.
+.PP
+Each call to
+.I m_fork
+resets the global counter (see
+.IR m_next (3P)).
+.SH "SEE ALSO"
+getrlimit(2), shmalloc(3), brk(3P), m_set_procs(3P), m_kill_procs(3P),
+m_next(3P), \f2Guide to Parallel Programming\fP

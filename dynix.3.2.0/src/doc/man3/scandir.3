@@ -1,0 +1,143 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: scandir.3 1.6 1991/09/25 17:34:10 $
+.TH SCANDIR 3 "\*(V)" "4BSD"
+.SH NAME
+scandir, alphasort \- scan a directory
+.SH SYNOPSIS
+.nf
+.B #include <sys/types.h>
+.B #include <sys/dir.h>
+.B extern int scandir();
+.B extern int alphasort();
+.PP
+.B scandir(dirname, namelist, select, compare)
+.B char *dirname;
+.B struct direct ***namelist;
+.B int (*select)();
+.B int (*compare)();
+.PP
+.B alphasort(d1, d2)
+.B struct direct **d1, **d2;
+.fi
+.SH DESCRIPTION
+.I Scandir
+reads the directory
+.I dirname
+and builds an array of pointers to directory
+entries using
+.IR malloc (3).
+.I Scandir
+fills in the pointer
+.IR namelist
+so that it points to the first element of the array, and
+returns the number of entries in the array.  You must define
+a pointer to pointer to
+.I "struct direct"
+and pass the address to
+.I scandir
+for this to work.
+.PP
+The
+.I select
+parameter is a pointer to a user supplied function called by
+.I scandir
+to select which entries are to be included in the array.
+The select routine is passed a
+pointer to a directory entry (see
+.IR /usr/include/sys/dir.h)
+and should return a non-zero
+value if the directory entry is to be included in the array.
+If
+.I select
+is the null function pointer ((int (*)())0), then all the directory
+entries will be included.
+.PP
+The
+.I compare
+parameter is a pointer to a user supplied function which is passed to
+.IR qsort (3)
+to sort the completed array. If this pointer is the null function pointer
+((int (*)()0), the array is not sorted.
+.I Alphasort
+is a routine which can be used for the
+.I compare
+parameter to sort the array alphabetically.
+.PP
+The memory allocated for the array can be deallocated with
+.I free
+(see
+.IR malloc (3))
+by freeing each pointer in the array and the array itself.
+.SH DIAGNOSTICS
+.I Scandir
+returns \-1 if the directory cannot be opened for reading or if
+.IR malloc (3)
+cannot allocate enough memory to hold all the data structures.
+.SH "EXAMPLES"
+.PP
+The following program takes a single argument and lists all files
+in the current directory (in alphabetical order) that are
+prefixed with the given argument.  If you give it the empty string
+e.g. "", it will list all the files in the current directory.
+.br
+.sp 1
+.nf
+#include <sys/types.h>
+#include <sys/dir.h>
+#include <stdio.h>
+extern int scandir(), alphasort();
+
+static char *pcPrefix;     /* select only files with this prefix   */
+
+/*
+ * select only files that begin with the prefix specified by pcPrefix
+ */
+static int
+SelectFiles(pSD)
+        struct direct *pSD;
+{
+        return 0 == strncmp(pcPrefix, pSD->d_name, strlen(pcPrefix));
+}
+
+int
+main(argc, argv)
+        int argc;
+        char **argv;
+{
+        register int i;
+        auto struct direct **ppSD;
+        static char acFileName[] = ".";
+        int iCount;
+
+        if (2 != argc) {
+                fprintf(stderr, "Usage: %s fileprefix\en", argv[0]);
+                exit(1);
+        }
+        pcPrefix = argv[1];
+        if (-1 == (iCount = scandir(acFileName, & ppSD, SelectFiles, alphasort))) {
+                perror(acFileName);
+                exit(2);
+        }
+        for (i = 0; i < iCount; ++i) {  /* print and free each entry    */
+                printf("%s\en", ppSD[i]->d_name);
+                free((char *)ppSD[i]);
+        }
+        free((char *)ppSD);             /* free the array               */
+        exit(0);
+}
+.fi
+.SH "SEE ALSO"
+directory(3),
+malloc(3),
+qsort(3),
+dir(5)

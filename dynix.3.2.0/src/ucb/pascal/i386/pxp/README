@@ -1,0 +1,3 @@
+This directory contains most of the source code for pxp, the Pascal execution
+profiler.  Some of the source code is shared with the first pass of the 
+Berkeley Pascal compiler (pc0), and may be found in the directory ../src.

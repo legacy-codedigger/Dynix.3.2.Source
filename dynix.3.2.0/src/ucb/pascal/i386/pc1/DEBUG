@@ -1,0 +1,36 @@
+WHAT THE DEBUG FLAGS MEAN:
+
+-a:	From rallo(), print the address of the tree being worked on for
+	the purpose of allocating registers, and indicate what this
+	tree's requirements have been determined to be.
+
+-e:	Print the expression tree at useful places, e.g. when an
+	expression appears in the intermediate code file as a
+	statement, or just before store() is called in codgen().
+
+-l:	Print line number and file name at the end of every statement.
+
+-o:	Print the expression tree when order() is called, and whenever
+	the loop in order() takes us to the top after a rewrite.  Also
+	prints the tree with extra info when a rewrite is forced due
+	lack of a matching template.
+
+-r:	Identify the register being worked on and what's in it and
+	sometimes why it's being worked on, from rfree(), rbusy() and
+	reclaim().
+
+-s:	From tshape(), print the address of the given node and the
+	shape that it's being tested against.  The opcode for the node
+	is also printed.
+
+-t:	From ttype(), print the node type and the type template which
+	the node is being tested against.
+
+-u:	Previously used to debug the Sethi-Ullman algorithm, currently
+	defunct.
+
+-v:	Report on multi-level tree matching.  Very verbose.
+
+-x:	Prints intermediate code instructions in mainp2(); also used to
+	debug zzzcode(), the routine that does specialized template
+	interpretation.

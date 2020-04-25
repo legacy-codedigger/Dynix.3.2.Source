@@ -1,0 +1,218 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: autoconf.4 1.8 1991/05/24 01:42:04 $
+.TH AUTOCONF 4 "\*(V)" "4BSD"
+.SH NAME
+autoconf \- diagnostics from the DYNIX autoconfiguration code
+.SH DESCRIPTION
+When DYNIX bootstraps, it probes the machine it is running
+on and locates controllers, drives, and other devices, printing out
+what it finds on the console.  This process is driven by a system
+configuration table which is processed by
+.IR config (8)
+and compiled into each kernel.
+.PP
+Devices in SB8000 backplane slots are noted (processor boards,
+memory controllers, SCED controllers, SSM controllers and MULTIBUS adaptors).
+Devices which are deconfigured, or which failed powerup diagnostics,
+are noted also.
+.PP
+Devices plugged into the SB8000 backplane are located by
+a very deterministic procedure using each board's SLIC to determine
+board types.
+.PP
+MULTIBUS, SCED SCSI or SSM SCSI devices are 
+located by probing to see if their control-status
+registers (or target adapters and units) respond.
+If not, they are reported as not found.
+.PP
+A generic system may be built which allows the user to pick
+its root device at boot time.
+If such a system is booted with the RB_ASKNAME option of (see
+.IR reboot (2)),
+then the name of the root device is read from the console terminal at boot
+time (as part of the boot string), and any available device may be used.
+.SH SEE ALSO
+intro(4), config(8)
+.SH DIAGNOSTICS
+In general, DYNIX reports the SLIC id number of each of the boards
+it finds in the SB8000 bus:
+
+.B "%d processors; slic %d %d ..."
+The processors listed in this message are available
+for use by DYNIX.
+.PP
+.B "Not using processors: slic %d %d ..."
+The processors listed in this message
+are either deconfigured, or failed powerup diagnostics.
+.PP
+.B "%d MULTIBUS Adapters; slic %d %d ..."
+The MULTIBUS adapters listed in this message were found in the system.
+.PP
+.B "No MULTIBUS Adapters"
+No MULTIBUS adapters were found in the system.
+.PP
+.B "Not using MULTIBUS Adapters: slic %d %d ..."
+The listed MULTIBUS adapters were not used by DYNIX
+because they were deconfigured or failed powerup diagnostics.
+.PP
+.B "Not using memory boards: slic %d %d..."
+The listed memory boards were not used; they were either deconfigured
+or failed powerup diagnostics.
+.PP
+.B "Reserved memory has a hole; no reserved memory allocated."
+The physical memory space reserved
+by the configuration variable
+.I resphysmem
+contains a hole.
+The existence of this hole has caused
+DYNIX to ignore the request to
+reserve physical memory.
+.PP
+.B "Not enough memory to reserve 0x%x bytes."
+The system doesn't have enough physical memory
+available to reserve the physical memory
+requested by the configuration variable 
+.I resphysmem.
+DYNIX has ignored the request to
+reserve physical memory.
+.PP
+.B "Physical memory [0x%x,0x%x] reserved for custom use."
+The kernel has reserved physical memory
+as requested by the 
+.I resphsysmem
+configuration variable.
+.PP
+.B "%d SCSI/Ether controllers; slic %d %d ..."
+The listed SCSI/Ether controllers were found in the system.
+.PP
+.B "%d SSM controllers; slic %d %d ..."
+The listed SSM controllers were found in the system.
+.PP
+.B "Not using SCSI/Ether Controllers: slic %d %d ..."
+The listed SCSI/Ether controllers were deconfigured or failed
+powerup diagnostics.
+.PP
+.B "Not using System Services Modules: slic %d %d ..."
+The listed SSM controllers were deconfigured or failed
+powerup diagnostics.
+.PP
+.B "Pseudo devices:"
+The kind and number of pseudo devices
+(those for which there is no corresponding physical device) are listed.
+.sp .3
+.in 5m
+.RS
+.B "%d pty"
+Pseudo-terminals used by networking and some utilities.
+.sp .3
+.B "%d pmap"
+Pseudo-driver that 
+allows a user to map physical addresses into process's virtual address
+space.
+.RE
+.PP
+.B "MBAd DMA window at 0x%x."
+The physical address of the quarter-megabyte MULTIBUS adapter I/O window
+in the megabyte MULTIBUS address space.
+.PP
+.B "%s%d found at MBAd%d csr 0x%x, bin %d vec %d MB level %d, %d maps at %d"
+This message reports the existence of a MULTIBUS controller
+found on a MULTIBUS Adapter.
+Some fields in the above message may be missing for some devices.
+For example,
+.br
+"zt0\ at\ MBAd0\ csr\ 0x200,\ bin\ 5\ vec\ 0\ MB\ level\ 7,\ 34\ maps\ at\ 0"
+.br
+says that a Xylogics tape controller was found on MULTIBUS adapter 0,
+at I/O address 0x200.
+It interrupts DYNIX on bin 5 with interrupt vector 0.
+On the MULTIBUS, it interrupts on MULTIBUS level 7.
+It needed 34 MULTIBUS adapter map registers, maps 0 through 33.
+.PP
+.B "%s%d at MBAd%d csr 0x%x: MB level %d overlaps previous use."
+The specified MULTIBUS controller has a MULTIBUS interrupt level
+that conflicts with another controller on the same MULTIBUS adapter.
+.PP
+.B "%s%d at MBAd%d csr 0x%x: can't fit %d map registers."
+The specified MULTIBUS controller requested more map registers
+than were available on the specified MULTIBUS adapter.
+.PP
+.B "%s%d not found."
+The specified controller (e.g. "zt0") was not found in the MULTIBUS.
+.PP
+.B "%s%d found at SEC%d target adapter %d unit %d bin %d vec %d input q %d output q %d"
+This message describes a device found on a SCSI/Ether controller.
+Some fields may be missing for some devices.
+As an example,
+.br
+``sd0 found at SEC0 target adapter 6 unit 0 bin 5 vec 0 inputq 50 output q 50''
+.br
+describes a SCSI disk found on the SCSI bus at target adapter 6, logical unit 0.
+It will interrupt DYNIX on interrupt bin 5 with vector 0.
+The length of the device input queue (for commands to the SCSI/Ether
+controller) and output queue (for acknowledgements from the SCSI/Ether
+controller) are 50 entries.
+As another example,
+.br
+``se0 found at SEC0 bin 5 vec 3 inputq 200 outputq 200''
+.br
+and
+.br
+``se1 found at SEC0 bin 5 vec 4 inputq 10 outputq 10''
+.br
+are the lines describing the Ethernet interface on the
+SCSI/Ether controller.
+The first line describes the Ethernet input device; the second
+the Ethernet output device.
+.PP
+.B "%s%d not found."
+The listed SCSI/Ether device was not found in the system.
+.PP
+.B "Too many vectors in bin %d."
+An internal consistency check failed; there were too many
+interrupts allocated to the interrupt bin listed in the message.
+.PP
+.B "WARNING: Swap partition[%d], dev=(%d,%d) does not exist."
+The swap partition listed in the message exists on a disk
+that was not found in the system.
+.PP
+.B "illegal config: %s device can't be probed for wildcards."
+A device with no probe routine was wildcarded in the configuration.
+With no probe routine, there is no way to attempt to find
+the specified device.
+.PP
+.B "SEC_probe: invalid config: non-scsi device has unit wildcard"
+SCSI/Ether devices that are not on the SCSI bus should not have
+unit numbers wildcarded in the configuration file.
+.PP
+.B "%s%d: ioconf.c error, already initialized: target %d unit %d"
+An error exists in the ioconf.c configuration file.
+Somehow, DYNIX attempted to initialize the same device on
+the SCSI/Ether controller twice.
+.PP
+.B "can't initialize SCSI/Ether controller %d: status %d"
+The SCSI/Ether controller listed in the message could not
+be initialized.
+This may be a sign of a hardware problem in the SCSI/Ether
+controller.
+.PP
+.B "MBAd%d: can't map c-list (%d maps needed, %d available)."
+There were not enough maps available to map terminal c-lists
+in the specified MULTIBUS adapter.
+.PP
+.B "c-list @ MBAd%d: %d maps @ %d."
+This message describes the number and location of MULTIBUS
+adapter maps allocated for terminal character lists (c-lists).
+.PP
+.B "MBAd%d: %d maps unused."
+Some MULTIBUS adapter map registers were unused.

@@ -1,0 +1,33 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: mkdir.1 1.4 86/05/13 $
+.TH MKDIR 1 "\*(V)" "7th Edition"
+.SH NAME
+mkdir \- make a directory
+.SH SYNOPSIS
+.B mkdir
+dirname ...
+.SH DESCRIPTION
+.I Mkdir
+creates specified directories in mode 777.
+Standard entries,
+.RB ` . ',
+for the directory itself, and 
+.lg 0
+.BR ` .. '
+.lg 1
+for its parent, are made automatically.
+.PP
+.I Mkdir
+requires write permission in the parent directory.
+.SH "SEE ALSO"
+rmdir(1)

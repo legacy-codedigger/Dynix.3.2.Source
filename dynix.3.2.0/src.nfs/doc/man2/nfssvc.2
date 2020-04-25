@@ -1,0 +1,44 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: nfssvc.2 1.6 87/06/16 $
+.\" @(#)nfssvc.2 1.1 85/12/28 SMI;
+.TH NFSSVC 2 "\*(V)" "4BSD"
+.SH NAME
+nfssvc, async_daemon \- NFS daemons
+.SH SYNOPSIS
+.nf
+\f3nfssvc(sock)
+int sock;
+.sp
+async_daemon()\f1
+.\".IX  nfssvc  ""  \f2nfssvc\fP
+.\".IX  "socket operations"  nfssvc  ""  \f2nfssvc\fP
+.\".IX  "network file system daemons"
+.\".IX  daemons  "network file system"
+.\".IX  async_daemon  ""  \f2async_daemon\fP
+.\".IX  "socket operations"  async_daemon  ""  \f2async_daemon\fP
+.SH DESCRIPTION
+.I Nfssvc
+starts an NFS
+daemon listening on socket
+.IR sock .
+The socket must be AF_INET, and SOCK_DGRAM (protocol UDP/IP).
+The system call will return only if the process is killed.
+.LP
+.I Async_daemon
+implements the NFS daemon
+that handles asynchronous I/O for an NFS client.
+The system call never returns.
+.SH "SEE ALSO"
+nfs(4), mountd(8)
+.SH BUGS
+These two system calls allow kernel processes to have user context.

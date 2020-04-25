@@ -1,0 +1,1519 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.\" $Header: learn 1.4 86/05/21 $
+.nr PO 1.25i
+.nr HM 1.5i
+.nr FM 1i
+.nr %
+.LP
+.ll 5i
+.nr LL 5i
+.NP
+.sp 4
+.sp 1i
+.ce 2
+\f3\s+2LEARN - Computer-Aided Instruction on UNIX
+(Second Edition)\s0\f
+.sp
+.ce 4
+.I
+Brian W. Kernighan
+.sp
+Michael E. Lesk
+.R
+.sp
+.ce 2
+Bell Laboratories
+Murray Hill, New Jersey 07974
+.sp 3
+.ce
+.I
+ABSTRACT
+.R
+.sp
+.LP
+This paper describes the second version of the 
+.I learn
+program for interpreting CAI scripts on the \s-2UNIX\(dg\s+2
+.FS
+\(dgUNIX is a trademark of Bell Laboratories.
+.FE
+operating system, and a set of scripts that provide a
+computerized introduction to the system.
+.PP
+Six current scripts cover basic commands and file
+handling, the editor, additional file handling commands,
+the
+.I eqn
+program for mathematical typing, the "-ms" package of
+formatting macros, and an introduction to the
+.I C
+programming language. These scripts now include a total
+of about 530 lessons.
+.PP
+Many users from a wide variety of backgrounds have used
+.I learn
+to acquire basic \s-2UNIX\s+2 skills.
+Most usage involves the first two scripts, an introduction to files and commands,
+and the text editor.
+.PP
+The second version of 
+.I learn
+is about four times faster than the previous one in CPU
+utilization, and is much faster in perceived time because
+of better overlap of computing and printing. It also
+requires less file space than the first version. Many of
+the lessons have been revised; new material has been
+added to reflect changes and enhancements in the \s-2UNIX\s+2
+system itself. Script-writing is also easier because of
+revisions to the script language.
+.sp 5v
+January 30, 1979
+.bp
+.nr PO 1.25i
+.nr % 1
+.pn 
+.ll 6i
+.nr LL 6i
+.ND
+.sp 4
+.ce 2
+.
+\f3\s+2LEARN - Computer-Aided Instruction on UNIX
+(Second Edition)\s0\f
+.sp
+.ce 4
+.I
+Brian W. Kernighan
+.sp
+Michael E. Lesk
+.R
+.sp
+.ce 2
+Bell Laboratories
+Murray Hill, New Jersey 07974
+.sp 3
+.ll 6i
+.nr LL 6i
+.B
+1.  Introduction
+.R
+.PP
+.I Learn
+is a driver for CAI scripts. It is intended to permit the
+easy composition of lessons and lesson fragments to teach
+people computer skills.  Since it is teaching the same
+system on which it is implemented, it makes direct use of
+\s-2UNIX\(dg\s+2 facilities to create a controlled \s-2UNIX\s+2 environment.
+.FS
+\(dgUNIX is a trademark of Bell Laboratories.
+.FE
+The system includes two main parts: (1) a driver that
+interprets the lesson scripts; and (2) the lesson scripts
+themselves. At present there are six scripts:
+.in +0.5i
+.IP --
+basic file handling commands
+.IP --
+the \s-2UNIX\s+2 text editor
+.I ed
+.IP --
+advanced file handling
+.IP --
+the
+.I eqn
+language for typing mathematics
+.IP --
+the "-ms" macro package for document formatting
+.IP --
+the 
+.I C
+programming language.
+.PP
+The purported advantages of CAI scripts for training in
+computer skills include the following:
+.IP (a)
+students are forced to perform the exercises that are
+in fact the basis of training in any case;
+.IP (b)
+students receive immediate feedback and confirmation
+of progress;
+.IP (c)
+students may progress at their own rate;
+.IP (d)
+no schedule requirements are imposed; students may
+study at any time convenient for them;
+.IP (e)
+the lessons may be improved individually and the
+improvements are immediately available to new users;
+.IP (f)
+since the student has access to a computer for the
+CAI script there is a place to do exercises;
+.IP (g)
+the use of high technology will improve student
+motivation and the interest of their management.
+.in -0.5i
+.LP
+Opposed to this, of course, is the absence of anyone to
+whom the student may direct questions. If CAI is used
+without a "counselor" or other assistance, it should be
+properly compared to a textbook, lecture series, or taped
+course, rather than to a seminar. CAI has been used for
+many years in a variety of educational areas.\**\**\** The use of a
+computer to teach itself, however, offers unique
+advantages. The skills developed to get through the
+script are exactly those needed to use the computer;
+there is no wasted effort.
+.PP
+The scripts written so far are based on some familiar
+assumptions about education; these assumptions are
+outlined in the next section. The remaining sections
+describe the operation of the script driver and the
+particular scripts now available. The driver puts few
+restrictions on the script writer, but the current
+scripts are of a rather rigid and stereotyped form in
+accordance with the theory in the next section and
+practical limitations.
+.LP
+.B
+2.  Educational Assumptions and Design.
+.R
+.PP
+First, the way to teach people to do something is to have
+them do it. Scripts should not contain long pieces of
+explanation; they should instead frequently ask the
+student to do some task. So teaching is always by
+example: the typical script fragment shows a small example
+of some technique and then asks the user to either repeat
+that example or produce a variation on it. All are
+intended to be easy enough that most students will get most
+questions right, reinforcing the desired behavior.
+.PP
+Most lessons fall into one of three types. The simplest
+presents a lesson and asks for a yes or no answer to a
+question. The student is given a chance to experiment
+before replying. The script checks for the correct reply.
+Problems of this form are sparingly used.
+.PP
+The second type asks for a word or number as an answer.
+For example a lesson on files might say
+.PP
+.IP
+.I
+How many files are there in the current directory?  Type
+"answer N", where N is the number of files.
+.R
+.LP
+The student is expected to respond (perhaps after
+experimenting) with
+.IP
+.I
+answer 17
+.R
+.LP
+or whatever. Surprisingly often, however, the idea of
+substitutable argument (i.e., replacing
+.I N
+by 17) is
+difficult for non-programmer students, so the first few
+such lessons need real care. 
+.PP
+The third type of lesson is open-ended -- a task is set
+for the student, appropriate parts of the input or output
+are monitored, and the student types
+.I ready
+when the task is done. Figure 1 shows a sample dialog
+that illustrates the last of these, using two lessons
+about the
+.I cat
+(concatenate, i.e., print) command taken from early in
+the script that teaches file handling. Most
+.I learn
+lessons are of this form.
+.PP
+After each correct response the computer congratulates
+the student and indicates the lesson number that has just
+been completed, permitting the student to restart the
+script after that lesson. If the answer is wrong, the
+student is offered a chance to repeat the lesson. The
+"speed" rating of the student (explained in section 5) is
+given after the lesson number when the lesson is completed
+successfully; it is printed only for the aid of script
+authors checking out possible errors in the lessons.
+.PP
+It is assumed that there is no foolproof way to determine
+if the student truly "understands" what he or she is
+doing; accordingly, the current
+.I learn
+scripts only measure performance, not comprehension. If
+the student can perform a given task, that is deemed to
+be "learning."\**
+.PP
+The main point of using the computer is that what the
+student does is checked for correctness immediately.
+Unlike many CAI scripts, however, these scripts provide
+few facilities for dealing with wrong answers. In
+practice, if most of the answers are not right the script
+is a failure; the universal solution to student error is
+to provide a new, easier script. Anticipating possible
+wrong answers is an endless job, and it is really easier
+as well as better to provide a simpler script.
+.PP
+Along with this goes the assumption that anything can be
+taught to anybody if it is broken into sufficiently small
+pieces. Anything not absorbed in a single chunk is just
+subdivided.
+.PP
+To avoid boring the faster students, however, an effort is
+.KF
+.TS
+center, box;
+L.
+Figure 1:  Sample dialog from basic files script
+
+(Student responses in italics: '$' is the prompt)
+
+A file can be printed on your terminal
+by using the "cat" command. Just say
+"cat file" where "file" is the file name.
+For example, there is a file named
+"food" in this directory. List it
+by saying "cat food"; then type "ready".
+$ \f2cat food\f1
+this is the file named food.
+$ \f2ready\f1
+
+Good. Lesson 3.3a (1)
+
+Of course, you can print any file with "cat".
+In particular, it is common to first use
+"ls" to find the name of a file and then "cat"
+to print it. Note the difference between
+"ls", which tells you the name of the file,
+and "cat", which tells you the contents.
+One file in the current directory is named
+for a President. Print the file, then type "ready".
+$ \f2cat President\f1
+cat: can't open President
+$ \f2ready\f1
+
+Sorry, that's not right. Do you want to try again? 
+\f2yes\f1
+Try the problem again.
+$ \f2ls\f1
+\.ocopy
+X1
+roosevelt
+$ \f2cat roosevelt\f1
+this file is named roosevelt
+and contains three lines of
+text.
+$ \f2ready\f1
+
+Good. Lesson 3.3b (0)
+
+The "cat" command can also print several files
+at once. In fact, it is named "cat" as an abbreviation
+for "concatenate"...
+.TE
+.KE
+made in the files and editor scripts to provide three
+tracks of different difficulty. The fastest sequence of
+lessons is aimed at roughly the bulk and speed of a
+typical tutorial manual and should be adequate for review
+and for well-prepared students. The next track is
+intended for most users and is roughly twice as long. Typically, for example, the fast track might present an
+idea and ask for a variation on the example shown; the
+normal track will first ask the student to repeat the
+example that was shown before attempting a variation. The
+third and slowest track, which is often three or four
+times the length of the first track, is intended to be
+adequate for anyone. (The lessons of Figure 1 are from
+the third track.) The multiple tracks also mean that a
+student repeating a course is unlikely to hit the same
+series of lessons; this makes it profitable for a shaky
+user to back up and try again, and many students have done
+so. 
+.PP
+The tracks are not completely distinct, however.
+Depending on the number of correct answers the student has
+given for the last few lessons, the program may switch
+tracks. The driver is actually capable of following an
+arbitrary directed graph of lesson sequences, as
+discussed in section 5. Some more structured arrangement,
+however, is used in all current scripts to aid the script
+writer in organizing the material into lessons. It is
+sufficiently difficult to write lessons that the
+three-track theory is not followed very closely except in
+the files and editor scripts. Accordingly, in some cases,
+the fast track is produced merely by skipping lessons
+from the slower track. In others, there is essentially
+only one track.
+.PP
+The main reason for using the 
+.I learn
+program rather than simply writing the same material as a
+workbook is not the selection of tracks, but actual
+hands-on experience. Learning by doing is much more
+effective than pencil and paper exercises.
+.PP
+.I Learn
+also provides a mechanical check on performance. The
+first version in fact would not let the student proceed
+unless it received correct answers to the questions it
+set and it would not tell a student the right answer.
+This somewhat Draconian approach has been moderated in
+version 2. Lessons are sometimes badly worded or even
+just plain wrong; in such cases, the student has no
+recourse. But if a student is simply unable to complete
+one lesson, that should not prevent access to the rest.
+Accordingly, the current version of
+.I learn
+allows the student to skip a lesson that he cannot pass;
+a "no" answer to the "Do you want to try again?" question in
+Figure 1 will pass to the next lesson. It is still true
+that 
+.I learn
+will not tell the student the right answer.
+.PP
+Of course, there are valid objections to the assumptions
+above. In particular, some students may object to not
+understanding what they are doing; and the procedure of
+smashing everything into small pieces may provoke the
+retort "you can't cross a ditch in two jumps." Since
+writing CAI scripts is considerably more tedious than
+ordinary manuals, however, it is safe to assume that
+there will always be alternatives to the scripts as a way
+of learning. In fact, for a reference manual of three to
+four pages it would not be surprising to have a tutorial
+manual of twenty pages and a (multi-track) script of 100
+pages. Thus the reference manual will exist long before
+the scripts.
+
+.B
+3. Scripts.
+.R
+.PP
+As mentioned above, the present scripts try at most to
+follow a three-track theory. Thus little of the potential
+complexity of the directed graph is employed, since care
+must be taken in lesson construction to see that every
+necessary fact is presented in every possible path
+through the units.
+.PP
+In most existing courses, the first few lessons are
+devoted to checking prerequisites. For example, before
+the student is allowed to proceed through the editor
+script the script verifies that the student understands
+files and is able to type. It is felt that the sooner
+lack of student preparation is detected, the easier it
+will be on the student. Anyone proceeding through the
+scripts should be getting mostly correct answers;
+otherwise, the system will be unsatisfactory both because
+bad habits are being learned and because the scripts make
+little effort to deal with wrong answers. Unprepared
+students should not be encouraged to continue with
+scripts.
+.PP
+There are some preliminary items which the student must
+know before any scripts can be tried. In particular, the
+student must know how to connect to a \s-2UNIX\s+2 system, set
+the terminal properly, log in, and execute simple
+commands (e.g., 
+.I learn
+itself). In addition, the character erase and line kill
+conventions (# and @) should be shown. It is hard to see
+how much this could be taught by computer-aided
+instruction, since a student who does not know these
+basic skills will not be able to run the learning
+program. A brief description on paper is provided (see
+Appendix A), although assistance will be needed for the
+first few minutes. This assistance, however, need not be
+highly skilled.
+.PP
+The first script in the current set deals with files. It
+assumes the basic knowledge above and teaches the student
+about the 
+.I
+ls, cat, mv, rm, cp
+.R
+and
+.I diff
+commands. It also deals the abbreviation characters *, ?,
+and [ ] in file names. It does not cover pipes or I/O
+redirection, nor does it present the many options on the
+.I ls
+command.
+.PP
+This script contains 31 lessons in the fast track; two
+are intended as prerequisite checks, seven are review
+exercises. There are a total of 75 lessons in all three
+tracks, and the instructional passages typed at the
+student to begin each lesson total 4,476 words. The
+average lesson thus begins with a 60-word message. In
+general, the fast track lessons have somewhat longer
+introductions, and the slow tracks have somewhat shorter
+ones. The longest message is 144 words and the shortest
+is 14.
+.PP
+The second script trains students in the use of the
+context editor
+.I ed,
+a sophisticated editor using regular expressions and
+searching.\** All editor features except encryption, mark
+names and ';' in addressing are covered. The fast track
+contains two prerequisite checks, 93 lessons, and a
+review lesson. It is supplemented by 146 additional
+lessons in other tracks.
+.PP
+A comparison of sizes may be of interest. The
+.I ed
+description in the reference manual is 2,572 words long.
+The 
+.I ed
+tutorial\** is 6,138 words long. The fast track through the 
+.I ed
+script is 7,407 words of explanatory messages, and the
+total 
+.I ed
+script, 242 lessons, has 15,615 words. The average 
+.I ed
+lesson is thus also about 60 words; the largest is 171
+words and the smallest 10. The original
+.I ed
+script represents about three man-weeks of effort.
+.PP
+The advanced file handling script deals with
+.I ls
+options, I/O diversion, pipes, and supporting programs
+like
+.I
+pr, wc, tail, spell
+.R
+and
+.I grep.
+(The basic file handling
+script is a prerequisite.) It is not as refined as the
+first two scripts; this is reflected at least partly in
+the fact that it provides much less of a full three-track
+sequence than they do. On the other hand, since it is
+perceived as "advanced", it is hoped that the student
+will have somewhat more sophistication and be better able
+to cope with it at a reasonably high level of
+performance.
+.PP
+A fourth script covers the 
+.I eqn
+language for typing mathematics. This script must be run
+on a terminal capable of printing mathematics, for
+instance the DASI 300 and similar Diablo-based terminals,
+or the nearly extinct Model 37 teletype. Again, this
+script is relatively short of tracks: of 76 lessons, only
+17 are in the second track and two in the third track.
+Most of these provide additional practice for students
+who are having trouble in the first track.
+.PP
+The
+.I -ms
+script for formatting macros is a short one-track
+only script.  The macro package it describes is no longer
+the standard, so this script will undoubtedly be
+superseeded in the future.  Furthermore, the linear style
+of a single learn script is somewhat inappropriate for
+the macros, since the macro package is composed of many
+independent features, and few users need all of them.  It
+would be better to have a selection of short lesson
+sequences dealing with the features independently.
+.PP
+The script on
+.I C
+is in a state of transition.  It was
+originally designed to follow a tutorial on
+.I C,
+but that
+document has since become obsolete.  The current script
+has been partially converted to follow the order of
+presentation in 
+.I
+The C Programming Language,\**
+.R
+but this job is not complete.  The
+.I C
+script was never
+intended to teach
+.I C;
+rather it is supposed to be a series
+of exercises for which the computer provides checking
+and (upon success) a suggested solution.
+This combination of scripts covers much of the material
+which any user will need to know to make effective use of
+the \s-2UNIX\s+2 system.  With enlargement of the advanced files
+course to include more on the command interpreter, there will be a 
+relatively complete introduction to \s-2UNIX\s+2, available via 
+.I learn.
+Although we make no pretense that 
+.I learn
+will replace other instructional materials, it should
+provide a useful supplement to existing tutorials and
+reference manuals.
+.LP
+.B
+4.  Experience with Students.
+.R
+.PP
+.I Learn
+has been installed on many different \s-2UNIX\s+2 systems. Most
+of the usage is on the first two scripts, so these are
+more thoroughly debugged and polished. As a (random)
+sample of user experience, the 
+.I learn
+program has been used at Bell Labs at Indian Hill for
+10,500 lessons in a four month period. About 3600 of
+these are in the files script, 4100 in the editor, and
+1400 in advanced files. The passing rate is about 80%,
+that is, about 4 lessons are passed for every one failed.
+There have been 86 distinct users of the files script,
+and 58 of the editor. On our system at Murray Hill, there
+have been nearly 4000 lessons over four weeks that
+include Christmas and New Year. Users have ranged in age
+from six up.
+.PP
+It is difficult to characterize typical sessions with the
+scripts; many instances exist of someone doing one or two
+lessons and then logging out, as do instances of someone
+pausing in a script for twenty minutes or more. In the
+earlier version of
+.I learn,
+the average session in the files course took 32 minutes
+and covered 23 lessons. The distribution is quite broad
+and skewed, however; the longest session was 130 minutes
+and there were five sessions shorter than five minutes.
+The average lesson took about 80 seconds. These numbers
+are roughly typical for non-programmers; a \s-2UNIX\s+2 expert
+can do the scripts at approximately 30 seconds per
+lesson, most of which is the system printing.
+.PP
+At present working through a section of the middle of the
+files script took about 1.4 seconds of processor time per
+lesson, and a system expert typing quickly took 15
+seconds of real time per lesson. A novice would probably
+take at least a minute. Thus, as a rough approximation, a
+\s-2UNIX\s+2 system could support ten students working
+simultaneously with some spare capacity.
+.LP
+.B
+5. The Script Interpreter.
+.R
+.PP
+The
+.I learn
+program itself merely interprets scripts. It provides
+facilities for the script writer to capture student
+responses and their effects, and simplifies the job of
+passing control to and recovering control from the
+student. This section describes the operation and usage
+of the driver program, and indicates what is required to
+produce a new script. Readers only interested in the
+existing scripts may skip this section.
+.PP
+The file structure used by 
+.I learn
+is shown in Figure 2. There is one parent directory
+(named 
+.I lib
+) containing the script data. Within this directory are
+subdirectories, one for each subject in which a course is
+available, one for logging (named 
+.I log),
+and one in which user subdirectories are created
+(named
+.I play).
+The subject directory contains master copies of all
+lessons, plus any supporting material for the subject. In
+a given subdirectory, each lesson is a single text file.
+Lessons are usually named systematically; the file that
+contains lesson 
+.I n
+is called
+.I Ln.
+.PP
+When
+.I learn
+is executed, it makes a private directory for the user to
+work in, within the 
+.I learn
+portion of the file system. A fresh copy of all the files
+used in each lesson (mostly data for the student to
+operate upon) is made each time a student starts a
+lesson, so the script writer may assume that everything is
+reinitialized each time a lesson is entered. The student
+directory is deleted after each session; any permanent
+records must be kept elsewhere.
+.PP
+The script writer must provide certain basic items in
+each lesson:
+.IP (1)
+the text of the lesson;
+.IP (2)
+the set-up commands to be executed before the user
+gets control;
+.IP (3)
+the data, if any, which the user is supposed to edit,
+transform, or otherwise process;
+.IP (4)
+the evaluating commands to be executed after the
+user has finished the lesson, to decide whether the
+answer is right; and
+.IP (5)
+a list of possible successor lessons.
+
+.KF
+.TS
+center, box;
+c s s s
+l l l l.
+Figure 2:  Directory structure for \fIlearn\fR
+lib	
+	play		
+		student1	
+			files for student 1...
+		student 2
+			files for student 2
+	files
+		L0.1a   lessons for files course
+		L0.1b
+		...
+	editor			...
+
+	(other courses)
+	log
+.TE
+.KE
+.LP
+.I Learn
+tries to minimize the work of bookkeeping and
+installation, so that most of the effort involved in
+script production is in planning lessons, writing
+tutorial paragraphs, and coding tests of student
+performance.
+.PP
+The basic sequence of events is as follows. First, 
+.I learn
+creates the working directory. Then, for each lesson,
+.I learn
+reads the script for the lesson and processes it a line
+at a time. The lines in the script are: (1) commands to
+the script interpreter to print something, to create
+files, to test something, etc.; (2) text to be printed or
+put in a file; (3) other lines, which are sent to the
+shell to be executed. One line in each lesson turns
+control over to the user; the user can run any UNIX
+commands. The user mode terminates when the user types
+.I
+yes, no, ready,
+.R
+or
+.I answer.
+At this point, the user's work is tested; if the lesson
+is passed, a new lesson is selected, and if not the old
+one is repeated.
+.PP
+Let us illustrate this with the script for the second
+lesson of Figure 1; this is shown in Figure 3. Lines
+which begin with 
+#
+are commands to the 
+.I learn
+script interpreter. For example,
+.PP
+.I #print
+.LP
+causes printing of any text that follows, up to the next
+line that begins with a sharp.
+.PP
+.I #printfile
+.LP
+prints the contents of
+.I file;
+it is the same as
+.I
+cat file
+.R
+but n has less overhead. Both forms of 
+.I #print
+have the added property that if a lesson is failed, the
+.I #print
+will not be executed the second time through; this avoids
+annoying the student by repeating the preamble to a
+lesson.
+.PP
+.I
+#create filename
+.R
+.LP
+creates a file of the specified name, and copies any
+subsequent text up to a 
+#
+into the file. This is used for creating and initializing
+working files and reference data for the lessons.
+.PP
+.I
+#user
+.R
+.LP
+gives control to the student; each line he or she types
+is passed to the shell for execution. The 
+.I #user
+mode is terminated when the student types one of 
+.I
+yes, no, ready
+.R
+or
+.I answer.
+At that time, the driver resumes interpretation
+of the script.
+.PP
+.I #copyin
+.sp -0.5v
+.PP
+.I #uncopyin
+.KF
+.TS
+center, box;
+L.
+Figure 3:  Sample Lesson
+
+#print
+Of course you can print any file with "cat".
+In particular, it is common to use
+"ls" to find the name of a file and then "cat"
+to print it. Note the difference between "ls", which
+tells you the name of the files,
+and "cat", which tells you the contents.
+One file in the current directory is named for
+a President. Print the file, then type "ready".
+#create roosevelt
+this file is named roosevelt
+and contains three lines of
+text.
+#copyout
+#user
+#uncopyout
+tail -3 .ocopy > X1
+#cmp X1 roosevelt
+#log
+#next
+3.2b 2
+.TE
+.KE
+.LP
+Anything the student types between these commands is
+copied into a file called
+.I .copy.
+This lets the script writer interrogate the student's
+responses upon regaining control.
+.PP
+.I #copyout
+.PP
+.I #uncopyout
+.LP
+Between these commands, any material typed at the student
+by any program is copied to the file 
+.I .ocopy.
+This lets the script writer interrogate the effect of
+what the student typed, which true believers in the
+performance theory of learning usually prefer to the
+student's actual input.
+.PP
+.I #pipe
+.PP
+.I #unpipe
+.LP
+Normally the student input and the script commands are
+fed to the \s-2UNIX\s+2 command interpreter ( the "shell") one
+line at a time. This won't do if, for example, a sequence
+of editor commands is provided, since the input to the
+editor must be handed to the editor, not to the shell.
+Accordingly, the material between 
+.I #pipe
+and
+.I #unpipe
+commands is fed continuously through a pipe so that such
+sequences work. If
+.I copyout
+is also desired the 
+.I copyout
+brackets must include the 
+.I pipe
+brackets.
+.PP
+There are several commands for setting status after the
+student has attempted the lesson.
+.PP
+.I
+#cmp file1 file2
+.R
+.LP
+is an in-line implementation of
+.I cmp,
+which compares two
+files for identity.
+.PP
+.I
+#match stuff
+.R
+.LP
+The last line of the student's input is compared to
+.I stuff,
+and the success or fail status is set according to it.
+Extraneous things like the word
+.I answer
+are striped before the comparison is made. There may be
+several 
+.I #match
+lines; this provides a convenient mechanism for handling
+multiple "right" answers. Any text up to a 
+#
+on subsequent lines after a successful
+.I #match
+is printed; this is illustrated in Figure 4, another
+sample lesson.
+.PP
+.I
+#bad stuff
+.R
+.KF
+.TS
+center, box;
+L.
+Figure 4:  Another Sample Lesson
+
+#print
+What command will move the current line
+to the end of the file? Type
+"answer COMMAND", where COMMAND is the command.
+#copyin
+#user
+#uncopyin
+#match m$
+#match .m$
+"m$" is easier.
+#log
+#next
+63.1d 10
+
+.TE
+.KE
+.LP
+This is similar to 
+.I #match,
+except that it corresponds to specific failure answers;
+this can be used to produce hints for particular wrong
+answers that have been anticipated by the scriptwriter.
+.PP
+.I #succeed
+.sp -0.5v
+.PP
+.I #fail
+.LP
+print a message upon success or failure (as
+determined by some previous mechanism).
+.PP
+When the student types one of the "commands"
+.I
+yes, no, ready
+.R
+or
+.I answer,
+the driver terminates the
+.I #user
+command, and evaluation of the student's work can begin.
+This can be done either by the built-in commands above,
+such as
+.I #match
+and 
+.I #cmp,
+or by status returned by normal \s-2UNIX\s+2 commands, typically
+.I grep
+and 
+.I test.
+The last command should return status true (0) if the
+task was done successfully and false (nonzero) otherwise;
+this status return tells the driver whether or not the
+student has successfully passed the lesson.
+.PP
+Performance can be logged:
+.PP
+.I
+#log file
+.R
+.LP
+writes the date, lesson, user name and speed rating, and
+a success/failure indication on
+.I file.
+The command
+.PP
+.I #log
+.LP
+by itself writes the logging information in the logging
+directory within the 
+.I learn
+hierarchy, and is the normal form.
+.PP
+.I # next
+.LP
+is followed by a few lines, each with a successor name
+and an optional speed rating on it. A typical set might
+read
+.PP
+25.1a 10
+.PP
+.sp -0.5v
+25.2a 5
+.PP
+.sp -0.5v
+25.3a 2
+.LP
+indicating that unit 25.1a is a suitable follow-on lesson
+for students with a speedrating of 10 units, 25.2a for
+student with speed near 5, and 25.3a for speed near 2.
+Speedratings are maintained for each session with a
+student; the rating is increased by one each time the
+student gets a lesson right and decreased by four each
+time the student gets a lesson wrong. Thus the driver
+tries to maintain a level such that the users get 80%
+right answers. The maximum rating is limited to 10 and
+the minimum to 0. The initial rating is zero unless the
+student specifies a different rating when starting a
+session.
+.PP
+If the student passes a lesson, a new lesson is selected
+and the process repeats. If the student fails, a false
+status is returned and the program reverts to the
+previous lesson and tries another alternative. If it can
+not find another alternative, it skips forward a lesson.
+The student can terminate a session at any time by typing
+.I bye,
+which causes a graceful exit from
+.I learn.
+Hanging up is the usual novice's way out.
+.PP
+The lessons may form an arbitrary directed graph,
+although the present program imposes a limitation on
+cycles in that it will not present a lesson twice in the
+same session. If the student is unable to answer one of
+the exercises correctly, the driver searches for a
+previous lesson with a set of alternatives as successors
+(following the
+.I #next
+line). From the previous lesson with alternatives one
+route was taken earlier; the program simply tries a
+different one.
+.PP
+It is perfectly possible to write sophisticated scripts
+that evaluate the student's speed of response, or try to
+estimate the elegance of the answer, or provide detailed
+analysis of wrong answers. Lesson writing is so tedious
+already, however, that most of these abilities are likely
+to go unused.
+.PP
+The driver program depends heavily on features of the
+\s-2UNIX\s+2 system that are not available on many other
+operating systems. These include the ease of manipulating
+files and directories, file redirection, the ability to
+use the command interpreter as just another program (even
+in a pipeline), command status testing and branching, the
+abilityn to catch signals like interrupts, and of course
+the pipeline mechanism itself. Although some parts of
+.I learn
+might be transferable to other systems, some generality
+will probably be lost.
+.PP
+A bit of history: The first version of 
+.I learn
+had fewer built-in commands in the driver program, and
+made more use of the facilities of the \s-2UNIX\s+2 system
+itself. For example, file comparison was done by creating
+a 
+.I cmp
+process rather than comparing the two files within
+.I learn.
+Lessons were not stored as text files, but as archives.
+There was no concept of the in-line document; even
+.I #print
+had to be followed by a file name. Thus the
+initialization for each lesson was to extract the archive
+into the working directory (typically 4-8 files), then
+.I #print
+the lesson text.
+.PP
+The combination of such things made
+.I learn
+rather slow and demanding of system resources. The new
+version is about 4 or 5 times faster, because fewer files
+amd processes are created. Furthermore, it appears even
+faster to the user because in a typical lesson, the
+printing of the message comes first, and file setup with
+.I #create
+can be overlapped with printing, so that when the program
+finishes printing, it is really ready for the user to
+type at it.
+.PP
+It is also a great advantage to the script maintainer that
+lessons are now just ordinary text files, rather than
+archives. They can be edited without any difficulty, and
+\s-2UNIX\s+2 text manipulation tools can be applied to them. The
+result has been that there is much less resistance to
+going in and fixing substandard lessons.
+.LP
+.B
+6. Conclusions
+.R
+.LP
+The following observations can be made about secretaries,
+typists, and other non-programmers who have used 
+.I learn:
+.IP (a)
+A novice must have assistance with the mechanics of
+communicating with the computer to get through to the
+first lesson or two; once the first few lessons are
+passed people can proceed on their own.
+.IP (b)
+The terminology used in the first few lessons is
+obscure to those inexperienced with computers. It would
+help if there were a low level reference card for \s-2UNIX\s+2 to
+supplement the existing programmer oriented bulky manual
+and bulky reference card.
+.IP (c)
+The concept of "substitutable argument" is hard to grasp,
+and requires help.
+.IP (d)
+They enjoy the system for the most part. Motivation
+matters a great deal, however.
+.LP
+It takes an hour or two for a novice to get through the
+script on file handling. The total time for a reasonably
+intelligent and motivated novice to proceed from
+ignorance to a reasonable ability to create new files and
+manipulate old ones seems to be a few days, with perhaps
+half of each day spent on the machine.
+.PP
+The normal way of proceeding has been to have students in
+the same room with someone who knows the \s-2UNIX\s+2 system and
+the scripts. Thus the student is not brought to a halt by
+difficult questions. The burden on the counselor, however,
+is much lower than that on a teacher of a course.
+Ideally, the students should be encouraged to proceed
+with instruction immediately prior to their actual use of
+the computer. They should exercise the scripts on the
+same computer and the same kind of terminal that they will
+later use for their real work, and their first few jobs
+for the computer should be relatively easy ones. Also,
+both training and initial work should take place on days
+when the hardware and software are working reliably.
+Rarely is all of this possible, but the closer one comes
+the better the result. For example, if it is known that
+the hardware is shaky one day, it is better to attempt to
+reschedule training for another one. Students are very
+frustrated by machine downtime; when nothing is
+happening, it takes some sophistication and experience to
+distinguish an infinite loop, a slow but functioning
+program, a program waiting for the user, and a broken
+machine.*
+.FS
+.ps -1
+* We have even known an expert programmer to decide the computer was broken when he had simply left his terminal in local mode. Novices have great difficulties with such problems.\s+2
+.ps +1
+.FE
+.PP
+One disadvantage of training with
+.I learn
+is that students come to rely completely on the CAI
+system, and do not try to read manuals or other learning
+aids. This is unfortunate, not only because of increased
+demand for completeness and accuracy of the scripts, but
+because the scripts do not cover all of the \s-2UNIX\s+2 system.
+New users should have manuals (appropriate for their
+level) and read them; the scripts ought to be altered to
+recommend suitable documents and urge students to read
+them.
+.PP
+There are several other difficulties which are clearly evident. From  the student's viewpoint, the most serious is
+that lessons still crop up which simply can't be passed.
+Sometimes this is due to poor explanations, but just as
+often it is some error in the lesson itself - a botched
+setup, a missing file, an invalid test for correctness,
+or some system facility that doesn't work on the local
+system the same way it did on the development system. It
+takes knowledge and a certain healthy arrogance on the
+part of the user to recognize that the fault is not his
+or hers, but the script writer's. Permitting the student
+to get on with the next lesson regardless does alleviate
+this somewhat, and the logging facilities make it easy to
+watch for lessons that no one can pass, but it is still a
+problem.
+.PP
+The biggest problem with the previous 
+.I learn
+was speed (or lack thereof) - it was often excruciatingly
+slow and a significant drain on the system. The current
+version so far does not seem to have that difficulty,
+although some scripts, notable
+.I eqn,
+are intrinsically slow.
+.I eqn,
+for example, must do alot of work even to print its
+introductions, let alone check the student responses, but
+delay is perceptible in all scripts from time to time.
+.PP
+Another potential problem is that it is possible to break 
+.I learn
+inadvertently, by pushing interrupt at the wrong time, or
+by removing critical files, or any number of similar
+slips. The defenses against such problems have been
+steadily improved, to the point where most students
+should not notice difficulties. Of course, it will always
+be possible to break
+.I learn
+maliciously, but this is not likely to be a problem.
+.PP
+One area is more fundamental - some commands are
+sufficiently global in their effect that
+.I learn
+currently does not allow them to be executed at all. The
+most obvious is 
+.I cd,
+which changes to another directory. The prospect of a
+student who is learning about directories inadvertently
+moving to some random directory and removing files has
+deterred us from even writing lessons on
+.I cd,
+but ultimately lessons on such topics probably should be
+added.
+.LP
+.B
+7. Acknowledgements
+.R
+.LP
+We are grateful to all those who have tried
+.I learn,
+for we have benefited greatly from their suggestions and
+criticisms. In particular, M. E. Bittrich, J. L. Blue,
+S. I. Feldman, P. A. Fox, and M. J. McAlpin have provided
+substantial feedback. Conversations with E. Z. Rothkopf
+also provided many of the ideas in the system. We are
+also indebted to Don Jackowski for serving as a guinea pig
+for the second version, and to Tom Plum for his efforts
+to improve the
+.I C
+script.
+.LP
+.B
+References
+.R
+.IP 1.
+D. L. Bitzer and D. Skaperdas, "The Economics of a
+Large Scale Computer Based Education System: Plato IV,"
+pp. 17-29 in
+.I 
+Computer Assisted Instruction, Testing and Guidance,
+.R
+ed. Wayne Holtzman, Harper and Row, New York (1970).
+.IP 2.
+D. C. Gray, J. P. Hulskamp, J. H. Kumm, S.
+Lichtenstein, and N. E. Nimmervoll, "COALA - a
+Minicomputer CAI System,"
+.I 
+IEEE Trans. Education
+.R
+E-20
+(1), pp. 73-77 (Feb. 1977).
+.IP 3.
+P. Suppes, "On Using Computers to Individualize
+Instruction," pp. 11-24 in
+.I 
+The Computer in American Education,
+.R
+ed. D. D. Bushnell and D. W. Allen, John Wiley, New York
+(1967).
+.IP 4.
+B. F. Skinner, "Why We Need teaching Machines,"
+.I 
+Harv. Educ. Review
+.R
+31,
+pp.377-398, Reprinted in
+.I
+Educational Technology,
+.R
+ed J. P. DeCecco, Holt, Rinehart & Winston New York,
+1964). (1961).
+.IP 5.
+K. Thompson and D. M. Ritchie,
+.I 
+Unix Programmer's Manual,
+.R
+Bell Laboratories (1978).
+See section
+.I ed
+(I).
+.IP 6.
+B. W. Kernighan,
+.I 
+A tutorial introduction to the UNIX text editor,
+.R
+Bell Laboratories internal memorandum (1974).
+.IP 7.
+B. W. Kernighan and D. M. Ritchie,
+.I
+The C Programming Language,
+.R
+Prentice-Hall, Englewood Cliffs, New Jersey (1978). 
+.bp
+.ce 4
+Appendix A - Page given to new users
+\s+1How to Get Started\s0
+.I
+Absolutely basic information for using the UNIX system
+from DASI, Terminet, or HP terminals
+.LP
+.I
+First time.
+.R
+BRING A FRIEND.  Anyone who has used \s-2UNIX\s+2 before, however
+briefly, will be of enormous help for the first fifteen
+minutes to show you where all the switches are and supply
+information missing from this page.
+.LP
+.I
+Terminals.
+.R
+Turn the power on. There are many kinds of terminals. Look
+at the telephone used with the terminal to distinguish
+them. Terminals may have
+.IP
+.I
+-- old style datasets
+.R
+(if the phone set is a small grey box with "talk" and
+"data" buttons at the right above the handset)
+.IP
+.I
+-- new style datasets
+.R
+(if the phone set is a black six
+button phone with a red "data" button on the left, sitting
+on a rectangular box with a glass front)
+.IP
+.I
+--acoustic couplers
+.R
+(if an ordinary telephone is used to
+call and the terminal has rubber receptacles that the
+handset fits into) or
+.IP
+.I
+-- modems
+.R
+(if the phone used for calling has a white
+button for the left button of the pair of buttons the
+handset usually rests on).
+.IP
+.I
+-- none of the above
+.R
+(in which case there is probably a
+switch somewhere that should be flipped to signal the
+computer).
+.LP
+.I
+Calling in.
+.R
+For your local UNIX call________________.
+.IP
+-- If the terminal doesn't use a phone, ignore this
+section, and proceed to 
+.I Login..
+.IP
+-- On terminals with datasets you must push the "talk"
+button to get a dial tone.
+.IP
+-- If the terminal has a separate coupler turn the coupler
+power on.
+.IP
+-- If the line is busy \s-2UNIX\s+2 is probably full.
+.IP
+-- If there is no answer \s-2UNIX\s+2 is broken.
+.LP
+Usually the phone rings only once; \s-2UNIX\s+2 answers and
+whistles at you.
+.LP
+.I
+Connecting the terminal.
+.R
+Remember what kind of terminal you have. If it uses a
+.IP
+.I
+-- dataset,
+.R
+push down the "data" button, let it spring back up, and
+then hang up the handset (IN THAT ORDER).
+.IP
+.I
+-- coupler,
+.R
+place the handset in the rubber receptacles. There will
+be an indication of where the phone cord should be (it
+matters). You may get better results by placing the
+handset in the receptacles as you dial.
+.IP
+.I
+-- modem,
+.R
+pull up the white button on the telephone and put the
+handset down somewhere (but don't hang up the phone!).
+.LP
+.I Login.
+\s-2UNIX\s+2 should type "login:". If it does not:
+.IP
+-- Your terminal may be in "local" mode - check that the
+"local/line" switch is on "line". Also, Terminets may
+have their "interrupt" light on - turn it off by pushing
+"ready."
+.IP
+-- If the message is garbled, the speed is wrong.
+Somewhere on the terminal is a switch labeled "rate" or
+"baud" with positions of either "10,15,30" or
+"110,150,300". Set it to 30 or 300. Push the break or
+interrupt button slowly a few times. If "login:" doesn't
+appear, call for help.
+.IP
+-- \s-2UNIX\s+2 may be broken (call ext. _____ to check on that).
+.LP
+Type your userid, followed by "return". Your userid is
+_______.
+.IP
+-- If each letter appears twice, find the switch labeled
+"full/half duplex" and set it to "full".
+.IP
+-- If the computer typed back your userid in upper case,
+find the "all caps" switch or "shift lock" and turn it
+off. Then dial in again. 
+.LP
+Normally \s-2UNIX\s+2 says "Password:" and you should enter your
+password; printing will be turned off while you do.
+.IP
+If you misspell it, \s-2UNIX\s+2 will say "Login incorrect.
+login:" and you can then retype your userid and password
+correctly.
+.LP
+\s-2UNIX\s+2 will say "$". You have successfully logged in.
+.LP
+.I Commands.
+When \s-2UNIX\s+2 has typed "$" you can type commands, one per
+line. For example, you can type "date" to find out what
+day and time it is, or "who" to find out who is logged on. Every
+command must end with a "return". After typing a command,
+wait for the next "$" to see what happens. For example,
+your terminal might look like this (what the computer typed
+is in italics):
+.IP
+.I login:
+myid
+.IP
+.I Password:
+<you can't see it>
+.IP
+$ date
+.IP
+.I
+Thu Jan 15 10:58:21 EST 1979
+.R
+.IP
+.I $
+.LP
+There are a great many other commands you can type (see
+the guides below) and in particular the 
+.I learn
+command can help you learn some features of \s-2UNIX\s+2.
+.IP
+-- If you make a mistake typing: the character # will erase
+the previous character, so that typing
+.IP
+.ti +0.5i
+dax#te
+.IP
+is the same as typing
+.ti +0.5i
+date
+.IP
+and the character @ will erase the entire line; typing
+.in +0.5i
+xxxxx@
+
+date
+.in -0.5i
+.IP
+is the same as typing "date". \s-2UNIX\s+2 supplies the carriage
+return after the @.
+.IP
+-- You must hit return if you expect the computer to notice
+what you typed; otherwise it will wait patiently and
+silently for you to do so. When in doubt, type return and
+see what happens.
+.IP
+-- If you make a typing error and don't correct it with #
+or @ before hitting return, the computer will typically
+say
+.ti +0.5i
+.I
+datr: not found
+.R
+.IP
+where "datr" is the erroneous input line.
+.IP
+-- Other messages that may arise from mistyping include
+.I "cannot execute"
+or
+.I "No match"
+or just
+.I "?".
+The cure is
+almost always to retype the offending line correctly.
+.LP
+.I Terminology.
+Everything stored on the computer is saved in 
+.I files.
+A file might contain, for example, a memo or a chapter of
+a book or a letter. Every file has a name, which is used
+whenever you want to refer to it. Sample names might be
+"chap3" or "memo2". The files are grouped into
+.I directories;
+each directory contains the names of several files. All
+users have directories containing their own files.
+.LP
+.I
+Logging out.
+.R
+Just hang up. On a terminal with a data set, push the
+"talk" button. On other terminals hang up the handset.
+Turn the terminal power off.
+.LP
+.I Guides.
+You should have copies of
+.I
+UNIX For Beginners
+.R
+and
+.I
+A Tutorial Introduction to the UNIX Text Editor.
+.R

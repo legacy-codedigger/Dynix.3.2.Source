@@ -1,0 +1,34 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: getdtablesize.2 1.7 87/07/01 $
+.TH GETDTABLESIZE 2 "\*(V)" "4BSD"
+.SH NAME
+getdtablesize \- get descriptor table size
+.SH SYNOPSIS
+.nf
+.ft 3
+nds = getdtablesize()
+int nds;
+.fi
+.SH DESCRIPTION
+Each process has a fixed size descriptor table
+which is guaranteed to have at least 20 slots.  The entries in
+the descriptor table are numbered with small integers starting at 0.
+The call
+.I getdtablesize
+returns the size of this table.
+.SH "SEE ALSO"
+close(2),
+dup(2),
+getdtablemax(2),
+open(2),
+setdtablesize(2)

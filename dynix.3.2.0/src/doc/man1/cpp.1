@@ -1,0 +1,494 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986 Sequent Computer Systems, Inc.
+.\" All rights reserved
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: cpp.1 1.8 87/10/28 $
+.TH CPP 1 "\*(V)" "4BSD"
+.SH NAME
+cpp \- the C language preprocessor
+.SH SYNOPSIS
+.B /lib/cpp
+[
+.I "option ..."
+] [
+.I ifile
+[
+.I ofile
+] ]
+.SH DESCRIPTION
+.PP
+.I Cpp
+is the C language preprocessor which is invoked as the
+first pass of any C compilation using the
+.I cc
+(1) command.
+Thus the output of
+.I cpp
+is designed to be in a form acceptable as input to the next pass of the
+C compiler.
+See
+.IR m4 (1)
+for a more general macro processor.
+.PP
+.I Cpp
+optionally accepts two file names as arguments.
+.I Ifile
+and
+.I ofile
+are the input and output for the preprocessor,
+respectively.
+They default to standard input and standard output.
+.PP
+The following
+.I options
+to
+.I cpp
+are recognized:
+.TP
+.B \-C
+The
+.B \-C
+option specifies that all comments are passed along.
+Normally,
+.I cpp
+strips C-style comments,
+except those found on
+.I cpp
+directive lines.
+.TP
+.BI \-D name
+.TP
+.ns
+.BI \-D name=def
+Predefine
+.I name
+as if by a
+.B #define
+directive.
+If no
+.I =def
+is given,
+.I name
+is defined as 1.
+The
+.B \-D
+option has lower precedence than the
+.B \-U
+option.
+That is, if the same name is used in both a
+.B \-U
+option and a
+.B \-D
+option, the name is undefined regardless of the order of the options.
+.sp
+You can predefine up to 100 names.
+This limit includes four standard predefined names for each series.
+The Balance series includes the names
+.B ns16000
+and
+.BR ns32000 ;
+the Symmetry series includes the names
+.B i386
+and
+.BR i387 ;
+both series include the names
+.B unix
+and
+.BR sequent .
+.TP
+.B \-E
+This option is ignored,
+but is included for System V compatibility.
+.TP
+\f3\-f1167\fP\ or\ \f3\-fpa\fP
+.B \-fpa
+is a synonym for
+.B \-f1167 .
+This option directs the Symmetry C compiler to produce code
+for the Weitek 1167 floating-point accelerator.
+For Symmetry systems,
+this is the same as
+.B \-Ui387
+.BR \-Dw1167 ;
+Balance systems ignore this directive.
+.TP
+.BI \-I dir
+Change the algorithm for searching for
+.B #include
+files that do not begin with a
+.BR / .
+Normally,
+names that do not begin with a
+.B /
+are searched for in two directories:
+.I /usr/include
+and
+.IR /usr/local/include .
+.sp
+The
+.B \-I
+directive forces
+.I cpp
+to search
+.I dir
+before
+.I /usr/include
+and
+.IR /usr/local/include .
+Thus,
+.B #include
+files whose names are enclosed in
+\f3"\|"\f1
+are searched for first in the directory of the file with the
+.B #include
+line,
+then in directories named in 
+.B \-I
+options,
+and last in
+.I /usr/include
+and
+.IR /usr/local/include .
+.sp
+If an
+.B #include
+is enclosed in
+.BR <> ,
+the directory of the file with the
+.B #include
+line is not searched.
+.sp
+Up to eight
+.B \-I
+options can be specified.
+.TP
+.B \-M
+Generate makefile dependencies from
+.B #include
+directives.
+For example,
+suppose the file
+.I x.c
+includes the file
+.I other/x.h
+with the following line:
+.Ps
+#include "other/x.h"
+.Pe
+The file
+.I other/x.h
+includes the file
+.I y.h
+with the following line:
+.Ps
+#include "y.h"
+.Pe
+Invoking
+.I cpp
+with the
+.B \-M
+option on
+.I x.c
+produces the following output:
+.Ps
+x.o:	x.c
+x.o:	other/x.h
+x.o:	other/y.h
+.Pe
+.TP
+.B \-P
+Preprocess the input without producing the line control
+information used by the next pass of the C compiler.
+This line control information is of the following form:
+.Ps
+# 12 foo.c
+.Pe
+This tells the compiler and assembler that the next line is line 12 from
+.IR foo.c .
+.TP
+.B \-R
+Allow macro recursion.
+Ordinarily,
+.B cpp
+detects and aborts recursive macro definitions,
+such as the following:
+.Ps
+#define a a
+.Pe
+and
+.Ps
+#define a b
+#define b a
+.Pe
+The
+.B \-R
+option allows recursive definition.
+This could allow
+.I cpp
+to hang in a recursive definition.
+The
+.B \-R
+option is included for 4.2/4.3 BSD UNIX compatibility.
+.TP
+.BI \-U name
+Remove any initial definition of
+.IR name ,
+where
+.I name
+is a reserved symbol that is predefined by the preprocessor.
+.sp
+Two special names are understood by
+.IR cpp .
+The name
+.if t \f3_\^\^_\s-1LINE\s+1_\^\^_\f1
+.if n \f3 _\^\^_LINE_\^\^_\f1
+is defined as the current line number (as a decimal integer) as known by
+.IR cpp ,
+and
+.if t \f3_\^\^_\s-1FILE\s+1_\^\^_\f1
+.if n \f3_\^\^_FILE_\^\^_\f1
+is defined as the current file name (as a C string) as known by
+.IR cpp .
+They can be used anywhere (including in macros) just as any other defined name.
+.PP
+All
+.I cpp
+directives start with a pound sign
+.RB ( # )
+in the first column.
+Any number of blanks and tabs are allowed between the
+.B #
+and the directive.
+The
+.I cpp
+directives are as follows:
+.TP
+\f3#define\f2 name token-string\f1
+Replace subsequent instances of
+.I name
+with
+.BI token-string .
+.TP
+\f3#define\f2 name\f3(\f2arg\f3,\f1...\f3,\f2arg\f3)\f2 token-string\f1
+Notice that there can be no space between
+.I name
+and the left parenthesis
+.RB \" ( \".
+Replace subsequent instances of
+.I name
+followed by a left parenthesis
+.RB \" ( \",
+a list of comma-separated set of tokens, and a right parenthesis
+.RB \" ) \"
+by
+.IR token-string ,
+where each occurrence of an
+.I arg
+in the
+.I token-string
+is replaced by the corresponding set of tokens in the comma-separated list.
+When a macro with arguments is expanded,
+the arguments are placed into the expanded
+.I token-string
+unchanged.
+After the entire
+.I token-string
+has been expanded,
+.I cpp
+re-starts its scan for names to expand at the beginning of newly created
+.BR token-string .
+.TP
+\f3#undef\f2 name\f1
+Cause the definition of
+.I name
+(if any) to be forgotten from now on.
+.ne 5
+.TP
+\f3#include\f2 "filename"\f1
+.TP
+.ns
+\f3#include <\f2filename\f3>\f1
+Include at this point the contents of
+.I filename
+(which will then be run through
+.IR cpp ).
+When the
+.BI < filename >
+notation is used,
+.I filename
+is searched for in the standard places only.
+See the
+.B \-I
+option previously for more detail.
+.TP
+\f3#line\f2 integer-constant filename\f1
+Causes
+.I cpp
+to generate line control information for the next pass of the
+C compiler.
+.I Integer-constant
+is the line number of the next line and
+.I filename
+is the file where it comes from.
+If
+.I filename
+is not given,
+the current file name is unchanged.
+.TP
+\f3#ifdef\f2 name\f1
+The following lines up to the corresponding
+.B #endif
+appear in the output if
+.I name
+has been defined by a previous
+.B #define
+directive or
+.B \-D
+option,
+or is a predefined name,
+but has not been undefined by an
+.B #undef
+directive or
+.B \-U
+option.
+.TP
+\f3#ifndef\f2 name\f1
+The following lines up to the corresponding
+.B #endif
+appear in the output if
+.I name
+has
+.B not
+been defined by a previous
+.B #define
+directive or
+.B \-D
+option,
+and is
+.B not
+a predefined name,
+or has been undefined by a subsequent
+.B #undef
+directive or
+.B \-U
+option.
+.TP
+\f3#if\f2 constant-expression\f1
+Subsequent lines up to the corresponding
+.B #endif
+appear in the output if and only if the
+.I constant-expression
+evaluates to non-zero.
+All binary non-assignment C operators, the
+.B ?:
+operator,
+and the unary
+.BR \(mi ,
+.BR ! ,
+and
+.B ~
+operators are all legal in
+.IR constant-expression .
+The precedence of the operators is the same as defined by the C language.
+.sp
+There is also a unary operator
+.BR defined ,
+which can be used in
+.I constant-expression
+in these two forms:
+.B defined
+.BI ( name )
+or
+.B defined
+.IR name .
+This allows the utility of
+.B #ifdef
+and
+.B #ifndef
+in an
+.B #if
+directive.
+Only these operators, integer constants, and names which are known by
+.I cpp
+should be used in
+.IR constant-expression .
+In particular,
+the
+.B sizeof
+operator is not available.
+.TP
+.B #endif
+Ends a section of lines begun by a test directive
+.RB ( #if ,
+.BR #ifdef ,
+or
+.BR #ifndef ).
+Each test directive must have a matching
+.BR #endif .
+.TP
+.B #else
+Reverses the notion of the test directive which matches this directive.
+Therefore,
+if lines previous to this directive are ignored,
+the following lines appear in the output;
+if lines previous to this directive are included in the output,
+subsequent lines are ignored.
+.sp
+The test directives
+.BR #ifdef ,
+.BR #ifndef ,
+and
+.B #if
+and the associated
+.B #else
+directives can be nested.
+.SH FILES
+.ta \w'/usr/local/include\0\0\0\0'u
+/usr/include	standard directory for
+.B #include
+files
+.br
+/usr/local/include	standard directory for
+.B #include
+files
+.SH "SEE ALSO"
+cc(1),
+m4(1),
+unifdef(1)
+.SH DIAGNOSTICS
+The error messages produced by
+.I cpp
+are intended to be self-explanatory.
+The line number and filename where the error occurred are printed
+along with the diagnostic.
+.SH NOTES
+When new-line characters were found in argument lists for macros
+to be expanded,
+early UNIX versions of
+.I cpp
+put out the new-lines as they were found and expanded.
+The current version of
+.I cpp
+replaces these new-lines with blanks to alleviate problems that the
+previous versions had when this occurred.
+.SH BUGS
+The directive
+.B #ident
+.I string
+is accepted by
+.I cpp
+for compatibility with System V.
+.I Cpp
+passes
+.B #ident
+directives directly through to the C compiler,
+.IR cc .
+The Symmetry compiler correctly ignores it;
+the Balance compiler mishandles it.

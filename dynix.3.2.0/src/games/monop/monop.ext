@@ -1,0 +1,36 @@
+/* $Copyright:	$
+ * Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+ * Sequent Computer Systems, Inc.   All rights reserved.
+ *  
+ * This software is furnished under a license and may be used
+ * only in accordance with the terms of that license and with the
+ * inclusion of the above copyright notice.   This software may not
+ * be provided or otherwise made available to, or used by, any
+ * other person.  No title to or ownership of the software is
+ * hereby transferred.
+ */
+
+/* $Header: monop.ext 2.0 86/01/28 $ */
+
+# include	"monop.h"
+# include	"deck.h"
+
+extern bool	trading, spec, fixing, told_em;
+
+extern char	*yn[], *comlist[], *name_list[], *lucky_mes[];
+
+extern int	num_play, player, num_doub, num_luck, (*func[])();
+
+extern DECK	deck[2];
+
+extern MON	mon[];
+
+extern PLAY	*play, *cur_p;
+
+extern PROP	prop[];
+
+extern RR_S	rr[];
+
+extern SQUARE	board[];
+
+extern UTIL_S	util[];

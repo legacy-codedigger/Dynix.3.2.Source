@@ -1,0 +1,87 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: L.cmds.5 1.3 87/05/27 $
+.TH L.CMDS 5 "\*(V)" "4BSD"
+.\"
+.\"	@(#)L.cmds.5	6.1 (Berkeley) 4/24/86
+.\"
+.UC 6
+.SH NAME
+L.cmds \- UUCP remote command permissions file
+.SH DESCRIPTION
+The
+.I L.cmds
+file contains a list of commands, one per line, that are permitted
+for remote execution via
+.IR uux (1C).
+.PP
+The default search path is /bin:/usr/bin:/usr/ucb. To change the path,
+include anywhere in the file a line of the form:
+.PP
+.nf
+	PATH=/bin:/usr/bin:/usr/ucb
+.fi
+.PP
+Normally, an acknowledgment is mailed back to the requesting
+site after the command completes. If a command name is suffixed with
+.BR ,Error ,
+then an acknowledgment will be mailed only if the command fails.
+If the command is suffixed with
+.BR ,No ,
+then no acknowledgment will ever be sent. (These correspond with
+the
+.B \-z
+and
+.B \-n
+options of
+.IR uux ,
+respectively.)
+.PP
+For most sites,
+.I L.cmds
+should only include the lines:
+.PP
+.nf
+	rmail
+	ruusend
+.fi
+.PP
+News sites should add:
+.PP
+.nf
+	PATH=/bin:/usr/bin:/usr/ucb:/usr/new
+	rnews,Error
+.fi
+.PP
+While file names supplied as arguments to
+.I uux
+commands will be checked against the list of accessible directory trees in
+.IR USERFILE (5),
+this check can be easily circumvented and should not be depended upon.
+In other words, it is unwise to include any commands in
+.I L.cmds
+that accept local file names. In particular,
+.IR sh (1)
+and
+.IR csh (1)
+are extreme risks.
+.PP
+It is common (but hazardous) to include
+.IR uucp (1C)
+in
+.IR L.cmds ;
+see the NOTES section of
+.IR USERFILE .
+.SH FILES
+/usr/lib/uucp/L.cmds
+.SH SEE ALSO
+uucp(1C), uux(1C), USERFILE(5), uucico(8C), uuxqt(8C)

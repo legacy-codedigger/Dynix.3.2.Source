@@ -1,0 +1,18 @@
+# Ad-hoc Makefile do install the various libc versions.
+# Bruce Jerrick, OGC CS&E.
+#
+# Installs crypt versions (normal Makefile installs un-crypt first, then
+#  overwrites them with crypt versions).
+#
+# Does not install crt0.o, gcrt0.o, or mcrt0.o .
+
+install:
+	install -m 644 libcrypt.a /lib/libc.a
+	/usr/bin/ranlib /lib/libc.a
+	install -m 644 libcrypt_p.a /usr/lib/libc_p.a
+	/usr/bin/ranlib /usr/lib/libc_p.a
+	install -m 644 libfpacrypt.a /lib/libfpac.a
+	/usr/bin/ranlib /lib/libfpac.a
+	install -m 644 libfpacrypt_p.a /usr/lib/libfpac_p.a
+	/usr/bin/ranlib /usr/lib/libfpac_p.a
+

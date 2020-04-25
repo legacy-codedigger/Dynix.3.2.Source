@@ -1,0 +1,100 @@
+balance/autoconf.c		standard
+balance/archdep.c		standard
+balance/clock.c			standard
+balance/cntrlblock.c            standard
+balance/cons.c                  standard
+balance/consio.c		standard
+balance/memory.c		standard
+balance/monop.c			standard
+balance/pmap.c			optional pmap
+balance/smem.c                  standard
+balance/usclk.c			optional usclk
+balance/ufs_machdep.c		standard
+balance/tlb.c			standard
+../common/mbad/mbad.c		standard
+../common/mbad/lp.c		optional lp device-driver
+../common/mbad/st.c		optional st device-driver
+../common/mbad/xt.c		optional zt device-driver
+../common/stripe/stripe.c	optional stripe device-driver
+../common/mirror/mirror.c	optional mirror device-driver
+../common/netif/if_se.c		optional se device-driver
+../common/netif/pci.c		standard
+net/promisc.c			optional promisc device-driver
+../common/sec/sec.c		standard
+../common/sec/co.c		optional co device-driver
+../common/sec/sd.c		optional sd device-driver
+../common/sec/sm.c		standard device-driver
+../common/sec/ts.c		optional ts device-driver
+../common/sec/kp.c		optional kp device-driver
+../common/ssm/ssm.c		standard
+../common/ssm/ssm_misc.c	standard
+../common/ssm/ssm_scsi.c	standard
+../common/ssm/scsi.c		standard
+../common/ssm/ssm_vme.c		standard
+../common/ssm/sc.c		standard device-driver
+../common/ssm/sp.c		optional sp device-driver
+../common/ssm/ss.c		standard device-driver
+../common/ssm/tm.c		optional tm device-driver
+../common/ssm/tg.c		optional tg device-driver
+../common/ssm/wd.c		optional wd device-driver
+../common/zdc/zd.c		optional zd device-driver
+../common/zdc/zdinit.c		optional zd device-driver
+conf/conf_co.c			optional co src
+conf/conf_if_se.c		optional se src
+conf/conf_kp.c			optional kp src
+conf/conf_led.c			standard src
+conf/conf_lp.c			optional lp src
+conf/conf_stripe.c		optional stripe src
+conf/conf_mirror.c		optional mirror src
+conf/conf_mmap.c		standard src
+conf/conf_net.c			standard src
+conf/conf_nfs.c			standard src
+conf/conf_pci.c			standard src
+conf/conf_pmap.c		optional pmap src
+conf/conf_sc.c			standard src
+conf/conf_sd.c			optional sd src
+conf/conf_sp.c			optional sp src
+conf/conf_ssm.c			standard src
+conf/conf_st.c			optional st src
+conf/conf_syscalls.c		standard src
+conf/conf_tg.c			optional tg src
+conf/conf_tm.c			optional tm src
+conf/conf_ts.c			optional ts src
+conf/conf_tty.c			standard src
+conf/conf_vec.c			standard src
+conf/conf_vfs.c			standard src
+conf/conf_wd.c			optional wd src
+conf/conf_xt.c			optional zt src
+conf/conf_zd.c			optional zd src
+conf/cust_panics.c		standard src
+conf/cust_syscalls.c		standard src
+custA/custA.c			optional src custA device-driver
+debug/dinfo.c			standard
+balance/slic.c			standard
+machine/in_cksum.s		standard
+machine/locore.s		standard
+machine/cpclr.s			standard
+machine/cswitch.s		standard
+machine/lock.s			standard
+machine/gate.s			standard
+machine/trap.c			standard
+machine/sema.c			standard
+machine/dbg_machdep.c		standard
+machine/fpa.c			standard
+machine/weitek.c		standard
+machine/wemulate.c		standard nopt
+machine/gate_data.c		standard
+machine/icode.s			standard
+machine/machdep.c		standard
+machine/mapuserio.c		standard
+machine/mem.c			standard
+machine/misc.s			standard
+machine/setjmp.s		standard
+machine/start.s			standard
+machine/startup.c		standard
+machine/shadow.c		standard
+machine/inval_cache.c		standard nopt
+machine/userio.s		standard
+machine/vm_machdep.c		standard device-driver
+machine/kp_nmi.c		optional kp
+machine/vlsi.c			optional vlsi

@@ -1,0 +1,73 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: pmap.8 1.5 1991/08/06 23:02:20 $
+.TH PMAP 8 "\*(V)" "DYNIX"
+.SH NAME
+pmap \- display or alter parameters of virtual-to-physical mapping devices
+.SH SYNOPSIS
+.B /etc/pmap
+file
+[ paddr size
+[ type ] ]
+.SH DESCRIPTION
+.I File
+must be a character special file associated with the
+.I pmap
+device driver (see
+.IR pmap (4)).
+.I Pmap
+sets the parameters of the indicated
+.I file
+to those specified (if any) and then displays all the file's parameters.
+.PP
+The following parameters can be changed
+(only by the superuser, and only while the file is not in use):
+.TP
+.I paddr
+The starting physical address of the region associated with the file.
+Must be hexadecimal, and must be a multiple of the system page size,
+as returned by
+.IR getpagesize (2).
+.TP
+.I size
+The (hexadecimal) size of the region, in bytes.
+Must be hexadecimal, and must be a multiple of the system page size.
+.TP
+.I type
+Must be either ``npmem'' (non-paged memory)
+or ``phys'' (physical).
+The PMAP_NPMEM bit for this file is set or cleared as indicated.
+.PP
+.I Pmap
+also reports whether the file is currently mapped
+and whether it is currently open for exclusive access.
+.PP
+NOTE: This command allows the superuser to associate a file
+with any range of physical addresses,
+including MULTIBUS mapping registers, nonexistent memory, etc.
+Specifying incorrect values for
+.I paddr
+or
+.I size
+can lead to catastrophic results.
+.SH FILES
+/dev/alm/alm\f2nn\fP	Atomic Lock Memory
+.br
+others		Other pmap files are application-specific.
+.SH "SEE ALSO"
+pmap(4), getpagesize(2)
+.SH DIAGNOSTICS
+``Not a typewriter'' indicates that the specified
+.I file
+is not a
+.I pmap
+device.

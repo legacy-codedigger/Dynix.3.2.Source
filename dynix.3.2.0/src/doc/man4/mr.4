@@ -1,0 +1,164 @@
+.\" $Copyright:	$
+.\"Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\"Sequent Computer Systems, Inc.   All rights reserved.
+.\" 
+.\"This software is furnished under a license and may be used
+.\"only in accordance with the terms of that license and with the
+.\"inclusion of the above copyright notice.   This software may not
+.\"be provided or otherwise made available to, or used by, any
+.\"other person.  No title to or ownership of the software is
+.\"hereby transferred.
+...
+.V= $Header: mr.4 1.1 89/09/29 $
+.TH MR 4 "\*(V)" "DYNIX"
+.SH NAME
+mr \- Sequent Symmetry mirror disk pseudo-device
+.SH SYNOPSIS
+.B "pseudo-device mirror 8"
+.SH DESCRIPTION
+This pseudo-device driver provides disk mirroring.  Disk mirroring
+provides a logical disk device that automatically maintains two
+identical copies of data, called mirror
+.I units.
+.PP
+Each mirror unit resides on a disk partition; any two
+partitions of DCC (Dual-Channel Disk Controller) disks can be used
+as mirror units.
+Unless a smaller size has been specified with the
+.B mirror
+command, the total 
+space available on each disk mirror is equal to one disk block less
+that on the smaller of the two partitions.
+The maximum number of mirrors is specified by the
+line
+``pseudo-device mirror
+.IR "n" "''"
+in the kernel configuration file.
+.PP
+A disk mirror looks like a disk
+partition to applications, and likewise may contain either a filesystem
+or raw data.  Each mirror has its own minor device number.
+The standard block device names begin with ``mr'', followed by the
+mirror number.  Character (raw) device names begin with ``rmr''.
+There are no partition letters as there are for real disks.
+.PP
+The block devices use the system's normal buffering mechanism and
+may be read and written without regard to physical disk records.
+There is also a `raw' interface which provides for direct transmission
+between the disks underlying the mirror and the user's read or write buffer.
+A single read or write call at the DCC level results in exactly one
+I/O operation; therefore, raw I/O is considerably more efficient when
+many words are transmitted.  Raw mirror writes translate into two raw
+DCC writes.  Raw mirror reads translate into one raw DCC read unless
+there is a read error, in which case two raw DCC reads are done.
+.PP
+All raw I/O counts must be a multiple of 512 bytes (a disk sector)
+and must begin on 16-byte aligned memory addresses.
+.PP
+This device driver does not keep the ``milliseconds per seek'' statistic,
+and is not known to the
+.B iostat
+command.
+.SH FILES
+.if n .ta 2.5i
+.if t .ta 1.75i
+.I "/dev/mr*	"
+block files
+.br
+.I "/dev/rmr*	"
+raw files
+.br
+.I "/sys/conf/conf_mirror.c	"
+binary configuration file
+.SH SEE ALSO
+.BR mirror (8),
+.BR zd (4)
+.SH DIAGNOSTICS
+Errors during normal operation are signaled to the mirror driver by the DCC
+.B zd
+driver,
+which it calls.  In response to such errors, the mirror driver
+stops using the unit that erred, turns on the front panel's disk error light
+(on S81s), and reports the error to the console.  The erring unit
+is marked as bad, and the mirror label is rewritten to both units.
+Errors caused by writing labels to bad units are ignored.
+.PP
+If the error occurs on a read, the read operation restarts on the
+mirror's other unit.
+.PP
+If both units of a mirror go bad, the mirror is deactivated, no
+further I/O is allowed, and all queued I/O requests fail.
+.PP
+You can check the status and configuration of a machine's
+mirror devices at any time by invoking the
+.B mirror
+command with no arguments.
+.PP
+The following error messages can be reported by the mirror driver:
+.PP
+.nf
+.B "Mirror %d unit %d read failed, block maj %d min %d"
+.fi
+.RS
+This error message indicates a read failure and will normally be
+preceded by a DCC
+error message describing that failure. The mirror number is the
+minor device number of the mirror device. Usually, the device will be
+named
+.I /dev/mr%d .
+The unit number is either 0 or 1 and identifies
+which half of the mirror reported an error.  The block major and minor
+device numbers identify the DCC disk partition on which the error occurred.
+Refer to the
+.BR zd (4)
+man page for details.
+.RE
+.PP
+.nf
+.B "Mirror %d unit %d write failed, block maj %d min %d"
+.fi
+.RS
+This error message indicates a write failure and will normally be
+preceded by a DCC
+error message describing that failure. The information printed is the
+same as described previously for read errors.
+.RE
+.PP
+.nf
+.B "Mirror %d: error labeling unit %d block dev maj = %d, min = %d"
+.fi
+.RS
+This error message means that the mirror driver got a write error back
+from the DCC when it tried to write the label to a unit
+that had not yet failed. The information printed is the same as for
+read and write errors, described previously.
+.RE
+.PP
+.nf
+.B "Mirror %d unit %d failure"
+.fi
+.RS
+This error message is always preceded by one of the three I/O error messages
+described previously.  It indicates that the unit specified is no longer
+in service and will not be used as part of the specified mirror except for
+an attempt at relabeling should the other unit fail or should the mirror
+be deactivated by the system administrator.  For details, refer to the
+.BR mirror (8)
+man page.
+.RE
+.PP
+.nf
+.B "Mirror %d: all units bad, deactivating"
+.fi
+.RS
+This error message is always preceded by the unit failure message
+described previously.  It indicates that both units of the specified
+mirror have failed and the mirror is being deactivated, as if the
+system administrator had invoked a command of the form
+.BI "unmirror" " /dev/mr%d." 
+No further I/O is permitted to that mirror until the mirror is
+reactivated by the system administrator.
+Refer to the
+.BR mirror (8)
+man page for details.
+.RE

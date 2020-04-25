@@ -1,0 +1,66 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: socketpair.2 1.7 1991/06/10 18:24:45 $
+.TH SOCKETPAIR 2 "\*(V)" "4BSD"
+.SH NAME
+socketpair \- create a pair of connected sockets
+.SH SYNOPSIS
+.nf
+.ft 3
+#include <sys/types.h>
+#include <sys/socket.h>
+.PP
+.ft 3
+socketpair(d, type, protocol, sv)
+int d, type, protocol;
+int sv[2];
+.fi
+.SH DESCRIPTION
+The
+.I socketpair
+call creates an unnamed pair of connected sockets in
+the specified domain
+.IR d ,
+of the specified
+.IR type ,
+and using the optionally specified
+.IR protocol .
+The descriptors used in referencing the new sockets
+are returned in
+.IR sv [0]
+and
+.IR sv [1].
+The two sockets are indistinguishable.
+.SH DIAGNOSTICS
+A non-negative value is returned if the call succeeds, \-1 if it fails.
+.SH ERRORS
+The call succeeds unless:
+.TP 20
+[EMFILE]
+Too many descriptors are in use by this process.
+.TP 20
+[EAFNOSUPPORT]
+The specified address family is not supported on this machine.
+.TP 20
+[EPROTONOSUPPORT]
+The specified protocol is not supported on this machine.
+.TP 20
+[EOPNOSUPPORT]
+The specified protocol does not support creation of socket pairs.
+.TP 20
+[EFAULT]
+The address \f2sv\fP does not specify a valid part of the
+process address space.
+.SH "SEE ALSO"
+read(2), write(2), pipe(2)
+.SH BUGS
+This call is currently implemented only for the UNIX domain.

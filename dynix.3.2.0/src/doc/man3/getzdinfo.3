@@ -1,0 +1,60 @@
+.\"Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989 
+.\"Sequent Computer Systems, Inc.   All rights reserved.
+.\" 
+.\"This software is furnished under a license and may be used
+.\"only in accordance with the terms of that license and with the
+.\"inclusion of the above copyright notice.   This software may not
+.\"be provided or otherwise made available to, or used by, any
+.\"other person.  No title to or ownership of the software is
+.\"hereby transferred.
+...
+.V= $Header: getzdinfo.3 1.3 91/02/28 $
+.TH GETZDINFO 3 "\*(V)" "DYNIX"
+.SH NAME
+getzdinfo, getzdinfobyname \- get zdinfo structure
+.SH SYNOPSIS
+.nf
+\f3#include <zdc/zdc.h>
+\f3#include <diskinfo.h>
+
+struct zdinfo *
+getzdinfobyname(disktype)
+char *disktype;
+
+struct zdinfo *
+getzdinfo()\fP
+.fi
+.SH DESCRIPTION
+.B getzdinfobyname
+takes a disk type name (e.g. m2333k) and returns a structure
+containing the disk type name and the ZDC channel configuration
+data for that disk type.  All information
+is obtained from files in the directory
+.I /etc/diskinfo
+which end in the suffix \f2.zd\f1.  Each of these
+files contains the channel configuration data for one disk type.
+.B getzdinfo
+finds the next '\f2.zd\f1' file in
+.I /etc/diskinfo
+and creates and returns a zdinfo structure built from that file.
+On error or when there are no more \f2.zd\f1 files in the directory,
+.SM
+.B NULL
+is returned.
+This information is provided primarily for use by the 
+.I format
+program.
+See
+.I /usr/include/diskinfo.h
+and
+.I /usr/include/sys/zdc.h
+for a description of the fields in
+.IR "struct zdinfo" .
+.SH "SEE ALSO"
+.BR diskinfo (5)
+.BR format (8)
+.SH NOTES
+These are Sequent library routines.  To use them, specify the
+\f3-lseq\f1 option to link with the Sequent library.  Since
+this is a Sequent extension, code using this routine may not be
+portable to other systems.

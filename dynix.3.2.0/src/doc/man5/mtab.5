@@ -1,0 +1,57 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: mtab.5 1.9 90/02/07 $
+.\" @(#)mtab.5 1.1 85/12/28 SMI;
+.TH MTAB 5 "\*(V)" "4BSD"
+.SH NAME
+/etc/mtab \- mounted file system table
+.SH SYNOPSIS
+.PP
+.B #include <mntent.h>
+.PP
+.B /etc/mtab
+.SH DESCRIPTION
+.IX  "mtab file"  ""  "\fLmtab\fP \(em mounted file system table"
+.IX  "mounted file system table"  ""  "mounted file system table \(em \fLmtab\fP"
+.IX  "file system"  "mounted table"  ""  "mounted table \(em \fLmtab\fP"
+.I Mtab
+contains a table of filesystems currently mounted by the
+.I mount
+command.
+.I Umount
+removes entries from this file.
+.PP
+The file contains a line of information for each mounted filesystem,
+structurally identical to the contents of
+.IR /etc/fstab ,
+described in
+.IR fstab (5).
+There are a number of lines of the form:
+.sp 1
+	\fIfsname dir type opts freq passno\fR
+.sp 1
+for example:
+.sp 1v
+	/dev/zd0a / 4.2 rw,noquota 1 2
+.PP
+The file is read by programs using
+.IR getmntent (3),
+and modified by programs such as
+.I mount(8)
+and
+.I umount(8).
+.SH FILES
+/etc/mtab
+.SH "SEE ALSO"
+getmntent(3),
+fstab(5),
+mount(8)

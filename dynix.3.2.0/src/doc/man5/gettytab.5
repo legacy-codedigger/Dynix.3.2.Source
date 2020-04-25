@@ -1,0 +1,266 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+.\"
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: gettytab.5 1.14 1991/06/25 01:03:17 $
+.TH GETTYTAB 5 "\*(V)" "4BSD"
+.SH NAME
+gettytab \- terminal configuration data base
+.SH SYNOPSIS
+/etc/gettytab
+.SH DESCRIPTION
+The
+.I /etc/gettytab
+file is a simplified version of the
+.IR termcap (5)
+data base used to describe terminal lines.
+The initial terminal login process,
+.IR getty (8),
+accesses the
+.I /etc/gettytab
+file each time it starts,
+allowing reconfiguration of terminal characteristics.
+Each entry in the data base describes one class of terminals.
+.I Init
+passes the second character of an entry in the
+.I /etc/ttys
+file to
+.IR getty ,
+which uses this character to select an entry in the
+.I /etc/gettytab
+file.
+.PP
+There is a default terminal class,
+.IR default ,
+that sets global characteristics for all classes.
+The
+.I default
+entry is read first.
+Then the entry for the class required is read,
+overriding some default settings.
+.SH CAPABILITIES
+Refer to
+.IR termcap (5)
+for a description of the file layout.
+The
+.I default
+column lists default values that are used
+when there is no corresponding entry either
+in the special
+.I default
+table
+or in the table obtained.
+.nf
+
+.ta \w'k0-k9  'u +\w'Type  'u +\w'``/bin/login"  'u
+\f3Name	Type	Default	Description\f1
+ap	bool	false	terminal uses any parity
+bd	num	0	backspace delay
+bk	str	0377	alternate end of line character (input break)
+cb	bool	false	use crt backspace mode
+cd	num	0	carriage-return delay
+ce	bool	false	use crt erase algorithm
+ck	bool	false	use crt kill algorithm
+cl	str	NULL	screen clear sequence
+co	bool	false	console - add \\n after login prompt
+ds	str	^Y	delayed suspend character
+ec	bool	false	leave echo \s-2OFF\s0
+ep	bool	false	terminal uses even parity
+er	str	^?	erase character
+et	str	^D	end of text (\s-2EOF\s0) character
+ev	str	NULL	initial environment
+f0	num	unused	tty mode flags to write messages
+f1	num	unused	tty mode flags to read login name
+f2	num	unused	tty mode flags to leave terminal as
+fd	num	0	form-feed (vertical motion) delay
+fl	str	^O	output flush character
+hc	bool	false	do \s-2NOT\s0 hangup line on last close
+he	str	NULL	hostname editing string
+hn	str	hostname	hostname
+ht	bool	false	terminal has real tabs
+ig	bool	false	ignore garbage characters in login name
+im	str	NULL	initial (banner) message
+in	str	^C	interrupt character
+is	num	unused	input speed
+kl	str	^U	kill character
+lc	bool	false	terminal has lower case
+lm	str	login:	login prompt
+ln	str	^V	``literal next'' character
+lo	str	/bin/login	program to exec when name obtained
+nd	num	0	newline (line-feed) delay
+nl	bool	false	terminal has (or may have) a newline character
+np	bool	false	terminal does not use parity
+nx	str	default	next table (for auto speed selection)
+op	bool	false	terminal uses odd parity
+os	num	unused	output speed
+pc	str	\\0	pad character
+pe	bool	false	use printer (hard copy) erase algorithm
+pf	num	0	delay between first prompt and following flush (seconds)
+ps	bool	false	line connected to a MICOM port selector
+qu	str	^\\	quit character
+rp	str	^R	line retype character
+rw	bool	false	do \s-2NOT\s0 use raw for input, use cbreak
+sp	num	unused	line speed (input and output)
+su	str	^Z	suspend character
+tc	str	none	table continuation
+to	num	0	timeout (seconds)
+tt	str	NULL	terminal type (for environment)
+ub	bool	false	do unbuffered output (of prompts etc)
+uc	bool	false	terminal is known upper case only
+we	str	^W	word erase character
+xc	bool	false	do \s-2NOT\s0 echo control chars as ^X
+xf	str	^S	XOFF (stop output) character
+xn	str	^Q	XON (start output) character
+.br
+.fi
+.PP
+If the line speed is zero or unspecified, speed will not be altered
+from that which prevails when getty is entered.
+Specifying an input or output speed will override
+line speed for stated direction only.
+.PP
+Terminal modes to be used for the output of the message,
+for input of the login name,
+and to leave the terminal set as upon completion,
+are derived from the boolean flags specified.
+If the derivation should prove inadequate,
+any (or all) of these three may be overridden
+with one of the
+.BR f0 ,
+.BR f1 ,
+or
+.B f2
+numeric specifications, which can be used to specify
+(usually in octal, with a leading '0')
+the exact values of the flags.
+Local (new tty) flags are set in the top 16 bits
+of this (32 bit) value.
+.LP
+Note that using
+.B f2
+to specify the mode in which to leave the tty is ineffective if the default
+.B lo
+value is used because
+.I /bin/login
+resets the tty mode before prompting for information.
+.PP
+Should
+.I getty
+receive a null character
+(presumed to indicate a line break)
+it will restart using the table indicated by the
+.B nx
+entry. If there is none, it will re-use its original table.
+.PP
+Delays are specified in milliseconds, the nearest possible
+delay available in the tty driver will be used.
+Should greater certainty be desired, delays
+with values 0, 1, 2, and 3 are interpreted as
+choosing that particular delay algorithm from the driver.
+.PP
+The
+.B cl
+screen clear string may be preceded by a (decimal) number
+of milliseconds of delay required (a la termcap).
+This delay is simulated by repeated use of the pad character
+.BR pc .
+.PP
+The initial message, and login message,
+.B im
+and
+.B lm
+may include the character sequence \f3%h\fP to obtain
+the hostname. (\f3%%\fP obtains a single '%' character.)
+The hostname is normally obtained from the system,
+but may be set by the
+.B hn
+table entry.
+In either case it may be edited with
+.BR he .
+The
+.B he
+string is a sequence of characters, each character that
+is neither '@' nor '#' is copied into the final hostname.
+A '@' in the
+.B he
+string, causes one character from the real hostname to
+be copied to the final hostname.
+A '#' in the
+.B he
+string, causes the next character of the real hostname
+to be skipped.
+Surplus '@' and '#' characters are ignored.
+.PP
+When getty execs the login process, given
+in the
+.B lo
+string (usually "/bin/login"), it will have set
+the environment to include the terminal type, as indicated
+by the
+.B tt
+string (if it exists).
+The
+.B ev
+string, can be used to enter additional data into
+the environment.
+It is a list of comma separated strings, each of which
+will presumably be of the form
+.IR name=value .
+.PP
+If a non-zero timeout is specified, with
+.BR to ,
+then getty will exit within the indicated
+number of seconds, either having
+received a login name and passed control
+to
+.IR login ,
+or having received an alarm signal, and exited.
+This may be useful to hangup dial-in lines.
+.PP
+Output from
+.I getty
+is even parity unless
+.B op
+is specified.
+.B Op
+may be specified with
+.B ap
+to allow any parity on input, but generate odd parity output.
+Note: this only applies while getty is being run;
+terminal driver limitations prevent a more complete
+implementation.
+.B Np
+may be specified to disable parity output entirely.
+.I Getty
+does not check parity of input characters in
+.I RAW
+mode.
+.SH FILES
+/etc/gettytab
+.SH "SEE ALSO"
+termcap(5), getty(8)
+.br
+.I "DYNIX System Administration Guide"
+.SH BUGS
+It is wise to always specify (at least) the
+erase, kill, and interrupt characters in the
+.B default
+table.
+In
+.B all
+cases, '#' or '^H' typed in a login name will be treated as
+an erase character, and '@' will be treated as a kill character.

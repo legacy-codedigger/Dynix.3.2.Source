@@ -1,0 +1,91 @@
+.V= $Header: manuals.xr 1.6 91/01/21 $
+.ti
+.sp 1.5i
+.ft 2
+.ps 18
+.ce
+SEQUENT SOFTWARE MANUALS
+.sp
+.ft 3
+.ps 12
+.ce
+System Summary Manuals
+.sp
+.ft 1
+.ps 10
+Balance Technical Summary \f2or\f1 Symmetry Technical Summary
+.br
+DYNIX Implementation Differences
+.br
+DYNIX SVAE Summary
+.br
+Balance System Index \f2or\f1 Symmetry System Index
+.sp
+.ft 3
+.ps +2
+.ce
+System Administration Manuals
+.sp
+.ps -2
+.ft 1
+DYNIX System Administration Guide
+.br
+Balance diagnostics User's Guide \f2or\f1 Symmetry Diagnostics User's Guide
+.sp
+.ft 3
+.ps +2
+.ce
+DYNIX Programmer's Manual
+.sp
+.ft 1
+.ps -2
+DYNIX Programmer's Manual, Vol. 1, Sec. 1
+.br
+DYNIX Programmer's Manual, Vol. 1, Sec. 2-3
+.br
+DYNIX Programmer's Manual, Vol. 1, Sec. 4-8
+.br
+DYNIX Programmer's Manual, Vol. 2, Part 1
+.br
+DYNIX Programmer's Manual, Vol. 2, Part 2
+.sp
+.ft 3
+.ps +2
+.ce
+Language Tools Manuals
+.sp
+.ft 1
+.ps -2
+Sequent Guide to Parallel Programming
+.br
+Sequent C Compiler User's Manual
+.br
+Sequent FORTRAN Compiler User's Manual
+.br
+Sequent Pascal Compiler User's Manual
+.br
+Sequent Pdbx User's Manual
+.br
+Sequent Pdbx Quick Reference
+.br
+Balance Series Assembler User's Manual
+.br
+.in +.5i
+\f2or\f1
+.in -.5i
+Symmetry Series Assembler User's Manual
+.sp
+.ft 3
+.ps +2
+.ce
+DYNIX Network File System Manuals
+.sp
+.ps -2
+.ft 1
+Introduction to NFS
+.br
+DYNIX NFS Administrator's Guide
+.br
+DYNIX NFS Technical Reference
+.sp
+To order these and other manuals from Sequent, call toll-free (800) 854-0428.

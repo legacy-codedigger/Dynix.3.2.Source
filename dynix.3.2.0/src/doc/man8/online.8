@@ -1,0 +1,75 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: online.8 1.10 90/03/20 $
+.TH ONLINE 8 "\*(V)" "DYNIX"
+.SH NAME
+online, offline \- bring processors online and offline
+.SH SYNOPSIS
+.B /etc/online 
+.B \-N
+.PP
+.B /etc/online 
+.B \-S
+.PP
+.B /etc/online
+[
+.B \-a
+] [
+.B \-v
+] [ \f2processor-number\f1 ... ]
+.PP
+.B /etc/offline
+[
+.B \-a
+] [
+.B \-v
+] [ \f2processor-number\f1 ... ]
+.SH DESCRIPTION
+.B Online
+initializes the given processors and begins scheduling user
+processes.
+Processors are numbered consecutively upward from zero.
+.PP
+.B Offline
+removes the given processors from the pool of processors available
+for work.
+One processor is always left online.
+.PP
+Both
+.B online
+and
+.B offline
+display which processors are on and off line.
+.PP
+Only the superuser can take processors on or off line.
+.SH OPTIONS
+.SS "Online Options"
+.TP \w'\--T\ 'u
+.B \- N
+Print the number of processors currently online.  Useful in shell scripts.
+.TP
+.B \- S 
+Display a list of processors currently online.  Useful in shell
+scripts.
+.TP
+.B \- a
+Bring all processors online.            
+.SS "Offline Options"
+.TP \w'\--T\ 'u
+.B \- a
+Bring all processors but one offline.
+.SS "Online and Offline Options"
+.TP \w'\--T\ 'u
+.B \-v
+Display any resulting changes in state (on- or offline).
+.SH "SEE ALSO"
+halt(8), reboot(8), shutdown(8), tmp_ctl(2), tmp_affinity(2)

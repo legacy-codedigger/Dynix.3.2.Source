@@ -1,0 +1,905 @@
+test of alog(x) vs t.s. expansion of alog(1+y)
+
+2000 random arguments were tested from the interval 
+ (1-eps,1+eps), where eps = ( 7.62939453125e-06)
+
+alog(x) was larger 0 times,
+            agreed 2000 times, and 
+       was smaller 0 times.
+
+there are 53  base  2  significant digits in a floating-point number
+
+the maximum relative error of                  0 = 2 **               -999
+  occurred for x =                  0
+the estimated loss of base 2  significant digits is                  0
+
+the root mean square relative error was                  0  = 2  **                -999
+the estimated loss of base 2  significant digits is                  0
+
+test of alog(x) vs alog(17x/16)-alog(17/16) 
+
+2000 random arguments were tested from the interval 
+ (0.70710678118654755,             0.9375)  
+
+alog(x) was larger 0 times,
+            agreed 1706 times, and 
+       was smaller 294 times.
+
+there are 53  base  2  significant digits in a floating-point number
+
+the maximum relative error of 2.2157660950434095e-16 = 2 ** -52.003043925317805
+  occurred for x = 0.7783896622956874
+the estimated loss of base 2  significant digits is 0.99695607468219549
+
+the root mean square relative error was 6.8479783328351171e-17  = 2  **  -53.697099476060004
+the estimated loss of base 2  significant digits is                  0
+
+test of alog10(x) vs alog10(11x/10)-alog10(11/10) 
+
+2000 random arguments were tested from the interval 
+ (0.31622776601683795,                0.9)  
+
+alog10(x) was larger 0 times, 
+              agreed 974 times, and
+         was smaller 1026 times.
+
+there are 53  base  2  significant digits in a floating-point number
+
+the maximum relative error of 4.8599826512413475e-16 = 2 ** -50.869898354369369
+  occurred for x = 0.87677782683122274
+the estimated loss of base 2  significant digits is 2.1301016456306314
+
+the root mean square relative error was 1.4039284266685062e-16  = 2  **  -52.661380130363348
+the estimated loss of base 2  significant digits is 0.33861986963665203
+
+test of alog(x*x) vs 2 * log(x)  
+
+2000 random arguments were tested from the interval 
+ (                16,                240)  
+
+alog(x) was larger 40 times,
+            agreed 1960 times, and 
+       was smaller 0 times.
+
+there are 53  base  2  significant digits in a floating-point number
+
+the maximum relative error of 2.1501369389028659e-16 = 2 ** -52.046420972436664
+  occurred for x = 62.227642625374749
+the estimated loss of base 2  significant digits is 0.95357902756333601
+
+the root mean square relative error was 2.4596130037080872e-17  = 2  **  -55.174346273761223
+the estimated loss of base 2  significant digits is                  0
+
+ special tests
+
+the identity  alog(x) = -alog(1/x)  will be tested.
+
+      x         f(x) + f(1/x)
+15.111137138469561	1.426810e-16
+16.892142308695043	4.597017e-17
+15.517788586880137	1.812786e-16
+15.723573360017138	2.367898e-16
+15.446670002142191	2.515349e-17
+
+
+test of special arguments
+
+alog(1.0) =                  0
+
+alog(xmin) = alog(2.2250738585072023e-308) = -708.39641853226408
+
+alog(xmax) = alog(1.797693134862315e+308) = 709.78271289338397
+
+test of asin(x) vs taylor series
+
+2000 random arguments were tested from the interval
+    (             -0.125,              0.125)
+
+ asin(x) was larger 383 times,
+             agreed 1268 times, and
+        was smaller 349 times.
+
+there are 53 base 2 significant digits in a floating-point number
+
+the maximum relative error of 2.2195213253619523e-16 = 2  ** -52.000600947923559
+  occurred for x = -0.0019539374913050642
+the estimated loss of base 2 significant digits is 0.99939905207644131
+
+the root mean square relative error was 9.4441556545785073e-17 = 2 ** -53.233355793433269
+the estimated loss of base 2 significant digits is                  0
+
+test of acos(x) vs taylor series
+
+2000 random arguments were tested from the interval
+    (             -0.125,              0.125)
+
+ acos(x) was larger 415 times,
+             agreed 1185 times, and
+        was smaller 400 times.
+
+there are 53 base 2 significant digits in a floating-point number
+
+the maximum relative error of 1.5360436385868301e-16 = 2  ** -52.531630314978244
+  occurred for x = 0.12490739965052631
+the estimated loss of base 2 significant digits is 0.4683696850217558
+
+the root mean square relative error was 9.0432061543316031e-17 = 2 ** -53.295943260477792
+the estimated loss of base 2 significant digits is                  0
+
+test of asin(x) vs taylor series
+
+2000 random arguments were tested from the interval
+    (               0.75,                  1)
+
+ asin(x) was larger 351 times,
+             agreed 1295 times, and
+        was smaller 354 times.
+
+there are 53 base 2 significant digits in a floating-point number
+
+the maximum relative error of 2.2160232820976407e-16 = 2  ** -52.002876479414326
+  occurred for x = 0.84254765033156982
+the estimated loss of base 2 significant digits is 0.99712352058567433
+
+the root mean square relative error was 1.0006910984484596e-16 = 2 ** -53.149852818262673
+the estimated loss of base 2 significant digits is                  0
+
+test of acos(x) vs taylor series
+
+2000 random arguments were tested from the interval
+    (               0.75,                  1)
+
+ acos(x) was larger 439 times,
+             agreed 1112 times, and
+        was smaller 449 times.
+
+there are 53 base 2 significant digits in a floating-point number
+
+the maximum relative error of 4.2118961285875232e-16 = 2  ** -51.076379660328818
+  occurred for x = 0.96546025668565587
+the estimated loss of base 2 significant digits is 1.9236203396711815
+
+the root mean square relative error was 1.1488457254692945e-16 = 2 ** -52.950664441748906
+the estimated loss of base 2 significant digits is 0.049335558251094369
+
+test of acos(x) vs taylor series
+
+2000 random arguments were tested from the interval
+    (                 -1,              -0.75)
+
+ acos(x) was larger 388 times,
+             agreed 1237 times, and
+        was smaller 375 times.
+
+there are 53 base 2 significant digits in a floating-point number
+
+the maximum relative error of 1.8351349419532085e-16 = 2  ** -52.274963366339733
+  occurred for x = -0.75070620167769198
+the estimated loss of base 2 significant digits is 0.72503663366026672
+
+the root mean square relative error was 1.0300085086954711e-16 = 2 ** -53.10819326292323
+the estimated loss of base 2 significant digits is                  0
+
+special tests
+
+the identity  asin(-x) = -asin(x)  will be tested.
+
+      x          f(x) + f(-x)
+-7.769404e-01	 1.225148e-17
+-1.175465e-01	 -5.421011e-20
+-6.933180e-01	 3.789287e-17
+-6.647557e-01	 6.993104e-18
+-9.446775e-02	 -4.946672e-18
+
+the identity asin(x) = x, x small will be tested.
+
+     x           x - f(x)
+8.975803e-17	 0.000000e+00
+4.487902e-17	 0.000000e+00
+2.243951e-17	 0.000000e+00
+1.121975e-17	 0.000000e+00
+5.609877e-18	 0.000000e+00
+
+test of underflow for very small argument.
+    asin( den0x0000000000c0000000) = den0x0000000000c0000000 
+test of atan(x) vs truncated taylor series
+
+2000 random arguments were tested from the interval 
+  (             -0.0625,             0.0625)
+
+atan(x) was larger 461 times,
+            agreed 1046 times, and
+	    smaller 493 times.
+
+ there are 53 base 2 significant digits in a floating-point number
+
+the maximum relative error of 2.2166650138860899e-16 = 2 ** -52.002458754001019
+  occurred for x = -0.015652930263825581
+the estimated loss of base 2 significant digits is 0.9975412459989812
+
+the root mean square relative error was 1.0864073316175582e-16 = 2 ** -53.031284397445262
+the estimated loss of base 2 significant digits is                  0
+
+test of atan(x) vs  atan(1/16) + atan((x - 1/16)/(1+x/16))
+
+2000 random arguments were tested from the interval 
+  (              0.0625, 0.26794919243112281)
+
+atan(x) was larger 214 times,
+            agreed 1559 times, and
+	    smaller 227 times.
+
+ there are 53 base 2 significant digits in a floating-point number
+
+the maximum relative error of 2.2168960677061813e-16 = 2 ** -52.002308382687943
+  occurred for x = 0.25576839874018731
+the estimated loss of base 2 significant digits is 0.99769161731205713
+
+the root mean square relative error was 7.4783369515529516e-17 = 2 ** -53.570060136890042
+the estimated loss of base 2 significant digits is                  0
+
+test of 2*atan(x) vs atan(2x/(1-x*x))
+
+2000 random arguments were tested from the interval 
+  (  0.26794919243112281, 0.4142135623730951)
+
+atan(x) was larger 267 times,
+            agreed 1453 times, and
+	    smaller 280 times.
+
+ there are 53 base 2 significant digits in a floating-point number
+
+the maximum relative error of 2.1192892469391076e-16 = 2 ** -52.067269013712583
+  occurred for x = 0.26809226207722165
+the estimated loss of base 2 significant digits is 0.93273098628741735
+
+the root mean square relative error was 8.9725048276539781e-17 = 2 ** -53.307266818801892
+the estimated loss of base 2 significant digits is                  0
+
+test of 2*atan(x) vs atan(2x/(1-x*x))
+
+2000 random arguments were tested from the interval 
+  (  0.4142135623730951,                  1)
+
+atan(x) was larger 127 times,
+            agreed 1758 times, and
+	    smaller 115 times.
+
+ there are 53 base 2 significant digits in a floating-point number
+
+the maximum relative error of 2.2185888294408058e-16 = 2 ** -52.001207200230944
+  occurred for x = 0.54684609036205698
+the estimated loss of base 2 significant digits is 0.99879279976905622
+
+the root mean square relative error was 5.3374009669404057e-17 = 2 ** -54.056640216657314
+the estimated loss of base 2 significant digits is                  0
+
+special tests
+
+
+the identity   atan(-x) = -atan(x)   will be tested.
+
+      x         f(x) + f(-x)
+  2.778428e-01	-2.629190e-17 
+  4.730356e+00	-4.499439e-17 
+  1.294471e+00	-4.006127e-17 
+  1.808933e+00	-3.588709e-17 
+  1.116675e+00	2.862294e-17 
+
+the identity atan(x) = x , x small, will be tested.
+
+     x          x - f(x)
+
+  1.017936e-16	0.000000e+00 
+  5.089679e-17	0.000000e+00 
+  2.544840e-17	0.000000e+00 
+  1.272420e-17	0.000000e+00 
+  6.362099e-18	0.000000e+00 
+
+the identity atan(x/y) = atan2(x,y) will be tested 
+the first column of results should be 0, the second +-pi
+
+   x               y          f1(x/y)-f2(x,y)  f1(x/y)-f2(x/(-y))
+
+ 4.375669e-01	1.739670e-01	-1.275022e-16	-3.141593e+00
+ 9.834915e-01	2.341107e-01	-9.302455e-17	-3.141593e+00
+ -9.446575e-01	9.794546e-01	4.759648e-17	3.141593e+00
+ -2.726805e-01	9.787347e-01	-3.144186e-18	3.141593e+00
+ -6.326329e-01	7.302220e-01	-7.686993e-17	3.141593e+00
+
+test of underflow for very small argument.
+
+    atan( 1.8218319894452515e-231 ) = 1.8218319894452515e-231
+test of exp(x-             0.0625 ) vs exp(x)/exp(             0.0625 )
+
+2000 random arguments were tested from the interval
+     ( -0.28407359027997266,0.34657359027997265)
+
+exp(x-v) was larger 272 times
+             agreed 1440 times, and
+        was smaller 288 times.
+
+there are 53 base 2 significant digits in a flt-pt no.
+
+the maximum relative error of 2.2173164149551017e-16 = 2 ** -52.002034858180195
+    occurred for x = 0.063910456210440589
+the estimated loss of base 2 significant digits is 0.99796514181980456
+
+the root mean square relative error was 8.5226081900440285e-17 = 2 **-53.38148260434631
+the estimated loss of base 2 significant digits is                  0
+
+test of exp(x-             2.8125 ) vs exp(x)/exp(             2.8125 )
+
+2000 random arguments were tested from the interval
+     ( -3.4657359027997265,-670.27332360146715)
+
+exp(x-v) was larger 1220 times
+             agreed 0 times, and
+        was smaller 780 times.
+
+there are 53 base 2 significant digits in a flt-pt no.
+
+the maximum relative error of 6.2570827803475071e-14 = 2 ** -43.861503137601929
+    occurred for x = -501.79437670416411
+the estimated loss of base 2 significant digits is 9.1384968623980711
+
+the root mean square relative error was 2.4679045764371619e-14 = 2 **-45.203706715849179
+the estimated loss of base 2 significant digits is 7.7962932841508206
+
+test of exp(x-             2.8125 ) vs exp(x)/exp(             2.8125 )
+
+2000 random arguments were tested from the interval
+     ( 6.9314718055994531,709.67735237772615)
+
+exp(x-v) was larger 1226 times
+             agreed 0 times, and
+        was smaller 774 times.
+
+there are 53 base 2 significant digits in a flt-pt no.
+
+the maximum relative error of 6.2657657959054216e-14 = 2 ** -43.859502483291273
+    occurred for x = 424.26984956649733
+the estimated loss of base 2 significant digits is 9.1404975167087272
+
+the root mean square relative error was 2.4355477491297548e-14 = 2 **-45.222747060803151
+the estimated loss of base 2 significant digits is  7.777252939196849
+
+
+special tests
+
+the identity  exp(x)*exp(-x) = 1.0  will be tested.
+
+	x		f(x)*f(-x) - 1
+	1.0061973325970968		                 0
+	1.7746665746371062		                 0
+	1.8333218296382629		                 0
+	1.1652287047828789		-1.1102230246251565e-16
+	1.6535880978598478		                 0
+
+
+test of special arguments
+
+exp(0.0) - 1.0d0 =                  0
+exp(               -708 ) =	3.3075530036385028e-308
+exp(                709 ) =	8.2184074615550617e+307
+
+if exp(              354.5 )   = 9.0655432609166127e+153 is not about
+ exp(             177.25 )**2 = 9.0655432609166127e+153 there is an arg red error
+test of x**1.0 vs x
+
+2000 random arguments were tested from the interval
+ (               0.5 ,                 1 )
+
+x**1.0 was larger 0 times,
+           agreed 2000 times, and
+      was smaller 0 times.
+
+there are 53 base 2 significant digits in a flt-pt no.
+
+the maximum relative error of                  0 = 2 **               -999
+  occurred for x =                  0
+the estimated loss of base 2 significant digits is                  0
+
+the root mean square relative error was                  0 = 2 **               -999
+the estimated loss of base 2 significant digits is                  0
+
+test of xsq**1.5 vs xsq*x
+
+2000 random arguments were tested from the interval
+ (               0.5 ,                 1 )
+
+x**1.5 was larger 627 times,
+           agreed 1190 times, and
+      was smaller 183 times.
+
+there are 53 base 2 significant digits in a flt-pt no.
+
+the maximum relative error of 4.3558180576987411e-16 = 2 ** -51.027905824183776
+  occurred for x = 0.50323422253131866
+the estimated loss of base 2 significant digits is  1.972094175816224
+
+the root mean square relative error was 1.1192359159571534e-16 = 2 ** -52.988335354172662
+the estimated loss of base 2 significant digits is 0.011664645827337949
+
+test of xsq**1.5 vs xsq*x
+
+2000 random arguments were tested from the interval
+ (                 1 ,5.6438030941222861e+102 )
+
+x**1.5 was larger 949 times,
+           agreed 1 times, and
+      was smaller 1050 times.
+
+there are 53 base 2 significant digits in a flt-pt no.
+
+the maximum relative error of 1.1299963208167045e-13 = 2 ** -43.008747158194481
+  occurred for x = 8.2552792996256752e+100
+the estimated loss of base 2 significant digits is 9.9912528418055189
+
+the root mean square relative error was 4.4331373252418524e-14 = 2 ** -44.358665274880686
+the estimated loss of base 2 significant digits is 8.6413347251193144
+
+test of x**y vs xsq**(y/2)
+
+2000 random arguments were tested from the region
+  x in (              0.01 ,                10 ), y in (-154.12735777995834 ,154.12735777995834 )
+
+ x**y  was larger 0 times,
+           agreed 2000 times, and
+      was smaller 0 times.
+
+there are 53 base 2 significant digits in a flt-pt no.
+
+the maximum relative error of                  0 = 2 **               -999
+  occurred for x =                  0 y =                  0
+the estimated loss of base 2 significant digits is                  0
+
+the root mean square relative error was                  0 = 2 **               -999
+the estimated loss of base 2 significant digits is                  0
+
+special tests
+
+the identity  x ** y = (1/x) ** (-y)  will be tested.
+
+    x		    y		(x**y-(1/x)**(-y)) / x**y
+
+ 8.769404e+00	2.175465e+00	0.000000e+00
+ 7.933180e+00	7.647557e+00	0.000000e+00
+ 1.944677e+00	9.084685e+00	9.455597e-16
+ 1.585605e+00	4.200605e+00	-3.843099e-16
+ 1.075567e+00	1.044584e+01	0.000000e+00
+test of sin(x) vs 3*sin(x/3)-4*sin(x/3)**3
+
+2000 random arguments were tested from the interval
+      (                 0 ,        1.570796327)
+
+sin(x) was larger 381 times
+           agreed 1227 times, and
+      was smaller 392 times.
+
+there are 53 base 2 significant digits in a flt-pt no.
+
+the maximum relative error of 2.5309635836408395e-16 = 2 ** -51.81116276858355
+    occurred for x = 0.054859545869874262
+the estimated loss of base 2 significant digits is 1.1888372314164499
+
+the root mean square relative error was 8.7340812141521411e-17 = 2 ** -53.346121666955568
+the estimated loss of base 2 significant digits is                  0
+
+test of sin(x) vs 3*sin(x/3)-4*sin(x/3)**3
+
+2000 random arguments were tested from the interval
+      (       18.84955592 ,       20.420352247)
+
+sin(x) was larger 382 times
+           agreed 1278 times, and
+      was smaller 340 times.
+
+there are 53 base 2 significant digits in a flt-pt no.
+
+the maximum relative error of 2.5011347738979959e-16 = 2 ** -51.828266718817446
+    occurred for x = 19.942045262587733
+the estimated loss of base 2 significant digits is 1.1717332811825543
+
+the root mean square relative error was 8.5253577392395474e-17 = 2 ** -53.381017239617179
+the estimated loss of base 2 significant digits is                  0
+
+test of cos(x) vs 4*cos(x/3)**3-3*cos(x/3)
+
+2000 random arguments were tested from the interval
+      (      21.991148574 ,       23.561944901)
+
+cos(x) was larger 369 times
+           agreed 1253 times, and
+      was smaller 378 times.
+
+there are 53 base 2 significant digits in a flt-pt no.
+
+the maximum relative error of 2.4740444781963147e-16 = 2 ** -51.843978080981159
+    occurred for x = 23.335644185545885
+the estimated loss of base 2 significant digits is 1.1560219190188405
+
+the root mean square relative error was 8.6185248474174365e-17 = 2 ** -53.365336655306372
+the estimated loss of base 2 significant digits is                  0
+
+special tests
+
+if 1.000000e+00 is not almost 1.0e0, sin has the wrong period.
+
+the identity sin(-x) = -sin(x) will be tested.
+     x			f(x) + f(-x)
+9.483186e+00		-2.114194e-18
+1.672584e+01		-1.572093e-17
+1.727865e+01		-4.689174e-17
+1.098202e+01		-1.864828e-17
+1.558470e+01		2.283601e-18
+
+the identity sin(x) = x , x small, will be tested.
+     x		         x - f(x)
+3.877522e-17		0.000000e+00
+1.938761e-17		0.000000e+00
+9.693805e-18		0.000000e+00
+4.846902e-18		0.000000e+00
+2.423451e-18		0.000000e+00
+
+the identity cos(-x) = cos(x) will be tested.
+     x			f(x) - f(-x)
+1.238443e+01		-4.634964e-17
+2.390430e+00		5.529431e-18
+1.606043e+01		-3.079134e-17
+9.500653e+00		7.209944e-18
+5.956459e-02		5.009014e-17
+
+test of underflow for very small argument.
+sin( 1.8218319894452515e-231 ) = 1.8218319894452515e-231
+
+the following three lines illustrate the loss in significance
+ for large arguments.  the arguments are consecutive.
+
+sin( 94906265.624251544 ) = 0.94195705717881513
+sin( 94906265.624251544 ) = 0.94195705217599794
+sin( 94906265.624251574 ) = 0.94195704717318023
+test of sinh(x) vs t.s. expansion of sinh(x)
+
+2000 random arguments were tested from the interval 
+   (                  0,                 0.5)
+
+  sinh(x) was larger 426 times, 
+              agreed 1135 times, and 
+         was smaller 439 times.
+
+there are 53 base 2 significant digits in a floating-point number
+
+the maximum relative error of 3.4985618440949398e-16 = 2 ** -51.344087523792382 
+  occurred for x = 0.0012395972323897799
+the estimated loss of base 2 significant digits is 1.6559124762076181
+
+the root mean square relative error was 1.0474291532061504e-16 = 2 ** -53.083996853055758
+the estimated loss of base 2 significant digits is                  0
+
+test of cosh(x) vs t.s. expansion of cosh(x)
+
+2000 random arguments were tested from the interval 
+   (                  0,                 0.5)
+
+  cosh(x) was larger 486 times, 
+              agreed 1043 times, and 
+         was smaller 471 times.
+
+there are 53 base 2 significant digits in a floating-point number
+
+the maximum relative error of 2.2204460377292965e-16 = 2 ** -52.000000007485575 
+  occurred for x = 0.00010186858750956207
+the estimated loss of base 2 significant digits is 0.99999999251442517
+
+the root mean square relative error was 1.4790116477166668e-16 = 2 ** -52.586216104004968
+the estimated loss of base 2 significant digits is 0.41378389599503151
+
+test of sinh(x) vs c*(sinh(x+1)+sinh(x-1))
+
+2000 random arguments were tested from the interval 
+   (                  3,  709.78271289338397)
+
+  sinh(x) was larger 979 times, 
+              agreed 974 times, and 
+         was smaller 47 times.
+
+there are 53 base 2 significant digits in a floating-point number
+
+the maximum relative error of 4.431382010685974e-16 = 2 ** -51.003092817380157 
+  occurred for x = 6.2404722010414595
+the estimated loss of base 2 significant digits is  1.996907182619843
+
+the root mean square relative error was 1.2282023533754023e-16 = 2 ** -52.854301245632243
+the estimated loss of base 2 significant digits is 0.14569875436775703
+
+test of cosh(x) vs c*(cosh(x+1)+cosh(x-1))
+
+2000 random arguments were tested from the interval 
+   (                  3,  709.78271289338397)
+
+  cosh(x) was larger 959 times, 
+              agreed 985 times, and 
+         was smaller 56 times.
+
+there are 53 base 2 significant digits in a floating-point number
+
+the maximum relative error of 3.314570381718204e-16 = 2 ** -51.422027630765257 
+  occurred for x = 342.70723445899631
+the estimated loss of base 2 significant digits is 1.5779723692347432
+
+the root mean square relative error was 1.2109044374707234e-16 = 2 ** -52.874764503724663
+the estimated loss of base 2 significant digits is 0.12523549627533725
+
+special tests
+
+
+the identity  sinh(-x) = -sinh(x)  will be tested.
+
+    x           f(x) + f(-x)
+
+1.667057e-01	0.000000e+00
+2.838213e+00	0.000000e+00
+7.766829e-01	0.000000e+00
+1.085360e+00	0.000000e+00
+6.700050e-01	0.000000e+00
+
+the identity sinh(x) = x , x small, will be tested.
+
+    x            x - f(x)
+
+1.017936e-16	-1.299556e-20
+5.089679e-17	4.771233e-20
+2.544840e-17	-3.035394e-20
+1.272420e-17	3.903314e-20
+6.362099e-18	-3.469354e-20
+
+the identity  cosh(-x) = cosh(x)  will be tested.
+
+   x            f(x) - f(-x)
+
+1.828175e+00	0.000000e+00
+5.219009e-01	0.000000e+00
+2.237619e+00	0.000000e+00
+7.023321e-01	0.000000e+00
+7.915069e-01	0.000000e+00
+
+test of underflow for very small argument.
+
+  sinh( 1.8218319894452515e-231 ) =                  0
+ test of sqrt(x*x) - x 
+
+ 2000 random arguments were tested from the interval
+      (0.70710678118654746,                 1)
+
+ sqrt(x) was larger 0 times
+             agreed 2000 times, and
+        was smaller 0 times.
+
+ there are 53 base 2 significant digits in a flt pt no.
+
+ the maximum relative error of                  0 = 2 **               -999
+    occurred for x =                  0
+the estimated loss of base 2 significant digits is                  0
+
+the root mean square relative error was                  0 = 2 **              -999
+the estimated loss of base 2 significant digits is                  0
+
+ test of sqrt(x*x) - x 
+
+ 2000 random arguments were tested from the interval
+      (                 1,1.4142135623730951)
+
+ sqrt(x) was larger 0 times
+             agreed 2000 times, and
+        was smaller 0 times.
+
+ there are 53 base 2 significant digits in a flt pt no.
+
+ the maximum relative error of                  0 = 2 **               -999
+    occurred for x =                  0
+the estimated loss of base 2 significant digits is                  0
+
+the root mean square relative error was                  0 = 2 **              -999
+the estimated loss of base 2 significant digits is                  0
+
+ test of special arguments
+
+ sqrt(xmin) = sqrt( 2.2250738585072023e-308    ) = 1.4916681462400416e-154
+
+ sqrt(1-epsneg) = sqrt(1-  1.1102230246251565e-16 ) = 0.99999999999999982
+
+ sqrt(1.0) = sqrt(                  1 ) =                  1
+
+ sqrt(1+eps) = sqrt(1+ 2.2204460492503131e-16 ) =                  1
+
+ sqrt(xmax) = sqrt( 1.797693134862315e+308 ) = 1.3407807929942592e+154
+
+test of tan(x) vs 2*tan(x/2)/(1-tan(x/2)**2)
+
+    2000 random arguments were tested from the interval 
+     (                  0,  0.78539816250000003)
+
+tan(x) was larger 429 times,
+           agreed 1093 times, and 
+           smaller 478 times.
+
+there are  53 base 2 significant digits in a floating-point number
+
+the maximum relative error of 4.0102972814750419e-16 = 2 ** -51.147140331240095
+   occurred for x = 0.017300965685689766
+the estimated loss of base 2 significant digits is 1.8528596687599048
+
+the root mean square relative error was 1.119112535381642e-16 = 2 ** -52.988494400494965
+the estimated loss of base 2 significant digits is 0.011505599505035491
+
+test of tan(x) vs 2*tan(x/2)/(1-tan(x/2)**2)
+
+    2000 random arguments were tested from the interval 
+     ( 2.7488935687500002,  3.5342917312500002)
+
+tan(x) was larger 375 times,
+           agreed 1246 times, and 
+           smaller 379 times.
+
+there are  53 base 2 significant digits in a floating-point number
+
+the maximum relative error of 2.4300327847239256e-16 = 2 ** -51.869873740152933
+   occurred for x = 3.2553187417098708
+the estimated loss of base 2 significant digits is 1.1301262598470672
+
+the root mean square relative error was 9.9316056423207382e-17 = 2 ** -53.160750636021028
+the estimated loss of base 2 significant digits is                  0
+
+test of tan(x) vs 2*tan(x/2)/(1-tan(x/2)**2)
+
+    2000 random arguments were tested from the interval 
+     ( 18.849555900000002,  19.634954062500004)
+
+tan(x) was larger 472 times,
+           agreed 1099 times, and 
+           smaller 429 times.
+
+there are  53 base 2 significant digits in a floating-point number
+
+the maximum relative error of 3.4754963713923224e-16 = 2 ** -51.353630479525393
+   occurred for x =  19.41807843298611
+the estimated loss of base 2 significant digits is 1.6463695204746074
+
+the root mean square relative error was 1.1034856392396979e-16 = 2 **   -53.008781663689
+the estimated loss of base 2 significant digits is                  0
+
+test of cot(x) vs (cot(x/2)**2-1)/(2*cot(x/2))
+
+    2000 random arguments were tested from the interval 
+     ( 18.849555900000002,  19.634954062500004)
+
+cot(x) was larger 467 times,
+           agreed 998 times, and 
+           smaller 535 times.
+
+there are  53 base 2 significant digits in a floating-point number
+
+the maximum relative error of 4.4296521049756228e-16 = 2 ** -51.003656121028165
+   occurred for x =  19.63368697130128
+the estimated loss of base 2 significant digits is 1.9963438789718353
+
+the root mean square relative error was 1.2711768013946636e-16 = 2 ** -52.804684816921593
+the estimated loss of base 2 significant digits is 0.19531518307840656
+
+special tests
+
+
+the identity  tan(-x) = -tan(x)  will be tested.
+
+   x            f(x) + f(-x)
+1.047443e+00 	0.000000e+00
+1.783302e+01 	0.000000e+00
+4.880042e+00 	0.000000e+00
+6.819518e+00 	0.000000e+00
+4.209766e+00 	0.000000e+00
+
+the identity tan(x) = x , x small, will be tested.
+
+   x            f(x) + f(-x)
+1.017936e-16 	0.000000e+00
+5.089679e-17 	0.000000e+00
+2.544840e-17 	0.000000e+00
+1.272420e-17 	0.000000e+00
+6.362099e-18 	0.000000e+00
+
+test of underflow for very small argument. 
+     tan( 1.8218319894452515e-231) = 1.8218319894452515e-231
+
+the relative error in tan(11) is  9.6910142441625773e-14 = 2 ** -43.230345665006595 where 
+     tan(                11) = -225.95084645417325
+
+the estimated loss of base 2 significant digits is 9.7696543349934046
+
+test of tanh(x) vs tanh(x-1/8)+tanh(1/8)/(1+tanh(x-1/8)tanh(1/8)
+
+2000 random arguments were tested from the interval 
+    (              0.125,  0.54930614433405491) 
+
+tanh(x) was larger 845 times 
+            agreed 406 times and 
+       was smaller 749 times.
+
+there are 53 base 2 significant digits in a floating-point number
+
+the maximum relative error of 1.5022467273191014e-15 = 2 ** -49.241799644381345
+   occurred for x = 0.13006073509164395
+the estimated loss of base 2 significant digits is  3.758200355618655
+
+the root mean square relative error was 3.4008683401535951e-16 = 2 ** -51.384946362985382
+the estimated loss of base 2 significant digits is 1.6150536370146185
+
+test of tanh(x) vs tanh(x-1/8)+tanh(1/8)/(1+tanh(x-1/8)tanh(1/8)
+
+2000 random arguments were tested from the interval 
+    ( 0.67430614433405491,  19.408121055678468) 
+
+tanh(x) was larger 731 times 
+            agreed 644 times and 
+       was smaller 625 times.
+
+there are 53 base 2 significant digits in a floating-point number
+
+the maximum relative error of 4.4409228427217435e-16 = 2 ** -50.999990012281131
+   occurred for x = 6.2869072169468181
+the estimated loss of base 2 significant digits is 2.0000099877188688
+
+the root mean square relative error was 1.4501540668160738e-16 = 2 ** -52.614643335458382
+the estimated loss of base 2 significant digits is 0.38535666454161799
+
+special tests
+
+
+the identity   tanh(-x) = -tanh(x)   will be tested.
+
+      x         f(x) + f(-x)
+
+3.996505e-01	0.000000e+00
+9.563158e-01	0.000000e+00
+5.394701e-01	0.000000e+00
+4.337664e-01	0.000000e+00
+2.208041e-01	0.000000e+00
+
+the identity   tanh(-x) = x , x small,   will be tested.
+
+      x          x - f(x)
+
+6.666985e-17	0.000000e+00
+3.333492e-17	0.000000e+00
+1.666746e-17	0.000000e+00
+8.333731e-18	0.000000e+00
+4.166866e-18	0.000000e+00
+
+the identity tanh(x) = 1 , x large, will be tested.
+
+        x        1- f(x)
+
+1.940812e+01	0.000000e+00
+2.340812e+01	0.000000e+00
+2.740812e+01	0.000000e+00
+3.140812e+01	0.000000e+00
+3.540812e+01	0.000000e+00
+
+test of underflow for very small argument. 
+
+tanh( 1.8218319894452515e-231 ) = 1.8218319894452515e-231
+
+the function tanh will be called with the argument 1.797693134862315e+308
+
+tanh( 1.797693134862315e+308 ) =                  1
+
+the function tanh will be called with the argument 2.2250738585072023e-308
+
+tanh( 2.2250738585072023e-308 ) = 2.2250738585072023e-308
+
+the function tanh will be called with the argument                  0
+
+tanh(                  0 ) =                  0
+
+this concludes the tests
+

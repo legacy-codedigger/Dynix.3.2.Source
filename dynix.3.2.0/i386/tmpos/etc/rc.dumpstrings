@@ -1,0 +1,10 @@
+KERNEL="sd(0,0)dynix"
+#KERNEL="wd(0,0)dynix"
+#KERNEL="xp(0,0)dynix"
+#KERNEL="zd(0,0)dynix"
+DUMPER="sd(0,0)stand/dump sd(0,1) 4000 /dev/rsd0b"
+#DUMPER="wd(0,0)stand/dump wd(0,1) 4000 /dev/rwd0b"
+#DUMPER="xp(0,0)stand/dump xp(0,1) 8000 /dev/rxp0b"
+#DUMPER="zd(0,0)stand/dump zd(0,1) 8000 /dev/rzd0b"
+TEXTSIZE=`/bin/size /dynix | /bin/awk 'NR==2{print $1}'`
+/etc/bootflags -p -c n0="$KERNEL" n1="$DUMPER" ra1="$TEXTSIZE"	

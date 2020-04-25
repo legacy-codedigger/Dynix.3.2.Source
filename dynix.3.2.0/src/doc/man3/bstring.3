@@ -1,0 +1,82 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: bstring.3 1.7 86/05/13 $
+.TH BSTRING 3 "\*(V)" "4BSD"
+.SH NAME
+bcopy, bcmp, bzero, ffs \- bit and byte string operations
+.SH SYNOPSIS
+.nf
+.B bcopy(b1, b2, length)
+.B char *b1, *b2;
+.B unsigned int length;
+.PP
+.B int bcmp(b1, b2, length)
+.B char *b1, *b2;
+.B unsigned int length;
+.PP
+.B bzero(b, length)
+.B char *b;
+.B unsigned int length;
+.PP
+.B int ffs(i)
+.B int i;
+.fi
+.SH DESCRIPTION
+The functions
+.IR bcopy ,
+.IR bcmp ,
+and
+.I bzero
+operate on variable length strings of bytes.
+They do not check for null bytes as the routines in
+.IR string (3)
+do.
+.PP
+.I Bcopy
+copies 
+.I length
+bytes from string
+.I b1
+to the string
+.IR b2 .
+.PP
+.I Bcmp
+compares byte string
+.I b1
+against byte string
+.IR b2 ,
+returning zero if they are identical,
+non-zero otherwise.  Both strings are
+assumed to be
+.I length
+bytes long.
+.PP
+.I Bzero
+places
+.I length
+0 bytes in the string
+.IR b1 .
+.PP
+.I Ffs
+find the first bit set in the argument passed it and
+returns the index of that bit.  Bits are numbered
+starting at 1.  A return value of zero indicates the
+value passed is zero.
+.SH BUGS
+The
+.I bcmp
+and 
+.I bcopy
+routines take parameters backwards from
+.I strcmp
+and
+.IR strcpy .

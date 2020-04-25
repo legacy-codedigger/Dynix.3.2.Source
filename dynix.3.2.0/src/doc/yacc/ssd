@@ -1,0 +1,50 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+. \" $Header: ssd 1.2 86/03/06 $
+.SH
+Appendix D: Old Features Supported but not Encouraged
+.PP
+This Appendix mentions synonyms and features which are supported for historical
+continuity, but, for various reasons, are not encouraged.
+.IP 1.
+Literals may also be delimited by double quotes ``"''.
+.IP 2.
+Literals may be more than one character long.
+If all the characters are alphabetic, numeric, or \_, the type number of the literal is defined,
+just as if the literal did not have the quotes around it.
+Otherwise, it is difficult to find the value for such literals.
+.IP
+The use of multi-character literals is likely to mislead those unfamiliar with
+Yacc, since it suggests that Yacc is doing a job which must be actually done by the lexical analyzer.
+.IP 3.
+Most places where % is legal, backslash ``\e'' may be used.
+In particular, \e\e is the same as %%, \eleft the same as %left, etc.
+.IP 4.
+There are a number of other synonyms:
+.DS
+%< is the same as %left
+%> is the same as %right
+%binary and %2 are the same as %nonassoc
+%0 and %term are the same as %token
+%= is the same as %prec
+.DE
+.IP 5.
+Actions may also have the form
+.DS
+={ . . . }
+.DE
+and the curly braces can be dropped if the action is a
+single C statement.
+.IP 6.
+C code between %{ and %} used to be permitted at the
+head of the rules section, as well as in the
+declaration section.

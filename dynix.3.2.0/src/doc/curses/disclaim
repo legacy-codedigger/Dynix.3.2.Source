@@ -1,0 +1,41 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+. \" $Header: disclaim 1.2 86/03/06 $
+.(x
+Disclaimer
+.)x
+.ev 1
+.sp 10
+.ps 28
+.ce
+.b DISCLAIMER
+.sp 4
+.ps
+.ps 18
+.pp
+This is a preliminary document.
+All things in it are subject to change without notice.
+Please direct any comments,
+suggestions,
+or complaints
+to Ken Arnold,
+via the account
+.b Cory:arnold ,
+or
+.b CSVAX.arnold@BERKELEY .
+.ps
+.ps 28
+.sp 4
+.ce
+.b DISCLAIMER
+.ps
+.ev

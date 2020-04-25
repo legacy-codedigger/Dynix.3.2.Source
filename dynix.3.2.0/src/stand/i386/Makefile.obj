@@ -1,0 +1,168 @@
+# $Copyright:	$
+# Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+# Sequent Computer Systems, Inc.   All rights reserved.
+#  
+# This software is furnished under a license and may be used
+# only in accordance with the terms of that license and with the
+# inclusion of the above copyright notice.   This software may not
+# be provided or otherwise made available to, or used by, any
+# other person.  No title to or ownership of the software is
+# hereby transferred.
+
+# $Header: Makefile.obj 1.19 90/12/12 $
+#
+# Makefile for standalone programs
+#
+#  Notes:
+#    To make a bootable streamer tape, put "bootts"
+#    followed by "boot" on a streamer tape.  This
+#    change in format allows DYNIX 3.0 tapes to run
+#    on both old and new SCED firmware.
+#
+DESTDIR=
+COPTS	= -DSTANDALONE -I. $(INCLUDE)
+#
+CFLAGS	= -O -i $(COPTS)
+XCFLAGS	= -SO -DBOOTXX $(CFLAGS)
+VCFLAGS	= -SO -DBOOTXX -DVTOC $(CFLAGS)
+LDFLAGS = -k -e start -T 4000
+# "-u symbol" causes forces loading module from a library
+XLDFLAGS= -u _putchar -k -e start
+SIZE	= /bin/size
+RANLIB	= /usr/bin/ranlib
+LD	= /bin/ld
+AR	= /bin/ar
+STRIP	= /bin/strip
+CPP	= /lib/cpp
+AS	= /bin/as
+LIBC	= libCMDS.a
+LIBCO	= zdformat.o xpformat.o formatscsi.o boot.o bootxx.o cat.o \
+	  copy.o copy2.o drtest.o dump.o ls.o ret.o ufs_subr.o ufs_tables.o \
+	  zdaddbad.o zdlists.o zdverify.o zdwrdgn.o fsck.o prtvtoc.o rmvtoc.o\
+	  wdformat.o sdformat.o
+MACHDEP	= gets.o putchar.o rtt.o slic_error.o slic_init.o slic_mIntr.o \
+	  slic_setGM.o slic_wrAddr.o slic_wrData.o slic_wrslave.o \
+	  slic_rdData.o slic_rdslave.o dkbad.o mbadinit.o bcopy.o bzero.o \
+	  gsp.o bcmp.o rindex.o strcat.o getchar.o R0.o
+DRIVERS	= rs.o packet.o sec.o sd.o wd.o tm.o ts.o xp.o xt.o zd.o
+PORTABLE= calloc.o conf.o conf_devsw.o conf_sd.o conf_xt.o conf_xp.o conf_zd.o \
+	  conf_wd.o prompt.o stop.o exit.o clearbss.o atoi.o atol.o index.o \
+	  qsort.o strcmp.o strcpy.o strlen.o strncmp.o buildcfg.o vtoc.o \
+	  pad.o setargs.o sys.o prf.o
+LIBA	= libsa.a
+LIBAO	= $(MACHDEP) $(DRIVERS) $(PORTABLE) crt0.o
+LIBX	= libsax.a
+LIBXO	= sys_x.o mbad_x.o sec_x.o dkbad_x.o sd_x.o xp_x.o zd_x.o conf_x.o \
+	  putchar_x.o conf_zd_x.o ts_x.o crt0_x.o vtoc_x.o wd_x.o tm_x.o
+LIBV	= libsav.a
+LIBVO	= sys_v.o mbad_v.o sec_v.o dkbad_v.o sd_v.o xp_v.o zd_v.o conf_v.o \
+	  putchar_v.o conf_zd_v.o ts_v.o crt0_v.o vtoc_v.o wd_v.o tm_v.o
+LIB	= $(LIBC) $(LIBA) $(LIBX) $(LIBV)
+CMDS	= cat copy copy2 drtest dump formatscsi ls ret xpformat prtvtoc rmvtoc\
+	  wdformat sdformat
+SCMDS	= fsck
+BOOT8K	= bootsd bootxp bootzd bootts
+BOOT8KV	= bootsd_v bootxp_v bootzd_v bootts_v
+
+.s.o:		; $(CPP) $(COPTS) $< | $(AS) -o $@
+
+all		: $(LIB) cmds bootstraps
+cmds		: & zdformat $(CMDS) $(SCMDS) boot
+bootstraps	: $(BOOT8K) $(BOOT8KV)
+
+$(LIBA)		: & conf_sd.o conf_xp.o conf_xt.o conf_zd.o conf_wd.o
+		  $(AR) r $(LIBA) $?; $(RANLIB) $(LIBA)
+$(LIBX)		: & conf_zd_x.o
+		  $(AR) r $(LIBX) $?; $(RANLIB) $(LIBX)
+$(LIBV)		: & conf_zd_v.o
+		  $(AR) r $(LIBV) $?; $(RANLIB) $(LIBV)
+$(LIBCO)	: $(LIBC)
+		  $(AR) x $(LIBC) $@
+$(CMDS)		: $(LIBA) assym.h 
+		  $(LD) $(LDFLAGS) $@.o $(LIBA) -o $@
+boot		: $(LIBA) assym.h crt0_x.o
+		  $(LD) $(LDFLAGS) crt0_x.o $@.o $(LIBA) -o $@
+
+boot		: boot.o
+cat		: cat.o
+copy		: copy.o
+copy2		: copy2.o
+drtest		: drtest.o
+dump		: dump.o
+formatscsi	: formatscsi.o
+ls		: ls.o
+prtvtoc		: prtvtoc.o
+rmvtoc		: rmvtoc.o
+ret		: ret.o
+xpformat	: xpformat.o
+wdformat	: wdformat.o
+sdformat	: sdformat.o
+zdformat	: & zdformat.o zdaddbad.o zdlists.o zdverify.o zdwrdgn.o $(LIBA)
+		  $(LD) $(LDFLAGS) -o zdformat \
+		  zdformat.o zdaddbad.o zdlists.o zdverify.o zdwrdgn.o $(LIBA)
+
+bootsd		: confsd.o
+confsd.o	: conf_devsw.c
+		  sed -e '/"sd",/p' -e '/"..",/d' < conf_devsw.c >confsd.c
+		  $(CC) $(XCFLAGS) confsd.c | $(AS) -o confsd.o
+bootxp		: confxp.o
+confxp.o	: conf_devsw.c
+		  sed -e '/"xp",/p' -e '/"..",/d' < conf_devsw.c >confxp.c
+		  $(CC) $(XCFLAGS) confxp.c | $(AS) -o confxp.o
+bootzd		: confzd.o
+confzd.o	: conf_devsw.c
+		  sed -e '/"zd",/p' -e '/"..",/d' < conf_devsw.c >confzd.c
+		  $(CC) $(XCFLAGS) confzd.c | $(AS) -o confzd.o
+bootts		: confts.o
+confts.o	: conf_devsw.c
+		  sed -e '/"ts",/p' -e '/"..",/d' < conf_devsw.c >confts.c
+		  $(CC) $(XCFLAGS) confts.c | $(AS) -o confts.o
+
+conf_zd_x.o     : conf_zd.c ; $(CC) $(XCFLAGS) conf_zd.c | $(AS) -o $@
+conf_zd_v.o	: conf_zd.c ; $(CC) $(VCFLAGS) conf_zd.c | $(AS) -o $@
+
+$(BOOT8K)	: pad.o bootxx.o $(LIBX) $(LIBA)
+		  @xx="`expr $@ : 'boot\(..\)'`" && \
+		  $(LD) -p $(XLDFLAGS) -o $@.symbols bootxx.o \
+		    conf$${xx}.o $(LIBX) $(LIBA) pad.o && \
+		  $(SIZE) $@.symbols | tail -1 | \
+		  awk '{ sz = $$1 + $$2 - (16*1024); \
+		    printf "\t%s: %d bytes (%d%%)\n", \
+		    "$@", sz, ((sz * 100) + 8191)/8192; \
+		    if (sz > 8192) exit 1; exit 0; }' && \
+		  cp $@.symbols tmp && \
+		  $(STRIP) tmp && \
+		  dd if=tmp of=$@ bs=8k count=1 2>/dev/null && \
+		  rm -f tmp
+$(BOOT8KV)	: pad.o bootxx.o $(LIBV) $(LIBA)
+		  @xx="`expr $@ : 'boot\(..\)'`" && \
+		  $(LD) -p $(XLDFLAGS) -o $@.symbols bootxx.o \
+		    conf$${xx}.o $(LIBV) $(LIBA) pad.o && \
+		  $(SIZE) $@.symbols | tail -1 | \
+		  awk '{ sz = $$1 + $$2 - (16*1024); \
+		    printf "\t%s: %d bytes (%d%%)\n", \
+		    "$@", sz, ((sz * 100) + 8191)/8192; \
+		    if (sz > 8192) exit 1; exit 0; }' && \
+		  cp $@.symbols tmp && \
+		  $(STRIP) tmp && \
+		  dd if=tmp of=$@ bs=8k count=1 2>/dev/null && \
+		  rm -f tmp
+pad.o		: $(LIBA)
+		  $(AR) x $(LIBA) $@
+crt0_x.o		: $(LIBX)
+		  $(AR) x $(LIBX) $@
+assym.h		: genassym ; genassym >assym.h
+
+fsck		: $(LIBA) fsck.o
+		$(LD) $(LDFLAGS) $@.o $(LIBA) -o $@ && chmod 644 $@
+
+clean 		:; rm -f $(LIBCO) conf??.o conf_??.o pad.o
+clobber		: clean
+		  rm -f assym.h zdformat $(CMDS) boot $(BOOT8K) conf??.c
+install		: all
+		  install -c -m 644 $(LIBA) $(DESTDIR)/usr/lib/$(LIBA)
+		  $(RANLIB) $(DESTDIR)/usr/lib/$(LIBA)
+		  install -m 644 $(BOOT8K) $(BOOT8KV) $(DESTDIR)/stand
+		  install -s -m 644 zdformat $(CMDS) $(SCMDS) boot $(DESTDIR)/stand
+		  install -m 644 $(DESTDIR)/stand/boot $(DESTDIR)/boot
+		  install -m 644 -c $(DESTDIR)/boot $(DESTDIR)/usr/boot

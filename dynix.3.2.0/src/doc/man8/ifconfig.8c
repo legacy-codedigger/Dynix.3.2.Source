@@ -1,0 +1,114 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: ifconfig.8c 1.9 1991/08/06 23:01:25 $
+.TH IFCONFIG 8C "\*(V)" "4BSD"
+.SH NAME
+ifconfig \- configure network interface parameters
+.SH SYOPNSIS
+.B /etc/ifconfig
+interface
+[
+.I address
+] [
+.I parameters
+]
+.SH DESCRIPTION
+.I Ifconfig
+is used to assign an address
+to a network interface and/or configure
+network interface parameters.
+.I Ifconfig
+must be used at boot time to define the network address
+of each interface present on a machine; it may also be used at
+a later time to redefine an interface's address.  The
+.I interface
+parameter is a string of the form ``name unit'', e.g. ``se0'', while
+the address is either a host name present in the host name data
+base, 
+.IR hosts (5),
+or an address expressed in the Internet standard
+``dot notation''.
+.PP
+The following parameters may be set with 
+.IR ifconfig :
+.TP 15
+.B up
+Mark an interface ``up''. 
+.TP 15
+.B down
+Mark an interface ``down''.  When an interface is
+marked ``down'', the system will not attempt to
+transmit messages through that interface. 
+.TP 15
+.B trailers
+Enable the use of a ``trailer'' link level encapsulation when
+sending (default).
+If a network interface supports
+.IR trailers ,
+the system will, when possible, encapsulate outgoing
+messages in a manner which minimizes the number of
+memory to memory copy operations performed by the receiver.
+.TP 15
+.B \-trailers
+Disable the use of a ``trailer'' link level encapsulation.
+.TP 15
+.B arp
+Enable the use of the Address Resolution Protocol in mapping
+between network level addresses and link level addresses (default). 
+This is currently implemented for mapping between DARPA Internet
+addresses and 10Mb/s Ethernet addresses.
+.TP 15
+.B \-arp
+Disable the use of the Address Resolution Protocol.
+Not possible when mixing vendors on the same Ethernet cable.
+.TP 15
+.BI netmask " mask"
+(Inet only)
+Specify how much of the address to reserve for subdividing
+networks into sub-networks.
+The mask includes the network part of the local address
+and the subnet part, which is taken from the host field of the address.
+The mask can be specified as a single hexadecimal number
+with a leading 0x, with a dot-notation Internet address,
+or with a pseudo-network name listed in the network table
+.IR networks (5).
+The mask contains 1's for the bit positions in the 32-bit address
+which are to be used for the network and subnet parts,
+and 0's for the host part.
+The mask should contain at least the standard network portion,
+and the subnet field should be contiguous with the network
+portion.
+.TP 15
+.B broadcast
+(Inet only)
+Specify the address to use to represent broadcasts to the
+network.
+The default broadcast address is the address with a host part of all 0's.
+.TP 15
+.BI mtu \0ddd
+Set the maximum transfer unit on this interface to
+.I ddd
+(a decimal number).
+.PP
+.I Ifconfig
+displays the current configuration for a network interface
+when no optional parameters are supplied.
+.PP
+Only the super-user may modify the configuration of a network interface.
+.SH DIAGNOSTICS
+Messages indicating the specified interface does not exist, the
+requested address is unknown, the user is not privileged and
+tried to alter an interface's configuration.
+.SH "SEE ALSO"
+netstat(1),
+intro(4N),
+rc(8)

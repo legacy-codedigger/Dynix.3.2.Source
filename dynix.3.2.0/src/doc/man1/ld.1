@@ -1,0 +1,384 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: ld.1 1.32 1991/08/06 18:54:55 $
+.TH LD 1 "\*(V)" "DYNIX"
+.SH NAME
+ld \- link editor
+.SH SYNOPSIS
+.B ld
+[ option ] ... file ...
+.SH DESCRIPTION
+.I Ld
+combines several object programs into one,
+resolves external references,
+and searches libraries.
+In the simplest case several object
+.I files
+are given, and
+.I ld
+combines them,
+producing an object module which can be either executed
+or become the input for a subsequent
+.I ld
+run.
+(In the latter case,
+the
+.B \-r
+option must be given to preserve the relocation bits.)  The output of
+.I ld
+is left in
+.BR a.out .
+This file is made executable only if no errors occurred during the load.
+.PP
+The argument routines are concatenated in the order specified.
+The entry point of the output is the beginning of the first routine
+(unless the \f3\-e\fP option is specified).
+.PP
+If any argument is a library,
+it is searched exactly once at the point it is encountered in the
+argument list.
+Only those routines defining unresolved external references are loaded.
+If a routine from a library references another routine in the library,
+and the library has not been processed by
+.IR ranlib (1),
+the referenced routine must appear after the referencing routine in
+the library.
+Thus the order of programs within libraries may be important.
+The first member of a library should be a file named `\_\^\_.SYMDEF',
+which is understood to be a dictionary for the library as produced by
+.IR ranlib (1);
+the dictionary is searched iteratively to satisfy as many references as
+possible.
+.PP
+The symbols
+`\_\^\_etext',
+`\_\^\_edata',
+`\_\^\_end',
+`\_\^\_shedata',
+`\_\^\_shend',
+and
+`\_\^\_shstart',
+(`\_etext',
+`\_edata',
+`\_end',
+`\_shedata',
+`\_shend',
+and
+`_shstart'
+in C)
+are reserved.
+If
+`\_\^\_etext',
+`\_\^\_edata',
+or
+`\_\^\_end'
+referred to,
+they are set to the first byte of the data segment,
+the first location above initialized data,
+and the first location above all data, respectively
+(see the following illustration).
+It is an error to define these symbols.
+.sp
+.ne 24
+.TS
+center, tab(#);
+r l.
+0
+#text
+etext
+#initialized
+#private data
+edata
+#uninitialized private
+#data ("bss")
+end
+#(room for growth of
+#private bss)
+shstart
+#initialized shared data
+shedata
+#uninitialized shared data
+#("shared bss")
+shend
+#(room for growth of
+#shared bss and stack)
+.sp
+#stack
+.TE
+.PP
+.I Ld
+understands several options.
+Except for
+.BR \-l ,
+they should appear before the file names.
+.TP
+.B \-A
+This option specifies incremental loading, i.e.
+linking is to be done in a manner so that the resulting object
+may be read into an already executing program.
+The next argument is the name of a file whose symbol table will be
+taken as a basis on which to define additional symbols.
+Only newly linked material will be entered into the text and
+data portions of 
+.BR a.out,
+but the new symbol table will reflect
+every symbol defined before and after the incremental load.
+This argument must appear before any other object file in the argument list.
+The
+.B \-T
+option may be used as well, and will be taken to mean that the
+newly linked segment will commence at the corresponding address
+(which must be a multiple of pagesize).
+The default value is the old value of _end rounded up to a multiple of
+pagesize.
+.TP
+.B \-D
+Take the next argument as a hexadecimal number and pad the data segment
+with zero bytes to the indicated length.
+.TP
+.B  \-d
+Force definition of common storage even if the
+.B \-r
+flag is present.
+.TP
+.B \-e
+The following argument is taken to be the name of the entry point
+of the loaded program;
+The symbol _start is the default.
+.TP
+.B \-Fname[,size]
+This option places the specified
+global variable
+(e.g., `_varname')
+or named FORTRAN common block
+(e.g., `/COMNAME/' or `_comname_')
+in the shared data region.
+The location of this region is controlled with the \f3-Z\fP
+option.
+The amount of memory allocated to the variable
+can be changed by specifying a
+.I size
+(hexadecimal, no leading `0x').
+The variable must be uninitialized.
+The
+.B \-F
+option may be repeated for multiple variables.
+There is no control over the order in which variables are added to
+the region.
+The value of `_end' (which determines the initial program
+``break'') is unchanged.
+This option can be used to move variables or common blocks to
+a location where they can be conveniently mapped into shared memory.
+Refer to the
+.I "Guide to Parallel Programming"
+for more information.
+.TP
+.B \-fpa
+When interpreting an
+.BI \-l x
+option, search for a library named
+.RI `libfpa x .a'
+before searching for
+.RI `lib x .a'.
+This option must be omitted on Balance systems.
+On Symmetry systems, libraries whose names begin with `libfpa'
+contain code that use the Weitek 1167 floating point accelerator.
+.TP
+.BI \-l x
+This option is an abbreviation for the library name
+.RI `/lib/lib x .a',
+where
+.I x
+is a string.
+If that does not exist,
+.I ld
+tries
+.RI `/usr/lib/lib x .a'
+and then
+.RI `/usr/local/lib/lib x .a'.
+If
+.B \-fpa
+is specified,
+.I ld
+tries
+.RI `/lib/libfpa x .a',
+.RI `/usr/lib/libfpa x .a',
+and
+.RI `/usr/local/lib/libfpa x .a'
+before trying any of the
+.RI `lib x .a'
+possibilities.
+A library is searched when its name is encountered,
+so the placement of a
+.B  \-l
+is significant.
+.TP
+.B \-M
+produce a primitive load map,
+listing the names of the files that will be loaded.
+.TP
+.B  \-h
+Arrange
+(by giving the output file a special "magic number", XMAGIC)
+that when the output file is executed,
+an inaccessible page of text will be inserted at zero.
+This permits easy detection of programming errors involving null
+pointers.
+.TP
+.B  \-k
+Generate a stand alone
+.I a.out
+file
+(SMAGIC).
+The magic number is actually a branch to startup code which transfers
+control to the entry point specified in the a_entry field of the header.
+This format is used for stand alone programs,
+and is not supported by the DYNIX kernel.
+.TP
+.B  \-p
+This option is used with -k to produce compact stand alone programs.
+The effect is to prevent aligning data and bss to page size.
+.TP
+.B  \-o
+The
+.I name
+argument after
+.B \-o
+is used as the name of the
+.I ld
+output file,
+instead of
+.BR a.out .
+.TP
+.B  \-r
+Generate relocation bits in the output file so that it can be the
+subject of another
+.I ld
+run.
+This flag also prevents final definitions from being given to common
+symbols,
+and suppresses the `undefined symbol' diagnostics.
+.TP
+.B \-S
+`Strip' the output by removing all symbols except locals and globals.
+.TP
+.B  \-s
+`Strip' the output,
+that is,
+remove the symbol table and relocation bits to save space
+(but impair the usefulness of the debuggers).
+This information can also be removed by
+.IR  strip (1).
+.TP
+.B \-T
+The next argument is a hexadecimal number which sets the text segment
+origin.
+The default origin on Symmetry is 4096.
+.TP
+.B \-t
+("trace")
+Print the name of each file as it is processed.
+.TP
+.B  \-u
+Take the following argument as a symbol,
+and enter it as undefined in the symbol table.
+This is useful for loading wholly from a library,
+since the symbol table is initially empty
+and an unresolved reference is needed to force the loading of the
+first routine.
+.TP
+.B  \-X
+Save local symbols except for those whose names begin with `L'.
+This option is used by
+.IR cc (1)
+to discard internally-generated labels while retaining symbols local
+to routines.
+.TP
+.B  \-x
+Do not preserve local
+(non-.globl)
+symbols in the output symbol table;
+only enter external symbols.
+This option saves some space in the output file.
+.TP
+\f3\-y\f2sym\f1
+Indicate each file in which
+.I sym
+appears,
+its type and whether the file defines or references it.
+Many such options may be given to trace many symbols.
+(It is usually necessary to begin
+.I sym
+with an `_',
+as external C,
+FORTRAN,
+and Pascal variables begin with underscores.)
+.TP
+.B \-Z[O]\f2n\fP
+The \f3-Z\fP option specifies the number of bytes to 
+leave between the end of
+the bss memory segment and the beginning of the shared data
+segment.
+The \f3-ZO\fP option specifies the base address of
+the shared data segment.
+For either option, \f2n\fP is a hexadecimal number that
+is always rounded up so that the shared data
+segment begins on a page boundary.
+If both
+options are omitted,
+the loader automatically reserves 64 Kbytes between the end of
+bss and the beginning of the shared data segment, then starts
+the shared segment at the next page boundary.
+.sp
+If the number specified with \f3-ZO\fP would result in the
+shared data memory segment overlaying
+part of the bss segment, an error message is printed and the load step
+fails.
+.TP
+.B \-z
+Arrange for the process to be loaded on demand from the resulting
+executable file.
+This is the default.
+The text and data segments are each a multiple of pagesize bytes.
+The text segment is located immediately after the header in the file
+to save file space,
+but when the program is running,
+the actual text segment begins at 4096 (pagesize). 
+With this format the first few BSS segment symbols may actually appear
+(from the output of
+.IR size (1))
+to live in the data segment;
+this avoids wasting the space resulting from data segment size roundup.
+.PP
+The
+.B \-m
+and
+.B \-n
+options, supported in UNIX System V,
+yield warning messages but are otherwise ignored.
+.SH FILES
+.ta \w'/usr/local/lib/lib*.a\ \ 'u
+/lib/lib*.a	libraries
+.br
+/usr/lib/lib*.a	more libraries
+.br
+/usr/local/lib/lib*.a	still more libraries
+.br
+libfpa*.a	libraries with support for Weitek FPA
+.br
+a.out	output file
+.SH "SEE ALSO"
+as(1), ar(1), cc(1), ranlib(1), a.out(5)
+.br
+.I "Guide to Parallel Programming"
+.SH BUGS
+There is no way to force data to be page aligned.

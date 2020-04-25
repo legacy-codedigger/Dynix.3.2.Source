@@ -1,0 +1,87 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: exp.3m 1.6 90/02/15 $
+.TH EXP 3M "\*(V)" "7th Edition"
+.SH NAME
+exp, log, log10, pow, sqrt \- exponential, logarithm, power, square root
+.SH SYNOPSIS
+.nf
+.B #include <math.h>
+.PP
+.B double exp(x)
+.B double x;
+.PP
+.B double log(x)
+.B double x;
+.PP
+.B double log10(x)
+.B double x;
+.PP
+.B double pow(x, y)
+.B double x, y;
+.PP
+.B double sqrt(x)
+.B double x;
+.fi
+.SH DESCRIPTION
+.I Exp
+returns the exponential function of 
+.I x.
+.PP
+.I Log
+returns the natural logarithm of 
+.IR x ;
+.I log10
+returns the base 10 logarithm.
+.PP
+.I Pow
+returns
+.if t .IR  x\u\s8y\s10\d .
+.if n .IR x**y .
+.PP
+.I Sqrt
+returns the square root of 
+.I x.
+.SH SEE ALSO
+hypot(3M),
+sinh(3M),
+intro(3M)
+.SH DIAGNOSTICS
+.I Exp
+and
+.I pow
+return a huge value when the correct value would overflow;
+.I errno
+is set to ERANGE.
+.I Exp
+returns zero when the correct value would underflow;
+.I errno
+is set to ERANGE.
+.I Pow
+returns 0 and sets
+.I errno
+to EDOM when the second argument is negative and non-integral and
+when both arguments are 0.
+.PP
+.I Log
+returns 0 when
+.I x
+is zero or negative;
+.I errno
+is set to EDOM.
+.PP
+.I Sqrt
+returns 0 when 
+.I x
+is negative;
+.I errno
+is set to EDOM.

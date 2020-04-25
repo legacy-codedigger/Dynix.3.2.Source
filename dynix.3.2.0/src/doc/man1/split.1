@@ -1,0 +1,47 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: split.1 1.5 86/05/13 $
+.TH SPLIT 1 "\*(V)" "7th Edition"
+.SH NAME
+split \- split a file into pieces
+.SH SYNOPSIS
+.B split
+[
+.B \-\f2n
+]
+[ file [ name ] ]
+.SH DESCRIPTION
+.I Split
+reads
+.I file
+and writes
+it in
+.IR n -line
+pieces
+(default 1000), as many as necessary,
+onto
+a set of output files.  The name of the first output
+file is
+.I name
+with
+.B aa
+appended, and so on
+lexicographically.
+If no output name is given,
+.B x
+is default.
+.PP
+If no input file is given, or
+if
+.B \-
+is given in its stead,
+then the standard input file is used.

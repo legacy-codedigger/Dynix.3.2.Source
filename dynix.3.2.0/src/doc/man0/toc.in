@@ -1,0 +1,63 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+. \" $Header: toc.in 1.5 89/11/06 $
+.Mt "DYNIX Programmers Manual"
+.Ct "" "" "Table of Contents"
+.af % i
+.nr % 5
+.ND "October 2, 1989"
+.nf
+.ll 6.5i
+.lt 6.5i
+.in -.5i
+.ta \n(.lu-\nxuR
+.de t
+.sp 1v
+.ne .5i
+.cs 3
+.ss 18
+\f3\s9\\$2. \\$3\s0\fP
+.ss 12
+.if t .sp .5v
+..
+.am NP
+.po -1i
+..
+.po -1i
+.t toc1 1 "Commands and Application Programs"
+.so toc1
+.t toc2 2 "System Calls"
+.so toc2
+.t toc3 3 "C Library"
+.so toc3
+.t toc3c 3C "Compatibility Library"
+.so toc3c
+.t toc3m 3M "Math Library"
+.so toc3m
+.t toc3n 3N "Internet Network Library"
+.so toc3n
+.t toc3p 3P "Parallel Programming Library"
+.so toc3p
+.t toc3s 3S "C Standard I/O Library"
+.so toc3s
+.t toc3x 3X "Other Libraries"
+.so toc3x
+.t toc4 4 "Special Files"
+.so toc4
+.t toc5 5 "File Formats"
+.so toc5
+.t toc6 6 "Games"
+.so toc6
+.t toc7 7 "Miscellaneous"
+.so toc7
+.t toc8 8 "System Maintenance"
+.so toc8

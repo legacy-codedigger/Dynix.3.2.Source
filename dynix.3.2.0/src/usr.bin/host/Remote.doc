@@ -1,0 +1,163 @@
+# @(#)$Copyright:	$
+# Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+# Sequent Computer Systems, Inc.   All rights reserved.
+#  
+# This software is furnished under a license and may be used
+# only in accordance with the terms of that license and with the
+# inclusion of the above copyright notice.   This software may not
+# be provided or otherwise made available to, or used by, any
+# other person.  No title to or ownership of the software is
+# hereby transferred.
+
+# @(#)$Header: Remote.doc 1.2 84/12/18 $
+This is the protocol used by HOST for remote diagnostics.
+HOST is primarily a virtual terminal emulator, and it
+watches for packets from the remote.  It then performs
+the function(s) requested.  It is essentially a slave
+file server and terminal emulator program.
+
+This protocol is modeled after the KERMIT protocol.  It is 
+modified to be as efficient as possible in the diagnotics
+environment while remaining true to the concepts of KERMIT.
+
+The packet format is changed to allow larger packets.  The
+actual commands are also changed.  The following definitions
+apply.
+
+The packet is:
+
+	SOH	BC	SEQ	TYPE	DATA	CHECK
+
+where:
+	SOH	is a ^A
+	BC	is the number of remaining bytes, i.e. the
+		packet length minus 3.
+	SEQ	is the packet sequence number, modulo 64.
+	TYPE 	is the packet type.  The following packet
+		types are supported:
+		^E	ACK
+		^U	NAK
+		S	Script on.
+		N	Script off.
+		O	Open a file.
+		C	Close a file.
+		R	Read data.
+		W	Write data.
+		D	Data
+		L	Lseek in file.
+	DATA	is the data.
+	CHECK	is the checksum of the packet (12 bit quantity).
+
+The following macros are used:
+
+	BYTE(x)		((x)+32)
+	UNBYTE(x)	((x)-32)
+	CTL(x)		((x)^64)
+	WORD(x,y)	(UNBYTE(x)+94*UNBYTE(y))
+	UNWORD(w,p)	{*p++=BYTE((w)%94);*p++=BYTE((w)/94);}
+
+The code assumes that 8 bit paths are provided from UNIX and a 7 bit
+path to UNIX for the data field only.  The headers should always be
+ok.
+
+A list of control characters to be escaped are maintained.  This list
+minimally includes ^S, ^Q, ^P, ^A, ^[, ^B, ^C.
+
+This protocol supports data compression, but only on "D" data packets,
+i.e., the compression is really done at a fairly high level, above
+the protocol.  Routines which transmit and receive "D" packets
+will compress up to 8K of identical characters into 2 or 3 bytes.
+
+The following transactions may occur:
+	
+Open file.
+	Remote sends O packet.  Data in packet is file modes and file
+	name.  Modes is a 32 bit number transmitted as 8 hex digits,
+	least significant nibble first.  The file name is an ascii
+	string.  The transaction is as follows:
+
+		R: OPEN, SEQ=0, Data = 8 bytes of how, name
+		H: ACK, SEQ=0, Data is file number as BYTE(fd)
+		or
+		H: ACK, SEQ=0, Data is BYTE(0), message received,
+			file open failed.
+		or
+		H: NAK, SEQ=0, message invalid.
+
+Close file.
+	Remote sends C packet. Data in packet is the the file number to
+	close.  The transaction is as follows:
+
+		R: CLOSE, SEQ=0, Data is file number as BYTE(fd)
+		H: ACK, SEQ=0, Data is BYTE(0), file closed successfully.
+		or
+		H: ACK, SEQ=0, Data is BYTE(1), , file close failed.
+		or
+		H: NAK, SEQ=0, message invalid.
+
+Read file.
+	Remote sends R packet. Data in packet is the byte count as 32
+	bit integer sent in hex format, low nibble first.
+
+		R: READ, SEQ=0, Data is BYTE(fd) + byte count to read as 8 bytes.
+		H: ACK, SEQ=0
+		or
+		H: NAK, SEQ=0, message invalid.
+	   then:
+		H: DATA, SEQ=n, Data is from file, compressed and escaped.
+		R: ACK, SEQ=n
+		or
+		R: NAK, SEQ=n
+	   repeat
+		H: DATA, SEQ=n, no Data
+		R: ACK, SEQ=n
+		or 
+		R: NAK, SEQ=n
+
+Write file.
+
+		R: WRITE, SEQ=0, Data is BYTE(fd)
+		H: ACK, SEQ=0
+		or 
+		H: NAK, SEQ=0, message invalid.
+	   then:
+		H: DATA, SEQ=n, Data is for file, funny format.
+		R: ACK, SEQ=n, Data=BYTE(0), write ok
+		or
+		R: ACK, SEQ=n, Data=BYTE(1), write failed
+		or
+		R: NAK, SEQ=n
+	   repeat
+		H: DATA, SEQ=n, no Data
+		R: ACK, SEQ=n
+		or 
+		R: NAK, SEQ=n
+
+Lseek file.
+	Remote sends L packet. Data in packet is the file number and
+	the absolute offset.
+
+		R: LSEEK, SEQ=0, Data is BYTE(file), 8(offset), BYTE(whence)
+		H: ACK, SEQ=0, Data = 8(BYTE)
+		or
+		H: NAK, SEQ=0, message invalid
+
+Script on.
+	Remote sends S packet. Data in packet is the the file name to
+	open.  The transaction is as follows:
+
+		R: S, SEQ=0, Data is file name
+		H: ACK, SEQ=0, Data is BYTE(0), file opened successfully.
+		or
+		H: ACK, SEQ=0, Data is BYTE(1), file open failed.
+		or
+		H: NAK, SEQ=0, message invalid.
+
+Script off.
+	Remote sends N packet.
+	The transaction is as follows:
+
+		R: NOSCRIPT, SEQ=0
+		H: ACK, SEQ=0
+		or
+		H: NAK, SEQ=0, message invalid.

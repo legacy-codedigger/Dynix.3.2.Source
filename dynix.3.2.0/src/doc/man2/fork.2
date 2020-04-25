@@ -1,0 +1,77 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: fork.2 1.8 86/05/13 $
+.TH FORK 2 "\*(V)" "4BSD"
+.SH NAME
+fork \- create a new process
+.SH SYNOPSIS
+.ft 3
+pid = fork()
+.br
+int pid;
+.ft 1
+.SH DESCRIPTION
+.I Fork
+causes creation of a new process.
+The new process (child process) is an exact copy of the
+calling process except for the following:
+.in +5n
+.sp
+The child process has a unique process ID.
+.sp
+The child process has a different parent process ID (i.e.,
+the process ID of the parent process).
+.sp
+The child process has its own copy of the parent's descriptors.
+These descriptors reference the same underlying objects, so that,
+for instance, file pointers in file objects are shared between
+the child and the parent, so that a
+.IR lseek (2)
+on a descriptor in the child process can affect a subsequent
+.I read
+or
+.I write
+by the parent.
+This descriptor copying is also used by the shell to
+establish standard input and output for newly created processes
+as well as to set up pipes.
+.sp
+The child processes resource utilizations are set to 0;
+see
+.IR setrlimit (2).
+.SH "RETURN VALUE
+Upon successful completion, \f2fork\fP returns a value
+of 0 to the child process and returns the process ID of the child
+process to the parent process.  Otherwise, a value of \-1 is returned
+to the parent process, no child process is created, and the global
+variable \f2errno\fP is set to indicate the error.
+.SH ERRORS
+.I Fork
+will fail and no child process will be created if one or more of the
+following are true:
+.TP 15
+[EAGAIN]
+The system-imposed limit on the
+total number of processes under execution
+system-wide (nproc)
+or for an individual user (maxuprc)
+would be exceeded.
+Nproc and maxuprc are kernel tuning parameters
+that can be adjusted via the \*(lqmaxusers\*(rq and
+\*(lqoptions\*(rq rules of the kernel configuration file.
+See the article
+\*(lqBuilding DYNIX Systems with Config\*(rq in Vol II.
+.TP 15
+[ENOMEM]
+There is insufficient swap space for the new process.
+.SH "SEE ALSO"
+execve(2), wait(2)

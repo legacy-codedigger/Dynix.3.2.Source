@@ -1,0 +1,60 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: rwall.8 1.1 1991/06/12 00:56:29 $
+.TH RWALL 8 "\*(V)" "4BSD"
+.\" @(#)rwall.8 1.1 85/12/28 SMI;
+.SH NAME
+rwall \- write to all users over a network
+.SH SYNOPSIS
+.B rwall
+host1 host2 ...
+.br
+.B rwall
+.B \-n
+netgroup1 netgroup2 ...
+.br
+.B rwall
+.B \-h
+host
+.B \-n
+netgroup
+.SH DESCRIPTION
+.\".IX  "write to all users on network"  ""  "write to all users on network \(em \f2rwall\fP"
+.\".IX  network  rwall  ""  "\f2rwall\fP \(em write to all users"
+.\".IX  "broadcast messages"  "rwall"  ""  "\f2rwall\fP \(em to all users on network"
+.I Rwall
+reads a message from standard input until end-of-file.
+It then sends this message,
+preceded by the line ``Broadcast Message ...'',
+to all users logged in on the specified host machines.
+With the
+.B -n
+option,
+it sends to the specified network groups,
+which are defined in
+.IR netgroup (5).
+.PP
+A machine can only receive such a message if it is running
+.IR rwalld (8),
+which is normally started up from
+.I /etc/servers
+by the daemon
+.IR inetd (8).
+.SH FILES
+/etc/servers
+.SH "SEE ALSO"
+wall(1), netgroup(5), rwalld(8), shutdown(8)
+.SH BUGS
+The timeout is fairly short in order to be able to send to
+a large group of machines (some of which may be down)
+in a reasonable amount of time.
+Thus the message may not get thru to a heavily loaded machine.

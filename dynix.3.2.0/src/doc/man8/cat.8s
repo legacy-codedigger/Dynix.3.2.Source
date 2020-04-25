@@ -1,0 +1,41 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: cat.8s 1.5 90/11/09 $
+.TH CAT 8S "\*(V)" "DYNIX"
+.SH NAME
+cat \- standalone file display utility
+.SH SYNOPSIS
+.BR "From the powerup monitor" :
+.br
+.sp
+.in +1
+.IR "on SCED-based systems" :
+.br
+*
+.B b 0
+.IR dv ( un , su )\c
+.B stand/cat
+.br
+.sp
+.IR "on SSM-based systems" :
+.br
+--->
+.B bh 
+.IR dv ( un , su )\c
+.B stand/cat
+.SH DESCRIPTION
+.I Cat
+prompts for a file (in standalone file notation; see
+.IR boot (8S))
+and copies the contents of the file to the console.
+.SH "SEE ALSO"
+cat(1), boot(8S), copy(8S), copy2(8S), ls(8S)

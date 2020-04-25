@@ -1,0 +1,465 @@
+#! /bin/sh
+#
+# restore.more
+#
+# This shell script is used during initial system load from
+# tape. It prompts the user for affirmative replies prior to
+# loading files from tape.
+
+/etc/online -a
+/bin/echo ' '
+TAPE=/dev/ctape8
+TAPE2ID=/tmp/sqnt_tapeid2
+TFILE=16
+if [ "$TFILE" != 16 ]
+then
+	/bin/echo -n "tape drive with /usr dump on (eg $TAPE) "
+	read TAPE
+fi
+
+rm -f /tmp/done$$
+/bin/mt -f $TAPE noret 
+(/bin/mt -f $TAPE rewind; echo $? > /tmp/done$$)&
+while [ ! -f /tmp/done$$ ]
+do
+	:
+done
+stat=`cat /tmp/done$$`
+rm /tmp/done$$
+case $stat in
+0)	;;
+*)	echo "Problems in rewinding tape"
+	exit 1 ;;
+esac
+
+# don't need to skip past dump of root on tape since /usr is on the 2nd
+# base tape now.  Make sure the correct tape is in the drive before
+# continuing.
+#
+rm -f /tmp/done$$
+tar tf $TAPE >/tmp/done$$ 2>&1; stat=`echo $?`
+idfile=`cat /tmp/done$$`
+rm /tmp/done$$
+if [ "$stat" != "0" -o "$idfile" != "$TAPE2ID" ]
+then
+	echo "WARNING: Tape in drive is not second tape of base s/w."
+	exit 1
+fi
+
+echo "`/bin/date`  - DYNIX V3.2.0 PN: 1003-xxxxx" >> /etc/versionlog
+
+/bin/echo -n 'restore /usr ?(n/y) '
+read USR
+case "$USR" in
+y)	until
+		/bin/echo -n 'disk name for /usr? (e.g. sd0, wd0, xp0 or zd0) '
+		read DISK
+		[ -f /dev/${DISK}g ] 
+		case "$?" in
+		0)	;;	*)	prtvtoc /dev/r${DISK} >/dev/null;
+		esac
+	do
+		/bin/echo 'unknown disk name
+	'
+	done
+
+	NTYPE=
+	TYPE=`format -i ${DISK} 2>/dev/null`
+	if [ $? != 0 -o "$TYPE" = "" ]
+	then
+		TYPES=`(cd /etc/diskinfo;echo *.geom | sed -e 's/\.geom/, /g')`
+		until	/bin/echo -n "disk type? (e.g. $TYPES) "
+			read TYPE
+			/bin/grep -w -s "$TYPE" /etc/disktab
+			case "$?" in 
+			0)	;;	*)	false;;
+			esac
+		do
+			/bin/echo 'unknown disk type
+		'
+		done
+		NTYPE=$TYPE
+	fi
+	/bin/echo -n 'which partition for /usr? '
+	read PART
+	;;
+esac
+
+if [ "$TFILE" != 16 ]
+then
+	NEWROOT=/a
+	/etc/newfs /dev/$DISK$PART $NTYPE
+	case "$?" in 
+	0)	;;	*)	exit;;
+	esac
+	rm /tmp/done$$
+	/bin/sync
+	/etc/fsck /dev/r$DISK$PART
+	cd $NEWROOT
+	/bin/chmod 755 usr	# since this was a mounted filesys before
+	/bin/chgrp 10  usr	# ditto
+	/etc/mount /dev/$DISK$PART /a/usr
+	/bin/chmod 755 usr
+	/bin/chgrp 10  usr
+	cd usr
+	echo "restoring /usr (`/bin/pwd`)"
+	/etc/restore rf $TAPE
+	case $stat in
+	0)	;;
+	*)	echo "Problems in restoring tape files, cleaning up."
+		/etc/umount /a/usr
+		exit 1 ;;
+	esac
+	/bin/echo "/dev/$DISK$PART /usr 4.2 rw          1 2" >> /a/etc/fstab
+	exit
+fi
+/bin/echo 'NOTE: The following tape file does not need to be restored from'
+/bin/echo 'tape unless changes to man pages are planned or the user wants to'
+/bin/echo 'generate hardcopies of man pages. Formatted compressed man pages'
+/bin/echo 'are installed with /usr file system in the previous tape file.'
+/bin/echo
+/bin/echo -n 'restore unformatted man pages to /usr/man ?(n/y) '
+read MAN
+/bin/echo -n 'restore /usr/doc ?(n/y) '
+read DOC
+/bin/echo -n 'restore /usr/games ?(n/y) '
+read GAMES
+/bin/echo -n 'restore /usr/lib/vfont ?(n/y) '
+read VFONT
+/bin/echo -n 'restore /usr/local/gnu (EMACS)?(n/y) '
+read GNU
+
+case "$USR" in
+y)	/etc/newfs /dev/$DISK$PART $NTYPE
+	case "$?" in 
+	0)	;;	*)	exit;;
+	esac
+	/bin/sync
+	/etc/fsck /dev/r$DISK$PART
+	/bin/chmod 755 /usr	# since this was a mounted filesys before
+	/bin/chgrp 10  /usr	# ditto
+	/etc/mount /dev/$DISK$PART /usr
+	/bin/chmod 755 /usr
+	/bin/chgrp 10  /usr
+	cd /usr
+	echo "restoring /usr"
+	(/bin/tar xpf $TAPE; echo $? > /tmp/done$$)&
+	cnt=0
+	while [ ! -f /tmp/done$$ ]
+	do
+		echo -n .
+		cnt=`expr $cnt + 1`
+		if [ $cnt -gt 79 ] ;then 
+			echo ""
+			cnt=0
+		fi
+	done
+	stat=`cat /tmp/done$$`
+	rm /tmp/done$$
+	echo ""
+	case $stat in
+	0)	;;
+	*)	echo "Problems in un-taring tape file, cleaning up."
+		/etc/umount /usr
+		exit 1 ;;
+	esac
+					# creat empty man directories
+	for i in man0 man1 man2 man3 man4 man5 man6 man7 man8 manl mann mano
+	do
+		mkdir /usr/man/$i		2>/dev/null
+		chmod 755 /usr/man/$i		2>/dev/null
+		chgrp daemon /usr/man/$i	2>/dev/null
+	done
+					# create /etc/fstab entry
+	/bin/echo "/dev/$DISK$PART /usr 4.2 rw          1 2" >> /etc/fstab
+	/bin/echo "/usr filesystem restored" ;;
+
+*)	# skip past /usr tar image on tape
+	(/bin/mt -f $TAPE fsf 1; echo $? > /tmp/done$$)&
+	while [ ! -f /tmp/done$$ ]
+	do
+		:
+	done
+	stat=`cat /tmp/done$$`
+	rm /tmp/done$$
+	case $stat in
+	0)	;;
+	*)	echo "Problems skipping forward tape files"
+		exit 1 ;;
+	esac ;;
+esac
+
+/bin/grep '/usr' /etc/fstab > /dev/null
+USRTHERE="$?"
+
+if [ "${MAN}${DOC}${GAMES}${VFONT}${GNU}" = "nnnnn" ]
+then
+	cd /
+	/bin/sync
+	/bin/mt -f $TAPE rewind
+	date
+	/bin/echo "All done."
+	exit 0
+fi
+
+case "$MAN" in
+y)	case $USRTHERE in
+	0)	cd /usr
+		/bin/echo "restoring unformatted man pages"
+		(/bin/tar xpf $TAPE; echo $? > /tmp/done$$)&
+		cnt=0
+		while [ ! -f /tmp/done$$ ]
+		do
+			echo -n .
+			cnt=`expr $cnt + 1`
+			if [ $cnt -gt 79 ] ;then 
+				echo ""
+				cnt=0
+			fi
+		done
+		stat=`cat /tmp/done$$`
+		rm /tmp/done$$
+		echo ""
+		case $stat in
+		0)	;;
+		*)	echo "Problems in un-taring tape file"
+			exit 1 ;;
+		esac
+		/bin/echo unformatted man pages restored ;;
+	
+	*)	/bin/echo "You must restore /usr first." ;;
+	esac ;;
+
+*)	# skip past unformatted man pages 
+	(/bin/mt -f $TAPE fsf 1; echo $? > /tmp/done$$)&
+	while [ ! -f /tmp/done$$ ]
+	do
+		:
+	done
+	stat=`cat /tmp/done$$`
+	rm /tmp/done$$
+	case $stat in
+	0)	;;
+	*)	echo "Problems skipping forward tape files"
+		exit 1 ;;
+	esac ;;
+esac
+
+if [ "${DOC}${GAMES}${VFONT}${GNU}" = "nnnn" ]
+then
+	cd /
+	/bin/sync
+	/bin/mt -f $TAPE rewind
+	date
+	/bin/echo "All done."
+	exit 0
+fi
+
+case "$DOC" in
+y)	case $USRTHERE in
+	0)	cd /usr
+		/bin/echo "restoring /usr/doc"
+		(/bin/tar xpf $TAPE; echo $? > /tmp/done$$)&
+		cnt=0
+		while [ ! -f /tmp/done$$ ]
+		do
+			echo -n .
+			cnt=`expr $cnt + 1`
+			if [ $cnt -gt 79 ] ;then 
+				echo ""
+				cnt=0
+			fi
+		done
+		stat=`cat /tmp/done$$`
+		rm /tmp/done$$
+		echo ""
+		case $stat in
+		0)	;;
+		*)	echo "Problems in un-taring tape file"
+			exit 1 ;;
+		esac
+		/bin/echo /usr/doc restored ;;
+	
+	*)	/bin/echo "You must restore /usr first." ;;
+	esac ;;
+
+*)	# skip past /usr/doc tar image on tape
+	(/bin/mt -f $TAPE fsf 1; echo $? > /tmp/done$$)&
+	while [ ! -f /tmp/done$$ ]
+	do
+		:
+	done
+	stat=`cat /tmp/done$$`
+	rm /tmp/done$$
+	case $stat in
+	0)	;;
+	*)	echo "Problems skipping forward tape files"
+		exit 1 ;;
+	esac ;;
+esac
+
+if [ "${GAMES}${VFONT}${GNU}" = "nnn" ]
+then
+	cd /
+	/bin/sync
+	/bin/mt -f $TAPE rewind
+	date
+	/bin/echo "All done."
+	exit 0
+fi
+
+case "$GAMES" in
+y)	case $USRTHERE in
+	0)	cd /usr
+		/bin/echo "restoring /usr/games"
+		(/bin/tar xpf $TAPE; echo $? > /tmp/done$$)&
+		cnt=0
+		while [ ! -f /tmp/done$$ ]
+		do
+			echo -n .
+			cnt=`expr $cnt + 1`
+			if [ $cnt -gt 79 ] ;then 
+				echo ""
+				cnt=0
+			fi
+		done
+		stat=`cat /tmp/done$$`
+		rm /tmp/done$$
+		echo ""
+		case $stat in
+		0)	;;
+		*)	echo "Problems in un-taring tape file"
+			exit 1 ;;
+		esac
+		/bin/echo "/usr/games restored" ;;
+	
+	*)	/bin/echo "You must restore /usr first." ;;
+	esac ;;
+
+*)	# skip past /usr/games tar image on tape
+	(/bin/mt -f $TAPE fsf 1; echo $? > /tmp/done$$)&
+	while [ ! -f /tmp/done$$ ]
+	do
+		:
+	done
+	stat=`cat /tmp/done$$`
+	rm /tmp/done$$
+	case $stat in
+	0)	;;
+	*)	echo "Problems skipping forward tape files"
+		exit 1 ;;
+	esac ;;
+esac
+
+if [ "${VFONT}${GNU}" = "nn" ]
+then
+	cd /
+	/bin/sync
+	/bin/mt -f $TAPE rewind
+	date
+	/bin/echo "All done."
+	exit 0
+fi
+
+case "$VFONT" in
+y)	case $USRTHERE in
+	0)	cd /usr/lib
+		/bin/echo "restoring /usr/lib/vfont" 
+		(/bin/tar xpf $TAPE; echo $? > /tmp/done$$)&
+		cnt=0
+		while [ ! -f /tmp/done$$ ]
+		do
+			echo -n .
+			cnt=`expr $cnt + 1`
+			if [ $cnt -gt 79 ] ;then 
+				echo ""
+				cnt=0
+			fi
+		done
+		stat=`cat /tmp/done$$`
+		rm /tmp/done$$
+		echo ""
+		case $stat in
+		0)	;;
+		*)	echo "Problems in un-taring tape file"
+			exit 1 ;;
+		esac
+		/bin/echo "/usr/lib/vfont restored" ;;
+	
+	*)	/bin/echo "You must restore /usr first." ;;
+	esac ;;
+
+*)	# skip past /usr/lib/vfont
+	(/bin/mt -f $TAPE fsf 1; echo $? > /tmp/done$$)&
+	while [ ! -f /tmp/done$$ ]
+	do
+		:
+	done
+	stat=`cat /tmp/done$$`
+	rm /tmp/done$$
+	case $stat in
+	0)	;;
+	*)	echo "Problems skipping forward tape files"
+		exit 1 ;;
+	esac ;;
+esac
+
+if [ "${GNU}" = "n" ]
+then
+	cd /
+	/bin/sync
+	/bin/mt -f $TAPE rewind
+	date
+	/bin/echo "All done."
+	exit 0
+fi
+
+case "$GNU" in
+y)	case $USRTHERE in
+	0)	cd /usr/local
+		/bin/echo "restoring  /usr/local/gnu"
+		(/bin/tar xpf $TAPE; echo $? > /tmp/done$$)&
+		cnt=0
+		while [ ! -f /tmp/done$$ ]
+		do
+			echo -n .
+			cnt=`expr $cnt + 1`
+			if [ $cnt -gt 79 ] ;then 
+				echo ""
+				cnt=0
+			fi
+		done
+		stat=`cat /tmp/done$$`
+		rm /tmp/done$$
+		echo ""
+		case $stat in
+		0)	;;
+		*)	echo "Problems in un-taring tape file"
+			exit 1 ;;
+		esac
+		/bin/echo "/usr/local/gnu restored" ;;
+
+	*)	/bin/echo "You must restore /usr first. " ;;
+	esac ;;
+
+*)	# skip past /usr/local/gnu
+	(/bin/mt -f $TAPE fsf 1; echo $? > /tmp/done$$)&
+	while [ ! -f /tmp/done$$ ]
+	do
+		:
+	done
+	stat=`cat /tmp/done$$`
+	rm /tmp/done$$
+	case $stat in
+	0)	;;
+	*)	echo "Problems skipping forward tape files"
+		exit 1 ;;
+	esac ;;
+esac
+
+cd /
+/etc/mount -f /         # so that df will show everything
+/bin/sync
+/bin/mt -f $TAPE rewind
+date
+/bin/echo "All done."

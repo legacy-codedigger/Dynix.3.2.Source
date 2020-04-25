@@ -1,0 +1,98 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: disas.1 1.7 87/04/22 $
+.TH DISAS 1 "\*(V)" "DYNIX"
+.SH NAME
+disas \- disassemble binary files
+.SH SYNOPSIS
+.B disas
+[
+.B \-ahmr
+] [
+.B \-c
+.I hex
+] [
+.B \-b
+.I hex
+.B \-e
+.I hex
+] [
+.B \-s
+name] file
+.br
+.SH DESCRIPTION
+.I Disas
+disassemblies binary files.
+The binary file can be an a.out or an object file (.o).
+Input is taken from the specified
+.I file
+and the disassembly is placed on stdout.
+The general format for the output is:
+.PP
+hex address:  hex representation  symbolic representation
+.PP
+If symbols are available they will be used in the symbolic representation
+where possible and the name of each procedure will be printed before the
+beginning of its code.
+.PP
+The following options are available.
+.TP
+.B \-a
+Suppresses printing of the address before each instruction.
+.TP
+.BI \-c \ hex
+.I Hex
+is the maximum distance an address can be from a symbol for it to be
+considered relative to that symbol.
+The default is 0.
+In most cases this only applies to symbols from the data/bss sections.
+.TP
+.BI \-b \ hex
+.I Hex
+specifies the address at which to begin disassembly.
+.TP
+.BI \-e \ hex
+.I Hex
+specifies the address at which to end disassembly.
+.TP
+.B \-h
+Suppresses printing of hex representation of each instruction.
+.TP
+.B \-m
+Show the raw addressing modes in addition to the symbolic form.
+When this flag is specified the operands will be displayed as encoded
+in the instruction.
+This alternate display of each operand comes
+immediately after the symbolic form and is inclosed in angle brackets.
+.TP
+.B \-r
+Show only raw addressing modes as encoded in the instructions.
+This inhibits the symbolic representation of operands.
+.TP
+.BI \-s \ name
+This allows the specification of a particular symbol to disassemble.
+It must be a text symbol.
+Disassembly will start with that symbol
+and continue to the next global text symbol or until the end
+of the text section, whichever comes first.
+There may be multiple occurrences of
+.BI \-s \ name
+on a command line.
+The symbols will be processed in the order they are listed on the
+command line.
+.PP
+Hex values are entered in the standard representation
+(as in ``123ab'' or ``00ff00''),
+not with a leading ``0x'', as in the C language.
+.SH BUGS
+The occurrence of data in the text will confuse
+.IR disas .

@@ -1,0 +1,75 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: kill.1 1.6 90/03/13 $
+.TH KILL 1 "\*(V)" "4BSD"
+.SH NAME
+kill \- terminate a process
+.SH SYNOPSIS
+.B kill
+[
+.B \- sig
+]
+.I processid . . .
+.br
+.B kill
+.B \-l
+.SH DESCRIPTION
+.B Kill
+sends the TERM (terminate, 15) signal to the specified processes.
+If a signal name or number preceded by \f3\-\f1 is given
+as first argument, that signal is sent instead of
+terminate
+(see
+.BR  sigvec (2)).
+The signal names are listed by
+.B kill \-l
+, and are as given in
+.I /usr/include/signal.h,
+stripped of the common SIG prefix.
+.PP
+The terminate signal kills processes that do not catch the signal;
+.B kill \-9 . . .
+is a sure kill, because the KILL (9) signal cannot be caught.
+By convention, if process number 0 is specified, all members
+in the process group (i.e., processes resulting from 
+the current login) are signaled.  (But beware: this works only
+if you use
+\f3sh\f1(1),
+not if you use
+\3csh\f1(1).)
+The killed processes must belong
+to the current user 
+or the superuser.
+.PP
+The process number of an asynchronous process
+started with \f3&\f1 is reported by the shell.
+Process numbers can also be found by using
+\f3kill\f1
+as a built-in to
+.BR csh (1);
+it allows job specifiers % . . . ,
+so process id's are not used as often as 
+kill
+arguments.
+See \f3csh\f1(1)
+for details.
+.SH "SEE ALSO"
+csh(1), ps(1), kill(2), sigvec(2)
+.SH BUGS
+An option to kill process groups that works like
+\f3killpg\f1(2)
+should be provided.
+A replacement for 
+.B kill \f20\f1
+for
+\f3csh\f1(1)
+users should be provided.

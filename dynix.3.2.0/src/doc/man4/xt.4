@@ -1,0 +1,150 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: xt.4 1.15 1991/08/07 00:14:53 $
+.TH XT 4 "\*(V)" "DYNIX"
+.SH NAME
+xt \- Xylogics 472 MULTIBUS magtape interface
+.SH SYNOPSIS
+.B "controller zt0 at mbad? csr 0x0300 maps 34 bin 5 intr 7"
+.SH DESCRIPTION
+The Xylogics 472 and an industry-standard Cipher
+formatted interface transport combine to provide
+a standard tape drive
+interface as described in
+.IR mtio (4).
+.I Zt
+is the name of the controller,
+and
+.I mt
+is the name of the drives attached to the controller.
+Depending on the transport and formatter, speed and density may be
+selected by various bits in the minor device number.
+The bits in the minor device number are as follows:
+The low order two bits select the logical unit.
+As many as four transports on any combination of
+controllers and formatters are supported.
+The next bit, 004, specifies that the tape is
+not rewound when the associated special file
+is closed.
+.PP
+The number of MULTIBUS maps specified on the line to
+.IR config (1)
+should be at least 10.
+If a requested I/O operation cannot be mapped due to a lack of
+MULTIBUS maps, ENXIO will be the returned and a diagnostic message
+will be printed on the console.
+.PP
+The tape controller must be strapped up for 24-bit addressing.
+.PP
+Note: Closing a no-rewind xt device after reading will not space the
+tape forward to the beginning of the next file.  This behaviour differs
+from that of the SSM 1/2" tape device (tg).
+.SH BINARY CONFIGURATION
+When building a kernel with MULTIBUS magtape, be sure that
+the binary configuration information in /sys/conf/conf_xt.c
+is up to date.
+The constants and variables defined in conf_xt.c include:
+.IP "XTCTLR" \w'XTCTLRXXXXX'u
+The maximum number of
+.I zt
+controllers supported by the driver.
+.IP "xtdensel"
+Set to one if the tape drive supports density select operations.
+Some Cipher tape drives only support 1600-bpi operation.
+.IP "xtunits"
+This array (indexed by logical unit from
+the minor device number) describes the controller and transport
+assignments that will be supported by the system.
+Wildcarding may be used to force the driver to probe
+each controller for the specified tape drives.
+The example below describes two possible controllers,
+with two tape drives on each controller.
+.PP
+.nf
+struct	xt_unit	xtunits[] = {
+/*	 ctlr		drive	*/
+	{ ANY,		ANY },		/* xt0: any controller, any drive */
+	{ ANY,		  1 },		/* xt1: any controller, drive 1 */
+	{ ANY,		  0 },		/* xt2: any controller, drive 0 */
+	{ ANY,		  1 },		/* xt3: any controller, drive 1 */
+};
+.sp .5
+.fi
+.SH "STANDALONE"
+Standalone MULTIBUS magtape offers a subset of the facilities
+offered by UNIX MULTIBUS magtape.
+In particular, the standalone tape driver does not do density selection
+on open (the density must be set manually from the tape front panel),
+and does not do retries on I/O errors.
+.SH "SEE ALSO"
+mt(1),
+tar(1),
+mtio(4)
+.SH FILES
+.IP /dev/mt* "\w'/sys/conf/conf_xt.c\ \ 'u"
+block magtape devices
+.IP /dev/rmt*
+raw magtape devices
+.IP /sys/conf/conf_xt.c
+binary configuration file
+.SH DIAGNOSTICS
+\f3xt%d: not enough maps for transfer\f1.
+A requested transfer is too large to be mapped by the number of Multibus
+maps allocated to the controller.  The number of maps can be increased in
+the kernel configuration file but this may affect other parts of the Dynix
+kernel.
+.PP
+\f3xt%d: drive %d ctlr %d conflict\f1.
+A drive was not wildcarded in the binary configuration, but
+the specified drive number was already in use (allocated to
+some previously probed tape device).
+.PP
+\f3xt%d: no write ring\f1.
+An attempt was made to write on the tape drive
+when no write ring was present; this message is written on the terminal of
+the user who tried to access the tape.
+.PP
+\f3xt%d: not online\f1.
+An attempt was made to access the tape while it
+was offline; this message is written on the terminal of the user
+who tried to access the tape.
+.PP
+\f3xt%d: can't switch density in mid-tape\f1.
+An attempt was made to write
+on a tape at a different density than is already recorded on the tape.
+This message is written on the terminal of the user who tried to switch
+the density.
+.PP
+\f3xt%d: hard error bn%d er=0x%x\f1.
+A tape error occurred
+at block \f2bn\f1.
+The error code is as described in the Xylogics manual.
+Any error is
+fatal on non-raw tape; when possible the driver or controller
+will have retried
+the operation which failed several times before reporting the error.
+.PP
+\f3xt%d: recovered error bn%d\f1.
+The controller was able to recover an error while reading or writing.
+.SH BUGS
+If any non-data error is encountered on non-raw tape, it refuses to do anything
+more until closed.
+.PP
+Due to a hardware limitation,
+the xt tape driver cannot tell the difference
+between a missing tape drive and a tape drive with no tape loaded.
+As a consequence, tape probing pretends it found all configured tape
+drives on any controller present in the system.
+Be careful with wildcarding in the binary configuration.
+.PP
+If a drive supports more than one tape density,
+the user must manually select the desired tape density while loading the tape.

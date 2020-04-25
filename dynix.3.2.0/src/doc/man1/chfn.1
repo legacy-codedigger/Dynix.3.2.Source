@@ -1,0 +1,74 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: chfn.1 1.6 86/05/13 $
+.TH CHFN 1 "\*(V)" "4BSD/DYNIX"
+.SH NAME
+chfn \- change finger entry
+.SH SYNOPSIS
+.B chfn
+[loginname]
+.SH DESCRIPTION
+.I Chfn
+is used to change information about users.  This information is used
+by the finger program, among others.
+It consists of the user's
+"real life" name, office room number, office phone number,
+home phone number, and default login universe.
+.I Chfn
+prompts the user for each field.
+Included in the prompt is a default value,
+which is enclosed between brackets.
+The default value is accepted simply by typing <return>.
+To enter a blank field,
+type the word 'none'.
+Below is a sample run:
+.IP
+.B "Name [Biff Studsworth II]:"
+.br
+.B "Room number []:"
+521E
+.br
+.B "Office Phone []:"
+1863
+.br
+.B "Home Phone [5771546]:"
+none
+.br
+.B "Universe [ucb]:"
+.sp
+.PP
+.I Chfn
+allows phone numbers to be entered with or without hyphens.
+.PP
+It is a good idea to run finger after running
+.I chfn
+to make sure everything is the way you want it.
+.PP
+The optional argument
+.B loginname
+is used to change another person's finger information.
+This can only be done by the super-user.
+.SH FILES
+/etc/passwd, /etc/ptmp
+.SH SEE\ ALSO
+finger(1), passwd(5)
+.SH BUGS
+For historical reasons, the user's name, etc are stored in the passwd file.
+This is a bad place to store the information. 
+.PP
+Because two users may try to write the passwd file at once, a synchronization
+method was developed.
+On rare occasions, a message that the password file
+is ``busy'' will be printed.
+In this case,
+.I chfn
+sleeps for a while and then tries to write to the passwd file again.

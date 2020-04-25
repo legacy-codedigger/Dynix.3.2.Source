@@ -1,0 +1,271 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: vtoc.5 1.5 91/03/15 $
+.\" @(#)vtoc.5 1.1 85/12/28 SMI;
+.TH VTOC 5 "\*(V)" "DYNIX"
+.SH NAME
+vtoc \- volume table of contents
+.SH SYNOPSIS
+.B "#include <sys/vtoc.h>"
+.SH DESCRIPTION
+.\".IX  "vtoc file"  ""  "\f2vtoc\fP \(em fileystem static information"
+.\".IX  "fileystem static information"  ""  "fileystem static information \(em \f2vtoc\fP"
+The files
+.I /etc/vtoc/*
+describes the disk partitions used for particular disk drives and disk types.
+The system administrator can modify them with a text editor, and use them
+as arguments to 
+mkvtoc(8)
+(see "Dynix System Adminstrators Guide" chapter 6).
+The 
+VTOC
+of a disk may be displayed using prtvtoc(8) or prtvtoc(8s).
+.PP
+Special files refer to partitions 0-255. The first eight
+correspond to the partitions named 'a` to 'h`.
+The special files with partition number 255 refers to the whole
+disk.
+The standard device names begin with the disk controller
+name (e.g., \f3zd\f1 or \f3sd\f1),
+followed by
+the drive number,
+followed by the
+letter.
+By convention, these special files are in the 
+directory \f2/dev/\f1.
+.PP
+The block devices access the disk via the system's normal
+buffering mechanism and may be read and written without regard to
+physical disk records.
+There is also a \f2raw\f1 interface
+that provides for direct transmission between the disk
+and the user's read or write buffer.
+The names of the raw special files
+are conventionally the same as the block special files, but
+with the letter 'r` prepended to its name
+\(em e.g., \f2/dev/rsd0a\f1.
+The whole disk interface, by convention, is the special file 
+without the partitioning letter
+\(em e.g.,
+\f2/dev/rsd0\f1.
+.PP
+.SS "Partition Data"
+.PP
+The partition data resides in an area of the disk called the
+"Volume Table of Contents" (
+.SM VTOC
+) which is at most
+.SM V_SIZE
+sectors long, and resides at sector
+.SM V_VTOCSEC,
+offset by any reserved cylinders a disk may have.
+.PP
+The structure of the VTOC is described in
+.I /usr/include/sys/vtoc.h .
+Some of the fields include:
+.TP
+.I v_sanity
+This is a magic cookie which identifies this section of the
+disk as a valid VTOC.  It is normally set to
+.SM VTOC_SANE.
+.TP
+.I v_version
+The version of this particular VTOC.
+.TP
+.I v_cksum
+A checksum, which allows the contents of the VTOC to be
+verified.
+.TP
+.I v_nparts
+The number of valid partitions in this VTOC.
+.TP
+.I v_secsize
+The size in bytes of sectors on this disk.
+.TP
+.I v_ntracks
+The number of tracks per cylinder.
+.TP
+.I v_nsectors
+The number of sectors per track.
+.TP
+.I v_ncylinders
+The number of cylinders on this disk.
+The parameters
+.IR v_ntracks ,
+.IR v_nsectors ,
+and
+.I v_ncylinders
+are used to make filesystems.  Since it is not always
+possible to know the exact geometry of a disk or a disk may
+not have a fixed geometry, these values should be chosen to
+reflect the total size of the disk when multiplied
+together.
+.TP
+.I v_rpm
+The number of disk revolutions-per-minute.
+.TP
+.I v_disktype
+This is a character array which gives the name of the disk
+type.  It is at most VTYPCHR characters long.
+.TP
+.I v_part
+Per-partition data.
+.PP
+Each partition has data associated with it.  That
+information includes:
+.TP
+.I p_start
+The sector number where this partition starts.
+.TP
+.I p_size
+The size of this partition in sectors.
+.TP
+.I p_type
+The type of this partition.
+.TP
+.I p_bsize
+The size in bytes of filesystem blocks to be made for this
+partition.
+.TP
+.I p_fsize
+The filesystem fragment size in bytes for this partition.
+.PP
+The parameters
+.I p_bsize
+and
+.I p_fsize
+will only be needed if a filesystem is to be made on this
+partition.  If no filesystem will be made on this partition,
+then these values are not significant.
+.SS "Partition Types"
+.PP
+Each partition can have associated with it a partition type,
+which is recorded in the per-partition section of the VTOC.
+The partition types are:
+.TP
+.SM V_NOPART
+This type indicates that this slot in the partition table is
+empty.  No device will be made available which corresponds
+to this minor device number.
+.TP
+.SM V_RAW
+This is a regular partition.  Partitions of this type may
+have filesystems constructed on them, or may be used as raw
+disk partitions.
+.TP
+.SM V_BOOT
+System bootstrap area.
+These partitions are like those of the type \s-1V_RAW\s+1,
+except commands that require a bootstrap partition will search for the
+first one of type
+.SM V_BOOT.
+.TP
+.SM V_RESERVED
+This designates an area of the disk that may not be
+accessed under normal circumstances, since it maps an area
+of the disk reserved for some specific purpose.  For example, some
+disk controllers require that areas of the disk be reserved
+for bad block lists or configuration information.  Most
+disk types also reserve space for diagnostic routines to
+read and write the disk without destroying data.
+The VTOC itself is mapped as reserved space.
+Programs that write VTOCs directly should
+disallow any attempt to change the definition
+of partitions of this type, or serious problems may
+result.
+.TP
+.SM V_FW
+System controller firmware area.
+These partitions are like partitions of type
+.SM V_RAW
+but they have added meaning in that commands which access
+system bootstraps on disk will by default look for the first partition
+of type
+.SM V_FW
+to read or write the firmware.  The firmware is only written if the system
+has a system controller board with loadable firmware.
+.TP
+.SM V_DIAG
+S2000 hardware scan and cache data area.
+These partitions are like partitions of type
+.SM V_RAW
+but they have added meaning to the SSM firmware.  The SSM firmware will
+execute a hardware dump routine when an S2000 processor board reports
+errors detectable by the SSM.  This data will be dumped to a
+.SM V_DIAG
+partition and contains much of the internal state of the hardware
+componenets of the S2000 processor board.
+
+.SH IOCTLS
+.PP
+The disk drivers support the following commands to
+.IR ioctl() :
+.TP
+.SM V_READ
+This ioctl will cause the VTOC to be read from disk and
+returned to the caller.  This is the only way to read the
+VTOC, since read/write access to the VTOC area is disallowed.
+If there is not a valid VTOC on the disk, then
+.SM EINVAL
+is returned.
+The third argument to the
+ioctl call should be a pointer to an area of memory large
+enough to store the entire
+.IR "struct vtoc" .
+For portability to future versions of the kernel, a block of
+size
+.B V_SIZE
+should be allocated for
+.IR "struct vtoc" .
+.TP
+.SM V_WRITE
+This ioctl will cause the VTOC to be written to disk.
+This is the only way to write the
+VTOC, since read/write access to the VTOC area is disallowed
+when a VTOC driver is present.  The third argument to the
+ioctl call should be a pointer to a filled-out
+.I "struct vtoc"
+which will be sanity-checked before being written to disk.
+If the VTOC fails a sanity-check, then
+.SM EINVAL
+is returned.  This may include overlapping partitions, or an
+attempt to put a partition over the VTOC area of the disk
+which is not of type
+.SM V_RESERVED.
+If a partition is changed in the new VTOC relative to the
+old VTOC (i.e., any of the per-partition data is changed),
+that partition must not be mounted or being used as a swap device,
+and the raw device must not be open by any process.
+.TP
+.SM V_PART
+This ioctl will return the partition information for the disk.
+It takes its arguments as
+.SM V_READ
+does.
+.SM V_PART 
+differs from
+.SM V_READ
+in the 
+.SM V_PART 
+can be used on non VTOC disks.
+When no VTOC is found,
+.SM V_PART 
+sets the value of v_sanity to 0xbadbad.
+.SH FILES
+/etc/vtoc/*
+.br
+/dev/{wd,sd,xp}?
+.br
+/dev/r{wd,sd,xp}*
+.br
+.SH SEE ALSO
+mkvtoc(8),prtvtoc(8)

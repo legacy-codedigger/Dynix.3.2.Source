@@ -1,0 +1,134 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: ttyconfig.8 1.8 90/05/22 $
+.TH TTYCONFIG 8 "\*(V)" "DYNIX"
+.SH NAME
+ttyconfig \- configure Systech tty lines
+.SH SYNOPSIS
+.nf
+.B /usr/etc/ttyconfig \c
+\f2ttyname\f1 [\f2-q\f1] [\f2-wiring\f1] [\f2-linetype\f1]
+.fi
+.SH DESCRIPTION
+.I ttyconfig
+changes
+.I configuration attributes
+associated with
+.I ttyname
+to facilitate use of auto-dial modems on Systech lines
+for
+.I both
+dial-in and dial-out without requiring changes to
+the modem switches or cables.
+See
+.IR st (4)
+for the special re-wiring required to use
+.IR ttyconfig .
+.PP
+The options for
+.I -wiring
+are:
+.TP 5
+.B -normal
+Cable wiring is standard.
+.TP 5
+.B -special
+This attribute informs the Systech driver that the
+cable wiring has been modified such that the Systech output
+RTS (pin 4) is looped back to Systech input DCD (pin 8) and
+the modem output DCD (pin 8) is connected to Systech input DSR (pin 6).
+This modification is necessary due to a Systech hardware restriction
+that disables the USART receiver when DCD (pin 8) is not asserted.
+See
+.IR st (4)
+for more information on how to specially
+wire the modem to the DYNIX system.
+.PP
+The options for
+.I -linetype
+are:
+.TP 5
+.B -carrier
+The behavior of calls to
+.IR open(2)
+on
+.I ttyname
+depends on which of the two wiring modes
+has been selected.
+In normal mode, calls to
+.I open
+block waiting for
+DCD (pin 8) to be asserted.
+When special mode is selected,
+.IR open
+blocks waiting for DSR (pin 6) to be asserted.
+Use the 
+.B -carrier
+attribute to enable a login on this line.
+.TP 5
+.B -nocarrier
+Calls to
+.I open
+on
+.I ttyname
+always complete immediately.
+Use this attribute to communicate with
+an auto-dial modem for programs like
+.IR tip (1)
+or
+.IR uucp (1).
+.PP
+The
+.I -q
+flag prevents 
+.I ttyconfig
+from writing completion status to standard output.
+.PP
+To change a specially wired dial-in line to a dial-out line:
+.nf
+	% ed ttys (to disable logins on ttyname)
+	% kill -HUP 1
+	% ttyconfig ttyname -special -nocarrier
+	% chmod 666 ttyname
+.fi
+.PP
+To change a specially wired dial-out line to a dial-in line:
+.nf
+	% ttyconfig ttyname -special -carrier
+	% ed ttys (to enable logins on ttyname)
+	% kill -HUP 1
+.fi
+.PP
+If only one argument is given,
+no change occurs and the current attributes for
+.I ttyname
+are displayed.
+It is illegal to specify both the
+.B -normal
+and
+.B -nocarrier
+options.
+No
+.IR open s
+on
+.I ttyname
+are allowed when
+.IR ttyconfig (8)
+is invoked.
+Since this program writes on
+.IR /dev/kmem ,
+you must run it as the super-user when changing attributes.
+.SH "SEE ALSO"
+st(4), tip(1), ttys(5)
+.SH "BUGS"
+This program works only for Systech tty lines.
+Two options must be specified when setting any attributes on the specified line.

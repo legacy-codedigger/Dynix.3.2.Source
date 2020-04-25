@@ -1,0 +1,45 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986 Sequent Computer Systems, Inc.
+.\" All rights reserved
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: zdformat.8s 1.4 91/01/21 $
+.TH ZDFORMAT 8S "\*(V)" "DYNIX"
+.SH NAME
+zdformat \- standalone disk formatter for dual-channel disk controller
+.SH SYNOPSIS
+.BR "From the powerup monitor" :
+.br
+.sp
+.in +1
+.IR "on SCED-based systems" :
+.br
+*
+.B b 0
+.IR dv ( un , su )\c
+.B stand/zdformat
+.br
+.sp
+.IR "on SSM-based systems" :
+.br
+--->
+.B bh 
+.IR dv ( un , su )\c
+.B stand/zdformat
+.SH DESCRIPTION
+.I zdformat
+is the standalone disk formatter for disks connected to Sequent's
+dual-channel disk controller.
+See the
+.I "DYNIX System Administration Guide"
+for detailed instructions on how to use
+.IR zdformat .
+.SH "SEE ALSO"
+boot(8S),
+.I "DYNIX System Administration Guide"

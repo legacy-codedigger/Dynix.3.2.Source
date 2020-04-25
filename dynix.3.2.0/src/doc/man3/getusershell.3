@@ -1,0 +1,65 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1989 Sequent Computer Systems, Inc.
+.\" All rights reserved
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: getusershell.3 1.2 90/02/07 $
+.TH GETUSERSHELL 3 "\*(V)" "4BSD"
+.SH NAME
+getusershell, setusershell, endusershell \- get legal user shells
+.SH SYNOPSIS
+.nf
+.B char *getusershell()
+.PP
+.B setusershell()
+.PP
+.B endusershell()
+.fi
+.SH DESCRIPTION
+.I Getusershell
+returns a pointer to a legal user shell as defined by the
+system manager in the file 
+.IR /etc/shells .
+If 
+.I /etc/shells
+is unreadable or does not exist,
+.I getusershell
+behaves as if
+.I /bin/sh
+and
+.I /bin/csh
+were listed in the file.
+.PP
+.I Getusershell
+reads the next
+line (opening the file if necessary);
+.I setusershell
+rewinds the file;
+.I endusershell
+closes it.
+.SH FILES
+/etc/shells
+.SH "SEE ALSO"
+shells(5)
+.SH DIAGNOSTICS
+The routine
+.I getusershell
+returns a null pointer (0) on EOF.
+.SH BUGS
+All information
+is contained in a static area
+so it must be copied if it is
+to be saved.
+.PP
+The functions
+.I setusershell
+and
+.I endusershell
+do not return a value, but are declared as integer functions
+to maintain compatibility.

@@ -1,0 +1,28 @@
+*
+*#ident	"$Header: hp97548 1.1 90/01/30 $"
+* hp97548 on SCSI
+*
+* Dimensions:
+*   512 bytes/sector
+*    56 sectors/track
+*    16 tracks/cylinder
+*   896 user accessible sectors/cylinder
+*  1447 cylinders
+*  1445 user accessible cylinders
+*
+* Types:
+*	00	No Partition
+*	01	Regular Partition
+*	02	Boot Block
+*	03	Reserved Disk Area
+*	04	Firmware (not used on SCED SCSI disk)
+*
+* Partition	Type	Start Sector	Size in Sectors	   Block Sz    Frag Sz
+   00		1	520576		50176		   8192        1024
+   01		1	570752		205184		   8192        1024
+   02		1	775936		518784		   8192        1024
+   03		1	4480		516096		   8192        1024
+   12		4	32		4448		   0           0
+   13		3	1294720		1792		   0           0
+   14		2	0		16		   0           0
+   15		3	16		16		   0           0

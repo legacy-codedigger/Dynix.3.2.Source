@@ -1,0 +1,54 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: getpgrp.2 1.7 86/08/20 $
+.TH GETPGRP 2 "\*(V)" "4BSD"
+.SH NAME
+getpgrp \- get process group
+.SH SYNOPSIS
+.ft 3
+.nf
+pgrp = getpgrp(pid)
+int pgrp;
+int pid;
+.fi
+.ft 1
+.SH DESCRIPTION
+The process group of the specified process is returned by
+.I getpgrp.
+If
+.I pid
+is zero, then the call applies to the current process.
+.PP
+Process groups are used for distribution of signals, and
+by terminals to arbitrate requests for their input: processes
+which have the same process group as the terminal are foreground
+and may read, while others will block with a signal if they attempt
+to read.
+.PP
+This call is thus used by programs such as
+.IR csh (1)
+to create
+process groups
+in implementing job control.
+The TIOCGPGRP and TIOCSPGRP calls
+described in
+.IR tty (4)
+are used to get/set the process group of the control terminal.
+.SH "ERRORS"
+There is only one possible error:
+.TP 12
+[ESRCH]
+No such process
+(invalid
+.IR pid ).
+.SH "SEE ALSO"
+setpgrp(2), getuid(2), tty(4)

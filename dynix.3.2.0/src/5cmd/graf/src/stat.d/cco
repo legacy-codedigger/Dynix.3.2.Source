@@ -1,0 +1,9 @@
+# @(#)cco	1.2
+BIN=${BIN=../../bin}
+for i
+do prog=`echo $i | sed "s/\.c//"`
+   ${CC} ${FFLAG} ${prog}.c s.a ../../lib/glib.a -lm -s -i -o ${prog}
+   ${INS} -f ${BIN} ${prog}
+   rm ${prog}
+   echo "${prog} done"
+done

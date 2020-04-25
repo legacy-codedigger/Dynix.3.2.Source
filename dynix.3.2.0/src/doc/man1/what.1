@@ -1,0 +1,29 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: what.1 1.4 86/05/13 $
+.TH WHAT 1 "\*(V)" "4BSD"
+.SH NAME
+what \- show what versions of object modules were used to construct a file
+.SH SYNOPSIS
+.B what
+name ...
+.SH DESCRIPTION
+.I What
+reads each file and searches for sequences of the form ``@(#)''
+as inserted by the source code control system.  It then prints the remainder
+of the string after this marker, up to a null character, newline, double
+quote, or ``>'' character.
+.SH BUGS
+As SCCS is not licensed with UNIX/32V, this is a rewrite of the
+.I what
+command which is part of SCCS, and may not behave exactly the same as that
+command does.

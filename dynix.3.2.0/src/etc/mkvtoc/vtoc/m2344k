@@ -1,0 +1,26 @@
+*
+*#ident	"$Header: m2344k 1.1 90/01/30 $"
+* Fujitsu M2344K (Swallow 4) with 66 sectors
+*
+* Dimensions:
+*   512 bytes/sector
+*    66 sectors/track
+*    27 tracks/cylinder
+*   624 cylinders
+*   621 user accessible cylinders
+*
+* Types:
+*	00	No Partition
+*	01	Regular Partition
+*	02	Boot Block
+*	03	Reserved Disk Area
+*
+* Partition	Type	Start Sector	Size in Sectors	   Block Sz    Frag Sz
+   00		1	502524		49896		   8192        1024
+   01		1	552420		204930		   8192        1024
+   02		1	757350		351054		   8192        1024
+   03		1	1814		500710		   8192        1024
+   12		3	0		1782		   0           0
+   13		3	1108404		3564		   0           0
+   14		2	1782		16		   0           0
+   15		3	1798		16		   0           0

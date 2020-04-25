@@ -1,0 +1,58 @@
+#! /bin/sh
+#
+# /etc/instl.encrypt (aka instl on the distribution tape)
+#
+# Shell script to install the encryption software distribution.
+# It updates /etc/versionlog to log installation of software. It also
+# checks to make sure that System V has been installed on DYNIX prior
+# to installing encryption software for System V. Must be run as root.
+#
+# This file should be the first tape file on distribution tape.
+# The second tape file should be a tar image of DYNIX encryption software.
+# The third tape file should be a tar image of System V crypt encryption.
+#
+TAPE=/dev/ctape8
+PATH=:/bin:/usr/bin:/usr/ucb:/etc; export PATH
+
+##
+# Default ROOT for entire System V file structure.
+# This can be changed although I do not recommend it.
+##
+R="/usr/att"
+
+if /etc/mount | /bin/awk '$3=="/usr" {exit 1}'; then
+	echo "Usr filesystem appears not to be mounted."
+	echo "Please mount /usr and try again."
+	exit 1
+fi
+
+if [ `whoami` != root ]; then
+	echo "Sorry this script must be run as super-user to work properly."
+	exit 1
+fi
+
+if [ "`universe`" != "ucb" ] ; then
+	exec ucb $0 $@
+fi
+
+cd /
+echo "rewinding tape..."
+mt -f $TAPE rew
+echo "extracting DYNIX encryption software..."
+mt -f $TAPE fsf 1		# move to second tape file
+tar xpf $TAPE			# extract DYNIX encryption software
+echo "DYNIX encryption software installed"
+
+if [ ! -d "$R" ]; then
+	echo "System V software appears not to be installed."
+	echo "System V encryption software will not be installed."
+else
+	cd $R
+	echo "extracting System V encryption software..."
+	tar xpf $TAPE		# extract System V encryption software
+	echo "DYNIX System V encryption software installed"
+fi
+
+mt -f $TAPE rew
+echo "`/bin/date`  - DYNIX V3.2.0 Encryption SW PN: 1003-xxxxx" >> /etc/versionlog
+echo "All done."

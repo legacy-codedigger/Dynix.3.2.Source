@@ -1,0 +1,4117 @@
+   Console Does Not Handle Even and Odd Parity Properly (00471)
+
+          If the console is run with either even or odd parity enabled
+          and a parity error occurs, the characters with bad parity
+          appear in the input stream.  Instead, the system should delete
+          these characters from the input stream.
+
+          Workaround.  None.
+
+   Unit Names for ts Are Inconsistent with Those for mt (01072)
+
+          The no-rewind-on-close device for the cartridge tape is
+          /_d_e_v/_r_t_s_8.  The no-rewind device for other tape devices is
+          different.  See _m_t_i_o(4).  The _t_s manual page incorrectly
+          refers to the _m_t manual page for unit numbering.
+
+          Workaround.  Use /_d_e_v/_r_t_s_8 as the no-rewind-on-close device
+          when accessing the cartridge tape.
+
+   Ts Driver Waits until Rewinds Finish before Closing (01240)
+
+          Most tape drivers do not wait for a tape rewind to finish
+          before closing. This allows the user to do other things while
+          the tape finishes the rewind.  The 1/4-inch streamer tape
+          driver waits in the close routine until the rewind is fin-
+          ished.
+
+          Workaround.  None.
+
+   Cartridge Tape Driver Prints Informative Messages on Console (01249)
+
+          Often, the _t_s cartridge tape driver prints console messages
+          that are more informative than those displayed on the user's
+          terminal.  This occurs because the interrupt handler has more
+          information about the error than does the user portion of the
+          driver.  But the interrupt handler doesn't know enough about
+          the user's context to display the message on the user's termi-
+          nal.
+
+          Workaround.  Look at the console to help resolve confusing
+          error messages.
+
+   Failing Writes to Streaming Tape Do Not Return Failure Status (06915)
+
+          To improve streaming tape performance on _w_r_i_t_e system calls,
+          the cartridge tape (/_d_e_v/_r_t_s*) buffers up to 200K bytes of
+          user data before initiating a physical write to the tape.
+          This means that many user _w_r_i_t_e system calls can complete and
+          return successful status before the physical write-to-tape is
+          complete.  If a physical write-to-tape fails, the failure
+          status is returned on the next _w_r_i_t_e system call or when the
+          _c_l_o_s_e system call closes the tape file.  However, some com-
+          mands, such as _c_p and _c_a_t, don't check the completion status
+          of the _c_l_o_s_e system call.  Check for error messages on the
+          console when using these commands to write to tape.  If an
+          error occurs on a _w_r_i_t_e system call, a message appears on the
+          console.  The write failure could be due to a media error,
+          tape hardware error, or permission error (the tape is write-
+          protected).
+
+          Workaround.  Re-read the tape to verify the message, or use
+          _d_m_e_s_g to check for an error message on the console when using
+          commands such as _c_p or _c_a_t to write to the cartridge tape dev-
+          ice.
+
+
+   Ts Driver Supports Only Four Devices (08003)
+
+          The ttttssss tape driver behaves unpredictably if more than four
+          tape drives are configured in the kernel.
+
+          Workaround.  Do not configure more than four ttttssss tape devices.
+
+          Resolution.
+
+   ioctl() to SCSI disks returns ENXIO instead of EINVAL (12165)
+
+          The return value of an invalid IOCTL call to the scsi disk
+          driver returns ENXIO instead of EINVAL, returned by the other
+          disk drivers.
+
+          Workaround.  Check for both ENXIO, as well EINVAL return
+          status when using ioctl's on disks.
+
+          Anticipated Resolution Date.  Indefinite in Dynix 3.0.
+          Corrected in Dynix/ptx.
+
+   Xt Driver Does Not Support Host Control of Tape Density (12227)
+
+          The xt driver has never supported host control of tape density
+          due to the FULLXT flag not being defined at kernel compile
+          time.  Some GCR drives do not support this feature.  The
+          density-select ability should be a per-drive switch.
+
+          Workaround.  None.
+
+          Anticipated Resolution Date.  Future release.
+
+   A deconfigured TS device may be allocated memory (12751)
+
+          On machines with more than 128Meg of memory, buffers for 1/4
+          tape devices are allocated statically and must be below 128Meg
+          so the SCED can address them.  When the TS-driver recognizes
+          that they don't meet this criteria it deconfigures the device,
+          but does not deallocate the memory it has already allocated,
+          wasting up to 256K of memory for such units.
+
+          Workaround.  Positioning the configuration description for the
+          SEC controllers and ts devices ahead of others in the system
+          configuration file may correct this condition, but not in all
+          cases.
+
+          Anticipated Resolution Date.  Indefinite in Dynix 3.0.
+          Corrected in Dynix/ptx.
+
+   Autoconfig handles SCSI disks oddly (36533)
+
+          When SCSI disks are probed by autoconfig, the disks are sup-
+          posed to be bound to unit numbers 7 through 0 in that order.
+          What actually happens is that the probing starts at LUN 7.
+          When the first disk is found, probing resumes at LUN 0.
+
+          Workaround.  Remove wildcarding in the configuration file for
+          guaranteed LUN/unit number binding.
+
+   Intermittent Errors on Console from MULTIBUS Disk Driver (01360)
+
+          The _x_p device driver occasionally prints a message on the con-
+          sole.  When an attempt is made to read or write across a
+          cylinder boundary, the MULTIBUS disk controller generates an
+          error.  The error usually appears when the system bus is under
+          an extreme load.  If the disk driver encounters an error from
+          the MULTIBUS disk controller, it attempts the read or write
+          operation until it is successful.  The filesystem is not cor-
+          rupted.
+
+          Workaround.  None.  You can safely ignore the message.
+
+   Controller for 1/2-inch Tape Reports Incorrect Error Codes (00941)
+
+          The 1/2-inch tape controller can report error code 0x33 (Data
+          Late) when it should report error code 0x23 (Record Length
+          Long), or it can report error code 0x23 (Record Length Long)
+          when it should report error code 0x33 (Data Late).  Operations
+          that return error code 0x33 can be retried, while operations
+          that return error code 0x23 cannot be retried.  Because of
+          this problem, some of the code 0x33 errors are not retried.
+
+                                       _N_O_T_E
+
+              _E_r_r_o_r _c_o_d_e _0_x_3_3 _c_a_n _a_l_s_o _b_e _r_e_p_o_r_t_e_d _w_h_e_n _t_h_e _t_a_p_e
+              _c_o_n_t_r_o_l_l_e_r _i_s _n_o_t _t_h_e _f_i_r_s_t _M_U_L_T_I_B_U_S _c_a_r_d _i_n _t_h_e _M_U_L_-
+              _T_I_B_U_S _a_f_t_e_r _t_h_e _M_B_I_F.  _I_n _t_h_i_s _c_a_s_e, _t_h_e _m_e_s_s_a_g_e _i_s
+              _v_a_l_i_d.
+
+
+          Workaround.  These errors typically arise when you are reading
+          a tape with a block size too small for the records on the
+          tape.  Specify the correct block size when reading data from
+          tape.
+
+   Systech MTI-1650 reports unexpected status from board (32357)
+
+          The Systech 1650 multiplexor board will occasionally report to
+          the driver that a block output was requested when one was
+          already in progress.   The driver will report this with a mes-
+          sage similar to this:  "stB: unexpected  0x2P 0x21" where "B"
+          is the Systech board number and "P" is the port number 0-F.
+          The MTI-1650 seems to produce this error message under heavy
+          load and is probably a problem with the MTI firmware.
+
+          Workaround.  None.
+
+   Self-test Can Hang Parallel Printer Controller (05364)
+
+          The self-test switch on the back of the parallel printer con-
+          troller board disables interrupts and causes characters to be
+          printed.  Turning off the self-test switch can result in
+          interrupts remaining disabled.
+
+          Workaround.  Reboot the system after the parallel printer con-
+          troller self-test is run.
+
+   Xt driver does not correctly time-out drive commands (11281)
+
+          The Xylogics 472 tape driver, xt, may enter a situation where
+          the driver sleeps waiting for an interrupt from the 472
+          hardware, but the interrupt never occurs.  Rebooting is the
+          only known method for clearing the hang.
+
+          Workaround.  Allow all GCR tape commands to execute and com-
+          plete normally.  Do not attempt to remove the media or alter
+          the drive state while a utility is accessing the tape drive.
+
+          Anticipated Resolution Date.  This will be fixed in a future
+          release.
+
+
+   Non-wildcarding of Xylogics 472 controllers may cause panic (36232)
+
+          In file conf_xt.c, table xtunits[] specifies the system confi-
+          guration for Xylogics 472 tape controller cards and the drives
+          attached to the cards.  As shipped, the controller descrip-
+          tions are wildcarded with the word "ANY".  If this wildcard
+          scheme is replaced with hardcoded controller values, autocon-
+          fig will report the devices to be found even though they may
+          not have been found.  When the non-existant drives are
+          accessed, the kernel MMU faults and panics.
+
+          Workaround.  Do not hardcode the controller numbers in
+          conf_xt.c.  Rather, keep them wildcarded.
+
+   Hung processes may keep tty port from hanging up (30114)
+
+          If a user is dialed in to the system via modem, turning off
+          the modem with hung background or foreground processes will
+          not allow the tty port to drop DTR and force the system modem
+          to hang up.  This is because the hung process still has the
+          tty open.  The tty driver will not drop DTR until all
+          processes close the tty port.
+
+          Workaround.  Try to kill hung processes before logging off.
+          Or, once off the system by turning off the modem, try to dial
+          in to the system (on a different line) and attempt to kill the
+          hung process.
+
+   Att O_NDELAY Has Side Effect (11080)
+
+          In the att universe, O_NDELAY has the side effect that it will
+          affect all file descriptors using the tty in question.  In
+          emulating att O_NDELAY, the FIONBIO flag is set (via ioctl(2))
+          in the tty structure after the open succeeds.  This causes any
+          process using the tty to inherit the O_NDELAY behaviour.
+
+          Workaround.  None.
+
+   Devnode Allocation Heuristic May Be Insufficient (03977)
+
+          By default, the kernel sets the variable nnnnddddeeeevvvvnnnnooooddddeeee based on the
+          assumption that one devnode should be allocated per useful
+          disk partition.  It is further assumed that there are four
+          useful partitions per drive and six drives per block device
+          entry in bbbbddddeeeevvvvsssswwww.  This may be insufficient for very large disk
+          configurations, such as 32 disks.  The kernel panics with when
+          it exhausts the resource.
+
+          Workaround.  The DYNIX kernel can be configured to override
+          the default situation.  Explicitly set the NNNNDDDDEEEEVVVVNNNNOOOODDDDEEEE kernel
+          tuning parameter so that there is one devnode for each parti-
+          tion.  For further information on NNNNDDDDEEEEVVVVNNNNOOOODDDDEEEE, refer to Appendix
+          D in the article "Building DYNIX Systems With Config" in
+          Volume II of the _D_Y_N_I_X _P_r_o_g_r_a_m_m_e_r'_s _M_a_n_u_a_l.
+
+   Getpseudotty Can Fail Erroneously (07883)
+
+          When you create ptys and do not number them in ascending
+          order, getpseudotty(3) can fail to open a pty, so programs
+          like rrrrllllooooggggiiiinnnndddd and tttteeeellllnnnneeeettttdddd fail because no ptys appear to be
+          available on the system.  For example, if you use ////ddddeeeevvvv////MMMMAAAAKKKKEEEEDDDDEEEEVVVV
+          to create pty0 and pty2, but do not create pty1, the 63rd
+          attempt to use rrrrllllooooggggiiiinnnn to log into the system fails because it
+          appears that the system has run out of ptys.
+
+
+          Workaround.  Create ptys in ascending order and do not skip
+          numbers.
+
+   Nblkdev cannot be smaller than 5 (09123)
+
+          If nblkdev is defined in the kernel to be four or less, then
+          _h_e_u_r_i_s_t_i_c() will try to valloc a very large value.
+
+          Workaround.  None.
+
+   TIOCFLUSH Must Be Used with a Third Argument of 0 (09041)
+
+          The third argument to the TIOCFLUSH iiiiooooccccttttllll must be the constant
+          0 to work properly.  The following is incorrect:
+
+               int x = 0;
+
+               ioctl(0, TIOCFLUSH, &x);
+
+          The following is correct:
+
+               ioctl(0, TIOCFLUSH, 0);
+
+
+          Workaround.  None.
+
+   Files.balance Has Bad Pathnames for src Drivers on Binary Systems
+          (04511)
+
+          The pathnames in /_s_y_s/_c_o_n_f/_f_i_l_e_s._b_a_l_a_n_c_e for the _m_b_a_d, _s_e_c,
+          _n_e_t_i_f, and _z_d_c drivers are prepended with ../_c_o_m_m_o_n to reflect
+          the internal Sequent source directory structure.  Since this
+          directory structure is not the same in the binary distribu-
+          tion, these pathnames are incorrect for users who include
+          driver sources in a binary configuration.  For example, if you
+          add the sources for the line printer driver to /_s_y_s/_m_b_a_d, add
+          the _s_r_c option to the _s_l._c entry in _f_i_l_e_s._b_a_l_a_n_c_e and leave
+          the pathname unchanged, then do a _c_o_n_f_i_g and _m_a_k_e, the _m_a_k_e
+          fails because it looks for _s_l._c in ../../_c_o_m_m_o_n/_m_b_a_d/_s_l._c,
+          instead of its correct location in ../_m_b_a_d/_s_l._c.
+
+          Workaround.  Edit /_s_y_s/_c_o_n_f/_f_i_l_e_s._b_a_l_a_n_c_e to indicate the
+          correct pathname.
+
+   Open with Name in Shared Memory Sometimes Fails (05813)
+
+          An _o_p_e_n system call, with the name string in shared memory,
+          may fail with an error code EFAULT if the name string begins
+          within 1024 bytes of the high address end of that shared
+          memory segment. This is a potential problem if the name string
+          is in the shared data, shared bss, _s_h_b_r_k, or shared stack seg-
+          ments.  This happens only for the _o_p_e_n system call.
+
+          Workaround.  Move the name string to some other part of memory
+          or allocate more memory at a higher address in that segment.
+
+          Resolution.
+
+   IFTOVT table is too small (36202)
+
+          The IFTOVT macro creates an index into the iftovt_tab[] array.
+          The range of indices created by the macro is 0-15 inclusive
+          but the iftovt_tab[] array is only declared to have 14 ele-
+          ments so it is possible to index off the end of the array.
+
+
+          Workaround.  Make sure the index returned by IFTOVT does not
+          exceed 13.
+
+   Hangup signal may get lost when a user hangs up the modem (14141)
+
+          A user logs in with a modem and gets hung by accessing a NFS
+          hard mounted partition where the server host is down.  The
+          user then turns off his/her modem.  The NFS file server comes
+          back online.  Another caller dials in and gets first user's
+          login session as if the SIGHUP from the carrier drop was
+          ignored.
+
+          Workaround.  None
+
+   Removing cartridge tape during retension hangs tape drive (36809)
+
+          If the tape drive is in the middle of retensioning, and the
+          tape is removed from the drive, the driver will hang and the
+          drive will become unusable.  Only a reboot will clear this
+          situation.
+
+          Workaround.  None.
+
+   Setpgrp Uses 4.2BSD Semantics (04987)
+
+          Process groups in DYNIX are based on 4.2BSD semantics, which
+          include support for job control.  The terminal support rou-
+          tines require that processes reading from a terminal have the
+          same process group number as the terminal process group.  This
+          is incompatible with System V's notion of how process groups
+          work.
+
+          Workaround.  DYNIX supports two _i_o_c_t_ls:  TIOCGPGRP and
+          TIOCSPGRP.  These allow you to change the terminal's process
+          group.  Therefore, you can use these _i_o_c_t_ls to switch tty pro-
+          cess groups back and forth between processes in different pro-
+          cess groups, and to get access to the terminal.
+
+   Extra directory links can break standard tools(14167)
+
+          When running as root you can use the system call link to
+          create a link to a directory from with in that directory.  The
+          link breaks some of the standard unix utilities (find, tar, ls
+          -R, ...) and you are unable to remove the link once it is
+          created.
+
+          Workaround.  None
+
+          Anticipated Resolution Date.  Not known
+
+   pseudotty usage can cause system hang (31706)
+
+          If a psuedo tty has its echo enabled and the process with the
+          master end of the psuedo tty open does not read from it but
+          only writes, all character buffers on the system will eventu-
+          ally be used up.  This causes a deadlock because all ttys real
+          and virtual cannot receive any characters.  No one on the sys-
+          tem can type the command to kill the offending processes.
+
+          Workaround.  None.
+
+   masked signals may cause infinite loops (39621)
+
+          when a synchronously generated signal (e.g., SIGSEGV) is sent,
+          and the process has it masked, the process winds up re-
+          executing the faulting instruction over and over infinitely.
+
+          Workaround.  catch the signal and then either longjmp or exit
+          out of the signal handler or set the signal handler to
+          SIG_DFL.
+
+   tty LCASE mode causes problem with CRTERASE (36745)
+
+          When LCASE mode and CRTERASE mode are enabled on a tty line,
+          crt-type backspace erase does not work.
+
+          Workaround.  CRTERASE without LCASE mode enabled does not have
+          problems.
+
+   Single-step Reference to Physical-mapped Space Can Panic System
+          (03389)
+
+          If a debugger is used to single-step a program across an
+          instruction that references non-existent physical-mapped
+          space, or makes an incorrect access to such space, the system
+          can panic.  For example, if a process has used the _m_m_a_p system
+          call to map part of the memory space of a MULTIBUS adapter
+          into the process's address space and the process attempts a
+          32-bit access, the process normally dies with a SIGBUS signal.
+          If the instruction that makes this 32-bit access is single-
+          stepped and the process enters the DYNIX kernel before the
+          MULTIBUS adapter delivers the error to handle the single-step
+          trap, the system panics.
+
+          Workaround.  Ensure that all references to physical-mapped
+          space use appropriate operand sizes.  Avoid single-stepping
+          over such instructions.
+
+   Synchronous Writes Are Not Supported (05165)
+
+          DYNIX does not support synchronous writes, which means the
+          O_SYNC flag in the argument to the _o_p_e_n system call is not
+          recognized.
+
+          Workaround.  None.
+
+   Directory with Hard Links Cannot Be Removed (04632)
+
+          If, as _r_o_o_t, you create a new link to a directory using the
+          _l_i_n_k system call and the directory is empty, it has a link
+          count of 3, rather than the normal link count of 2.  The
+          _u_n_l_i_n_k system call on a directory is translated into a _r_m_d_i_r
+          system call.  Since the link count is greater than 2, a _r_m_d_i_r
+          does not remove the directory.
+
+          Workaround.  Use _c_l_r_i, instead of _r_m_d_i_r, to remove this direc-
+          tory.
+
+   p_lock() only works with constant as second arguement (09180)
+
+          The pppp____lllloooocccckkkk() function call should be passed a constant as its
+          second argument otherwise it does not always work correctly.
+
+          Workaround.  Only call p_lock with a constant as the second
+          argument.
+
+   Some Timer Values Are Inherited Across fork (07734)
+
+          During a fork, only the ITIMER_REAL is reset to the system
+          default, even though the DYNIX man page for setitimer(2) says
+          the following:  "Timer values are not inherited by the child
+          process during a fork(2); they are reset to the system default
+          (no timers active)."
+
+          Workaround.  None.
+
+   Child process exits during ioctl (10991)
+
+          If a process spawns a child process via fork() and exec() and
+          then the process exits, the child process comes to life and
+          enters in the main() entry point. If the child then executes
+          an ioctl(fd, TCSETAF, &buf) where the fd is a terminal device
+          input fd and buf has been filled in by a previous ioctl(fd,
+          TCGETAF, &buf), the child process exits in the ioctl(TCSETAF).
+
+          Workaround.  None.
+
+   FIFOs And Pipes Are Different Implementations (08628)
+
+          The implementation underlying FIFOs is not the same as that
+          underlying pipes.  The pipe implementation uses sockets and
+          mbufs to buffer pipe data and supports BSD 4.2 pipe semantics.
+          Pipes have a _s_i_z_e of 4096 bytes.  This means the pipe can con-
+          tain a maximum of 4K of data at one time.
+
+          The FIFO implementation uses inodes and filesystem blocks to
+          buffer FIFO data.  This implementation supports System V FIFO
+          semantics. The _s_i_z_e of FIFOs is 8192 bytes.
+
+          Workaround.  Be aware of the differences in semantics.  They
+          become relevant only in situations where an application has
+          multiple writer processes on the same pipe or FIFO, and where
+          atomic writes are important.
+
+          Resolution..  There are no plans to correct this problem.
+
+   prefixed floating point instructions hang (08649#)
+
+          The software work arround for the 387 errata 17 bug dose not
+          work if the floating point instruction has address or segment
+          or lock prefixes. This will occur if such an instruction spans
+          a page boundry and the next page is not valid at the start of
+          execution.
+
+          Workaround.  Align the instructions arround the page boundry,
+          or avoid using address prefixes.
+
+   access(2) returns 0 for empty string file names (10526)
+
+          The access(2) system call returns 0 when passed a (char *)0 or
+          an empty string ("") as the file to be checked.
+
+          Workaround.  Make sure the string length of the filename is
+          one or more characters long.
+
+   DCC Cylinder 0 Disk Errors Report Negative Filesystem Block Numbers
+          (05980)
+
+          If a disk error occurs in cylinder 0, the filesystem block
+          number is reported as a negative number.  The filesystem block
+          number is undefined for cylinder 0, since it is reserved and
+          not part of any filesystem.  This negative filesystem block
+          number can be ignored.  The disk address printed with the mes-
+          sage is important for _a_d_d_b_a_d purposes.  Refer to the _D_Y_N_I_X
+          _S_y_s_t_e_m _A_d_m_i_n_i_s_t_r_a_t_o_r'_s _G_u_i_d_e for _a_d_d_b_a_d procedures.
+
+
+
+          Workaround.  Ignore the negative filesystem block number.
+
+   Application using pseudottys may get used one (37884)
+
+          In an isolated incident, a user spawned another shell using
+          pseudottys.  The pseudotty that was returned from getpseu-
+          dotty() was associated with an old process that wasn't quite
+          dead.  Thus, the user's new shell came up a another user's
+          orphaned process.
+
+          Workaround.  A possible workaround could be to make sure the
+          newly-allocated pseudotty does not belong to any process
+          group.  If the psuedotty does belong to another user's process
+          group, it should not be used.
+
+   Assembly Files Are Not Considered For Kernel Dependencies (34648)
+
+          When doing a "make depend" for the kernel, assembly language
+          source files will not be considered for dependencies.
+
+          Workaround.  None.
+
+          Anticipated Resolution Date.  Future Release.
+
+   Mounting a Read-only Volume as Read-Write Can Panic System (01227)
+
+          Mounting a read-only disk volume as read-write can cause sys-
+          tem panics.  The system does not test that a volume can be
+          written to at mount time and cannot tolerate a volume dynami-
+          cally becoming read-only.
+
+          Workaround.  Avoid mounting filesystems on read-only volumes
+          as read-write.
+
+          Resolution.
+
+   Console interrupts may panic system (15589)
+
+          If the console SLIC chip receives interrupts from the console
+          terminal during system boot, the system may panic.  The panic
+          is due to a test where SLIC interrupts are cleared and then
+          the SLIC chip is checked to make sure no more interrupts are
+          pending.  The assumption is that after the chip is cleared, no
+          interrupts should be pending.  Sending console data may post
+          an interrupt at the SLIC chip.
+
+          Workaround.  Do not send serial data from the console terminal
+          during boot.  If a printer is connected to console terminal,
+          adjust the flow control parameters such that xon/xoff flow
+          control messages from the terminal are minimized.
+
+   crget() does not announce resource depletion.(34167)
+
+          When crget() cannot allocate an available credential structure
+          it does not announce on the console the fact before blocking
+          to wait for one.  If the system is seriously misconfigured the
+          entire system can lock because it's out of credential struc-
+          tures but no indication is given of what the problem is.
+
+          Workaround.  None.
+
+          Anticipated Resolution Date.  Future release.
+
+
+
+
+   process waiting for XON cannot be killed (14331)
+
+          In circumstances where an XOFF character has been sent to a
+          process that is writing to a tty port, the process cannot be
+          killed.  Once an XON has been received the kill signal is pro-
+          cessed.
+
+          Workaround.  None.
+
+   writing near end of disk partition returns odd value (14133)
+
+          A test program that lseek's to a point 1k from the end of a
+          raw disk partition and then writes a 10k block of data will
+          see a value of 3k returned from the write system call.
+
+          Workaround.  None.
+
+   It is possible to remove a vtoc from a disk that is being used
+          (38849)
+
+          It is possible to remove a vtoc from a disk that is being used
+          via the raw interface. The command rmvtoc will only check for
+          mounted filesystems before allowing the vtoc to be removed.
+
+          Workaround.  none. It is possible to restore the vtoc after
+          removing it.
+
+   Fsync Always Updates a File's Change Time (05633)
+
+          This can best be illustrated by the following example:
+
+               % ls -lc temp
+               -r--r-----  1 dummy           0 Aug 11 08:55 temp
+               % vi -R temp
+                 .
+                 .
+                 .
+               % ls -lc temp
+               -r--r-----  1 dummy           0 Aug 11 08:56 temp
+
+          The change time is updated even if you do not modify the file.
+          This is true if you do not have write permission on the file
+          or if you have not opened the file for writing.  The change
+          time is updated because _v_i always does an _f_s_y_n_c system call on
+          the file when exiting.  _F_s_y_n_c always updates the change time
+          whether or not data was written.
+
+          Workaround.  None.
+
+   Generic Kernel Boots Only from DCC Unit 0 (06901)
+
+          The generic kernel boots only from a DCC device that is con-
+          nected to controller 0.  This implies that DYNIX cannot be
+          installed onto a disk that is not on controller 0.
+
+          Workaround.  When you install DYNIX on a DCC disk, be sure
+          that the disk is on controller 0:  Be sure DYNIX is installed
+          on a disk with a disk number in the range 0-7.
+
+   FPA temp registers not preserved across signal handlers.(42446)
+
+          If a program is compiled with the "-fpa" option, and it does
+          floating point calculations both in the main program and a
+          signal handler, incorrect results might be obtained.
+
+
+          Workaround.  If a program does floating point in a signal
+          handler, do not compile it with the "-fpa" option.
+
+   TIOCMGET defined but not implemented (16470)
+
+          TTY ioctl TIOCMGET is defined in ioctl.h but is not imple-
+          mented in the kernel.  NOTNEEDED
+
+   Only Root Can Unaffinity A Process (13929)
+
+          After a process has been _a_f_f_i_n_i_t_y()'_d (which must be done by
+          root), only root can reverse the _a_f_f_i_n_i_t_y().
+
+          Workaround.  None.
+
+   Unconfigured Block Device Can Be Specified as Swap Device (03591)
+
+          If an unconfigured block device is specified as a swap device
+          to the DYNIX kernel, the kernel should produce a warning mes-
+          sage, but it doesn't. Instead, it appears to add the device to
+          the swap area.
+
+          Workaround.  Don't specify unconfigured block devices as swap
+          devices.
+
+          Resolution.
+
+   getwd(3) drops core when using a non-standard ffffrrrreeeeeeee(3) (09424)
+
+          If ffffrrrreeeeeeee(3) is redefined to return the freed memory immediately
+          to the system then ggggeeeettttwwwwdddd(3) will try to access the memory that
+          has just been freed and die.
+
+          Workaround.  Use the libc version of ffffrrrreeeeeeee(3) when using
+          ggggeeeettttwwwwdddd(3).
+
+   Libc Routines udiv and urem Incorrectly Named (04238)
+
+          The C library routines _u_d_i_v and _u_r_e_m are used to do unsigned
+          division.  In the DYNIX C library, the name of each of these
+          routines begins with an underscore; there should be no under-
+          score.
+
+          Workaround.  Refer to these routines as __u_d_i_v and __u_r_e_m, or
+          use in-line code to do the division.  The DYNIX C compiler
+          does not use these subroutines; it uses in-line code instead.
+
+   Standard I/O Routines Do Not Check for NULL FILE Arguments (07015)
+
+          The standard input and output (stdio) routines that take a
+          _F_I_L_E pointer as an argument do not check to ensure that the
+          _F_I_L_E pointer is valid.  In particular, if you use a _N_U_L_L _F_I_L_E
+          pointer as an argument, most stdio routines dump core.
+
+          Workaround.  Before calling stdio routines, make sure that the
+          _F_I_L_E pointer arguments are non-NNNNUUUULLLLLLLL.
+
+   Getfsent Does Not Warn of Badly Formatted fstab Entries (08181)
+
+          The getfsent library routine returns 0 if a line from the
+          _f_s_t_a_b file is formatted without enough fields.  This becomes a
+          problem, since 0 is returned when these routines reach the end
+          of the _f_s_t_a_b file.
+
+          This bug affects all utilities that use the getfsent()
+          interface, including mmmmoooouuuunnnntttt(8), uuuummmmoooouuuunnnntttt(8), ffffsssscccckkkk(8), and
+          sssswwwwaaaappppoooonnnn(8).
+
+          Workaround.  Format the _f_s_t_a_b file correctly.
+
+   Syslog Ignores All but First % Escape (07425)
+
+          The _s_y_s_l_o_g() library routine allows you to send informative
+          messages to log files.  Although _p_r_i_n_t_f()-style escape
+          sequences (%%%%) can be used in the message, _s_y_s_l_o_g() recognizes
+          and prints only the first escape sequence.
+
+          Workaround.  If you need to log more than one _p_r_i_n_t_f()-style
+          escape sequence, use a different _s_y_s_l_o_g() routine for each
+          escape sequence.
+
+   FTOK Does Not Exist In The UCB Environment (11282)
+
+          There is no _f_t_o_k() routine in the ucb universe libc.a, while
+          _f_t_o_k() does exist in the att universe libc.a.
+
+          Workaround.  None.
+
+   log10 core dumps when compiled with -pg -lm_p -fpa(16971)
+
+          A program using log10 compiled with "cc -fpa -pg bug2.c
+          -lm_p", will dump core when run. The problem also shows up in
+          a similar FORTRAN program.  The problem is in the profiling
+          version of log10.
+
+          Workaround.  The workaround is to use the non-profiled version
+          of libfpam.a.  This is the default for C, even if you compile
+          with -p or -pg.  However, the FORTRAN driver "knows" that if
+          you compile with -p or -pg, you want the profiled libraries.
+          Even if you specify -lm on the command line, the FORTRAN
+          driver assumes you mean -lm_p.  So you have to refer to the
+          non-profiled library by its pathname -- something like:
+                  fortran -fpa -pg bug.f /usr/lib/libfpam.a
+
+   addmntent() return status not documented correctly (32503)
+
+          The addmntent() library routine man page is not clear on the
+          return status of the function.  addmntent() returns 1 on error
+          and 0 for success.
+
+   Getdirentries might return incorrect value.(34690)
+
+          If the directory is read in chunks with size greater than the
+          block size of the file being read, the return value, which
+          specifies the actual size of data read in, might be incorrect.
+
+          Workaround.  When getdirentries is used to read a directory,
+          the maximum size of each transfer should be equal to the block
+          size associated with the file .
+
+          Anticipated Resolution Date.  Future release.
+
+   fopen() sometimes returns non NULL pointer when given empty string
+          (14425)
+
+          Sometimes when an empty filename string is passed to fopen(),
+          a non-NULL pointer is returned that is not valid.
+
+          Workaround.  Check the filename string that is being passed to
+          fopen() do not call fopen() if it is NULL.
+
+
+   UUCP Hostnames Limited To 8 Characters (16250)
+
+          Due to restrictions on the length of UUCP hostnames, setup-
+          pts.sh can have problems with hostnames longer than 8 charac-
+          ters.
+
+          Workaround.  Use a hostname with no more than 8 characters.
+
+   Balance Series Allows Maximum of 8 Megabytes to be Allocated (06667)
+
+          A maximum of 8 Megabytes of space may be allocated through the
+          _m_a_l_l_o_c() library routine.  This is due to two factors:  First,
+          a maximum virtual image of 16 Megabytes is allowed under the
+          Balance architecture.  Secondly, _m_a_l_l_o_c() satisfies a request
+          by allocating a larger piece of memory to fit the request
+          into.  The implementation chooses to allocate space whose size
+          equals the next larger power of 2.  In this case, requests
+          larger than 8 Megabytes causes the 16 Mb limit to be exceeded.
+
+          Note that programs which use _m_a_l_l_o_c() to allocate smaller
+          pieces of memory which are then released using _f_r_e_e() may be
+          unable to allocate a full 8 Mb since _m_a_l_l_o_c() keeps released
+          memory available for subsequent requests rather than consoli-
+          dating free memory to satisfy large requests.
+
+          Workaround.  If more than 8 Mb of memory are required in a
+          program on a Balance Series machine, use the _b_r_k() or _s_b_r_k()
+          calls to allocate up to the 16 Mb limit.
+
+   Ucb Shell Redirection Can Affect Some Programs (08437)
+
+          When either ccccsssshhhh or sssshhhh does output redirection using the '>' or
+          '>>' metacharacters, the APPEND bit is set on the descriptor
+          (which differs from most UNIX implementations).  This is done
+          in DYNIX so that when parallel mmmmaaaakkkkeeee((((1111)))) is used and the output
+          is redirected to a file, the output is less scrambled.
+
+          However, this behavior has a minor effect on programs which
+          write to standard output and expect to seek backwards on out-
+          put.
+
+          An example of such a program is one that does a sssseeeeeeeekkkk backwards
+          from the current file position on stdout and then writes again
+          on stdout.  The expectation is that when stdout is redirected
+          to a file, the backward sssseeeeeeeekkkk should work.  However, since
+          since the shell set APPEND on the file descriptor when
+          redirection was done, the write after the seek still appends
+          to the end of the file, as if the seek had failed.
+
+          Workaround.  One workaround is to clear the APPEND bit on
+          stdout.  This can be done using the ffffccccnnnnttttllll((((2222)))) system call:
+
+               #include <fcntl.h>
+               int res;
+                      if ((res = fcntl(fileno(stdout), F_GETFL, 0)) < 0)
+                              perror("fcntl");
+
+                      res &= ~FAPPEND;
+                      if (fcntl(fileno(stdout), F_SETFL, res) < 0)
+                              perror("fcntl");
+
+
+          Another workaround is to use the att universe version of sssshhhh,
+          which does not set the APPEND bit on file redirection.
+
+
+   Fprintf returns 0 when writing to read-only file (09272)
+
+          If an existing file is opened using ffffooooppppeeeennnn(((()))) with mode "r",
+          then when an ffffpppprrrriiiinnnnfffftttt((((1111)))) is done to it, ffffpppprrrriiiinnnnttttffff((((1111)))) will return
+          zero, but will fail to print.
+
+          Workaround.  None.
+
+   m_single(3p) Does Not Reset Global Counter (13782)
+
+          The man page for m_next(3p) states that calls to m_single(3P)
+          will reset the global counter.  Currently, the counter does
+          not get reset.
+
+          Workaround.  None.
+
+          Anticipated Resolution Date.  Future release.
+
+   Symmetry printf Prints Denormalized Numbers Incorrectly (07710)
+
+          When printf(3S) prints a denormalized number, the output is
+          often inaccurate. For example, it prints the smallest possible
+          denormal as all zeros.
+
+          Workaround.  None.
+
+   Symmetry FPU Handles Smaller Numbers than FPA (07668)
+
+          The 80387 floating-point unit handles denormalized numbers
+          (those smaller than the smallest full-precision floating-point
+          number), but the Weitek floating-point accelerator does not.
+          As a result, the smallest representable number on programs
+          compiled with the ----ffffppppaaaa////----1111111166667777 flag differs from the smallest
+          representable number on programs that are not compiled with
+          the flag.
+
+          Workaround.  None.
+
+   Standard I/O Writes Before fork Produce Strange Results (03216)
+
+          If a process prints output to a file using the standard I/O
+          library, forks one or more child processes, and the child
+          processes do I/O, the parent process's original I/O is dupli-
+          cated once for each child.
+
+          This is because the parent's I/O is still in the standard I/O
+          library's buffer at the time of the fork.  It is copied by
+          each of the child processes into the child's private I/O
+          buffer.  When the children finally flush their buffers to the
+          file, the copies of the parent's output are flushed as well.
+
+          Workaround.  Use _f_f_l_u_s_h to flush output before forking.
+
+   Nlist May Choose Local Symbols Over Global (06094)
+
+          The _n_l_i_s_t(_3) library routine searches the symbol table of an
+          executable file for selected symbols.  Although this is typi-
+          cally used to extract global symbols, _n_l_i_s_t() returns the
+          first instance of a symbol in the symbol table, even if it is
+          a local version.
+
+          For example, if you use _n_l_i_s_t() to extract the location of a
+          global symbol called in the following C code, you get the
+          first instance of in the symbol table, which is the local ver-
+          sion:
+
+               func1()
+               {
+                       int a;
+               }
+
+               char * a;
+
+
+          Workaround.  Do not use global symbol names in functions.
+
+   Pow Generates SIGFPE Rather Than EDOM on Balance (07945)
+
+          The pow(2M) function is defined to return a value of -1 and
+          return EDOM in errno if floating overflow occurs. On the Bal-
+          ance system, this fails with a SIGFPE,  which causes a program
+          to dump core unless caught.  For example, pow(2.0, 1024)
+          causes a SIGFPE.
+
+          Workaround.  You can trap the SIGFPE signal with the sigvec
+          system call and take appropriate action.  Refer to the _s_i_g_v_e_c
+          manual page for further information.
+
+   Curses Library Does Not Understand tty Window Sizes (06591)
+
+          The _c_u_r_s_e_s library does not work correctly with different-
+          sized windows that are supported by the _i_o_c_t_l TTTTIIIIOOOOCCCCGGGGWWWWIIIINNNNSSSSZZZZ and
+          TTTTIIIIOOOOCCCCSSSSWWWWIIIINNNNSSSSZZZZ commands, and changed via the SSSSIIIIGGGGWWWWIIIINNNNCCCCHHHH signal.
+          _C_u_r_s_e_s still determines the window size from the value of the
+          TTTTEEEERRRRMMMMCCCCAAAAPPPP environment variable.
+
+          Workaround.  If your application uses the _c_u_r_s_e_s library and
+          you want to use the new window-size support, use the _i_o_c_t_l()
+          TTTTIIIIOOOOCCCCGGGGWWWWIIIINNNNSSSSZZZZ command to get the tty window and add a routine to
+          catch the SSSSIIIIGGGGWWWWIIIINNNNCCCCHHHH signal and reset the screen size for
+          _c_u_r_s_e_s.
+
+   Lint Cannot Check Functions in LIBSEQ (07511)
+
+          The program checker lllliiiinnnntttt(1) does not properly check programs
+          that use functions in _l_i_b_s_e_q._a (those functions requiring a
+          program to be compiled with ----llllsssseeeeqqqq).
+
+          Workaround.  None.
+
+   ppinit() does not read value from a.out header (31492)
+
+          ppinit() does not use the a_shdata field from the a.out
+          header.  So, changing the a_shdata field has no effect on pro-
+          gram loading.
+
+          Workaround.  None.
+
+   Vgrind does not know about void (04809)
+
+          VVVVggggrrrriiiinnnndddd does not know about the "void" declaration, due to a
+          problem in the vvvvggggrrrriiiinnnndddd macros.
+
+          Workaround.  None
+
+   Fork(2) Can Not be Used With Parallel Programming Library (14544)
+
+          Since fork(2) does not handle the shared stack environment
+          that is set up by the parallel programming library, chaos can
+          result when the parent and child processes are executing.
+
+
+          Workaround.  Use m_fork(3P) for spawning children when using
+          the parallel programming library.
+
+          Anticipated Resolution Date.  Future release.
+
+   The libc lint library is missing the definition of a few functions
+          (10935)
+
+          The libc lint library is missing the definition of a few func-
+          tions.  This will cause lint to complain about them when it
+          should not.
+
+          Workaround.  None
+
+   uucp to same machine may cause problems (13977)
+
+          When copying files to /usr/spool/uucppublic on the same
+          machine, uucp changes the permissions on the directory to 666.
+          Because of this, any user can mess up uucp by just copying a
+          file to the ~uucp directory on the same machine.
+
+          Workaround.  Copy the file to a specific destination filename
+          rather than just to the uucppublic directory, using the same
+          filename by default.
+
+   Tgetent can open the wrong TERMCAP (09904)
+
+          Normally the tgetent function will try to open the file speci-
+          fied in the environment variable TERMCAP.  However, if a pro-
+          gram does not have the file descriptors 0 open, there is a
+          chance that the open call to read in the TERMCAP entry will
+          return the file descriptor 0 which will fail a test and
+          default to using /etc/termcap to read the termcap entry from.
+
+          Workaround.  None
+
+   fmod() defined but does not exist (14406)
+
+          Function fmod() is declared in /usr/include/math.h, but the
+          function does not apear in the math library or any manual
+          pages.
+
+          Workaround.  Remove the definition of fmod() from
+          /usr/include/math.h if it is a problem.  tgetent in 4.2 based
+          att will set the first argument to NULL. This will be fixed
+          when the 4.3 based att is available.
+
+   RPC Applications Fail When User In More Than Eight Groups (07705)
+
+          Programs that use the RPC library can abort if they are
+          invoked by a user with more than eight groups.  This is
+          because RPC (and therefore XDR) only supports eight groups
+          while Dynix locally supports 16. Some examples of programs
+          that exhibit this bug are quota(1) and mount(8) if they are
+          performing operations on NFS mounted filesystems.
+
+          Workaround.  Be sure than the current user is a member of
+          eight or less groups before invoking a program that uses the
+          RPC library.
+
+   Su Fails on a Remote-Mounted Filesystem (08612)
+
+          The ssssuuuu(1) command allows the user to become the superuser.
+          However, ssssuuuu can fail silently when the current working direc-
+          tory is on an NFS filesystem.  This happens because, by
+          default, root has no special privileges on remote filesystems.
+          If the current directory does not allow a totally unprivileged
+          user to be in the directory (for example, the directory per-
+          missions are mode 700), then the ssssuuuu command will fail.  The
+          system will not report that the command failed.  For more
+          information, see section 2.6.1, "No Superuser Access over the
+          Network," in the _D_Y_N_I_X _N_F_S _A_d_m_i_n_i_s_t_r_a_t_o_r'_s _G_u_i_d_e.
+
+          Workaround.  Before typing the ssssuuuu command, use the ccccdddd command
+          to change to a directory that is not on an NFS filesystem.
+
+   Using rcp to copy files to NFS filesystem can leave file owned by
+          nobody (10374)
+
+          If an NFS server is mapping root to "nobody" and a user uses
+          rcp to copy a remote file to a directory owned by someone else
+          which is located on the NFS server, the copied file ends up
+          being owned by the user "nobody" (uid 65534). As an example
+          _m_a_c_h_i_n_e__1 is the remote machine, _f_i_l_e is the file to be copied
+          from the remote machine,  _m_a_c_h_i_n_e__2 is the local machine,
+          _p_a_t_h__2 is the path on local machine to a directory owned by
+          someone else, _m_a_c_h_i_n_e__3 is the NFS server and _p_a_t_h__3 is the
+          path on the NFS server where the file will be.  The command:
+                  rcp machine_1:file path_2/file Will copy
+          machine_1:file to machine_3:path_3/file and will be owned by
+          "nobody".  The problem is that rcp is setuid root and when the
+          copy to the NFS filesystem occurs root is converted to user
+          "nobody" by the server.
+
+          Workaround.  One way around the problem is to know the path
+          and machine the file is to be copied to and copy it directly
+          there and by-pass NFS (e.g., rcp machine_1:file
+          machine_3:path_3/file).
+
+          Anticipated Resolution Date.  This is a by product of rcp
+          being setuid root and nfs changing root to nobody, a future
+          fix for this problem is not anticipated at time.
+
+   Ftruncate(2) on NFS Files Checks the Wrong Permissions (31236)
+
+          Ftruncate(2) on NFS files checks the current file permissions
+          instead of those associated with the open file descriptor.
+          This can cause ftruncate(2) to fail (or succeed) unexpectedly.
+
+          Workaround.  None.
+
+          Anticipated Resolution Date.  Future release.
+
+   Writes to Remote Files Can Fail If User Has Write Permission Only
+          (07813)
+
+          NFS remote writes can fail on a remote file if the user has
+          write permission only (not read) and does not own the file.
+          The problem occurs when NFS attempts a partial (not full
+          buffer cache buffer) write to the file.  The NFS code first
+          tries to read an 8K piece of the file into the buffer, which
+          generates an NFS_READ request that is rejected by the server.
+
+          Workaround.  The user must either own the file, have both read
+          and write permission, or do full 8K writes.
+
+   chgrp(1) on NFS Files Does Not Clear setuid/setgid (35412)
+
+          Since the NFS server can not reliably clear the setuid/setgid
+          bits when a chgrp is done, these bits may remain set when
+          changing groups of NFS mounted files.
+
+          Workaround.  Manually check and clear these bits if they could
+          present a problem.
+
+          Anticipated Resolution Date.  Future Release.
+
+   NFS Can Sometimes Create a Non-empty File (07060)
+
+          If a remote file is created or truncated after the file is
+          already open and the file has buffer cache resources that have
+          not yet been sync'd (for example, delayed writes), the size of
+          the file after the create might be nonzero.  This can happen
+          because the buffer cache buffers might be sync'd after the
+          create occurs.  This is a generic NFS Release 3.0 problem.
+
+          Workaround.  This problem is quite rare.  For this situation
+          to occur, it is necessary for a process first to open the file
+          and do I/O and then to attempt to create or truncate the file.
+          If the process attempting to create the file is different from
+          the process that opened the file, there is by definition no
+          guarantee of what the file size will be after the create.
+          However, if a process creates a file that it already has
+          opened and the file has pending buffered delayed writes, the
+          error can occur.  A workaround would be for the process to
+          close the file before it does the create.  The close will
+          force the buffer cache resources to sync.
+
+   Programs executed over NFS may fail (42589)
+
+          If a program is built on a local disk and then executed on
+          another machine which has the disk NFS mounted, the program
+          may return an error message and will not execute.
+
+          Workaround.  Run the program a second time.  Typically the
+          failure only occurs on the first execution attempt.
+
+   NFS Server Allows Creation of Illegal Filenames (31394)
+
+          A Dynix machine acting as a NFS server will allow the creation
+          of illegal filenames (i.e. - a name with '/').  This can hap-
+          pen with an incorrectly configured NFS client that sends
+          requests to create illegal filenames.
+
+          Workaround.  None.
+
+          Anticipated Resolution Date.  Future release.
+
+   Sccs on NFS Filesystems Produces Error Messages (09090)
+
+          Use of ssssccccccccssss((((1111)))) on files that reside on remotely mounted
+          filesystems causes error messages such as:
+
+               bad dir:reclen=0xnn namlen=0xn spcleft=0xn
+
+          Such messages are characteristic of att universe commands used
+          on NFS filesystems, even though ssssccccccccssss is a ucb uuuunnnniiiivvvveeeerrrrsssseeee ccccoooommmmmmmmaaaannnndddd
+          iiiinnnn DDDDYYYYNNNNIIIIXXXX....  IIIItttt ooooccccccccuuuurrrrssss bbbbeeeeccccaaaauuuusssseeee uuuuccccbbbb ssssccccccccssss is simply a front-end
+          for the real ssssccccccccssss commands, which reside in the att uuuunnnniiiivvvveeeerrrrsssseeee....
+
+          Although data corruption does not always occur, the operations
+          are not supported and results are not guaranteed.
+
+          Workaround.  None.
+
+
+
+
+   Lack of Yellow Pages Access May Cause Logins to Hang (06564)
+
+          If the Yellow Pages (YP) service has been installed on a DYNIX
+          system, YP accesses hang until a server becomes available for
+          the domain.  If you are included in the YP password file, a YP
+          server is unavailable, and you attempt to login, llllooooggggiiiinnnn will
+          hang until a server answers, instead of failing.
+
+          Workaround.  The best way to ensure that a server is always
+          available is to set up many YP slave servers on the network.
+          If you have enough servers, YP client sites will not be dis-
+          abled if a server host goes down or the network is parti-
+          tioned.
+
+          Another workaround is to make sure that all "+" escapes in the
+          system password file are at the end-of-file.  The system rou-
+          tines that interpret the password file do not resort to YP
+          accesses until a "+" escape is encountered.
+
+   Parallel Library Sometimes Traps SIGSEGV Signal from User Code
+          (03715)
+
+          The parallel programming library uses its own SIGSEGV signal
+          handler to manage dynamic growth of shared regions.  If a user
+          directs a SIGSEGV at a process, it may sometimes appear that
+          the signal is ignored.  This is due to a race condition
+          between the SIGSEGV created by the user and the SIGSEGVs
+          created internally by the library routines.
+
+          Workaround.  Resend the SIGSEGV signal.
+
+   Microtasker Does Not Resend Certain Signals to Children (03714,
+          04297)
+
+          The microtasking routines in the parallel programming library
+          try to resend signals to all processes that are executing a
+          parallel application.  However, the SIGSTOP, SIGTSTP, SIGTTIN,
+          and SIGTTOU signals are not resent.  As a result, the process
+          to which the signal was originally directed may pause, but the
+          others continue running.
+
+          Workaround.  _C_s_h uses process groups to manage jobs.  A paral-
+          lel application running under _c_s_h is in its own process group.
+          The _c_s_h job control facilities send these signals to the
+          entire group.  This causes the entire group of processes to
+          pause.
+
+   Standalone xt Tape Driver Cannot Transfer More Than 65535 Bytes
+          (00830)
+
+          The standalone 1/2-inch tape driver cannot transfer more than
+          65535 bytes per I/O operation because of the internal byte-
+          count restrictions of the iiiiooooppppbbbb header.  Transfer requests
+          greater than 65535 fail.
+
+          Workaround.  Do not use a transfer size larger than 65535
+          bytes.
+
+   Dumping Memory to 1/4-inch Streamer Tape Is Unreliable (00831)
+
+          The standalone dump utility, _d_u_m_p, may not succeed when dump-
+          ing to 1/4-inch streamer tape on the SCSI bus.  A race condi-
+          tion can occur between _d_u_m_p and the target adapter when the
+          program attempts to open the tape device while the tape target
+          adapter is finishing its reset sequence.  If the tape target
+          adapter has not finished resetting, the dump appears to finish
+          very quickly.  Upon rebooting, _s_a_v_e_c_o_r_e does not save a dump,
+          since the dump did not occur.
+
+          Workaround.  Invoke _d_u_m_p with bbbb 8888bbbb instead of the current bbbb
+          88888888.  This loads the boot program and prompts for the boot dev-
+          ice.  At the boot prompt, enter the following command:
+
+               sd(48,0)stand/dump ts(32,0) 0 /dev/rts0
+
+          This starts _d_u_m_p.
+
+   Standalone dump to xp Device Does Not Report Errors (04085)
+
+          When you use the standalone _d_u_m_p utility to make a core dump
+          on a MULTIBUS disk, and the specified disk does not exist,
+          _d_u_m_p does not notice any errors and the dump is lost.
+
+          Workaround.  Dump only to devices that exist.
+
+   Standalone Memory Dump to 1/4-inch Streamer Tape Is Slow (00832)
+
+          Dumping memory to the 1/4-inch streamer tape with the stan-
+          dalone _d_u_m_p utility is slow because the program fails to keep
+          the tape streaming.
+
+          Workaround.  None.
+
+   Xpformat May Cause Unnecessary Hard Disk Errors (04767)
+
+          When _x_p_f_o_r_m_a_t, the MULTIBUS disk controller formatter, revec-
+          tors bad disk blocks, it always writes the defective block
+          lists to the same area of the disk.  However, this area of the
+          disk could contain some of the bad disk blocks _x_p_f_o_r_m_a_t just
+          detected.  Thus, _x_p_f_o_r_m_a_t may be writing information on a part
+          of the disk that it marked as bad before the driver knows
+          about these bad blocks.  Fortunately, the bad block lists are
+          replicated five times, so the chance of losing all five bad
+          disk block lists to five different bad disk blocks is remote.
+          One of the consequences of reformatting a disk using _x_p_f_o_r_m_a_t
+          is that unnecessary hard disk errors are encountered, but you
+          can ignore them.
+
+          Workaround.  If hard disk errors are reported while doing
+          _x_p_f_o_r_m_a_t and the errors are errors, they can safely be
+          ignored.  Other hard disk errors are cause for concern.
+
+   Cannot Use FPA or FPU in Standalone (06713)
+
+          Standalone programs that use _f_l_o_a_t or _d_o_u_b_l_e data types pro-
+          duce unexpected results since the FPU and FPA are uninitial-
+          ized.
+
+          Workaround.  Do not use _f_l_o_a_t or _d_o_u_b_l_e data types in a stan-
+          dalone program.
+
+   The console device needs CTS and DSR set (13525)
+
+          The RS232 connector to the console needs CTS and DSR set.
+          Although the sced firmaware can communicate without these sig-
+          nals present, the stand alone boot code and Dynix require
+          these signals to be active.
+
+          Workaround.  Use the console cable provided by sequent.
+
+
+
+          Anticipated Resolution Date.  No anticipated resolution.
+
+   Stand alone printf has buggy formats (10549)
+
+          The printf in the stand alone library has problems printing
+          out some "%c" characters, and it also increments the arguemnt
+          counter as it passes over "%%" although it should not.
+
+          Workaround.  None
+
+   Formatscsi Cannot Read Defect Lists from ts Tape (03094)
+
+          The _f_o_r_m_a_t_s_c_s_i standalone disk formatter cannot read a
+          manufacturer's defect list correctly from cartridge tape
+          (ts(32,0)).
+
+          Workaround.  The manufacturer's defect list can be entered
+          manually or read from a file on another disk.
+
+   Standalone Utilities Overlook Missing sd Disks (06605)
+
+          When a standalone utility prompts for a device on which to
+          operate, the utility checks to ensure that the requested dev-
+          ice exists and can be accessed.  However, if there are no SCSI
+          disks present on a system, the standalone utilities are unable
+          to determine that these devices are missing.  Thus, if a SCSI
+          disk is given as an argument to a standalone utility on a sys-
+          tem with no SCSI disks, the system does not print any diagnos-
+          tic messages about the missing device.  Instead, the system
+          hangs, and must be reset, if the utility attempts any I/O to
+          this missing device.
+
+          Workaround.  Press the RESET button on the front panel of the
+          system and re-run the standalone utility, specifying only the
+          devices that are on the system.
+
+   Standalone sd Driver Prints Wrong Error Message (05788)
+
+          _S_d, the (SCSI disk) device driver used in the standalone
+          software, prints out the SCSI Command Descriptor Block (CDB)
+          upon receiving an unrecoverable error from the disk drive.
+          The bytes that are printed out are incorrect if the command is
+          a SCSI _r_e_a_d or _w_r_i_t_e command.  In other words, if one of these
+          two commands caused the error, the CDB that caused the error
+          is not correctly printed out.
+
+          Workaround.  None.
+
+   Flow Control Does Not Work with vi (02628)
+
+          Problems with the System V _i_o_c_t_l system call emulation force
+          _v_i to use RAW mode for input. As a result, XON/XOFF flow con-
+          trol does not work.  This problem is particularly noticeable
+          at baud rates greater than 9600 baud.
+
+          Workaround.  Run your terminal at a slower baud rate if it
+          attempts to do XON/XOFF flow control and the display on your
+          screen is garbled.
+
+   Vi Flushes Input (02644)
+
+          Problems with the System V _i_o_c_t_l emulation force _v_i to use RAW
+          mode for input.  This causes all input to be flushed.
+
+
+
+          Workaround.  None.
+
+   Stty does not show parity the same way in both universes (10788)
+
+          The stty command does not show whether the parity is odd,
+          even, or none correctly from one universe to the other.
+
+          Workaround.  None
+
+   Tar Can Loop Forever (04333)
+
+          Using _t_a_r on _m_t tape drives can result in an infinite loop.
+          Under certain circumstances, the following commands can loop
+          forever:
+
+               $ tar cvf /dev/rmt8 filename
+
+               $ tar xvf /dev/rmt8
+
+
+          Workaround.  Use the _u_c_b version of _t_a_r to read tapes.
+
+   Optional Software Products Supported Only under Specific Universes
+          (02478)
+
+          Sequent currently supports a variety of tools under the DYNIX
+          operating system.  These tools include C, FORTRAN, and Pascal
+          compilers, third-party software, and the Parallel Programming
+          Library.  At this time, DYNIX System V users can use only the
+          C compiler and its libraries in the System V environment.
+          Other optional software must be used in the 4.2BSD environ-
+          ment, _u_c_b universe.  Refer to the _D_Y_N_I_X _S_V_A_E _S_u_m_m_a_r_y for
+          further details.
+
+          In general, the documentation describing each of the software
+          products explains under which universe the product can be
+          used.  If no universe is specified, assume it runs only in the
+          _u_c_b universe.  In the future, some tools may be re-released to
+          run under more than one universe.
+
+          Workaround.  Use the tools only in the universe under which
+          they are designed to run.
+
+   System V mail and mailx Do Not Forward Mail (10501)
+
+          The _m_a_i_l and _m_a_i_l_x programs should forward mail to dddduuuummmmmmmmyyyy, if
+          you place the following line in your system mailbox:
+
+               Forward to dummy
+
+          This is not supported under SVAE.
+
+          Workaround.  Use the _s_e_n_d_m_a_i_l ._f_o_r_w_a_r_d file for forwarding
+          mail instead.
+
+   Sno(1) Exit Status is Not Zero (13602)
+
+          The exit status of sno(1), from the att universe, is not zero.
+
+          Workaround.  None.
+
+          Anticipated Resolution Date.  Future release.
+
+
+
+
+   DYNIX and System V Have Incompatible Mail Locking (07611)
+
+          On DYNIX, mailboxes are locked with a mail-locking protocol
+          based on the flock() system call. On standard system V, they
+          are locked with a temporary lock file.  If you develop mailers
+          that use the standard system V protocol, you will not get the
+          mailbox locking you expect.
+
+          Workaround.  DYNIX mailers have already been converted.  Con-
+          vert other mailers to use the flock() protocol for locking
+          mailboxes.  The SVAE _l_i_b_c._a contains a _flock() _s_y_s_t_e_m _c_a_l_l
+          _t_h_a_t _i_s _e_q_u_i_v_a_l_e_n_t _t_o _t_h_e _B_S_D _f_l_o_c_k() system call. This system
+          call can be used to assert a lock on the mailbox file while
+          the mailer is manipulating it.
+
+   Basename Fails on String with Embedded Spaces (07963)
+
+          If you invoke aaaatttttttt bbbbaaaasssseeeennnnaaaammmmeeee with a string containing spaces,
+          you will get syntax errors.  For example, the following com-
+          mand will fail:
+
+               $ att basename 'a b' b
+
+
+          Workaround.  Use the ucb version of bbbbaaaasssseeeennnnaaaammmmeeee.
+
+   Cxref Does Not Understand Keyword shared (07313)
+
+          The _C_x_r_e_f command complains if you use the keyword _s_h_a_r_e_d in a
+          program.
+
+          Workaround.  Invoke _c_x_r_e_f with the _D_s_h_a_r_e_d= option.
+
+   More(1) Folds Lines Larger than 256 Characters (08454)
+
+          If asked to print a line longer than 256 characters, mmmmoooorrrreeee((((1111))))
+          prints it on more than one screen line, even if the line has
+          embedded backspace (^H) characters. A utility that uses back-
+          spaces to print titles in bold print, such as the mmmmaaaannnn((((1111)))) com-
+          mand in the att uuuunnnniiiivvvveeeerrrrsssseeee,,,, hhhhaaaassss lllloooonnnngggg lllliiiinnnneeeessss ffffoooollllddddeeeedddd bbbbyyyy tttthhhheeee mmmmoooorrrreeee((((1111))))
+          ccccoooommmmmmmmaaaannnndddd....
+
+          Workaround.  If output with embedded backspaces is to be
+          displayed with mmmmoooorrrreeee, this bug can be avoided by passing the
+          text through a filter that strips out the backspaces.  A sam-
+          ple filter is shown below:
+
+               sed 's/.^H//g'
+
+
+   cpio cannot handle uid -2 (13897)
+
+          cpio cannot correctly handle a uid value of -2.  A cpio
+          archive associated with uid -2 will fail.
+
+          Workaround.  None.
+
+   ipcs and iprm are not supported (14092)
+
+          The Sequent implementation of ipcs(8) ONLY implements monitor-
+          ing of messages and semaphores (try "att ipcs").  Since shared
+          memory is implemented using mmap(), ipcs(8) and iprm(8) for
+          shared memory are not implemented.
+
+
+
+          Workaround.  The shared memory files are created in the direc-
+          tory /usr/tmp/SysVshmem The information that ipcs(8) would
+          return can be derived from a stat(2) (or ls) of the file. To
+          remove the shared memory unlink (rm) the file
+          "/usr/tmp/SysVshmem/key_{key_number}" and
+          "/usr/tmp/SysVshmem/id_{id_number}"
+
+   Multiple Calls To Tzset Can Cause A Core Dump (16021)
+
+          _t_z_s_e_t() will core dump if a _t_i_m_e() function is called with a
+          TZ that only contains the first 2 components of a timezone,
+          and then tries to set TZ to a 3 component timezone.
+
+          Workaround.  None.
+
+   /usr/att/bin/make does not have FC defined (10646)
+
+          In the att universe, mmmmaaaakkkkeeee((((1111)))) does not have FC defined.  FC is
+          used to specify which compiler to use for fortran programs.
+
+          Workaround.  When using mmmmaaaakkkkeeee((((1111)))) on a fortran program, specify
+          FC=fortran, or the preferred fortran compiler.
+
+   Att Make does not process the continuation character properly for
+          blank continuation lines (09113)
+
+          If the att mmmmaaaakkkkeeee finds a continuation character () on end of a
+          line it skips _A_L_L spaces, tabs, and newlines until it finds
+          something other than a space, tab, or newline to add what it
+          is currently completing.  This includes macro definitions and
+          rules.
+
+          Workaround.  Do not use continuation characters when the next
+          line is blank.
+
+   Bfs(1) Exit Status is Not Zero (13603)
+
+          The exit status of bfs(1), from the att universe, is not zero.
+
+          Workaround.  None.
+
+          Anticipated Resolution Date.  Future release.
+
+   SCCS Can Get Confused With Older Revisions (15118)
+
+          If you have extracted an older revision of a file, SCCS can
+          have problems creating a new delta.  This is characterized by
+          the error message "delta list syntax (co13)".
+
+          Workaround.  None.
+
+   ATT Universe Mailx Can Have Problems With Long Return Addresses
+          (10011)
+
+          With long return addresses, "mailx", from the att universe,
+          can segmentation fault.
+
+          Workaround.  Use /usr/ucb/Mail to respond to the email.
+
+   Att ps Will Crash With Too Many Devices (13835)
+
+          If there are greater than 1024 devices in /dev, ps will fail
+          in the "att" universe.
+
+
+
+          Workaround.  None.
+
+          Anticipated Resolution Date.  Future release.
+
+   sdiff may break on certain input files (33650)
+
+          In an isolated incident, sdiff produced a list of file differ-
+          ences followed by a continuous stream of newlines.
+
+          Workaround.  None.
+
+   /bin/pr in Att Universe Gives Extra Line After First Formfeed (12658)
+
+          In the att universe, the pr command outputs an extra linefeed
+          after the first formfeed.
+
+          Workaround.  The ucb universe version of pr will behave
+          correctly.
+
+   SVAE test -f command may fail (34375)
+
+          The SVAE test -f command will sometimes return false even
+          though the file exists.  UCB test -f does not exhibit this
+          problem.
+
+          Workaround.  None.  NOTNEEDED
+
+   Calling att(1) will unset the stty(1) tostop flag (11208)
+
+          The stty(1) tostop flag is turned off when a the program
+          att(1) is called.
+
+          Workaround.  Alias att to upon return call stty(1) and reset
+          the tostop flag.
+
+   Pcat Cannot Handle Long Filenames (08365)
+
+          _p_c_a_t doesn't accept filenames that are longer than 14 charac-
+          ters.
+
+          Workaround.  Rename the packed file so the name is less than
+          14 characters.
+
+   Mailx Used with Pipe Does Not Catch SIGPIPE Signal (02756)
+
+          If you invoke the |||| (ppppiiiippppeeee(1)) command when running mmmmaaaaiiiillllxxxx, and
+          the command terminates before reading all of the data in the
+          pipe, _m_a_i_l_x gets a SIGPIPE signal and exits.
+
+          Workaround.  Use sssseeeetttt ccccrrrrtttt====######## for paging long messages.
+
+   In att lp, disable on flow controlled printer blocks all printers
+          (16121)
+
+          If a printer job stops because of flow control (overrun,
+          error, or front panel offline button), and the operator dis-
+          ables that printer, all future printing on OTHER printers will
+          hang until the printer being disabled is place back online
+          somehow.
+
+          Workaround.  Online the disabled printer which was offlined in
+          the middle of a job.
+
+          Anticipated Resolution Date.  future release.
+
+
+   Touch Prints Erroneous Error Message (07236)
+
+          If you use _t_o_u_c_h on a file you don't own but to which you have
+          group write access, _t_o_u_c_h prints an error message even though
+          the file's modified time is updated.
+
+          Workaround.  None.
+
+   Cut(1) returns a random exit value on success. (12563)
+
+          The _c_u_t(_1) command returns random values when it exits suc-
+          cessfully.
+
+          Workaround.  None.
+
+   SVAE cpio may have problems with sockets (31235)
+
+          cpio knows it will always be given an even multiple of bytes.
+          If it ever reads an odd number of bytes it may drop a word
+          from the buffer in the bread() routine.  TCP/IP sockets do not
+          guarantee that there will always be an even number of bytes at
+          the remote site, even if the writes are always an even number
+          of bytes.
+
+          Workaround.  None.
+
+   Cflow Dumps Core if Given 40 File Arguments (06304)
+
+          _C_f_l_o_w sometimes dumps core if you call it with too many argu-
+          ments. The problem was seen when _c_f_l_o_w was called with 40
+          files specified on the command line.
+
+          Workaround.  Call _c_f_l_o_w with fewer files.
+
+   Xt close does not advance tape to the next file (16507)
+
+          Closing a no-rewind xt device after reading from it will not
+          space the tape forward to the beginning of the next file.
+          This behaviour differs from that of the SSM 1/2" tape device
+          (tg).
+
+          Workaround.  When reading from an xt tape device, use "mt fsf
+          1" to advance the tape to the beginning of the next file after
+          closing the device.  This will prevent the "unexpected EOF"
+          error messages.
+
+   Cb Formats Complex Expression Incorrectly (08263)
+
+          The ccccbbbb command formats certain complex expressions
+          incorrectly.  Specifically, it may fold expressions involving
+          pointers into two lines with the split occurring between a "-"
+          and ">" in the "->" (pointer) operator.
+
+          Workaround.  Use the ucb version of ccccbbbb.
+
+   Cb s Pads Floating-point Constants (08261)
+
+          When the ccccbbbb ssss command sees a file containing floating-point
+          constants, it pads the constants with spaces.  For example,
+          1.0e-1 looks like 1.0e - 1.
+
+          Workaround.  Do not use the ssss option on files containing
+          floating-point constants.
+
+
+
+   Using More than 10 Fonts Causes troff Segmentation Fault (07597)
+
+          Ten is the maximum number of fonts ttttrrrrooooffffffff can use.  If a defin-
+          ition for a print engine has 11 or more fonts, ttttrrrrooooffffffff ter-
+          minates with a segmentation fault.
+
+          Workaround.  Use 10 or fewer fonts.
+
+   Att ps Doesn't Print Process Arguments If Stack Pages Paged Out
+          (08562)
+
+          If the last (logical bottom) page of a user process stack is
+          paged out (not valid and not reclaimable), _p_s doesn't read the
+          contents from the swap device. Instead, it just prints the
+          name of the process and ignores the arguments.
+
+          Workaround.  Use ucb _p_s if you need to know the arguments.
+
+   Hyphen Fails with More than 17 File Arguments (05454)
+
+          If you specify more than 17 files on the command line to
+          _h_y_p_h_e_n, it complains that it cannot open the remaining files.
+
+          Workaround.  Specify fewer than 17 files to _h_y_p_h_e_n at a time.
+
+   DYNIX System V Directory Accesses Can Give Incorrect Results (02477)
+
+          _R_e_a_ds of directories under the System V Applications Environ-
+          ment perform a translation of the 4.2BSD directory format,
+          which resides on disk, to the format expected by UNIX System
+          V.
+
+          Directory entries have been expanded to 260 bytes.  The length
+          of a filename can be 255 bytes plus a terminating null byte.
+          The iiiinnnnooooddddeeee number is 4 bytes.  The structure in _s_y_s/_d_i_r._h has
+          been modified to show this.  DDDDIIIIRRRRSSSSIIIIZZZZ is 255.  Applications
+          reading directories must use this header file to read direc-
+          tories in a portable fashion.  Older programs that hard-code
+          the directory size to 16 bytes do not work as expected.
+
+          The translation has a problem reading directories while
+          _u_n_l_i_n_ks are occurring.  This only happens if the _r_e_a_ds,
+          _u_n_l_i_n_ks, and _l_s_e_e_ks are intermixed on a directory.  For exam-
+          ple, suppose a process _r_e_a_ds to entry A in a directory, _l_s_e_e_ks
+          to the beginning, _u_n_l_i_n_ks some entries, then _l_s_e_e_ks to entry A
+          again.  The contents of entry A are not the same the second
+          time around under the emulation.  Under UNIX System V, it
+          would be the same.  If either the _u_n_l_i_n_k or the _l_s_e_e_k opera-
+          tions are not done, then the directory _r_e_a_d behaves like a
+          UNIX System V directory _r_e_a_d.
+
+          Also, the emulation never shows empty space in a directory
+          (that is, unused space in the directory where entries have
+          been _u_n_l_i_n_ked).
+
+          Workaround.  Do not _l_s_e_e_k on directories that are being
+          _u_n_l_i_n_ked at the same time.  Be sure to use _d_i_r._h when reading
+          directories.
+
+   Shared Memory Incompatibility (05051)
+
+          The SVAE document lists the ways in which the DYNIX System V
+          shared memory differs from standard System V shared memory.
+          There is one difference missing from this list.  The DYNIX
+          shared memory implementation allows a new attach request for a
+          shared memory segment to overlay an already attached shared
+          memory segment.  Standard System V disallows such overlaying
+          and returns an error status from the attach request.
+
+          Workaround.  Users are responsible for not overlaying shared
+          memory segments.
+
+   Termcap and Terminfo Support Differ (02473)
+
+          The set of terminal types supported by DYNIX _t_e_r_m_c_a_p differs
+          from the set of terminals supported under the DYNIX System V
+          _t_e_r_m_i_n_f_o package.
+
+          Workaround.  New terminal types can easily be added or moved
+          between _t_e_r_m_c_a_p or _t_e_r_m_i_n_f_o.
+
+   Lseek Does Not Return Error on an Offset of 1 (04711)
+
+          The _l_s_e_e_k system call does not set eeeerrrrrrrrnnnnoooo if called in the fol-
+          lowing manner:
+
+               lseek(fd, -1, 0);
+
+          The expected eeeerrrrrrrrnnnnoooo is EINVAL.  The return value from _l_s_e_e_k is
+          the offset to which the file pointer was set (in this case,
+          -1).  This is valid in the ucb universe.
+
+          Workaround.  The only way to test for an error is as follows
+          (though this still does not return an error for invalid file
+          offsets):
+
+               errno = 0
+               lseek(fd, val1, val2);
+               if (errno)
+                  perror();
+
+
+   Stty Does Not Recognize 19200 Baud (06404)
+
+          The _s_t_t_y command does not recognize the 19200 baud setting for
+          a terminal line.
+
+          Workaround.  Use the _u_c_b version of _s_t_t_y.
+
+   SVAE stty cs8 is not supported (13025)
+
+          Using stty to set a tty port to 8 bits (cs8) in the SVAE
+          universe will not change the tty port settings.
+
+          Workaround.  None.
+
+   Fstat on Pipe Returns Maximum Size of Pipe (08089)
+
+          An fstat call on a pipe file descriptor returns the size of
+          the pipe buffer rather than the number of unread bytes.
+
+          Workaround.  Use named pipes if the count of unread bytes is
+          important.
+
+   DYNIX System V ioctl Emulation is Not Exact (02416, 02475)
+
+          The UNIX System V general terminal interface, _t_e_r_m_i_o, is not
+          fully supported under DYNIX System V.  The DYNIX System V ter-
+          minal interface is an emulation built on top of the UNIX
+          4.2BSD terminal interface, _t_t_y.  In general, the input and
+          output processing options under UNIX 4.2BSD are much less
+          orthogonal than those under UNIX System V.  This lack of
+          orthogonality makes it impossible for this emulation to map
+          these options with much accuracy.  The mapping is sufficiently
+          accurate for System V _v_i to work.  To better understand the
+          problem, examine the System V _t_e_r_m_i_o and the 4.2BSD _t_t_y manual
+          pages and refer to the _D_Y_N_I_X _S_V_A_E _S_u_m_m_a_r_y.  The order in which
+          input and output are flushed or drained under DYNIX may be
+          different than the order described in _t_e_r_m_i_o.
+
+          Workaround.  There is no portable workaround for System V
+          code.
+
+   SVAE curses incorrectly optimizes screen output (14460)
+
+          SVAE curses appears to incorrectly optimize the screen output
+          when the previous screen differed by a few characters.
+
+          Workaround.  Use ucb curses where possible.
+
+   The att and ucb versions of memcpy() are slow (09784)
+
+          The mmmmeeeemmmmccccppppyyyy function is slow because it only copies one byte at
+          a time.
+
+          Workaround.  None.
+
+   Shmat with SHM_RND Can Attach at Bad Address (08000)
+
+          If you pass SHM_RND into shmat(), the attach address is
+          rounded down and may overlay existing data.  For example, sup-
+          pose a program does the following: attaches a shared memory
+          region at the default address by passing 0 as the attach
+          address, saves the attach address returned by shmat(),
+          detaches that shared region, and attaches a shared memory
+          region, using the saved address and passing the SHM_RND flag
+          into shmat().  The newly attached region is attached at a bad
+          address that probably overlays existing data.
+
+          Workaround.  Avoid using the SHM_RND flag.
+
+   System V ftok Man Page Is Hard to Find (11265)
+
+          The manual page entry for _f_t_o_k in the AT&T universe is diffi-
+          cult to locate.  The description of _f_t_o_k is found in the
+          _s_t_d_i_p_c man page.
+
+          Workaround.  Use
+
+               man stdipc
+
+          in the AT&T universe to read the _f_t_o_k man page.
+
+   SVAE TCSETAW ioctl may not work (09206)
+
+          In some cases, a TCSETAW ioctl in SVAE mode may affect output
+          data.
+
+          Workaround.  None.
+
+   Curses Loses Data when Refreshing Screen with nodelay (05717)
+
+          If you refresh the screen with nnnnooooddddeeeellllaaaayyyy set, _c_u_r_s_e_s loses data.
+
+          Workaround.  Set ddddeeeellllaaaayyyy when outputting to the screen and set
+          nnnnooooddddeeeellllaaaayyyy when reading.
+
+
+   SVAE IGNCR ioctl not supported (10877)
+
+          The IGNCR ioctl parameter in SVAE does not work since there is
+          no equivalent ioctl functionality in the UCB universe.
+
+          Workaround.  None.
+
+   SVAE curses nodelay shell exits (13586)
+
+          When a program using the att curses nodelay feature exits, it
+          also causes the shell to exit.
+
+   Sleep Misses SIGALRM Signal under Heavy Load (05804)
+
+          Under extremely heavy loads, it is possible for a process to
+          miss a SIGALRM signal from the interval timer when it is used
+          in conjunction with a call to _s_l_e_e_p.  The following code
+          sequence can sometimes miss the alarm signal:
+
+               signal(SIGALRM, func);
+               alarm(20);
+               for (;;)
+                       sleep(2);
+
+
+          Workaround.  None.
+
+   Terminfo for Viewpoint has problems
+
+          The terminfo "init" entry for Viewpoint has problems.
+
+          Workaround.  None.
+
+   Mknod Can Create Undeletable Directories (07957)
+
+          When you use the mknod system call, you can create a directory
+          that does not contain "." and ".." entries and thus cannot be
+          deleted.  This can only occur under one of the following con-
+          ditions:
+
+7
+              +o   You are the superuser and create an att program that
+                  calls att mknod to create a directory and then do not
+                  use ln to create "." and ".." entries
+
+              +o   You run att mkdir (which calls att mknod) while some
+                  other program is doing a kkkkiiiillllllll 9999 on your process
+
+          Workaround.  You can delete the directories by using ffffsssscccckkkk or
+          by writing a program that uses the link(((()))) ssssyyyysssstttteeeemmmm ccccaaaallllllll ttttoooo
+          ccccrrrreeeeaaaatttteeee lllliiiinnnnkkkkssss ttttoooo """"...."""" aaaannnndddd """"........"""" aaaannnndddd tttthhhheeeennnn ddddeeeelllleeeettttiiiinnnngggg tttthhhheeee ddddiiiirrrreeeecccc----
+          ttttoooorrrriiiieeeessss....  NNNNooootttt NNNNeeeeeeeeddddeeeedddd....
+
+   /etc/profile does not support ksh (32413)
+
+          /etc/profile does not have a slot for /bin/ksh execution.
+          Therefore, when ksh is used, no /etc/profile commands are exe-
+          cuted.
+
+          Workaround.  None
+
+   Id Can Loop Forever on Truncated Archive Files (05526)
+
+          If _i_d attempts to read a file that is missing some data at the
+          end of the file, _i_d can loop forever, even though it is at the
+          end-of-file.
+
+          Workaround.  None.
+
+   Sh Hangs When It Runs Out of Processes (06157)
+
+          The Bourne shell, _s_h, might not be able to start new processes
+          due to the per-user limitation of the number of active
+          processes.  This may happen if a user has many things running
+          in the background.  However, if _s_h is unable to start a pro-
+          cess, it fails to start any additional processes for the life
+          of the shell.  Thus, any non-built-in command that is invoked
+          interactively does not run.
+
+          Workaround.  This can be avoided by setting the environment
+          variable PPPPAAAARRRRAAAALLLLLLLLEEEELLLL to some value that is below the per-user
+          process limit.  The shell then avoids putting more processes
+          in the background if there are already jobs in the background.
+          Another workaround is to increase the number of user processes
+          allowed for the user in the kernel.
+
+   Bourne Shell Does Not Recognize set + Flag (01751)
+
+          The sssseeeetttt + _f_l_a_g command is recognized by newer versions of the
+          Bourne shell to mean uuuunnnnsssseeeetttt a flag.  In the _u_c_b universe, _s_h
+          does not recognize this syntax; however, _s_h does not have this
+          problem in the _a_t_t universe.
+
+          Workaround.  None.
+
+   Awk Makes Round-off Errors During Floating Point Arithmetic (35684)
+
+          _A_w_k can make round-off errors while doing arithmetic with
+          floating point numbers.  This is especially noticable when
+          printing numbers with the _p_r_i_n_t command.  For example, a
+          number that is expected to be exactly zero may be printed
+          instead as a number that is very close to zero.
+
+          Workaround.  When printing out floating point numbers in _a_w_k ,
+          use _p_r_i_n_t_f rather than _p_r_i_n_t and specify in the format string
+          that floating point numbers should be printed with a lower
+          precision.
+
+   Csh hangs when using command substitution with too many words (34340)
+
+          If command substitution results in an expression that has
+          greater than 2048 words, the csh hangs.  For example, if a
+          file exists called 'filenames' that contains filenames to be
+          viewed, and there are greater than or equal to 2048 filenames
+          in the file, the command:
+
+               more < `cat filenames`
+
+          would fail, generating the error message "too many words from
+          ``", and then hang.
+
+          Workaround.  Do not use command substitution constructs that
+          result in more than 2048 words.
+
+   Awk Returns Syntax Error For Matchops. (39610)
+
+          When using /_b_i_n/_a_w_k to search an input string for a pattern,
+          the ~ and !~ matchops can cause a syntax error.  As in the
+          following example:
+
+          awk -e '{ if ($1 !~ "0") print $0; else print "foo";}'
+
+          The input would then be lines with(out) a zero in them.
+
+          Workaround.  None.
+
+   Multiple ksh shells may not share the same history file (36870)
+
+          If a utility such as windows is being used with ksh, one or
+          more windows may be pointing to a different history file via
+          $HISTFILE.  Thus, one window may not be able to access another
+          window's command history.
+
+          Workaround.  Make sure $HISTFILE is pointing to the same file
+          in all windows.
+
+   Ps s Always Prints Zero for SSIZ (06164)
+
+          The _s flag of the _p_s command prints a SSSSSSSSIIIIZZZZ field, which is
+          supposed to be the per-process kernel stack.  However, this
+          feature is not supported in _p_s, so the value of the field is
+          always zero.
+
+          Workaround.  None.
+
+   Bourne Shell Reads ./.profile, Not $HOME/.profile (04806)
+
+          The manual entry for _s_h states that when the first character
+          of argument zero is a  (_d_a_s_h), _a_s _i_n _a _l_o_g_i_n, _c_o_m_m_a_n_d_s _a_r_e
+          _r_e_a_d _f_r_o_m $_H_O_M_E/._p_r_o_f_i_l_e.  In reality, the shell reads com-
+          mands from ./._p_r_o_f_i_l_e, but since $_H_O_M_E is the current direc-
+          tory upon login, this bug is usually masked.
+
+          Workaround.  Ensure that $_H_O_M_E is the current directory when
+          using this feature of the shell.
+
+   Make Does Not Recognize Library Components (05554)
+
+          _M_a_k_e has a syntax for referring to components of an archive as
+          aaaarrrrcccchhhhiiiivvvveeee((((ffffiiiilllleeee....oooo)))).  This syntax is currently broken.
+
+          Workaround.  None.
+
+   AWK Flow-of-Control Expressions Do Not Span Lines (07179)
+
+          The three types of flow-of-control statements in aaaawwwwkkkk-iiiiffff,
+          _w_h_i_l_e, and ffffoooorrrr-require a logical expression in parentheses.
+          Although you might want to split up an expression to make it
+          more readable, the _a_w_k parser does not allow any newline char-
+          acters in the expression.  Thus, you cannot split an expres-
+          sion over several lines.
+
+          Workaround.  None.
+
+   Long Return Addresses Cause Mail to Fail (07424)
+
+          The /_b_i_n/_m_a_i_l command is used by _s_e_n_d_m_a_i_l to deliver local
+          mail.  A return address that is longer than 100 characters
+          causes /_b_i_n/_m_a_i_l to overflow an internal buffer and may pro-
+          duce unexpected results.
+
+          Workaround.  None.
+
+   sh in BSD universe does not support functions (15280)
+
+          "sh" sh(1) in the BSD universe does not support function
+          definitions.
+
+
+          Workaround.  The ATT universe "sh" supports functions.
+
+   Shell $PARALLEL Value Must Be 2 or More (07788)
+
+          With the parallel extensions to the Bourne shell, you may
+          specify the maximum number of background jobs by setting the
+          environment variable $PARALLEL.  However, setting $PARALLEL to
+          a value of 0 or 1 causes command pipelines to hang.
+
+          Workaround.  If you set $PARALLEL, give it a value greater
+          than 1.
+
+   Pipeline Exit Status Not Always the Same as Last Command (04956)
+
+          The exit status of a pipeline is supposed to be the exit
+          status of the last command in the pipeline.  However, if any
+          command in the pipeline has a non-zero exit status, the exit
+          status of the entire pipeline is non-zero also.  This is true
+          for both _c_s_h and _s_h.
+
+          Workaround.  None.
+
+   Ps Can Dump Core if System Is Short on Swap Space (08207)
+
+          The ppppssss command dumps core if a system has very little swap
+          space, which can happen when system resources are highly con-
+          strained.
+
+          Workaround.  None.
+
+   short synopsis of problem (14015)
+
+          A broken pipe, causes shell to output a 0n stderr.
+
+          Workaround.  None.
+
+          Anticipated Resolution Date.  future release
+
+   /bin/dd uses creat instead of open on its output file. (10617)
+
+          _d_d(_1) uses creat(2) instead of open(2) to access its output
+          file.  This can cause output to be lost.
+
+          Workaround.  None.
+
+   Make Parallelism Changed by Insignificant Tabs (07268)
+
+          If a command line in a Makefile is followed by a line with
+          only a single tab character, the _m_a_k_e command does not con-
+          sider the command to be a candidate for parallel execution.
+          The effect is much like when multiple command lines are speci-
+          fied, even if only one command line is present.  You must
+          delete the tab character for _m_a_k_e to correctly identify a com-
+          mand line as a candidate for parallel execution.
+
+          Workaround.  If the execution of the parallel portion of a
+          Makefile seems to be running serially, check to be sure that
+          the command lines are not followed by a line with a single tab
+          character on it.  This may be observed by running the command
+          and looking for lines of the following format in the output:
+
+               target^I= $(TARGET)
+               ^I
+
+
+
+   Make Can Dump Core with Very Large Macros (07989)
+
+          If a Makefile has a macro that expands to a string longer than
+          12000 characters and that macro is used in a rule, mmmmaaaakkkkeeee dumps
+          core.
+
+          Workaround.  Break up long macros into separate macros, and
+          change their usage in the Makefile.
+
+   Ptime Always Shows Parent Pid of Parent Process as 0 (08264)
+
+          When you execute the ppppttttiiiimmmmeeee command, the parent pid (ppid) is
+          displayed for each process in the command. The ppid of the
+          root process of the command has its ppid displayed as zero,
+          even though this is incorrect.
+
+          Workaround.  None.
+
+   Attempted Login of ATT Users Causes Next Login To Be in ATT Universe
+          (08662)
+
+          The llllooooggggiiiinnnn((((1111)))) command confirms that the password string entered
+          is correct for the user logging in and sets the appropriate
+          universe for the user. If the password authentication fails,
+          llllooooggggiiiinnnn prints the login: pppprrrroooommmmpppptttt ttttoooo rrrreeeessssttttaaaarrrrtttt tttthhhheeee uuuusssseeeerrrr aaaauuuutttthhhheeeennnnttttiiiiccccaaaa----
+          ttttiiiioooonnnn pppprrrroooocccceeeessssssss....  HHHHoooowwwweeeevvvveeeerrrr,,,, tttthhhheeee uuuunnnniiiivvvveeeerrrrsssseeee iiiissss nnnnooootttt rrrreeeesssseeeetttt ttttoooo uuuuccccbbbb by
+          the llllooooggggiiiinnnn command.
+
+          For example, if a System V user begins the process of logging
+          into a machine, but incorrectly types his or her password, the
+          next user who successfully logs in is placed in the att
+          universe, unless universe(ucb) is in the GCOS field of the
+          second user. In the session below, sys5user has universe(att)
+          in the passwd file, but bsduser has no universe set in the
+          passwd file.
+
+               login: sys5user
+               Password: <_i_n_c_o_r_r_e_c_t _p_a_s_s_w_d _t_y_p_e_d>
+               Login incorrect
+               login: bsduser
+               Password: <_c_o_r_r_e_c_t _p_a_s_s_w_d _t_y_p_e_d>
+               <_b_s_d_u_s_e_r _w_i_l_l _b_e _i_n _t_h_e _a_t_t _u_n_i_v_e_r_s_e>
+
+
+          Workaround.  Set universe(ucb) in the GCOS field of the
+          ////eeeettttcccc////ppppaaaasssssssswwwwdddd file for all ucb uuuusssseeeerrrrssss....
+
+   /bin/login Does Not Have Complete 8 Bit Support (16249)
+
+          /bin/login does not support PASS8 mode.  This can cause gar-
+          bled output when logging in.  After logging in, 8 bit applica-
+          tions should behave correctly.
+
+          Workaround.  None.
+
+   Subshell Exits With Status of Last Executed Command (39711)
+
+          A subshell will report an exit status that is the same as the
+          last command that was executed before the subshell finished.
+          So, if the last command inside a while loop fails (with 1),
+          then even though the while loop succeeds, its exit status will
+          be 1.
+
+          Workaround.  An _e_c_h_o(_1) command as the last command inside a
+          loop will cause the loop to return successfully.
+
+   ksh syntax error will kill shell (09127)
+
+          ksh command syntax errors may cause shell to exit.  This prob-
+          lem has been seen primarily when the user enters a command and
+          one quote mark followed by an EOF character (control-D).  The
+          shell reports a syntax error and terminates.
+
+          Workaround.  None.
+
+   Sed goes into infinite loops for some expressions (09188)
+
+          Some sssseeeedddd expressions like s/^I*//g put sed into an infinite
+          loop.
+
+          Workaround.  None.
+
+   Bourne_shell_looses_childs_exit_status (13453)
+
+          For wait n, if n is not an active process id, then the exit
+          status of process n is lost. Thus if a child exits before the
+          parent does a "wait n", the exit status returned will be of
+          the last completed process and not necessarily of process n.
+
+          Workaround.  None.
+
+          Anticipated Resolution Date.  Future release.
+
+   Awk Does Not Initialize Variables Before BEGIN (13322)
+
+          _A_w_k allows you to initialize variables on the command line.
+          However, any initializations done on the command line do not
+          take effect until after the execution of the BEGIN action of
+          an _a_w_k program.
+
+          Workaround.  None.
+
+   /bin/ksh cd command generates misleading error message (34259)
+
+          If a command 'cd a*' is entered in /bin/ksh, and more than one
+          subdirectory in the current directory begins with the letter
+          'a', ksh will print the error message "bad substitue" rather
+          than "ambiguous".
+
+          Workaround.  None
+
+   Mail message is truncated if /tmp is full (32323)
+
+          If /tmp is full when mail is sent, the body of the mail mes-
+          sage is not sent and the message "Null message body; hope
+          that's ok" is written to the sender's terminal.
+
+          Workaround.  None.
+
+   Csh gives incorrect error message on exessive alias nesting.(34498)
+
+          Too many levels of nesting in the "alias" definition cause Csh
+          to complain about a non-existent "Alias loop".
+
+          Workaround.  None.
+
+          Anticipated Resolution Date.  Future  release.
+
+
+
+
+
+   stty flusho on pts hangs (33122)
+
+          stty flusho hangs when used on a pseudotty port.  It does not
+          exhibit this behaviour on a hard-wired port.
+
+          Workaround.  None.
+
+   *r*sh ksh shell scripts invoke /bin/rksh instead (36444)
+
+          If a shell script specifies #!/bin/ksh and the name of the
+          shell script contains an 'r' and ends with 'sh', /bin/ksh will
+          think it was invoked by /bin/rksh and will restrict the
+          script's activities.
+
+          Workaround.  Change the name of the shell script so that it
+          does not contain an 'r' and end with 'sh'.
+
+   csh aborts with assertion botched error (14304)
+
+          Infrequently, during normal use, in response to a change-
+          directory command, the csh encounters an "assertion botched"
+          error and terminates, logging the user off the system.
+
+          Workaround.  None.
+
+   ksh may kill wrong job (35250)
+
+          In an isolated incident, a vi session under ksh is put in the
+          background.  A foreground shell script is executed and inter-
+          rupted.  When the vi session is brought back to the fore-
+          ground, a new prompt is printed and the vi session disappears.
+
+          Workaround.  None.
+
+   Awk Does Not Return An Error On An Unknown Function Call (37381)
+
+          _A_w_k returns successfully and without any warnings if you try
+          to call an undefined function. _A_w_k will just exit as if every-
+          thing worked.
+
+          Workaround.  This bug does not exist in _N_a_w_k.
+
+   The exit statuses for cp(1) are not listed in the man-page. (12214)
+
+          The man-page for _c_p(_1) does not list the possible exit sta-
+          tuses for _c_p(_1), or what they might mean.
+
+          Workaround.  None.
+
+   Awk Uses String Instead of Numeric Comparisons (12548)
+
+          _A_w_k has no explicit type conversion for numbers and strings.
+          This can create confusion when comparing a field (which has a
+          type of string) to a numeric constant.
+
+          Workaround.  To force an expression to be treated as a number,
+          add the constant 0000 to the expression.  To force an expression
+          to be treated as string, concatenate the null string ("") to
+          the end of it.
+
+   Ps Reports Wrong Resident Set Size (07893)
+
+          The ppppssss command can report the resident set size of a process.
+          However, the number reported is four times the actual resident
+          set size of the program.
+
+          Workaround.  None.
+
+   no unlink command (14324)
+
+          It is impossible to delete a directory that has been linked
+          with the ln -f command and any of the linked-to directories:
+
+
+          Workaround.  None
+
+          Anticipated Resolution Date.  Not known
+
+   Killing ksh background jobs needs two kill commands (33550)
+
+          If you run a program that loops waiting for reads to be satis-
+          fied from /dev/tty and then background the program using
+          SIGTSTP (^Z), the backgrounded program (group of processes)
+          becomes stopped.  If you then use the kill command to kill the
+          stopped job, it will not die.  A second kill command will be
+          successful.
+
+          Workaround.  None.
+
+   ksh will not suspend jobs on certain command lines (32413)
+
+          When an expr command, for example, is combined on a ksh com-
+          mand line with an invocation of vi, a control-Z will not be
+          processed by ksh to suspend the vi process.  If vi is invoked
+          on the command line by itself, all is well.
+
+          Workaround.  None
+
+   Problem in interrupting Bourne shell script  (04742)
+
+          First problem:  trying to interrupt a shell script which was
+          waiting at a read for user input requires that the user type
+          newline before the interrupt handler is invoked.  This problem
+          still exists.
+
+          Second problem:  the exit status from a back-quoted expression
+          wasn't getting returned to the shell.  This has been fixed
+          under mailbug 09683.  Caution should be used in scripts,
+          because the lines:
+
+                  echo `<command>`         echo "status is $?"
+
+          will result in the return status of the first echo being
+          printed.  The proper way of doing the above would be:
+
+                  echo `<command>` status is $?
+
+
+          Workaround.  For the first problem, after sending the inter-
+          rupt character to the shell, press return to cause a newline
+          to get sent also.  The shell will then receive the interrupt.
+
+          Anticipated Resolution Date.  This should be fixed in a future
+          release, if possible.
+
+   att sh builtin pwd confused by conditional symbolic links.(14477)
+
+          The sh builtin pwd is unable to figure out correctly the
+          current working directory if the cwd is a conditional symlink
+          to another name.
+
+
+          Workaround.  Use /bin/pwd to find out the current working
+          directory.
+
+          Anticipated Resolution Date.  Future release.
+
+   cp doesn't handle some wildcarded directory names (34876)
+
+          cp operations to some wildcarded directories may fail with the
+          error message "No such file or directory".  An example of a cp
+          command that fails is "cp ../l*wo/foo" where an ls of direc-
+          tory ../ shows two subdirectories "list.one" and "list.two".
+
+          Workaround.  Use literal path names rather than wildcarded
+          paths.
+
+   Redirecting stdout with stty causes problems (33369)
+
+          Redirecting stty output causes stty to not work correctly.
+
+          Workaround.  Allow stty to write to default stdout.
+
+   Awk print Command Truncates Floating Point Numbers (13310)
+
+          The _a_w_k pppprrrriiiinnnntttt command is not consistent in its handling of
+          floating point numbers.  Sometimes it will truncate them to
+          less than the desired number of significant digits.
+
+          Workaround.  Use pppprrrriiiinnnnttttffff instead of pppprrrriiiinnnntttt to print floating
+          point values if more significant digits are desired.
+
+   Bourne Shell Can Dump Core (01071)
+
+          When running the Bourne shell,  a command line of the follow-
+          ing form, where xxxxxxxxxxxx is any command and xxxx is any text, causes
+          the shell to dump core:
+
+               xxx <<`echo 'x'`
+
+
+          Workaround.  None.
+
+   /bin/sh doesn't allow environmental variables containing periods
+          (31625)
+
+          /bin/sh doesn't allow environmental variables such as "A.B".
+
+          Workaround.  /bin/csh allows such variables.
+
+   Sharing Ksh History Files Causes Confusion (37393)
+
+          If two or more ksh(1) processes share the same history file,
+          they can get confused about the last command invoked.  This
+          can sometimes be seen with background jobs that have the wrong
+          names.  This does not cause any ill effects, but may confuse
+          the user when listing background jobs.
+
+          Workaround.  Do not share history files between ksh(1)
+          processes.
+
+          Anticipated Resolution Date.  None.
+
+   /etc/profile is not set up for ksh (15141)
+
+          /etc/profile is normally executed by /bin/ksh on start-up, but
+          the /etc/profile script does not have a switch option for ksh
+          so nothing is executed.
+
+          Workaround.  Edit /etc/profile to accept invocation by
+          /bin/ksh.
+
+   Syntax errors in complex ksh shell scripts effect history file
+          (33093)
+
+          In an isolated incident, a complex ksh shell script reported
+          syntax errors and apparently wrote to the history file, delet-
+          ing a number of the saved commands.
+
+          Workaround.  None.
+
+   Echo(1) Processes Options Incorrectly (08463)
+
+          ////bbbbiiiinnnn////eeeecccchhhhoooo (not to be confused with C shell's builtin eeeecccchhhhoooo com-
+          mand) takes only one command line argument: nnnn. The nnnn option
+          suppresses the echoing of newline characters to stdout.  The
+          syntax below echoes anything ttttoooo ssssttttddddoooouuuutttt wwwwiiiitttthhhh nnnnoooo ttttrrrraaaaiiiilllliiiinnnngggg nnnneeeewwww----
+          lllliiiinnnneeee::::
+
+               $ /bin/echo -n anything
+
+          HHHHoooowwwweeeevvvveeeerrrr,,,, iiiiffff nnnn iiiissss ffffoooolllllllloooowwwweeeedddd ddddiiiirrrreeeeccccttttllllyyyy bbbbyyyy nnnnoooonnnn----ssssppppaaaacccceeee cccchhhhaaaarrrraaaacccctttteeeerrrrssss,,,,
+          eeeecccchhhhoooo iiiiggggnnnnoooorrrreeeessss tttthhhheeee cccchhhhaaaarrrraaaacccctttteeeerrrrssss aaaafffftttteeeerrrr tttthhhheeee nnnn,,,, iiiinnnnsssstttteeeeaaaadddd ooooffff ccccoooommmmppppllllaaaaiiiinnnn----
+          iiiinnnngggg aaaabbbboooouuuutttt tttthhhheeeemmmm....  TTTThhhheeee ffffoooolllllllloooowwwwiiiinnnngggg ccccoooommmmmmmmaaaannnndddd sssshhhhoooouuuulllldddd eeeecccchhhhoooo nnnnoooo cccchhhhaaaarrrraaaacccc----
+          tttteeeerrrrssss ttttoooo tttthhhheeee ssssccccrrrreeeeeeeennnn aaaannnndddd pppprrrriiiinnnntttt ddddiiiiaaaaggggnnnnoooossssttttiiiicccc mmmmeeeessssssssaaaaggggeeeessss aaaabbbboooouuuutttt iiiilllllllleeeeggggaaaallll
+          cccchhhhaaaarrrraaaacccctttteeeerrrrssss....  HHHHoooowwwweeeevvvveeeerrrr,,,, nnnnoooo ddddiiiiaaaaggggnnnnoooossssttttiiiiccccssss aaaarrrreeee pppprrrriiiinnnntttteeeedddd....
+
+               $ /bin/echo -nanything
+
+
+          Note that the command below correctly prints -anything ffffoooollll----
+          lllloooowwwweeeedddd bbbbyyyy aaaa nnnneeeewwwwlllliiiinnnneeee::::
+
+               $ /bin/echo -anything
+
+
+          Workaround.
+
+          If the first argument to echo has _n as part or all of the
+          character string, then escape the first argument with a "\"
+          (backslash) to capture the literal characters.
+
+   /bin/rksh Will Not Run Unrestricted Ksh Scripts (16393)
+
+          /bin/rksh is supposed to execute shell scripts with /bin/ksh
+          (unrestricted), but will only do so if the script is not a
+          /bin/ksh script.
+
+          Workaround.  Use /bin/sh or /bin/csh scripts.
+
+   /bin/ksh Can Cause Problems When Suspending a Script (44916)
+
+          When running a /bin/ksh script that invokes vi, job control
+          can cause the script to exit and leave the terminal in a con-
+          fused state.
+
+          Workaround.  Use a /bin/sh script.
+
+   /bin/ksh may echo command line (35912)
+
+          When the /bin/ksh viraw option is turned off, commands are
+          sometimes echoed to the user's terminal immediately after <CR>
+          is entered.
+
+          Workaround.  Set viraw mode to on.  (set -o viraw)
+
+   ksh command execution method may prevent variable updating (35616)
+
+          If a ksh function is executed in a manner such that the return
+          value is assigned to a variable (outval = 'func', for exam-
+          ple), the global variables modified by the function do not
+          retain the changes.  If the function is executed with the ksh
+          eval command, global variables reflect the changes.
+
+          Workaround.  Use eval to execute commands and have the func-
+          tion return values in a global variable.
+
+   Csh Silently Exits if pwd Fails (04338)
+
+          If you use the ppppwwwwdddd command in _c_s_h but do not have read permis-
+          sion on the directory or its parent directory, _c_s_h silently
+          exits.  This can cause unexpected behavior.
+
+          Workaround.  None.
+
+   Control-Z and fg does not work with csh scripts when run from csh
+          (35515)
+
+          If a csh script is executed from the csh and is suspended with
+          control-Z, resuming it with fg will seem to resume the script,
+          but then the script will terminate execution.  This does not
+          always happen, it seems to happen randomly.  It can occur with
+          an arbitrary csh script that invokes another command (in other
+          words, the ^Z has to be propagated for this problem to
+          appear).
+
+          Workaround.  None.
+
+   Broadcasted shutdown messages may cause problems (36299)
+
+          The shutdown utility will broadcast shutdown messages to all
+          machines associated with the machine being shutdown.  Some-
+          times those shutdown messages may cause problems with screen
+          displays on the other machines that are not being shut down.
+
+          Workaround.  None.
+
+   mknod may give inaccurate error message (16215)
+
+          If a mknod command fails to make a fifo due to no write per-
+          mission in the current working directory, the error message
+          printed is "Not owner" rather than the more accurate "No Per-
+          mission".
+
+          Workaround.  Disregard the incorrect error message.
+
+   Umount Needs Same Filesystem Name as Mount (08199)
+
+          Although you may use symbolic links to filesystem mount
+          points, you need to give the name of the true mount point to
+          uuuummmmoooouuuunnnntttt so the filesystem entry can be removed from /_e_t_c/_m_t_a_b
+          correctly.
+
+          Workaround.  Give the name of the true mount point to uuuummmmoooouuuunnnntttt.
+
+   Fsck p May Not Clean Up Properly (02492)
+
+          Under some unknown conditions, _f_s_c_k _p does not entirely clean
+          a filesystem when it reports it has.  A subsequent _f_s_c_k shows
+          remaining problems.  The problem seems to happen when _f_s_c_k _p
+          is dealing with UNREF'd files.
+
+          Workaround.  If _f_s_c_k _p does an unusual amount of filesystem
+          fixup, particularly with a number of UNREF'd files, it is best
+          to run _f_s_c_k without _p again on that filesystem.
+
+   Pmap Requires Write Permission When Reporting Status (04221)
+
+          The _p_m_a_p utility always attempts to open the specified device
+          (typically an ALM device) with read and write permission.  If
+          you invoke _p_m_a_p to query the status of an ALM device but lack
+          write permission on the device, _p_m_a_p prints a message.
+
+          Workaround.  Make all of the ALM devices mode 0666.
+
+   Rdump(8c) should be run by root (04458)
+
+          _R_d_u_m_p does not work for most non-root users because they don't
+          have the permissions to obtain the sockets and such used by
+          rcmd(3x).
+
+          Workaround.  Create a setuid root program that validates a
+          users permissions to run _r_d_u_m_p.  NOTNEEDED
+
+   Bp Allows Patching of BSS Variables in a.out Files (07168)
+
+          The _b_p command allows you to change the value of variables
+          that are placed in the uninitialized and zero-filled BSS seg-
+          ment of an executing program.  Since these variables have no
+          space associated with them in the executable file, _b_p should
+          not allow you to change them.
+
+          Workaround.  None.
+
+   Some Errors in Pstat Output (08650)
+
+          The tttt flag of ppppssssttttaaaatttt(1) allows you to examine the current state
+          of the tty lines.  One of the output fields is the name of the
+          tty device.  This field is not correct for ttys beyond
+          /_d_e_v/_t_t_y_n_f.
+
+          A fields that displays the major and minor number of the tty
+          device is printed out. Note that this field is displayed as 0,
+          0 for a specific tty if the tty line has not been opened since
+          the system was booted.
+
+          Workaround.  None.
+
+   Rdump at 6250 bpi to 4.2BSD Machine Fails (03080)
+
+          When the _r_d_u_m_p utility is run at 6250 bpi, it attempts to
+          write 32-Kbyte records to the program /_e_t_c/_r_m_t on the remote
+          machine.  The /_e_t_c/_r_m_t program in UNIX 4.2BSD allows a maximum
+          of 10 Kbytes on reads and writes.
+
+          Workaround.  Use the _b option of _r_d_u_m_p to reduce the write
+          size to 10 Kbytes, fix /_e_t_c/_r_m_t on the remote machine, or
+          upgrade the remote machine to UNIX 4.3BSD.
+
+          Resolution.
+
+
+
+
+
+
+   Incorrect /etc/fstab entry causes subsequent entries to be misread
+          (14433)
+
+          If an entry in /etc/fstab has an incorrect number of argu-
+          ments, any dump or mount commands which reference by name a
+          filesystem which comes later in /etc/fstab will fail with
+          misleading diagnostics.
+
+          Workaround.  Check /etc/fstab entries for correctness.
+
+   Online formatter may disable other disks (15956)
+
+          If during the format of a SMD (zd) disk, a fatal error occurs
+          such that the controller no longer responds, the system dis-
+          ables all the disks on that channel.
+
+          Workaround.  The online formatter should be used with caution
+          and on a quiescent system.
+
+   Dmesg can print duplicate messages. (10536)
+
+          It is possible for _d_m_e_s_g(_8) to print duplicate messages if one
+          dmesg is swapped out and another is started up.
+
+          Workaround.  None.
+
+   Idle Time May Be Wrong (15948)
+
+          Programs such as /usr/ucb/finger and /usr/ucb/w can sometimes
+          display incorrect idle times.  This is not harmful, and usu-
+          ally straightens itself out after a short period of time.
+
+          Workaround.  None.
+
+          Anticipated Resolution Date.  None.
+
+   /etc/dump With The -n Option Will Block If The Login Session Is
+          Suspended (15286)
+
+          If an operator starts _d_u_m_p with the -n option (notify opera-
+          tors), and then suspends his login session, _d_u_m_p will not be
+          able to terminate until the session is brought back into the
+          foreground.  This is because _d_u_m_p will not be able to write to
+          the pty.
+
+          Workaround.  The operator could use cntl-Y instead of cntl-Z
+          to suspend the login session.  That way _d_u_m_p would still be
+          able to write to the pty.
+
+   Getgrent(3) has Limit for Group Entries (36500)
+
+          The library routine getgrent(3) limits the amount of members
+          that can be in a specific group.  This is limited to 100
+          members or a /etc/group line of 1024 characters, whichever is
+          shorter.
+
+          Workaround.  None.
+
+          Anticipated Resolution Date.  Future release.
+
+   Dump Overlooks Multiple Filesystems Specified on Command Line (07667)
+
+          When you specify filesystems with the dddduuuummmmpppp command, only the
+          first one is used even if you list several, and no error mes-
+          sage tells you that the extras are being ignored.
+
+          Workaround.  Specify only one filesystem with the dddduuuummmmpppp com-
+          mand.
+
+   SIGHUP Ignored while /etc/rc Is Interpreted (08262)
+
+          SIGHUP is ignored in programs started from /_e_t_c/_r_c.
+
+          Workaround.  If you do not want to ignore SIGHUP, have these
+          programs deal with SIGHUP explicitly by using the signal(3) or
+          sigvec(2) system call. For example, you could set it to
+          SIG_DFL.
+
+   /etc/bootflags Cannot Set Aux Bootflag on SSM Systems (42794)
+
+          On a SSM based system, the /etc/bootflags program can set the
+          auxiliary boot string, but not the corresponding bootflags.
+          It will only set the primary bootflags.
+
+          Workaround.  You must set these flags from the SSM monitor.
+
+   Dynix does not inform anyone when swap space is running low (11146)
+
+          The kernel does not print any messages on the console when the
+          swap space is running low.  This can cause forks to fail and
+          programs to not be executed.
+
+          WorkAround.  One possible work around is to run or a version
+          of monitor that watches the amount of swap space the machine
+          has left.
+
+   :rw: in gettytab on SCED console port causes odd behviour (32678)
+
+          If the gettytab entry for the SCED console includes the :rw:
+          switch, the login banner output is garbled and is sent to the
+          screen very slowly.
+
+          Workaround.  None
+
+   Bc Loses Precision When Scale > 63 (00950)
+
+          _B_c incorrectly rounds operations when the scale factor is
+          greater then 63 digits.  It should work for up to 99 digits.
+          The following small program demonstrates the problem:
+
+               % bc
+               scale=64
+               a=1/3*3
+               a*a
+
+          The last line should result in a number very close to 1.
+          Instead, _b_c prints a huge number.  If you repeat the example
+          with the scale set to 63 or less, the expected results occur.
+
+          Workaround.  Set the scale to less than 64.
+
+   Ci doesn't give filenames when prompting for log messages (01696)
+
+          If cccciiii(1) is used with S q and l, but without m, then cccciiii will
+          prompt the user for messages. (Only for files that have
+          changed)  When it is prompting for log messages, it doesn't
+          identify which file the messages corresponds with.
+
+          Workaround.  Either add a m"message" to the command arguments,
+          and let that message go into all files, or check in one file
+          at a time.  The only other alternative is to remember the
+          order the files were typed.
+
+   Struct(1) Changes Comments to Lowercase Letters (08394)
+
+          ssssttttrrrruuuucccctttt((((1111)))) converts FORTRAN programs into a form appropriate
+          for RATFOR.  However, ssssttttrrrruuuucccctttt changes comments in FORTRAN pro-
+          grams to all lowercase letters.  This can cause preprocessors
+          that look for uppercase directives in comments to break.
+
+          Workaround.  None.
+
+   Ci Silently Corrupts an RCS File (05282)
+
+          The cccciiii(1) command can create an RCS file that _c_o cannot check
+          out.  This happens if you check in the 1200th revision of an
+          RCS file.  No further revisions can be checked out of the RCS
+          file.
+
+          Workaround.  Recreate the RCS file with only one revision when
+          the 1200th revision is approached.
+
+   Xargs does not print out an error message if given a bogus com-
+          mand.(09213)
+
+          If the command given to _x_a_r_g_s(_1) is not a valid command, then
+          xargs will exit silently without printing out an error mes-
+          sage.
+
+          Workaround.  None.
+
+   ci(1) and co(1) have problems with files without newlines at the end
+          (01418)
+
+          The ci(1) program does not set up the rcs revision file prop-
+          erly when there is not a newline at the end of a file being
+          checked in.  Since ci(1) does not set up the rcs file
+          correctly co(1) will check out part of the rcs revision file
+          as part of the original file.
+
+          Workaround.  Put a newline at the end of the file.
+
+   Tip Does Not Work with Hayes-compatible Modems in Autodial Mode
+          (05035)
+
+          The ttttiiiipppp command does not work with Hayes-compatible modems in
+          autodial mode.
+
+          Workaround.  Always run Hayes-compatible modems in manual-dial
+          mode.
+
+   Spell Ignores the -b Option (04913)
+
+          The _s_p_e_l_l command ignores the -_b option, which tells _s_p_e_l_l to
+          use the English dictionary.
+
+          Workaround.  Specify the English dictionary with the -_d
+          option, as in the following example:
+
+               spell -d /usr/dict/hlistb file ...
+
+
+   Daemon is Default Group for Files Installed with install (08059)
+
+          The manual page for iiiinnnnssssttttaaaallllllll(1) states that files are installed
+          as group rrrrooooooootttt (group 0) unless the gggg flag is specified. How-
+          ever, the default group is ddddaaaaeeeemmmmoooonnnn (group 10).
+
+          Workaround.  Use the gggg flag to specify the group.
+
+   spell does not honour some British spellings (14325)
+
+          spell -b reports the word 'colour' as an error when it should
+          not.  Other British spellings may be rejected as well.
+
+          Workaround.  None.
+
+   Lex does not parse octal characters right at times (10442)
+
+          _L_e_x does not properly match ranges of more than 2 numbers when
+          the beginning and the end are specified by octal numbers. The
+          below example will _n_o_t match \007:
+
+               [ 06- 08]   printf("<matched>");
+
+
+          Workaround.  Put the actual character in the file rather than
+          the escaped number of the character.
+
+               [^F-^H]   printf("<matched>");
+
+
+   /usr/bin/cb returns a random exit value. (30203)
+
+          There are no exit() statements in _c_b(_1), so the exit status is
+          random.
+
+          Workaround.  None.
+
+   Ranlib Cannot Be Run in Parallel in Same Directory (08270)
+
+          Attempts to build multiple libraries simultaneously in the
+          same directory fail because rrrraaaannnnlllliiiibbbb creates a temporary file in
+          its current directory called __._S_Y_M_D_E_F. If you run more than
+          one rrrraaaannnnlllliiiibbbb in a directory at the same time, the results are
+          indeterminate.
+
+          Workaround.  If you build multiple libraries in the same
+          directory, do it serially.
+
+   ci -q is notr quiet (33998)
+
+          When ci is invoked with the "-q" option, it is not supposed to
+          print any warning messages, but it does.
+
+          Workaround.  None.
+
+          Anticipated Resolution Date.  future release
+
+   /usr/bin/spell doesn't catch the misspelled work 'guareentee'
+          (36520)
+
+          /usr/bin/spell doesn't catch the misspelled work 'guareentee'
+          even though it is spelled correctly in the system word list.
+
+          Workaround.  None.
+
+   Line Printing Can Sometimes Truncate A Job (43059)
+
+          Occasionally a print job can be truncated and only a partial
+          printing will be finished.  This has only been noticed when
+          printing long jobs to Apple Laserwriters.
+
+
+          Workaround.  Print the job in sections or on another kind of
+          printer.
+
+   Tip Incorrectly Reports Ports Busy (06000)
+
+          Under certain circumstances, _t_i_p can fail to connect to a port
+          with the message even though the port is not in use.  This
+          prevents further use of the port by _t_i_p.
+
+          Workaround.  Determine the tty device name _t_i_p is attempting
+          to use and be sure it is not in use by any running process.
+          Examine the lock file directory, /_u_s_r/_s_p_o_o_l/_u_u_c_p/_L_C_K, for a
+          file with the name _L_C_K.._t_t_y_X_X where the _X_X are the last two
+          characters of the tty name of the port that is blocked.  If
+          you remove this file, you should be able to connect to the
+          port with _t_i_p.
+
+   Fpr Does not accept $ as a carriage control character (09551)
+
+          The ffffpppprrrr command does not accept "$" as a carriage control
+          character.
+
+          Workaround.  None.
+
+   setup-pts.sh doesn't check tty value (41864)
+
+          The mailbug setup script setup-pts.sh does not check the value
+          entered after the prompt "Terminal line that modem is attached
+          to: (e.g. ttyh0)?".  If nothing is entered at this prompt,
+          unwanted results may occur.
+
+          Workaround.  Have the tty information ready before running
+          setup-pts.sh.
+
+   /usr/bin/style may break with newer shells (14193)
+
+          /usr/bin/style uses the "^" character to denote a pipe instead
+          of the more modern "|" character.
+
+          Workaround.  None.
+
+   Install doesn't print error message after ownership problem (14509)
+
+          If install is unable to set the ownership of a file it is ins-
+          talling (with the -o option), it continues without a warning.
+
+          Workaround.  None.
+
+   Ranlib does not free all of its variables. (09512)
+
+          If _r_a_n_l_i_b(_1) is called with multiple arguments, then the SYM-
+          DEF file for the libraries will grow larger for each file;
+          even if the libraries are identical.
+
+          Workaround.  Only use _r_a_n_l_i_b(_1) with one argument.
+
+   RCS Unlocking Will Not Always Break Locks (09776)
+
+          When invoking the command "rcs -u foobie" on a RCS file that
+          is already locked, it will not ask if the lock should be bro-
+          ken.  It will instead fail, saying that the user does not have
+          a lock on the file.
+
+          Workaround.  Specify the version of the file to be unlocked.
+          For example, "rcs -u1.1 foobie" will behave correctly.
+
+   Uniq is limited to lines that are 1000 characters long. (13594)
+
+          _u_n_i_q(_1) will only compare lines that are less than or equal to
+          1000 characters in length.
+
+          Workaround.  None.
+
+   The tip Command Can Cause Data Loss (07806)
+
+          The ttttiiiipppp command reads from the tty line one character at a
+          time and sometimes causes data loss, even at low baud rates
+          (such as 1200 baud).  As a result, you cannot transfer files
+          reliably with ttttiiiipppp.
+
+          Workaround.  Do not transfer files with ttttiiiipppp.
+
+   uucp processing of incoming requests can hang (34908)
+
+          Incoming uucp requests may hang.  This requires manual inter-
+          vention to fix the problem.
+
+          Workaround.  None
+
+   File(1) Has Problems Identifying FORTRAN Programs (08531)
+
+          The ffffiiiilllleeee((((1111)))) command should be able to identify files as FOR-
+          TRAN source files, but experience has shown that it does a
+          poor job.  ffffiiiilllleeee((((1111)))) interprets FORTRAN source as English text,
+          ASCII text, or assembler source code.
+
+          Workaround.  None.
+
+   Cb Can Dump Core (08015)
+
+          If you run the C program beautifier, ccccbbbb, on a file that con-
+          tains a C comment that is not terminated, it can dump core.
+
+          Workaround.  Terminate C comments.
+
+   Xstr Can Produce Incorrect Results (00919)
+
+          The _x_s_t_r utility does not handle the following construction
+          properly:
+
+               char x[] = "abc";
+
+          _X_s_t_r replaces the above code with:
+
+               char x[] = (&xstr[0]);
+
+          Constructions of this type cause the C compiler to complain
+          about an illegal combination of pointer and integer.  _X_t_s_r
+          also generates incorrect code in these cases.  If you later
+          try to print out the value of xxxx as a string, you get incorrect
+          results.
+
+          Workaround.  Use one of the following two forms:
+
+               char *x = "abc";
+
+               char x[] = { 'a', 'b', 'c' };
+
+
+
+
+
+   Long Lines Can Confuse Vi Display Routines (09907)
+
+          If are editing a file with _v_i that contains a line that that
+          has more characters than there is room on the entire screen,
+          the internal display routines will become confused.  This can
+          result in one in one of several internal error messages being
+          issued.
+
+          Workaround.  Split up the long lines.  Alternatively, use a
+          larger window.
+
+   Vi Breaks When Reading Long Lines from Shell Commands (34552)
+
+          If _v_i encounters a line that is greater than 1024 characters
+          long while reading from a shell process, the shell command is
+          aborted and _v_i is left in an incorrect state.  The most
+          noticeable problem is that the tty is left with incorrect
+          modes.
+
+          Workaround.  None.
+
+   lpr i does not indent all files. (38589)
+
+          _L_p_r(_1) has an i option that allows the user to indent a file
+          by a specified number of spaces, or columns the default being
+          eight.  But, when trying to print a generic ascii file with
+          i<number>, the output is not indented.
+
+          Workaround.  None.
+
+   fsplit does not recognize labels on end statements (10096)
+
+          When ffffsssspppplllliiiitttt is used on a program that has subroutines with
+          labels on their eeeennnndddd statements, those subroutines are not
+          recognized as separate subroutines.  Therefore, those subrou-
+          tines are not separated as they should be.  The result will be
+          that several subroutines will be combined together into one
+          file even after the fsplit.
+
+          Workaround.  Don't put labels on eeeennnndddd statements.  If a label
+          is needed, then put a ccccoooonnnnttttiiiinnnnuuuueeee or ffffoooorrrrmmmmaaaatttt statement (with the
+          label) on the line before the eeeennnndddd statement.  The line before
+          the eeeennnndddd can then be used as the label for the eeeennnndddd.
+
+   Vi Problem With Escape and 'i' As The First Input To A File (15960)
+
+          If the first thing typed in a new file in _v_i is Esc, 'i', and
+          then some text (followed by Esc), then if you try to repeat
+          that command by typing the command
+
+          Workaround.  Do not type the Escape character before the first
+          command in a new file.
+
+   The VI Alternate File Command Can Corrupt Files (38143)
+
+          When using _v_i with AUTOWRITE set, the current line will be
+          replaced by the last line of the file if the alternate file
+          command, "cntl-^", is used.
+
+          Workaround.  Use ":e #" instead of "cntl-^" to get to an
+          alternate file.
+
+
+
+
+
+   Vi Breaks with Narrow Windows (34617)
+
+          If you use _v_i in a window that is narrow enough to cause a
+          [[[[HHHHiiiitttt rrrreeeettttuuuurrrrnnnn ttttoooo ccccoooonnnnttttiiiinnnnuuuueeee]]]] message to wrap around to multiple
+          lines, _v_i will fail to display the screen correctly.
+
+          Workaround.  Resize the window so that it is wide enough to
+          hold the message.  Vi will redisplay the screen correctly.
+
+   tarmail can send files that are too big for some mailers (14138)
+
+          tarmail can send a file that is up to 100k bytes in size, but
+          some mailers cannot handle such a large mail file.
+
+          Workaround.  Break the file to be sent into smaller chunks and
+          send each individually.
+
+   Lpr Prints Only One Header on Multiple Copies (04204)
+
+          Using the _l_p_r ####_n_u_m and pppp options together causes the filename
+          to be missing in the _p_r page header of all but the first file.
+
+          Workaround.  None.
+
+          Resolution.
+
+   Vi Dumps Core on open Command in EXINIT (09624)
+
+          If _v_i encounters an _o_p_e_n command in your _E_X_I_N_I_T environment
+          variable or ._e_x_r_c file,  it will dump core.  This is because
+          _v_i is not sufficiently initialized at this point to go into
+          open mode.
+
+          Workaround.  Do not put an _o_p_e_n command in your _e_x initializa-
+          tion script.
+
+   Escape key does not end insert mode in VI (45101)
+
+          When the wrapmargin variable is set in vi, and the escape key
+          is pressed on the column that would cause vi to wrap the text
+          being typed, the text is wrapped, and vi remains in insert
+          mode.
+
+          Workaround.  None.
+
+   Z Command in mail Can Fail (05175)
+
+          The zzzz command in _m_a_i_l advances the display of mail headers a
+          screen at a time.  Similarly, the zzzz---- command in _m_a_i_l backs up
+          the display of mail headers a screen at a time.  However, if
+          the current printed mail message was not first displayed in an
+          hhhh command, a zzzz---- command sometimes fails to back up a screen.
+
+          Workaround.  Use the hhhh command before using the zzzz---- command.
+
+   Script uses raw mode only (09070)
+
+          The ssssccccrrrriiiipppptttt(1) command starts a pseudotty that runs in raw
+          mode.  Problems occur when ssssccccrrrriiiipppptttt is used from a terminal
+          requiring XON/XOFF.  SSSSccccrrrriiiipppptttt will then send garbage to the ter-
+          minal.
+
+          Workaround.  None.
+
+
+
+   Vi Displays Tabs Incorrectly in Wrapped Lines (09269)
+
+          If the number of columns on the screen is not a multiple of
+          the tabstop length (for example, a 132 column screen with a
+          tapstop length of 8), _v_i does not display tabs in the wrapped
+          portions of long lines correctly.
+
+          Workaround.  Use a screen width that is a multiple of the
+          tabstop length, or do not use tabs in long lines.
+
+   Ctags doesn't recognize complex typedefs. (06129)
+
+          If _c_t_a_g_s(_1) is given a file with a typedef in it with the
+          forms:  typedef struct ...., typedef union ...., or typedef
+          enum ...., _c_t_a_g_s(_1) will not recognize that line as being a
+          valid typedef declaration.
+
+          Workaround.  None.
+
+   Soft Tabs in vi Sometimes Fail to Display Correctly (06176)
+
+          The Ctrl-T character can be used as a software tab key.  When
+          _v_i inserts text at the beginning of a line and the aaaauuuuttttooooiiiinnnnddddeeeennnntttt
+          option is set, a tab's worth of spaces is inserted.
+
+          However, if text already exists on the line in which the
+          insert is performed, _v_i incorrectly displays the line, making
+          the line appear to write over the existing characters rather
+          than inserting the spaces before the characters.
+
+          Workaround.  Since the software tab key is useful in such a
+          limited range of actions in _v_i, use the hard tab, Ctrl-I,
+          instead.
+
+          Resolution.
+
+   Vi Dumps Core After Suspend/Resume With Large Windows (10638)
+
+          If you suspend _v_i, resize the screen to be larger than the
+          maximum allowed screen size, and then resume the editor, it
+          will dump core.  In this case, it should complain about the
+          screen size and drop out of visual mode instead of quitting
+          ungracefully.
+
+          Workaround.  Use _v_i in a window that meets the editor's window
+          size restrictions.
+
+   Vi Does Not Work in Large Windows (36041)
+
+          The _v_i editor has limits on the size of the window in which it
+          runs.  Currently, there cannot be more than 106 lines or 210
+          columns.  An additional restriction is that the total screen
+          size (lines * columns) cannot be greater than 16960 charac-
+          ters.
+
+          Workaround.  Run the editor in a window that meets the size
+          restrictions.
+
+   /usr/ucb/finger Can Give Confusing Results (34260)
+
+          If finger is giving a numeric argument, it may return informa-
+          tion on a random set of login names.
+
+          Workaround.  None.
+
+
+          Anticipated Resolution Date.  Future release.
+
+   Chsh Fails Silently When Given Invalid Arguments (37415)
+
+          If _c_h_s_h is given a login that does not exist, it fails
+          silently. In this case it should print an error message
+          instead of failing silently.
+
+          Workaround.  Give _c_h_s_h correct arguments.
+
+   chfn allows values that break finger (34411)
+
+          Presently the only restriction that puts on the length of
+          values entered is that the resulting line in /etc/passwd can-
+          not exceed 1024 characters in length.  There are no restric-
+          tions on individual fields, which allows users to enter values
+          into fields that are unreasonable sizes, and cause to complain
+          when trying to get information from /etc/passwd.
+
+          Workaround.  Put reasonable values in /etc/passwd using
+          chfn(1).
+
+          Anticipated Resolution Date.  In a future release, there may
+          be more cooperation between
+           and
+           to prevent these problems.  However, any changes made will
+          not affect existing /etc/passwd entries.
+
+   Mail Crashes When Given SIGQUIT (09288)
+
+          /usr/ucb/mail will crash when it receives a quit signal
+          (SIGQUIT).
+
+          Workaround.  None.
+
+          Anticipated Resolution Date.  Future release.
+
+          Lock sends endless beeps to terminal (03505).  If a cntrl-D is
+          typed after the terminal has been locked with lllloooocccckkkk(1), then
+          endless beeps (cntrl-G's) will be sent to the terminal.
+
+   Workaround
+
+          None.
+
+   Rsh does not return remote exit status (mailbug# 32771)
+
+          When executing commands remotely via rsh, the exit status of
+          the remote command is not returned to rsh.  Subsequently the
+          rsh command itself may exit with a successful status (0) when
+          in fact the remote command aborted.
+
+          Workaround.  None
+
+          Anticipated Resolution Date.  next release
+
+   script program does not restore rows and columns (33033)
+
+          Use of the script utility causes the rows and columns settings
+          of the tty to be cleared and not reset.
+
+          Workaround.  None.
+
+
+
+
+   Lpr -pr does not remove the file (12233)
+
+          When using lpr -pr the file in the local directory will not be
+          deleted.
+
+          Workaround.  None
+
+   Vi in Autowrap Mode Can Ignore Escape (07682)
+
+          If you press Esc while in the automatic margin, vvvviiii may ignore
+          it.  Suppose that you have set autowrap mode by using the ::::sssseeeetttt
+          wwwwrrrraaaappppmmmmaaaarrrrggggiiiinnnn====NNNNNNNN command.  If you press Esc wwwwhhhhiiiilllleeee yyyyoooouuuu aaaarrrreeee iiiinnnn
+          iiiinnnnsssseeeerrrrtttt mmmmooooddddeeee aaaannnndddd tttthhhheeee ccccuuuurrrrssssoooorrrr iiiissss wwwwiiiitttthhhhiiiinnnn NNNNNNNN cccchhhhaaaarrrraaaacccctttteeeerrrrssss ooooffff tttthhhheeee
+          rrrriiiigggghhhhtttt mmmmaaaarrrrggggiiiinnnn,,,, aaaannnndddd aaaauuuuttttoooowwwwrrrraaaappppppppiiiinnnngggg hhhhaaaassss nnnnooootttt ttttaaaakkkkeeeennnn ppppllllaaaacccceeee,,,, tttthhhheeee eeeessssccccaaaappppeeee
+          cccchhhhaaaarrrraaaacccctttteeeerrrr mmmmaaaayyyy bbbbeeee iiiiggggnnnnoooorrrreeeedddd....  IIIIffff ssssoooo,,,, lllliiiinnnneeee wwwwrrrraaaappppppppiiiinnnngggg ttttaaaakkkkeeeessss ppppllllaaaacccceeee
+          aaaannnndddd yyyyoooouuuu ddddiiiissssccccoooovvvveeeerrrr tttthhhhaaaatttt tttthhhheeee eeeeddddiiiittttoooorrrr iiiissss ssssttttiiiillllllll iiiinnnn iiiinnnnsssseeeerrrrtttt mmmmooooddddeeee....
+
+          Workaround.  Press Esc aaaaggggaaaaiiiinnnn ttttoooo ppppuuuutttt tttthhhheeee eeeeddddiiiittttoooorrrr iiiinnnn ccccoooommmmmmmmaaaannnndddd
+          mmmmooooddddeeee....
+
+   Indent erases existing file named as output.(32020)
+
+          Indent erases the file given as the second  argument without
+          creating a backup copy. Thus if a file name is mistakenly
+          named as the output file, it's contents would be lost.
+
+          Workaround.  Make backup copies of all files whose names are
+          supplied as arguments to Indent.
+
+          Anticipated Resolution Date.  Future release.
+
+   gcore may not produce correct core files (14343)
+
+          A process running a simple program was saved with gcore.  When
+          pdbx was used on the core, a variable that was set once in the
+          program was cleared when examined.
+
+          Workaround.  None.
+
+   Ctags Will Not Generate Tags for Embedded cpp Macros (07956)
+
+          The ccccttttaaaaggggssss(1) utility normally generates tags for cpp macro
+          definitions.  However, if a macro definition is embedded in a
+          structure definition, then ccccttttaaaaggggssss fails to generate the
+          requisite tag.  For example, suppose the following is placed
+          in a file:
+
+               struct {
+               #define TOKENA  a
+               }
+               #define TOKENB  b
+
+
+          When ccccttttaaaaggggssss is run on the file, a tag is generated for TOKENB
+          but not for TOKENA.
+
+          Workaround.  If you want cpp macros to appear in the output of
+          ccccttttaaaaggggssss, do not place them inside structure definitions.
+
+   Ctags Should Recognize Enum's (11162)
+
+          Currently, _c_t_a_g_s(_1) recognizes #define's, but it does not
+          recognize enum's.  Since enum's can be used in place of
+          #define's and vis-versa _c_t_a_g_s(_1) should also understand what
+          enum's are.
+
+          Workaround.  None.
+
+   Vi Dot Command Can Fail after Ctrl-E (08175)
+
+          If you add some text in a file with the aaaa command and then use
+          Ctrl-E rrrreeeeppppeeeeaaaatttteeeeddddllllyyyy ttttoooo mmmmoooovvvveeee tttthhhheeee ssssccccrrrreeeeeeeennnn uuuupppp uuuunnnnttttiiiillll tttthhhheeee ccccuuuurrrrssssoooorrrr iiiissss
+          ppppoooossssiiiittttiiiioooonnnneeeedddd aaaatttt aaaa bbbbllllaaaannnnkkkk lllliiiinnnneeee aaaatttt tttthhhheeee ttttoooopppp ooooffff tttthhhheeee ssssccccrrrreeeeeeeennnn,,,, tttthhhheeee ddddooootttt
+          ccccoooommmmmmmmaaaannnndddd ((((....)))) ffffaaaaiiiillllssss ttttoooo ccccoooorrrrrrrreeeeccccttttllllyyyy rrrreeeeppppeeeeaaaatttt tttthhhheeee llllaaaasssstttt aaaadddddddd ccccoooommmmmmmmaaaannnndddd....
+
+          Workaround.  Use another cursor motion key to reposition the
+          cursor to the same location.
+
+   strings(1) man page doesn't explain -a option (36379)
+
+          The on-line man page for strings(1) does not show the "-a"
+          flag.  Source and usage message show that it exists.
+
+          Workaround.  Unless the -a flag is given, strings looks only
+          in the initialized data space of object files.
+
+   Mail Subjects Typed before Ctrl-Z Can Be Lost (07736)
+
+          If you are reading mail and use the mmmm command to send a mes-
+          sage, you are prompted for a subject. If you type part of the
+          subject, then press Ctrl-Z ttttoooo ssssuuuussssppppeeeennnndddd tttthhhheeee mmmmaaaaiiiilllleeeerrrr,,,, yyyyoooouuuu lllloooosssseeee tttthhhheeee
+          ppppaaaarrrrtttt ooooffff tttthhhheeee ssssuuuubbbbjjjjeeeecccctttt yyyyoooouuuu hhhhaaaavvvveeee ttttyyyyppppeeeedddd....
+
+          For example, suppose you want to send mail with the subject
+          "One Two Three Four Five Six".  If you type "One Two Three" at
+          the subject prompt, suspend the mailer by pressing Ctrl-Z,,,,
+          tttthhhheeeennnn bbbbrrrriiiinnnngggg tttthhhheeee mmmmaaaaiiiilllleeeerrrr bbbbaaaacccckkkk iiiinnnnttttoooo tttthhhheeee ffffoooorrrreeeeggggrrrroooouuuunnnndddd wwwwiiiitttthhhh tttthhhheeee ffffgggg
+          sssshhhheeeellllllll bbbbuuuuiiiilllltttt----iiiinnnn ccccoooommmmmmmmaaaannnndddd,,,, tttthhhheeee wwwwoooorrrrddddssss """"OOOOnnnneeee TTTTwwwwoooo TTTThhhhrrrreeeeeeee"""" aaaarrrreeee ggggoooonnnneeee aaaannnndddd
+          yyyyoooouuuu mmmmuuuusssstttt ttttyyyyppppeeee tttthhhheeee eeeennnnttttiiiirrrreeee ssssuuuubbbbjjjjeeeecccctttt lllliiiinnnneeee....
+
+          Workaround.  None.
+
+   SCCS does not work with yellow pages (32696)
+
+          The SCCS do not work using YP lookup, nor do they work on a
+          remotely mounted filesystem.
+
+          Workaround.  None
+
+          Anticipated Resolution Date.  next release
+
+   error -n does not work(31549)
+
+          The -n option to error does not work.
+
+          Workaround.  None
+
+          Anticipated Resolution Date.  Next release.
+
+   Vgrind Lacks Header on First Page (08328)
+
+          The output from vvvvggggrrrriiiinnnndddd lacks a header on the first page, due
+          to a problem in the vvvvggggrrrriiiinnnndddd macros.
+
+          Workaround.  None.
+
+   Sysline Prints Reports on Forwarded Mail (09051)
+
+          When new mail arrives, ssssyyyysssslllliiiinnnneeee((((1111)))) can ring the terminal bell
+          and print out who the mail is from and the first few charac-
+          ters from the subject line.  However, if some of the new mail
+          contains one or more pieces of mail that have been forwarded,
+          ssssyyyysssslllliiiinnnneeee rings the terminal bell and prints out information
+          about the forwarded mail as well. Although some might consider
+          this to be a positive feature, mailing list digests, that con-
+          tain numerous mail messages, cause ssssyyyysssslllliiiinnnneeee to print many mes-
+          sages for a single piece of mail.
+
+          Workaround.  None.
+
+   Ex Does Not Handle SIGTSTP During Read Correctly (36758)
+
+          If you suspend _e_x while it is reading a file,  it will not
+          continue to read the file when the editor is resumed.  The
+          file read will be truncated at the point where _e_x received the
+          stop signal.
+
+          Workaround.  Do not suspend _e_x while it is reading files.
+
+   Vi Maps Can Cause Incorrect Screen Display (37291)
+
+          _V_i maps that add lines to the file using shell commands can
+          sometimes cause the editor buffer to be displayed on the
+          screen incorrectly.  An example of a macro that will confuse
+          the _v_i display routines when executed repeatedly is:
+
+               map ^T A^M^[!!date^[
+
+
+          Workaround.  Type the ^_G command after executing the map.
+          This will cause _v_i to fix the screen.
+
+   /bin/echo Will Not Work With Certain Strings (14293)
+
+          /bin/echo will do nothing if it is told to echo a string
+          beginning with "-n" (i.e. - /bin/echo "-n Hello").
+
+          Workaround.  None.
+
+          Anticipated Resolution Date.  Future release.
+
+   SCCS does support BSD group semantics (14412)
+
+          SCCS operates in the att environment and thus does not support
+          BSD group semantics.
+
+          Workaround.  None.
+
+          Anticipated Resolution Date.  Future release.
+
+   Sysline(1) Can Get Confused With Large Mailboxes (32703)
+
+          When using sysline(1) with the "-m" option to check mail, a
+          large mailbox will sometimes cause confusion.  This causes
+          sysline(1) to print erroneous messages about incoming mail.
+
+          Workaround.  None.
+
+          Anticipated Resolution Date.  Future release.
+
+   Last(1) Can Give Erroneous Information (33596)
+
+          Due to race conditions with processes that update
+          /usr/adm/wtmp, last(1) can give erroneous information.
+
+          Workaround.  None.
+
+
+          Anticipated Resolution Date.  Future release.
+
+   Tset(1) Silently Limits m Options to 10 (08396)
+
+          The ttttsssseeeetttt((((1111)))) command allows a user to specify multiple mappings
+          by using multiple instances of mmmm aaaarrrrgggg on the command line. The
+          program is limited to 10 such mappings, but does not check if
+          the limit has been reached.  Specifying more than 10 mappings
+          produces indeterminate results.
+
+          Workaround.  Use less than 10 mmmm mappings.
+
+   Script will lock up terminal when there are no pty's left (09796)
+
+          When the script utility is executed and finds there are no
+          pty's left on the host it will print an error message and exit
+          leaving the terminal locked up.  To get the locked up terminal
+          back, the shell that is running on the locked up terminal
+          needs to be killed.
+
+          Workaround.  None
+
+   /usr/ucb/mail Botches Some Return Addresses (37005)
+
+          If a address comment is not surrounded by parentheses,
+          /usr/ucb/mail will include the parts of the comment in the
+          return address when replying.  When angle brackets are present
+          in an address, only the contents of the brackets are to be
+          used for addresses but /usr/ucb/mail breaks this rule.
+
+          Workaround.  If this occurs, edit the botched addresses and
+          remove the offending portions.
+
+   Tset does not always reset row and column numbers (10124)
+
+          The ttttsssseeeetttt(1) command only set the rol and column numbers when
+          they are set to 0.
+
+          Workaround.  Set both the "row" and "column," using ssssttttttttyyyy(1),
+          for the terminal to 0 before calling tset.
+
+   lpd may discard print requests containing very long lines (39739)
+
+          lpd will accept a request to print a file with very long lines
+          but may discard the file before printing it.  This behaviour
+          has been reported when lpd tried to print a file which con-
+          sisted of one line of 20,000 characters.
+
+          Workaround.  None.
+
+   Vi Loses Marks After Undoing A Command (39431)
+
+          In _v_i, if some marks, made to designate a block of text, are
+          used in an ex command that is executed from a buffer, the
+          marks of the text will be fine.  However, if the command is
+          undone, then the marks no longer exist.
+
+          Workaround.  None.
+
+   Ex Cannot Recover Encypted Files (34977)
+
+          It is not possible to recover changes made to a file that is
+          being edited with the -_x option of _e_x if the editor is killed
+          or the machine goes down during the editing session.  This is
+          because _e_x in crypt mode stores its internal buffers in
+          encypted form,  but the _e_x_r_e_c_o_v_e_r recovery program is unable
+          to detect and decrypt the encrypted files.
+
+          Workaround.  None.  message, but acts as if it succeeded even
+          when it does nothing.
+
+          Workaround.  None.  @@eof@@
+
+   Ex Can Fail to Recover From Errors Encountered During source Command
+          (36513)
+
+          If _e_x encounters a syntax error in a file that is being exe-
+          cuted with the _s_o_u_r_c_e command, it does not always recover
+          correctly.  In some cases, it will dump core.
+
+          Workaround.  Do not source files that contain syntax errors.
+
+   Chfn changes all entries with same uid (13109)
+
+          When more then one account with the same uid exists if one of
+          those accounts uses chfn to change the geocs information.
+          Chfn will also change all the other gecos entries with same
+          uid.
+
+          Workaround.  None
+
+   Gcore(1) Can Fail to Correctly Record Large Processes (08561)
+
+          If ggggccccoooorrrreeee is used on a process that has a data space or stack
+          space larger than 1.5Mb, the information in the core file is
+          incorrect. The 1.5 Mbyte size is dependent on the values of
+          DMMIN and DMMAX, which are configuration-dependent parameters
+          in the kernel.
+
+          Workaround.  None
+
+   Mail Programs Do Not Strip Control Characters (10308)
+
+          The /_b_i_n/_m_a_i_l and /_u_s_r/_u_c_b/_m_a_i_l programs do not strip control
+          characters.  This can sometimes be considered a security prob-
+          lem since users may send letter bombs.  Because of interna-
+          tionalized character sets these characters can not be safely
+          striped when reading mail.
+
+          Workaround.  Check for and remove suspect characters before
+          actually displaying mail messages (use "cat -v").
+
+          Anticipated Resolution Date.  Future release.
+
+   Ctags May Emit Bogus Tags (07894)
+
+          Under rare conditions, the ccccttttaaaaggggssss program may emit tags for
+          items that should not be tagged.  For example, a line of the
+          following form may sometimes cause a tag for "defined" to be
+          generated as if "defined" were a function name:
+
+               #if     defined(TOKEN1) || defined(TOKEN2)
+
+
+          Workaround.  None.  You can sometimes correct this by changing
+          the order of files ccccttttaaaaggggssss works on.
+
+   chfn allows bad GECOS fileds(36715)
+
+          Chfn allows you to enter additional commas in your name,
+          office, and phone numbers, which corrupts your gecos field in
+          the password file since ',' is the field separator.
+
+          Workaround.  None
+
+          Anticipated Resolution Date.  Not known
+
+   lpq(1) continued queue monitoring changes format after 1 minute
+          (#05665)
+
+          The lpq(1) utility which is used to monitor printer queues can
+          be used to monitor a queue continually (while the queue is not
+          empty) by using the +# option; however, after about a minute
+          of monitoring the queue it switches from printing in a screen
+          oriented mode to a line oriented mode.
+
+          Workaround.  None An easy workround for this problem is to
+          change
+
+          eval'tset -sQ'
+
+          to:
+
+          set noglob eval'tset -sQ' unsetnoglob
+
+   lock spews beeps when control-D is entered (15144)
+
+          When a terminal is locked using the lock utility, and a
+          control-D is entered, the terminal will start beeping
+          intensely.
+
+          Workaround.  None.
+
+   Permission denied message when quota invoked from login. (44524)
+
+          If while logged in, "login" is invoked to login as a different
+          user, the call to quota made by login will not succeed. A per-
+          mission denied error message will be printed on the user ter-
+          minal.
+
+   /usr/ucb/mail May Think the Mailbox is Locked (39200)
+
+          If a stray mailbox lock file is left in /usr/tmp, the next
+          instance of /usr/ucb/mail will only allow read-only.  This is
+          correct if the first instance still exists.  The problem comes
+          about when the first instance has gone away, and a new process
+          has taken its place.
+
+          Workaround.  Find and remove the /usr/tmp lock file.  It is of
+          the form "/usr/tmp/M<dev>,<inode>" where <dev> and <inode> are
+          the hex device and inode of the mailbox file.
+
+   Su Can Fail Silently (05090)
+
+          If you use the _s_u command to change to a user other than _r_o_o_t,
+          the current directory may be one to which the new user does
+          not have access.  This causes the shell to fail silently,
+          which causes _s_u to fail silently as well.
+
+          Workaround.  None.
+
+   Checknr Works on Maximum of 17 Files (08317)
+
+          The cccchhhheeeecccckkkknnnnrrrr(1) command can work on a maximum of 17 files. If
+          more than 17 files are checked, the message printed is "inap-
+          propriate ioctl for device""""....
+
+
+          Workaround.  Limit the number of files to 17.
+
+   Mail Prints Sender's Name Incorrectly (04253)
+
+          If you, as the originator of a mail message, have parentheses
+          in the fifth (name) field of your _p_a_s_s_w_d entry, _m_a_i_l
+          incorrectly displays your name.
+
+          Workaround.  Remove the parentheses.
+
+   /usr/ucb/mail Can Choke On Long Aliases (11237)
+
+          Very long aliases can cause /usr/ucb/mail to crash.
+
+          Workaround.  None.
+
+          Anticipated Resolution Date.  Future release.
+
+   Lpq exits with the number of items in the que (11247)
+
+          Lpq will exit with the number of items that are in the print
+          queue if the printer is run from the localhost.
+
+          Workaround.  None
+
+   Ctags Cannot Recognize Some Fortran Functions (30727)
+
+          _C_t_a_g_s can not identify some _f_o_r_t_r_a_n functions.  The functions
+          _c_t_a_g_shas _c_o_m_p_l_e_x,double and other complicated function types.
+
+          Workaround.  None.
+
+   There are no manpages for memcpy, memset, etc. (15704)
+
+          In the att universe, there are no manpages for the set of rou-
+          tines:  _m_e_m_c_c_p_y(), _m_e_m_c_h_r(), _m_e_m_c_p_y(), _m_e_m_s_e_t(), and _m_e_m_c_m_p().
+
+          Workaround.  None.
+
+   getopt() man page incorrect about optind initialization (36357)
+
+          The getopt(3x) man page states: "Because optind is external,
+          it is normally initialized to zero automatically before the
+          first call to getopt."  In fact optind is initialized to one,
+          not zero.
+
+          Workaround.  None
+
+   Nroff generates an escape sequence that can Home the cursor. (38721)
+
+          The _n_r_o_f_f(_1) command to create a copyright symbol (a c with a
+          circle around it) when run through _n_r_o_f_f(_1) will appear as the
+          sequence of escape characters _E_S_C-_8_c_E_S_C-_9.  This causes some
+          terminals and terminal emulations to HOME the cursor.
+
+          Workaround.  Try using _c_a_t-v, to read the man pages.  Then the
+          _E_S_C-_8 and _E_S_C-_9 will be filtered out and printed instead of
+          being sent to the terminal.  NOTNEEDED
+
+   feof() and fileno() man pages not found (32272)
+
+          The commands "man feof" and "man fileno" report that these man
+          pages don't exist.  They are actually part of the ferror(3s)
+          man page.
+
+
+          Workaround.  Enter "man ferror" to get the information on
+          feof() and fileno().
+
+   Termcap functions not aliased to termcap(3X) manpage (10128)
+
+          The functions tgetent, tgetnum, tgetflag, tgetstr, tgoto, and
+          tputs do not have aliases to the termcap manpage, because of
+          this if a user does a man on tgetent mmmmaaaannnn(1) will say that the
+          manpage was not found.
+
+          Workaround.  Do a man on tttteeeerrrrmmmmccccaaaapppp(3X).
+
+   man_page_for_expr_incomplete(9965)
+
+          The following commands are supported by expr but are not docu-
+          mented:
+             substr
+             length
+             match
+             index
+
+   Att Graphics Manpage Makes Reference To Nonexistant Guide (43047)
+
+          In the att manpage _g_r_a_p_h_i_c_s(_1_G), a reference is made to
+
+          Workaround.  None.
+
+   Primes man page is incorrect. (12904)
+
+          The man page for _p_r_i_m_e_s(_4) says that primes prints out all
+          prime numbers less than or equal to the number given.  It
+          actually prints out all prime numbers greater than or equal to
+          the number given.
+
+          Workaround.  None.
+
+   Backgammon requires two moves when only one is possible (37664)
+
+          Backgammon requires a player to make two moves when only one
+          is possible.  On a throw of the dice, a move is possible using
+          one of the rolls but no valid move exists using the other.
+          Backgammon claims that that is not the case and requires two
+          moves thus resulting in a deadlock since it is not possible to
+          continue without making as many moves as the system expects.
+
+          Workaround.  None.
+
+   Sa(8) prints some funny looking commands names (09539)
+
+          The ssssaaaa(8) utility is used to print out the information in the
+          aaaacccccccctttt(5) file which stores the information on each process that
+          is run on the system doing the day.  However, some command
+          names printed out by ssssaaaa(8) appear to be wrong (ex. "cut*").
+          This can be caused by a process changing its name space, or be
+          copied into the acct structure and not being null terminated.
+
+          Workaround.  None.  Not Needed.
+
+   Config Can Dump Core on Complex Controllers (08129)
+
+          The ccccoooonnnnffffiiiigggg(8) utility configures a kernel based on information
+          provided in certain files in /_s_y_s/_c_o_n_f. The file
+          _c_o_n_t_r_o_l_l_e_r_s._b_a_l_a_n_c_e describes the controllers that may be con-
+          figured on the system.  If one of the controllers described
+          there has more than ten configuration parameters defined for
+          it and the controller is used in a kernel configuration file,
+          ccccoooonnnnffffiiiigggg(8) dumps core if run on that configuration file.
+
+          For example, suppose you extend the list of configuration
+          parameters in the last line of the standard version of
+          /_s_y_s/_c_o_n_f/_c_o_n_t_r_o_l_l_e_r_s._b_a_l_a_n_c_e as follows:
+
+               type custA index bin vala valb valc vald vale valf valg valh valj
+
+          Suppose you also add the following lines to the DYNIX _c_o_n_f_i_g
+          file:
+
+               controller      custA0  at slot ?
+               device          xx0     at custA0
+
+          When you run the following command, a core dump should occur:
+
+               config DYNIX
+
+
+          Workaround.  None.
+
+   quotacheck incorrect (36686)
+
+          There is a bug in the quotacheck program that may cause the
+          number of files and disk blocks to be incorrect for the last
+          few user's with disk quotas enabled.  For the problem to occur
+          there have to be more than one filesystem with quotas enabled
+          and the "quotas" file has to be shorter on the first filesys-
+          tem than on the second filesystem.
+
+          Workaround.  None.
+
+          Anticipated Resolution Date.  Next release.
+
+   Savecore Still Uses /usr/adm/shutdownlog (37926)
+
+          _H_a_l_t and _r_e_b_o_o_t in this release use _s_y_s_l_o_g to log the system
+          shutdown instead of writing to the file /usr/adm/shutdownlog.
+          However, _s_a_v_e_c_o_r_e still uses the old logging method
+          (/usr/adm/shutdownlog) after a system crash instead of using
+          _s_y_s_l_o_g.
+
+          Workaround.  None.
+
+   Monitor Does Not Readjust to Window Size Changes (07757)
+
+          If you change the size of the window while running the mmmmoooonnnniiii----
+          ttttoooorrrr(8) program, the output is chaotic.
+
+          Workaround.  None.  Restart the program and leave the size as
+          it is.
+
+   Cd .. Does Not Follow Symbolic Links (08104)
+
+          In ccccsssshhhh, when you use ccccdddd, it follows symbolic links to change
+          to a directory, but when you use ccccdddd to change to the parent
+          directory, the link is not traced backwards. Consider the fol-
+          lowing example:
+
+               cd /
+               ln -s /usr/tmp dir
+
+          In this case, /_d_i_r appears to be a directory and you can type
+          the following commands:
+
+
+               cd /dir
+               cd ..
+
+          If you do this, your current directory is /_u_s_r rather than /
+          because "........" points to the parent of the real directory.
+
+          Workaround.  Use the ppppwwwwdddd command to find your true current
+          working directory.
+
+   Device Numbers in the config File Are Ignored (05794)
+
+          In the system configuration file, /_s_y_s/_c_o_n_f/_D_Y_N_I_X, you iden-
+          tify each device (such as _s_d_0, _s_d_1, and _s_d_2) by assigning
+          small integers to it.  However, both _c_o_n_f_i_g and the autoconfi-
+          guration mechanism of the kernel ignore these numbers.
+          Instead, the order in which devices are placed in relation to
+          others of the same type determines the cardinality of the dev-
+          ices and the order in which the system accesses the devices.
+
+          Workaround.  When adding devices to a configuration file,
+          always give the first device of any particular type the number
+          0, the next device 1, and so on through all of the devices.
+
+   Su Does Not Set All Environment Variables (05726)
+
+          The _s_u command does not flush the current environment vari-
+          ables and do the equivalent of a full login to the new user.
+
+          Workaround.  After you do the _s_u, execute the login commands
+          manually.  If you are using _s_h, enter the following command:
+
+               $ . $HOME/.profile
+
+          If you are using _c_s_h, enter the following command:
+
+               % source $HOME/.login
+
+          You must set the environment variables ATTPATH, ATTSHELL,
+          UCBPATH, and UCBSHELL by hand.  Use the values that were
+          present before you invoked _s_u.
+
+   Find does not follow symbolic and conditional links (03971)
+
+          The ffffiiiinnnndddd(1) command fail to find files that appear in a sym-
+          bolic or conditional linked directory because ffffiiiinnnndddd(1) does not
+          follow the links.
+
+          Workaround.  None.
+
+   spell reports correct words as mispelled (39264)
+
+          _S_p_e_l_l incorrectly identifies these words as mispelled:
+          acclimatize, belying, implementer, loaned, Remus, revisable,
+          and vis.
+
+
+          Workaround.  None.
+
+   Uucp and sendmail Do Not Support Domains (04741)
+
+          The new domain-style addressing is not supported by any of the
+          mailer programs.  All the mailer software is based on 4.2BSD
+          which does not support domains.
+
+          Workaround.  Intimate knowledge of _s_e_n_d_m_a_i_l configuration
+          files may be enough to work around this problem.
+
+   Header files have the same delclarations (03957)
+
+          The header files a.out.h and nlist.h contain a some of the
+          same declarations.  This causes redeclaration errors when both
+          files are included in the same source file.  This is also true
+          about the header files sdb.h and stab.h.
+
+          Workaround.  Do not include both header files into the same
+          source code.
+
+   Script Does Not Pass Window Size to Scripted Session (07198)
+
+          The _s_c_r_i_p_t command works by opening up a pseudo-tty, copying
+          the characteristics of the current tty to the pseudo-tty, and
+          managing the user session through the pseudo-tty.  However,
+          since the window size is not passed to the pseudo-tty and the
+          default window size is 0 rows and 0 columns, programs that set
+          the screen size by examining the window size set the screen
+          size to 0 rows and 0 columns.
+
+          Workaround.  If you run a program that uses the window size to
+          set the screen size in a _s_c_r_i_p_t session, you should set the
+          window size after you start the _s_c_r_i_p_t session with the _s_t_t_y
+          command, such as in the following example:
+
+               % script
+               Script started on Fri Oct 30 14:42:35 1987
+               % stty rows 24 columns 80
+
+
+   File with Metacharacters in Name Is Not Checked in by ci (07347)
+
+          You cannot use the RCS command _c_i to check in a file that con-
+          tains shell metacharacters-characters to which the shell
+          attaches special significance.  For example, the shell
+          attempts to expand filenames that contain the $ character,
+          which can cause _c_i to fail.
+
+          Workaround.  Avoid using RCS with filenames that have charac-
+          ters that are expanded by the shell.
+
+   Su Does Not Set Environment Identically to login (02749)
+
+          The  _o_p_t_i_o_n _o_f _t_h_e _s_u command replaces the current environment
+          with a new one.  This new environment does not include all of
+          the environment variables supplied by _l_o_g_i_n.
+
+          Workaround.  Set the needed variables in your ._l_o_g_i_n file.
+
+   Processes may hang when closing tty ports (11109)
+
+          If a tty port is in the process of closing, and the output
+          data drain is stopped by a control-S (xoff) and not followed
+          by a control-Q (xon), the close will hang forever.
+
+          Workaround.  The only way to clear the port is to inject a
+          control-Q into the port with a terminal or to use the UCB
+          ioctl TIOCSTART to simulate the control-Q from a user program.
+
+   Config Has Limitations on Number of Devices (05663)
+
+          There are some conditions that _c_o_n_f_i_g checks to ensure that
+          the configuration works with the DYNIX system.  One of these
+          checks confirms that the number of devices configured works
+          under DYNIX.
+
+          Although the DYNIX operating system has been enhanced to sup-
+          port more devices than it did in the past, there are some con-
+          ditions in which _c_o_n_f_i_g does not allow such a system to be
+          configured.  For example, _c_o_n_f_i_g does not allow more than 32
+          disk drives of any one controller type, even though a larger
+          number of disk drives would run successfully.
+
+          Workaround.  If you configure a system such that the confi-
+          guration exceeds the limits in _c_o_n_f_i_g, you might have to manu-
+          ally edit the files _c_o_n_f_i_g generates in order to add the addi-
+          tional hardware information.
+
+   Bourne Shell Can Hang (02791)
+
+          The following sequence hangs the Bourne shell:
+
+               % sh
+               $ csh
+               % suspend
+
+
+          Workaround.  Do not suspend a _c_s_h running on top of a Bourne
+          shell.

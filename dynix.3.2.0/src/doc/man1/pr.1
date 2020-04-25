@@ -1,0 +1,108 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: pr.1 1.6 89/08/17 $
+.TH PR 1 "\*(V)" "4BSD"
+.SH NAME
+pr \- print file
+.SH SYNOPSIS
+.B pr
+[ option ] ...
+[ file ] ...
+.SH DESCRIPTION
+.I Pr
+produces a printed listing of one or more
+.I files.
+The output is separated into pages headed by a date,
+the name of the file or a specified header, and the page number.
+If there are no file arguments,
+.I pr
+prints its standard input.
+.PP
+Options apply to all following files but may be reset
+between files:
+.TP
+.BI \- n
+Produce
+.IR n -column
+output.
+Note that if the input text is wider than a column, the input text will
+be truncated to fit the column.
+.TP
+.BI + n
+Begin printing with page
+.I  n.
+.TP
+.B  \-h
+Take the next argument as a page header.
+.TP
+.BI \-w n
+For purposes of multi-column output,
+take the width of the page to be
+.I n
+characters instead of the default 72.
+.TP
+.BI \-f
+Use formfeeds instead of newlines to separate pages.
+A formfeed is assumed to use up two blank lines at the top of a page.
+(Thus this option does not affect the effective page length.)
+.TP
+.BI \-l n
+Take the length of the page to be
+.I n
+lines instead of the default 66.
+This lines-per-page value must include the 10 lines of header
+and trailer added per page.  If the number of lines per page 
+specified is less than or equal to 10, the lines-per-page will default to 66.
+(For example,
+.I n
+should be specified as
+.B 12
+to produce output of 2 lines per page.)
+.TP
+.B  \-t
+Do not print the 5-line header or the
+5-line trailer normally supplied for each page.
+.TP
+.BI \-s c
+Separate columns by the single character
+.I c
+instead of by the appropriate amount of white space.
+A missing
+.I c
+is taken to be a tab.
+.TP
+.B  \-m
+Print all
+.I files
+simultaneously,
+each in one column.
+.PP
+Inter-terminal messages via
+.IR write (1)
+are
+forbidden during a
+.IR pr .
+.SH FILES
+/dev/tty?
+to suspend messages.
+.SH "SEE ALSO"
+cat(1)
+.SH DIAGNOSTICS
+There are no diagnostics when
+.I pr
+is printing on a terminal.
+.SH BUGS
+Combining multiple options after a single minus sign (e.g., 
+.B \-th )
+is not allowed; they must be separated (e.g., 
+.B \-t
+.B \-h ).

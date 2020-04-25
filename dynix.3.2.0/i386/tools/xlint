@@ -1,0 +1,54 @@
+#! /bin/sh
+# @(#)$Copyright:	$
+# Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+# Sequent Computer Systems, Inc.   All rights reserved.
+#  
+# This software is furnished under a license and may be used
+# only in accordance with the terms of that license and with the
+# inclusion of the above copyright notice.   This software may not
+# be provided or otherwise made available to, or used by, any
+# other person.  No title to or ownership of the software is
+# hereby transferred.
+
+# @(#)$Header: SHELL 2.3 86/05/29 $
+: ${PARALLEL=1}
+L=/usr/lib/lint/lint T=/usr/tmp/lint$$ F=o PATH=/bin:/usr/bin O="-C -Dlint"
+X= P=unix LL=/usr/lib/lint C= CPP=/lib/cpp N=00000
+mkdir $T && > $T/$N.$F && > $T/$N.ln
+trap "rm -rf $T; exit" 1 2 15
+for A in $*
+do
+	case $A in
+	*.ln)	cat $A >>$T/$N.ln ;;
+	-l*)	cat $LL/llib$A.ln >>$T/$N.ln ;;
+	-C?*)	P= 
+		C=`echo $A | sed -e s/-C/llib-l/` 
+		X="$X -L -C$C" ;;
+	-[IDU]*)O="$O $A" ;;
+	-O)	;;
+	-*)	X="$X $A"
+		case $A in
+		-*n*)	P= ;;
+		-*p*)	P=port ;;
+		esac ;;
+	CPP=*)	CPP="`echo $A | sed -e s/CPP=//`" ;;
+	LL=*)	LL="`echo $A | sed -e s/LL=//`" 
+		L=${LL}/lint ;;
+	*)	(echo "$A:"; ${CPP} $O $A | ${L}1 $X >> $T/$N.ln) >> $T/$N.$F  2>&1 &
+		N=`awk "END { printf \"%05d\", $N + 1 }" < /dev/null`
+		;;
+	esac
+	done
+	wait
+	cat $T/*.$F
+	cat $T/*.ln > $T/$F
+case $P in
+	unix)	cat $LL/llib-lc.ln >>$T/$F ;;
+	port)	cat $LL/llib-port.ln >>$T/$F ;;
+	"")	cat /dev/null >>$T/$F ;;
+	esac
+case $C in
+	"")	${L}2 $T/$F $X ;;
+	*)	cp $T/$F $C.ln ;;
+	esac
+rm -rf $T

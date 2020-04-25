@@ -1,0 +1,45 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: rand.3c 1.11 1991/08/06 22:43:23 $
+.TH RAND 3C "\*(V)" "7th Edition"
+.SH NAME
+rand, srand \- random number generator
+.SH SYNOPSIS
+.PP
+.B srand(seed)
+.br
+.B unsigned  seed;
+.PP
+.B rand()
+.SH DESCRIPTION
+\f3The newer random(3) should be used in new applications;
+rand remains for compatibility.
+.PP
+.I Rand
+uses a multiplicative congruential
+random number generator
+with period
+.if t 2\u\s732\s0\d
+.if n 2^32
+to return successive pseudo-random
+numbers in the range from 0 to
+.if t 2\u\s731\s10\d\-1.
+.if n 2^31-1.
+.PP
+The generator is reinitialized by calling
+.I srand
+with 1 as argument.
+It can be set to a random starting point by calling
+.I srand
+with whatever you like as argument.
+.SH "SEE ALSO"
+random(3)

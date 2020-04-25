@@ -1,0 +1,26 @@
+*
+*#ident	"$Header: m2392k 1.2 90/09/02 $"
+* Fujitsu M2392K (Swallow 6) with 81 sectors
+*
+* Dimensions:
+*   512 bytes/sector
+*    81 sectors/track
+*    21 tracks/cylinder
+*  1916 cylinders
+*  1913 user accessible cylinders
+*
+* Types:
+*	00	No Partition
+*	01	Regular Partition
+*	02	Boot Block
+*	03	Reserved Disk Area
+*
+* Partition	Type	Start Sector	Size in Sectors	   Block Sz    Frag Sz
+   00		1	1500282		51030		   8192        1024
+   01		1	1551312		207522		   8192        1024
+   02		1	1758834		1496880		   8192        1024
+   03		1	1733		1498549		   8192        1024
+   12		3	0		1701		   0           0
+   13		3	3255714		3402		   0           0
+   14		2	1701		16		   0           0
+   15		3	1717		16		   0           0

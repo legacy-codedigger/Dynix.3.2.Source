@@ -1,0 +1,60 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: factor.6 1.7 90/02/07 $
+.EQ
+delim $$
+ndefine E1 '"2 to the 31st power minus 1"'
+tdefine E1 '2 sup 31 - 1'
+ndefine E2 '"2.1e9"'
+tdefine E2 '2.1 times 10 sup 9'
+ndefine E3 '"the square root of " n'
+tdefine E3 'sqrt n'
+.EN
+.TH FACTOR 6 "\*(V)" "7th Edition"
+.SH NAME
+factor, primes \- factor a number, generate large primes
+.SH SYNOPSIS
+.B factor
+[ number ]
+.PP
+.B primes
+[ number ]
+.SH DESCRIPTION
+When
+.I factor
+is invoked without an argument, it waits for a number to be typed in.
+If you type a positive number less than $E1$
+(about $E2$), it will factor the number and
+print its prime factors; each one is printed the proper amount of times.
+Then it waits for another number.
+It exits if it encounters a zero or any non-numeric character.
+.PP
+If
+.I factor
+is invoked with an argument, it factors the number as above and
+then exits.
+.PP
+Maximum time to factor $n$ is proportional to $E3$ and occurs
+when $n$ is prime or the square of a prime.
+.PP
+When
+.I primes
+is invoked without an argument, it waits for a number to be typed in.
+If you type in a number less than $E1$, it will print
+all the primes greater than this number.
+.PP
+If
+.I primes
+is invoked with an argument, it produces the prime numbers as 
+described above and then exits.
+.SH DIAGNOSTICS
+`Ouch.' for input out of range or garbage input.

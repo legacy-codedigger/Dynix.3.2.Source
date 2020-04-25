@@ -1,0 +1,106 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: halt.8 1.10 90/07/23 $
+.TH HALT 8 "\*(V)" "4BSD"
+.SH NAME
+halt \- stop the processor
+.SH SYNOPSIS
+.B /etc/halt
+[
+.B \-n
+]
+[
+.B \-q
+]
+[
+.B \-y
+]
+[
+.B \-l
+]
+.SH DESCRIPTION
+The
+.B halt
+command stops all but one processor, runs the command script
+.B rc.shutdown
+with the
+argument
+.IR  halt ,
+executes a
+.B sync
+system call, and then stops
+the remaining processor.
+The machine does not reboot,
+even if auto-reboot mode is selected on the front panel.
+.SH OPTIONS
+.PP
+.TP
+.B \-q
+Halt quickly without executing the shutdown script.  This option is
+not recommended except in an emergency.
+.TP
+.B \-n
+Skip the
+.B sync
+before halting.  The
+.B \-q
+option should be used with
+.B \-n
+if the
+.B rc.shutdown
+script runs commands that 
+.I sync
+the disks (such as
+.BR umount (8)).
+.TP
+.B \-y
+Force the system to halt from a dialup.
+.TP
+.B \-l
+.B Halt
+normally logs the halt using
+.BR syslog (8).
+This action is inhibited if the
+.B \-l 
+option is present.
+.PP
+.B Halt
+places a shutdown record in the login accounting file
+.I /usr/adm/wtmp
+unless the
+.B \-n
+or
+.B \-q
+options are present.
+.SH FILES
+.if n .ta 2i
+.if t .ta 1.5i
+.I "/etc/rc.shutdown	"
+system shutdown script
+.br
+.I "/usr/adm/wtmp	"
+login accounting file
+.SH SEE ALSO
+.BR fastboot (8),
+.BR reboot (8),
+.BR shutdown (8),
+.BR syslogd (8),
+.BR rc (8),
+.BR sync (2)
+.SH BUGS
+The shutdown script should know not to 
+.I sync
+the disks when 
+.B halt
+is given the
+.B -n
+option.

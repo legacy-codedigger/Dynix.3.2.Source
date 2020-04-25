@@ -1,0 +1,9 @@
+Thu Mar 19 09:42 1987  digits.p:
+     4  r := 0.;
+e -------------^--- Digits required after decimal point
+     5  r := .0;
+e -----------^--- Digits required before decimal point
+     6  r := 1.e10;
+e -------------^--- Digits required after decimal point
+     7  r := .05e-10;
+e -----------^--- Digits required before decimal point

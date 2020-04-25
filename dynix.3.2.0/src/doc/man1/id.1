@@ -1,0 +1,89 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: id.1 1.6 87/05/04 $
+.TH ID 1 "\*(V)" "DYNIX"
+.SH NAME
+id \- file identification program
+.SH SYNOPSIS
+.B id
+[
+.B \-rl
+] name ...
+.SH DESCRIPTION
+.I Id
+produces a line containing a checksum, bytecount,
+and pathname for each
+.IR name .
+Every
+.I name
+must be a pathname starting at the root
+(that is, beginning with a slash ``/'').
+Specifying
+.B \-l
+(as in
+.IR "ls -l" )
+selects a full identification, which adds userid, groupid, and mode
+to the basic information.
+Specifying
+.B \-r
+(as in
+.IR "ls -r" )
+causes
+.I id
+to recursively enter all directories and identify each file in those
+directories (and so on).
+.PP
+If
+.I name
+is a symbolic link, then the bytecount and checksum fields apply to the
+file the link is pointing to, not to the link itself.
+All other fields refer to the link file itself.
+.SH "EXAMPLE"
+.Ps
+id /etc/rc
+09210 2706   /etc/rc
+.Pe
+.PP
+In this example, the checksum is 09210, the byte count is 2706, and
+the filename is
+.IR /etc/rc .
+.Ps
+id -l /etc/rc
+09210 2706     0/10  ---644 /etc/rc
+.Pe
+.PP
+In this example, the checksum is 09210, the byte count is 2706,
+the user ID is 0 (zero), the group ID is 10, the permissions are 644
+(rw-r--r-- or owner read/write, group read, and universal read),
+and the filename is
+.IR /etc/rc .
+.Ps
+id -r /usr/lib/ms
+00000 0      /usr/lib/ms
+40826 1996   /usr/lib/ms/README
+24732 366    /usr/lib/ms/end.awk
+32541 354    /usr/lib/ms/endnote
+27167 2283   /usr/lib/ms/s.acc
+35582 2907   /usr/lib/ms/s.cov
+49370 1505   /usr/lib/ms/s.eqn
+45571 2388   /usr/lib/ms/s.ref
+12266 1115   /usr/lib/ms/s.tbl
+06573 260    /usr/lib/ms/s.ths
+11940 1440   /usr/lib/ms/s.toc
+20075 532    /usr/lib/ms/swapacc
+.Pe
+.PP
+In this example, the 11 files within the directory
+.I /usr/lib/ms
+have the indicated checksums and byte counts.
+.SH "SEE ALSO"
+ls (1)

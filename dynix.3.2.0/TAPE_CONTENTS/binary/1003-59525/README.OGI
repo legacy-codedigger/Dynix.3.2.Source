@@ -1,0 +1,18 @@
+----------------------------
+Thu Mar 19 23:52:44 PST 1992  bruce@ogicse
+
+CONTENTS:
+
+    Extracted contents of the first two tape files.
+    Should be regarded as read-only; i.e., any mods to lists, etc.,
+	should be done in the working directory.
+
+DIR:
+
+    tar tv listings of all 89 tape files (numbered from 0).
+
+delta:
+
+    Working directory for doing the delta installation.
+    Installation starts with extracting tape file 0 into here.
+

@@ -1,0 +1,53 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: getpseudotty.3 1.6 87/06/04 $
+.TH GETPSEUDOTTY 3 "\*(V)" "DYNIX"
+.SH NAME
+getpseudotty, ispseudotty \- get or query pseudo terminals
+.SH SYNOPSIS
+.nf
+.PP
+.B int getpseudotty(slave, master)
+.B char **slave, **master;
+.PP
+.B int ispseudotty(ttyname)
+.B char *ttyname;
+.fi
+.SH DESCRIPTION
+.I Getpseudotty
+locates an available pseudo terminal device pair
+and returns a open file descriptor of the master
+side opened for reading and writing.  The pathname
+of the pair is returned through the slave and master
+arguments.
+.PP
+If
+.I getpseudotty
+is unable to find any available pseudo terminals,
+it returns -1.
+.PP
+.I Ispseudotty
+returns non-zero if
+.I ttyname
+is a valid pseudo terminal name.
+The expected format of
+.I ttyname
+is the pathname minus "/dev/" prefix.
+.SH FILES
+/dev/getpty
+.SH "SEE ALSO"
+pty(4)
+.SH BUGS
+The return values of
+.I getpseudotty
+point to static data whose contents
+are overwritten by each call.

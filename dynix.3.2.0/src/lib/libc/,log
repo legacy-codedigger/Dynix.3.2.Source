@@ -1,0 +1,3 @@
+Disabled build and installation of exportlib (non-encryption), mainly to
+    avoid proliferation of versions (FPA, profiled, encryption).
+BOZOES -- "export" is the encryption version, not the export version!

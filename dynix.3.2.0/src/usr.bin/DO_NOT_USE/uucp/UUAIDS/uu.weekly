@@ -1,0 +1,7 @@
+: Weekly uucp script
+
+cd /usr/spool/uucp
+for i in CONNECT ERRLOG
+do
+	mv $i $i.old
+done

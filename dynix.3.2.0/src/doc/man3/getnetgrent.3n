@@ -1,0 +1,91 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: getnetgrent.3n 1.6 87/06/21 $
+.\" @(#)getnetgrent.3n 1.1 85/12/28 SMI; from UCB 4.2
+.TH GETNETGRENT 3N "\*(V)" "4BSD"
+.SH NAME
+endnetgrent, getnetgrent, innetgr, setnetgrent \- get network group entry
+.SH SYNOPSIS
+.nf
+\f3endnetgrent()
+.sp
+getnetgrent(machinep, userp, domainp)
+char **machinep, **userp, **domainp;
+.sp
+innetgr(netgroup, machine, user, domain)
+char *netgroup, *machine, *user, *domain;
+.sp
+setnetgrent(netgroup)
+char *netgroup;\f1
+.fi
+.\".IX  "get network group entry"
+.\".IX  "set network group entry"
+.\".IX  "network group entry"  get
+.\".IX  "group entry"  "get network"
+.\".IX  "getnetgrent function"  ""  "\f2getnetgrent\fP \(em get network group entry"
+.\".IX  "setnetgrent function"  ""  "\f2setnetgrent\fP \(em get network group entry"
+.\".IX  "endnetgrent function"  ""  "\f2endnetgrent\fP \(em get network group entry"
+.\".IX  "innetgr function"  ""  "\f2innetgr\fP \(em get network group entry"
+.SH DESCRIPTION
+\fIInngetgr\fP returns 1 or 0, depending on whether
+\fInetgroup\fP contains the machine, user, domain triple as a member.
+Any of the three strings machine, user, or domain can be NULL, in
+which case it signifies a wild card.
+.PP
+\fIGetnetgrent\fP
+returns the next member of a network group.  After the call,
+.I machinep
+contains a pointer to a string containing the name
+of the machine part of the network group member, and similarly
+for
+.I userp
+and
+\f2domainp\f1.
+If any of
+\f2machinep\f1,
+\f2userp\f1,
+or
+.I domainp
+is returned as a NULL pointer, it signifies a wild card.
+.I Getnetgrent
+\f2malloc\f1s
+space for the name.
+This space is released when a
+.I endnetgrent
+call is made.
+.I Getnetgrent
+returns 1 if it succeeds in obtaining another member of the network group;
+0 if it has reached the end of the group.
+.PP
+.I Setnetgrent
+establishes the network group from which
+.I getnetgrent
+obtains members and restarts calls to
+.I getnetgrent
+from the beginning of the list.
+If the previous
+.I setnetgrent
+call was to a different network group,
+a
+.I endnetgrent
+call is implied.
+.I Endnetgrent
+frees the space allocated during the
+.I getnetgrent
+calls.
+.SH FILES
+.nf
+/etc/netgroup
+/etc/yp/\f2domain\f1/netgroup
+/etc/yp/\f2domain\f1/netgroup.byhost
+/etc/yp/\f2domain\f1/netgroup.byuser
+.fi

@@ -1,0 +1,43 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: getpw.3c 1.5 86/05/13 $
+.TH GETPW 3C "\*(V)" "7th Edition"
+.SH NAME
+getpw \- get name from uid
+.SH SYNOPSIS
+.nf
+.B getpw(uid, buf)
+.B char *buf;
+.fi
+.SH DESCRIPTION
+.ft 3
+Getpw is obsoleted by getpwuid(3).
+.ft 1
+.PP
+.I Getpw
+searches the password file for
+the (numerical)
+.IR uid ", and fills in " "buf"
+with the corresponding line;
+it returns non-zero if
+.IR uid ""
+could not
+be found.
+The line is null-terminated.
+.SH FILES
+/etc/passwd
+.SH "SEE ALSO"
+getpwent(3),
+passwd(5)
+.SH DIAGNOSTICS
+Non-zero
+return on error.

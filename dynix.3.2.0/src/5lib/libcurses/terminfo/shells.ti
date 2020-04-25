@@ -1,0 +1,39 @@
+#
+# Terminfo entries for the Balance Station Software
+# Gem-Shells product.  Each of these describes an
+# ansi (vt100) terminal emulator running with
+# different options or on different hardware.
+#
+# Suffixes: 
+#	-c	running on an IBM PC Color Graphics Adapter.
+#	-h	running on a Hercules Graphics Adapter.
+#	-e	running on an IBM PC Enhanced Graphics Adapter.
+#
+# Using the small font, everyone can use the 'shells' entry.
+# Most low-resolution devices have a special large-font entry
+# (i.e. 'shells-e') because a standard 24 x 80 screen won't
+# fit on the screen with the large font.  High-res controllers
+# (like the Wyse-700 and Metheus Omega PC) don't need to bother
+# with special entries.
+#
+shells|Gem-Shells ANSI emulation usual case,
+	am, xenl, xon,
+	cols#80, lines#24,
+	bel=^G, cbt=\E[Z, clear=\E[H\E[J, cr=\r,
+	cub=\E[%p1%dD, cub1=\b, cud=\E[%p1%dB, cud1=\n,
+	cuf=\E[%p1%dC, cuf1=\E[C, cup=\E[%i%p1%d;%p2%dH,
+	cuu=\E[%p1%dA, cuu1=\E[A, dch1=\E[P, dl=\E[%p1%dM,
+	ed=\E[J, el=\E[K, home=\E[H, hpa=\E[%i%p1%dG, ht=\t,
+	hts=\EH, ich1=\E[@, il=\E[%p1%dL, ind=\E[S, kbs=\b,
+	kcub1=\E[D, kcud1=\E[B, kcuf1=\E[C, kcuu1=\E[A,
+	khome=\E[H, ri=\E[T, rmso=\E[0m, smso=\E[1m,
+	tbc=\E[3g, vpa=\E[%i%p1%dd,
+shells-c|Gem-Shells ANSI emulation on CGA with large font,
+	cols#77, lines#20,
+	use=shells,
+shells-e|Gem-Shells ANSI emulation on EGA with large font,
+	cols#77, lines#21,
+	use=shells,
+shells-h|Gem-Shells ANSI emulation on Hercules adapter with large font,
+	lines#21,
+	use=shells,

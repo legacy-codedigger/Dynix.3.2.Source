@@ -1,0 +1,17 @@
+.\" $Copyright:	$
+...
+.V= $Header: ctape.4 1.1 90/11/02 $
+.TH CTAPE 4 "\*(V)" "DYNIX"
+.SH NAME
+ctape \- cartridge tape pseudo device
+.SH DESCRIPTION
+The devices ctape0 (rewind) and ctape8 (no rewind) are interfaces to the
+cartridge tape drive.  On SSM-based machines, they are links to rtm0
+and rtm8, respectively.  On SCED-based machines, they are links to rts0
+and rts8, respectively.  The ctape links provide a consistent interface
+to the cartridge tape drive, independent of the machine type.  These links
+are created by /dev/MAKEDEV when invoked with "std", "mtape", or "ctape".
+.SH FILES
+/dev/ctape*
+.SH "SEE ALSO"
+mt(1), ts(4), tm(4), mtape(4), makedev(8)

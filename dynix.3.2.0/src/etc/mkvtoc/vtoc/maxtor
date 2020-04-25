@@ -1,0 +1,24 @@
+*
+*#ident	"$Header: maxtor 1.1 90/01/30 $"
+* Maxtor model XT1140 with interleave 1-1
+*
+* Dimensions:
+*   512 bytes/sector
+*    17 sectors/track
+*    15 tracks/cylinder
+*   918 cylinders
+*   915 user accessible cylinders
+*
+* Types:
+*	00	No Partition
+*	01	Regular Partition
+*	02	Boot Block
+*	03	Reserved Disk Area
+*
+* Partition	Type	Start Sector	Size in Sectors	   Block Sz    Frag Sz
+   00		1	32		49183		   8192        1024
+   01		1	49215		58395		   8192        1024
+   02		1	107610		125715		   8192        1024
+   13		3	233325		765		   0           0
+   14		2	0		16		   0           0
+   15		3	16		16		   0           0

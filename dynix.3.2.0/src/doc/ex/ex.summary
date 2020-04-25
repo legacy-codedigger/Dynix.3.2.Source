@@ -1,0 +1,713 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+. \" $Header: ex.summary 1.5 87/04/20 $
+.ds p \v'-0.2'.\v'+0.2'
+.ds U \s-2UNIX\s+2
+.ds c \v'-0.2':\v'+0.2'
+.nr PO 1.0i
+.nr LL 6.75i
+.lt 6.75i
+.ll 6.75i
+.ds CH
+.ds LF Computing Services, U.C. Berkeley
+.ds RF April 3, 1979
+.de SP
+.sp 1v
+..
+.nr PI 3n
+.nr PD 0
+.ND
+.ps 12
+.ft 3
+.ce 1
+Ex/Edit Command Summary (Version 2.0)
+.ft 1
+.nr VS 11
+.nr PS 9
+.nr HM 0.5i
+.nr CW
+.2C
+.PP
+.I Ex
+and
+.I edit
+are text editors, used for creating
+and modifying files of text on the \*U
+computer system.
+.I Edit
+is a variant of
+.I ex
+with features designed to
+make it less complicated
+to learn and use.
+In terms of command syntax and effect
+the editors are essentially identical,
+and this command summary applies to both.
+.PP
+The summary is meant as a quick reference
+for users already acquainted
+with
+.I edit
+or \f2ex\fP.
+Fuller explanations of the editors are available
+in the documents
+.I
+Edit: A Tutorial
+.R
+(a self-teaching introduction) and the
+.I
+Ex Reference Manual
+.R
+(the comprehensive reference source for
+both \f2edit\fP and \f2ex\fP).
+Both of these writeups are available in the
+Computing Services Library.
+.PP
+In the examples included with the
+summary, commands and text entered by
+the user are printed in \f3boldface\f1 to
+distinguish them from responses printed
+by the computer.
+.sp 0.45v
+.LP
+.B
+The Editor Buffer
+.PP
+In order to perform its tasks
+the editor sets aside a temporary
+work space,
+called a \f2buffer\f1,
+separate from the user's permanent
+file.
+Before starting to work on an existing
+file the editor makes a copy of it in the
+buffer, leaving the original untouched.
+All editing changes are made to the
+buffer copy, which must then
+be written back to the permanent
+file in order to update the
+old version.
+The buffer disappears
+at the end of the editing session.
+.sp 0.45v
+.LP
+.B
+Editing: Command and Text Input Modes
+.PP
+.R
+During an editing session there are
+two usual modes of operation:
+\f2command\fP mode and \f2text input\fP
+mode.
+(This disregards, for the moment,
+.I open
+and
+.I visual
+modes, discussed below.)
+In command mode, the editor issues a
+colon prompt (:)
+to show that it is ready to
+accept and execute a command.
+In text input mode, on the other hand, there is
+no prompt and the editor merely accepts text to
+be added to the buffer.
+Text input mode is initiated by the commands
+\f2append\fP, \f2insert\fP, and \f2change\fP,
+and is terminated by typing a period as the
+first and only character on a line.
+.sp 0.45v
+.LP
+.B
+Line Numbers and Command Syntax
+.PP
+.R
+The editor keeps track of lines of text
+in the buffer by numbering them consecutively
+starting with 1 and renumbering
+as lines are added or deleted.
+At any given time the editor is positioned
+at one of these lines; this position is
+called the \f2current line\fP.
+Generally, commands that change the
+contents of the buffer print the
+new current line at the end of their
+execution.
+.PP
+Most commands can be preceded by one or two
+line-number addresses which indicate the lines
+to be affected.
+If one number is given the command operates on
+that line only; if two, on an inclusive range
+of lines.
+Commands that can take line-number prefixes also
+assume default prefixes if none are given.
+The default assumed by each command is designed
+to make it convenient to use in many instances
+without any line-number prefix.
+For the most part, a command used without a
+prefix operates on the current line,
+though exceptions to this rule should be noted.
+The \f2print\fP command
+by itself, for instance, causes
+one line, the current line, to be
+printed at the terminal.
+.PP
+The summary shows the number of line addresses
+that can be
+prefixed to each command as well as
+the defaults assumed if they are omitted.
+For example,
+.I (.,.)
+means that up to 2 line-numbers may be given,
+and that if none is given the
+command operates on the current line.
+(In the address prefix notation, ``.'' stands
+for the current line and ``$'' stands for
+the last line of the buffer.)
+If no such notation appears, no
+line-number prefix may be used.
+.PP
+Some commands take trailing
+information;
+only
+the more important instances of this
+are mentioned in the summary.
+.sp 0.25v
+.LP
+.B
+Open and Visual Modes
+.PP
+.R
+Besides command and text input modes,
+.I ex
+and
+.I edit
+provide on some CRT terminals other modes of editing,
+.I open
+and
+.I visual .
+In these modes the cursor can
+be moved to individual words
+or characters in a line.
+The commands then given are very different
+from the standard editor commands; most do not appear on the screen when
+typed.
+.I
+An Introduction to Display Editing with Vi
+.R
+provides a full discussion.
+.sp 0.25v
+.LP
+.B
+Special Characters
+.PP
+.R
+.fi
+Some characters take on special meanings
+when used in context searches
+and in patterns given to the \f2substitute\fP command.
+For \f2edit\f1, these are ``^'' and ``$'',
+meaning the beginning and end of a line,
+respectively.
+.I Ex
+has the following additional special characters:
+.B
+.ce 1
+\&.     &     *     [     ]     ~
+.R
+To use one of the special characters as its
+simple graphic representation
+rather than with its special meaning,
+precede it by a backslash (\\).
+The backslash always has a special meaning.
+.1C
+.rm LF
+.rm RF
+.rm CF
+.nr FM 0.4
+.TS
+cp10 cp10 cp10 cp10
+ltw(1.0i) lt2w(0.40i)fB ltw(3.0i) ltw(1.8i).
+Name	Abbr	Description	Examples
+.sp 1.75
+(.)\f3append	a	T{
+Begins text input mode,
+adding lines to the buffer after
+the line specified. Appending continues
+until ``.'' is typed alone at the
+beginning of a new line, followed by
+a carriage return. \f20a\f1 places
+lines at the beginning of the buffer.
+T}	T{
+.nf
+\f1:\f3a
+Three lines of text
+are added to the buffer
+after the current line.
+\*p
+.R
+\*c
+.fi
+T}
+.SP
+\f1(.,.)\f3change	c	T{
+Deletes indicated line(s) and
+initiates text input mode to
+replace them with new text which follows.
+New text is terminated the same way
+as with \f2append\f1.
+T}	T{
+.nf
+:\f35,6c
+Lines 5 and 6 are
+deleted and replaced by
+these three lines.
+\*p
+.R
+\*c
+.fi
+T}
+.SP
+\f1(.,.)\f3copy \f2addr	co	T{
+Places a copy of the specified lines
+after the line indicated by \f2addr\f1.
+The example places a copy of lines 8 through
+12, inclusive, after line 25.
+T}	T{
+.nf
+\f1:\f38,12co 25
+\f1Last line copied is printed
+\f1\*c
+.fi
+T}
+.SP
+\f1(.,.)\f3delete	d	T{
+Removes lines from the buffer
+and prints the current line after the deletion.
+T}	T{
+.nf
+\f1:\f313,15d
+\f1New current line is printed
+\*c
+.fi
+T}
+.TE
+.sp 0.5v
+.TS
+ltw(1.0i) lt2w(0.40i)fB ltw(3.0i) ltw(1.8i).
+T{
+\f3edit \f2file\fP
+.br
+\f3edit! \f2file\fP
+T}	T{
+e
+.br
+e!
+T}	T{
+.fi
+\f1Clears the editor buffer and then
+copies into it the named \f2file\f1,
+which becomes the current file.
+This is a way of shifting to a different
+file
+without leaving the editor.
+The editor issues a warning
+message if this command is used before
+saving changes
+made to the file already in the buffer;
+using the form \f3e!\f1 overrides this protective mechanism.
+T}	T{
+.nf
+\f1:\f3e ch10\f1
+No write since last change
+:\f3e! ch10\f1
+"ch10" 3 lines, 62 characters
+\*c
+.fi
+T}
+.SP
+\f3file \f2name\f1	f	T{
+\f1If followed by a \f2name\f1, renames
+the current file to \f2name\f1.
+If used without \f2name\f1, prints
+the name of the current file.
+T}	T{
+.nf
+\f1:\f3f ch9
+\f1"ch9" [Modified] 3 lines ...
+:\f3f
+\f1"ch9" [Modified] 3 lines ...
+\*c
+.fi
+T}
+.SP
+(1,$)\f3global	g	\f3global/\f2pattern\f3/\f2commands	T{
+.nf
+:\f3g/nonsense/d
+\f1\*c
+.fi
+T}
+\f1(1,$)\f3global!	g!\f1 or \f3v	T{
+Searches the entire buffer (unless a smaller
+range is specified by line-number prefixes) and
+executes \f2commands\f1 on every line with
+an expression matching \f2pattern\f1.
+The second form, abbreviated
+either \f3g!\f1 or \f3v\f1,
+executes \f2commands\f1 on lines that \f2do
+not\f1 contain the expression \f2pattern\f1.
+T}	\^
+.SP
+\f1(.)\f3insert	i	T{
+Inserts new lines of text immediately before the specified line.
+Differs from
+.I append
+only in that text is placed before, rather than after, the indicated line.
+In other words, \f31i\f1 has the same effect as \f30a\f1.
+T}	T{
+.nf
+:\f31i
+These lines of text will
+be added prior to line 1.
+\&.
+\f1:
+.fi
+T}	\^
+.SP
+\f1(.,.+1)\f3join	j	T{
+Join lines together, adjusting white space (spaces
+and tabs) as necessary.
+T}	T{
+.nf
+:\f32,5j\f1
+Resulting line is printed
+:
+.fi
+T}	\^
+.TE
+.bp
+.TS
+cp10 cp10 cp10 cp10
+ltw(1.0i) lt2w(0.40i)fB ltw(3.0i) ltw(1.8i).
+Name	Abbr	Description	Examples
+.sp 1.75
+\f1(.,.)\f3list	l	T{
+\f1Prints lines in a more
+unambiguous way than the \f2print\f1
+command does. The end of a line,
+for example, is marked with a ``$'',
+and tabs printed as ``^I''.
+T}	T{
+.nf
+:\f39l
+\f1This is line 9$
+\*c
+.fi
+T}
+.TE
+.sp 0.5v
+.TS
+ltw(1.0i) lt2w(0.40i)fB ltw(3.0i) ltw(1.8i).
+\f1(.,.)\f3move \f2addr\f3	m	T{
+\f1Moves the specified lines
+to a position after the line
+indicated by \f2addr\f1.
+T}	T{
+.nf
+\f1:\f312,15m 25\f1
+New current line is printed
+\*c
+.fi
+T}
+.SP
+\f1(.,.)\f3number	nu	T{
+Prints each line preceded
+by its buffer line number.
+T}	T{
+.nf
+\f1:\f3nu
+\0\0\f110\0 This is line 10
+\*c
+.fi
+T}
+.SP
+\f1(.)\f3open	o	T{
+Too involved to discuss here,
+but if you enter open mode
+accidentally, press
+the \s-2ESC\s0 key followed by
+\f3q\f1 to
+get back into normal editor
+command mode.
+\f2Edit\fP is designed to
+prevent accidental use of
+the open command.
+T}	
+.SP
+\f3preserve	pre	T{
+Saves a copy of the current buffer contents as though the system had
+just crashed.  This is for use in an emergency when a
+.I write
+command has failed and you don't know how else to save your work.\(dg
+T}	T{
+.nf
+:\f3preserve\f1
+File preserved.
+:
+.fi
+T}
+.SP
+\f1(.,.)\f3print	p	Prints the text of line(s).	T{
+.nf
+:\f3+2,+3p\f1
+The second and third lines
+after the current line
+:
+.fi
+T}
+.TE
+.FS
+\(dg Seek assistance from a consultant as soon as possible
+after saving a file with the
+.I preserve
+command, because the file is saved on system storage space for only one week.
+.FE
+.SP
+.nf
+.TS
+ltw(1.0i) lt2w(0.40i)fB ltw(3.0i) ltw(1.8i).
+T{
+.nf
+\f3quit
+quit!
+.fi
+T}	T{
+.nf
+q
+q!
+T}	T{
+.fi
+\f1Ends the editing session.
+You will receive a
+warning if you have changed the buffer
+since last writing its contents
+to the file. In this event you
+must either type \f3w\f1 to write,
+or type \f3q!\f1 to exit from
+the editor without saving your changes.
+T}	T{
+.nf
+\f1:\f3q
+\f1No write since last change
+:\f3q!
+\f1%
+.fi
+T}
+.SP
+\f1(.)\f3read \f2file\fP	r	T{
+.fi
+\f1Places a copy of \f2file\f1 in the
+buffer after the specified line.
+Address 0 is permissible and causes
+the copy of \f2file\f1 to be placed
+at the beginning of the buffer.
+The \f2read\fP command does not
+erase any text already in the buffer.
+If no line number is specified,
+\f2file\f1 is placed after the
+current line.
+T}	T{
+.nf
+\f1:\f30r newfile
+\f1"newfile" 5 lines, 86 characters
+\*c
+.fi
+T}
+.SP
+\f3recover \f2file\fP	rec	T{
+.fi
+Retrieves a copy of the editor buffer
+after a system crash, editor crash,
+phone line disconnection, or
+\f2preserve\f1 command.
+T}
+.SP
+\f1(.,.)\f3substitute	s	T{
+.nf
+\f3substitute/\f2pattern\f3/\f2replacement\f3/
+substitute/\f2pattern\f3/\f2replacement\f3/gc
+.fi
+\f1Replaces the first occurrence of \f2pattern\f1
+on a line
+with \f2replacement\fP.
+Including a \f3g\f1 after the command
+changes all occurrences of \f2pattern\fP
+on the line.
+The \f3c\f1 option allows the user to
+confirm each substitution before it is
+made; see the manual for details.
+T}	T{
+.nf
+:\f33p
+\f1Line 3 contains a misstake
+:\f3s/misstake/mistake/
+\f1Line 3 contains a mistake
+\*c
+.fi
+T}
+.TE
+.bp
+.TS
+cp10 cp10 cp10 cp10
+ltw(1.0i) lt2w(0.40i)fB ltw(3.0i) ltw(1.8i).
+Name	Abbr	Description	Examples
+.sp 1.75
+\f3undo	u	T{
+.fi
+\f1Reverses the changes made in
+the buffer by the last buffer-editing
+command.
+Note that this example contains
+a notification about the number of
+lines affected.
+T}	T{
+.nf
+\f1:\f31,15d
+\f115 lines deleted
+new line number 1 is printed
+:\f3u
+\f115 more lines in file ...
+old line number 1 is printed
+\*c
+.fi
+T}
+.SP
+\f1(1,$)\f3write \f2file\f1	w	T{
+.fi
+\f1Copies data from the buffer onto
+a permanent file. If no \f2file\f1
+is named, the current filename
+is used.
+The file is automatically created
+if it does not yet exist.
+A response containing the number of
+lines and characters in the file
+indicates that the write
+has been completed successfully.
+The editor's built-in protections
+against overwriting existing files
+will in some circumstances
+inhibit a write.
+The form \f3w!\f1 forces the
+write, confirming that
+an existing file is to be overwritten.
+T}	T{
+.nf
+\f1:\f3w
+\f1"file7" 64 lines, 1122 characters
+:\f3w file8
+\f1"file8" File exists ...
+:\f3w! file8
+\f1"file8" 64 lines, 1122 characters
+\*c
+.fi
+T}
+\f1(1,$)\f3write! \f2file\fP	w!	\^	\^
+.TE
+.sp 0.5v
+.TS
+ltw(1.0i) lt2w(0.40i)fB ltw(3.0i) ltw(1.8i).
+\f1(.)\f3z \f2count\fP	z	T{
+.fi
+\f1Prints a screen full of text starting
+with the line indicated;
+or, if \f2count\f1 is specified,
+prints that number of lines.
+Variants of the \f2z\f1 command
+are described in the manual.
+T}	
+.SP
+\f3!\f2command		T{
+.fi
+Executes the remainder of the line
+after \f3!\f1 as a \*U command.
+The buffer is unchanged by this, and
+control is returned to the editor when
+the execution of \f2command\f1 is complete.
+T}	T{
+.nf
+\f1:\f3!date
+\f1Fri Jun 9 12:15:11 PDT 1978
+!
+\*c
+.fi
+T}
+.SP
+\f1control-d		T{
+.fi
+Prints the next \f2scroll\f1 of text,
+normally half of a screen. See the
+manual for details of the \f2scroll\f1
+option.
+T}
+.SP
+\f1(.+1)<cr>		T{
+.fi
+An address alone followed by a carriage
+return causes the line to be printed.
+A carriage return by itself prints the
+line following the current line.
+T}	T{
+.nf
+:\f1<cr>
+the line after the current line
+\*c
+.fi
+T}
+.TE
+.sp 0.5v
+.TS
+ltw(1.0i) lt2w(0.40i)fB ltw(3.0i) ltw(1.8i).
+\f3/\f2pattern\f3/		T{
+.fi
+\f1Searches for the next line in which
+\f2pattern\f1 occurs and prints it.
+T}	T{
+.nf
+\f1:\f3/This pattern/
+\f1This pattern next occurs here.
+\*c
+.fi
+T}
+.SP
+\f3//		T{
+Repeats the most recent search.
+T}	T{
+.nf
+\f1:\f3//
+\f1This pattern also occurs here.
+\*c
+.fi
+T}
+.SP
+\f3?\f2pattern\f3?		T{
+Searches in the reverse direction
+for \f2pattern\fP.
+T}	
+.SP
+\f3??		T{
+Repeats the most recent search,
+moving in the reverse direction
+through the buffer.
+T}
+.TE
+

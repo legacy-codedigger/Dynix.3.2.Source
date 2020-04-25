@@ -1,0 +1,142 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+.\"
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.  This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: se.4 1.9 86/08/18 $
+.TH SE 4 "\*(V)" "DYNIX"
+.SH NAME
+se \- Balance 8000 10 Mb/s Ethernet interface
+.SH SYNOPSIS
+.B "device se0 at sec? doneq 200 req 200 bin 6 unit 0	# input side"
+.br
+.B "device se0 at sec? doneq 10 req 10 bin 6 unit 1	# output side"
+.SH DESCRIPTION
+The
+.I se
+interface provides access to a 10 Mb/s Ethernet network through
+a Balance 8000 SCSI/Ethernet/Diagnostics (SCED) Board.
+.PP
+The host's Internet address is specified at boot time with an SIOCSIFADDR
+ioctl.
+The
+.I se
+interface employs the address resolution protocol described in
+.IR arp (4P)
+to dynamically map between Internet and Ethernet addresses on the local
+network.
+.PP
+The description used by
+.I config
+requires two lines to describe each ether interface:
+one line for the input side and one line for the output side.
+.SH BINARY CONFIGURATION
+The file /sys/conf/conf_if_se.c contains configuration
+information for the
+.I se
+interface that is used by the
+.I se
+driver.
+The variables defined in the binary configuration file are:
+.IP "se_gate" \w'se_gateMMMMM'u
+This is the SLIC gate that the
+.I se
+driver uses for synchronization.
+It should be one of the gate numbers allocated in
+/sys/machine/gate.h to device drivers (G_DRIVERMIN through G_DRIVERMAX).
+.IP "se_watch_interval"
+How often (in seconds) the
+.I se
+driver collects packet statistics from the SCED Ether controller.
+It is usually 60, causing statistics to be gathered once a minute.
+.IP "se_write_iats"
+The number of IATs (scatter/gather i/o entries) allocated per controller.
+This number should not be changed.
+.IP "se_bin"
+The DYNIX interrupt bin number (interrupt level) with which the SCED Ether
+controller is to interrupt DYNIX.
+This should be bin 5.
+.IP "se_mtu"
+The maximum packet size that the Balance will transmit.
+Defaults to ETHERMTU
+(1500,
+as defined by the Ethernet spec).
+Use a lower value only if one or more other systems on the net cannot
+accept full-size packets.
+DO NOT change ETHERMTU.
+.SH DIAGNOSTICS
+\f3se%d: can't allocate %d mbufs!.\fP
+At interface boot time, the driver was unable to allocate a
+sufficient number of mbufs for device input.
+.PP
+\f3se%d: can't handle address family %d.\fP
+The interface was handed a message with addresses formatted
+in an unsuitable address family; the packet was dropped.
+.PP
+\f3se%d: can't initialize sec %d.\fP
+The interface is unable to initialize a SCED Board
+for Ethernet input.
+.PP
+\f3se%d: invalid device chan %d (0x%x) in boot routine.\fP
+The interface boot routine was given an invalid device to initialize.
+This indicates some kind of software error in the Balance system.
+.PP
+\f3se%d: invalid interrupt vector %d.\fP
+An invalid interrupt vector was passed to the interface
+interrupt routine.
+The interrupt was ignored.
+.PP
+\f3se%d: invalid unit in init.\fP
+An invalid (non-configured or non-functional) SCED Board
+was passed to the interface init routine.
+The init request is ignored.
+.PP
+\f3se%d: se_add_read_progs: ran off end: shouldn't have!.\fP
+An internal consistency check within the driver failed.
+This implies a serious software error in the Ethernet interface.
+.PP
+\f3se%d: se_handle_read: status 0x%x.\fP
+.br
+\f3se%d: se_intr: status 0x%x.\fP
+.br
+\f3se%d: se_set_mode: status 0x%x.\fP
+.br
+\f3se%d: se_start: status 0x%x.\fP
+.br
+\f3se%d: se_watch: status 0x%x.\fP
+.br
+\f3se%d: se_handle_read: status 0x%x.\fP
+An unexpected status was returned when trying to send a command
+to the SCED Board.
+.PP
+\f3se: sec_start_prog(%d, cib 0x%x, slic %d, bin %d, vec %d, splok %d): takes too long!.\fP
+The SCED Board is not responding to commands from the interface.
+.SH FILES
+/sys/conf/conf_if_se.c		binary configuration file
+.SH SEE ALSO
+intro(4N), inet(4F), arp(4P)
+.SH BUGS
+Once an interface is brought up via
+.IR ifconfig (8C),
+the only way to disable it is to issue another
+.I ifconfig
+with a phony Internet address.
+.PP
+The PUP protocol family should be added.
+.PP
+Having to specify the device in two lines to
+.I config
+is an odd consequence of the way we talk to the Ethernet device.

@@ -1,0 +1,10 @@
+
+(insert-file-contents "lisp/version.el")
+
+(re-search-forward "emacs-version \"[0-9.]*")
+
+(insert ".0")
+
+(delete-file "lisp/version.el")
+
+(write-region (point-min) (point-max) "lisp/version.el" nil (quote nomsg))

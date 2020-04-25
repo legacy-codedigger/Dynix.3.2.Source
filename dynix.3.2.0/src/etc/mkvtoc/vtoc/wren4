@@ -1,0 +1,27 @@
+*
+*#ident	"$Header: wren4 1.1 90/01/30 $"
+* CDC Wren4 on SCSI
+*
+* Dimensions:
+*   512 bytes/sector
+*    54 sectors/track
+*     9 tracks/cylinder
+*   483 user accessible sectors/cylinder
+*  1326 cylinders
+*  1324 user accessible cylinders
+*
+* Types:
+*	00	No Partition
+*	01	Regular Partition
+*	02	Boot Block
+*	03	Reserved Disk Area
+*	04	Firmware (not used on SCED SCSI disk)
+*
+* Partition	Type	Start Sector	Size in Sectors	   Block Sz    Frag Sz
+   00		1	4347		49266		   8192        1024
+   01		1	53613		159873		   8192        1024
+   02		1	213486		425847		   8192        1024
+   12		4	32		4315		   0           0
+   13		3	639333		966		   0           0
+   14		2	0		16		   0           0
+   15		3	16		16		   0           0

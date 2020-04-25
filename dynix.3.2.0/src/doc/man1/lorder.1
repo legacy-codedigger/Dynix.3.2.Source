@@ -1,0 +1,54 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: lorder.1 1.4 86/05/13 $
+.TH LORDER 1 "\*(V)" "4BSD"
+.SH NAME
+lorder \- find ordering relation for an object library
+.SH SYNOPSIS
+.B lorder
+file ...
+.SH DESCRIPTION
+The input
+is one or more object or library archive (see
+.IR ar (1))
+.I files.
+The standard output
+is a list of pairs of object file names,
+meaning that the first file of the pair refers to
+external identifiers defined in the second.
+The output may be processed by
+.IR  tsort (1)
+to find an ordering of
+a library suitable for one-pass access by
+.IR  ld (1).
+.PP
+This brash one-liner intends to build a new library
+from existing `.o' files.
+.IP
+ar cr library \`\|lorder *.o | tsort\`
+.PP
+The need for lorder may be vitiated by use of 
+.IR ranlib (1),
+which converts an ordered archive into a randomly
+accessed library.
+.SH FILES
+*symref, *symdef
+.br
+nm(1), sed(1), sort(1), join(1)
+.SH "SEE ALSO"
+tsort(1),
+ld(1),
+ar(1),
+ranlib(1)
+.SH BUGS
+The names of object files, in and out of libraries, must end with `.o';
+nonsense results otherwise.

@@ -1,0 +1,226 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: pmap.4 1.8 1991/08/06 22:48:13 $
+.TH PMAP 4 "\*(V)" "DYNIX"
+.SH NAME
+pmap \- map physical addresses into process's virtual address space
+.SH SYNOPSIS
+pseudo-device   pmap
+.SH DESCRIPTION
+The
+.I pmap
+device driver is used in conjuction with the
+.IR mmap (2)
+system call to map arbitrary physical addresses into a process's
+virtual address space.
+The driver supports 65535 minor devices,
+each of which represents a specified region of the
+physical address space.
+The region associated with each device is defined at kernel build time
+in the file
+.IR /sys/conf/conf_pmap.c ,
+and can be altered at run time by the superuser via the
+.IR pmap (8)
+utility or the ioctls described in this manual entry.
+By default, the first 64 minor devices are associated with the files
+.I alm00
+through
+.I alm63
+in the
+.I /dev/alm
+directory.
+These files correspond to 64 1-Kbyte regions
+that make up Atomic Lock Memory on MULTIBUS adapter board 0.
+Atomic Lock Memory provides a hardware-based mutual exclusion
+facility for user-level programs,
+and is described in the
+.IR "Balance 8000 Guide to Parallel Programming" .
+.PP
+The
+.I pmap
+driver can support both physical devices
+(such as MULTIBUS address space, including Atomic Lock Memory)
+and non-paged memory devices (such as special areas of memory reserved
+for accelerators).
+.PP
+In
+.IR /sys/conf/conf_pmap.c ,
+the boot-time parameters of the minor devices
+are defined as an array of struct
+.IR pmap_unit ,
+which is defined as follows:
+.PP
+.nf
+.ta 0.7i 1.4i 2.1i 2.8i
+struct	pmap_unit {
+	u_long		pm_paddr;	/* start physical (byte) address */
+	u_long		pm_size;	/* size (in physical pages) */
+	u_char		pm_flags;	/* flags (see below) */
+	<other fields>			/* not user visible, initially zero */
+};
+.fi
+.PP
+The
+.I pm_paddr
+field must be a multiple of the system page
+size (see
+.IR getpagesize (2)),
+and the
+.I pm_size
+field must be a multiple of
+(system page size)/(hardware page size).
+The hardware page size is defined as NBPG in
+.IR /usr/include/machine/param.h .
+There are three flags:
+.PP
+.nf
+.ta 0.7i 1.4i 2.1i 2.8i
+#define	PMAP_EXCL	0x01	/* exclusive access */
+#define	PMAP_MAPPED	0x02	/* is currently mapped */
+#define	PMAP_NPMEM	0x04	/* non-paged memory, else physical */
+.fi
+.PP
+The PMAP_EXCL and PMAP_MAPPED flags should not be set in
+.IR conf_pmap.c .
+PMAP_NPMEM should be set if the associated device is of the
+non-paged memory variety.
+However, these requirements are not checked.
+.PP
+There is no
+.I read
+or
+.I write
+system call interface to this driver.
+.SH IOCTLS
+The
+.I pmap
+driver supports the following ioctls.
+(Refer to 
+.I /usr/include/sys/ioctl.h
+for information on ioctl calling parameters.)
+Some ioctls use the following structure, which is defined in
+.IR /usr/include/machine/pmap.h :
+.PP
+.nf
+.ta 0.7i 1.4i 2.1i
+struct	pmap_ioc {
+	u_long	pi_paddr;	/* start physical (byte) address */
+	u_long	pi_size;	/* size (bytes) */
+	u_char	pi_flags;	/* flags (see above) */
+};
+.fi
+.PP
+Note that in the
+.I pmap_ioc
+structure, the size is specified in bytes, while in the
+.I pmap_unit
+structure it is specified in hardware pages.
+.sp 2
+.ne 3
+.nf
+.ft 3
+.ta 0.7i 1.4i 2.1i
+ioctl(fd, PMAPIOCGETP, pmap_data)
+int		fd;
+struct	pmap_ioc *pmap_data;
+.ft 1
+.fi
+.PP
+Returns the current parameters from the
+.I pmap_unit
+table for
+the open unit referenced by
+.IR fd .
+Any process can execute this call.
+EFAULT results for unreasonable values of pmap_data.
+The flags bits are as defined above:
+PMAP_MAPPED tells if the unit is currently mapped,
+PMAP_EXCL indicates that exclusive use is currently in effect,
+and PMAP_NPMEM indicates that
+.I fd
+is configured as a non-paged memory device.
+.sp 2
+.ne 3
+.nf
+.ft 3
+.ta 0.7i 1.4i 2.1i
+ioctl(fd, PMAPIOCSETP, pmap_data)
+int		fd;
+struct	pmap_ioc *pmap_data;
+.ft 1
+.fi
+.PP
+PMAPIOCSETP allows a root process to set entries in the driver's
+.I pmap_unit
+table.
+EPERM results if the caller is not root.
+EFAULT results for unreasonable values of
+.IR pmap_data .
+EBUSY results if the unit is mapped at the time of this call.
+EINVAL results if
+.I pi_paddr
+or
+.I pi_size
+is not a multiple of the system page size.
+The driver cannot verify the legality of the physical addresses passed in:
+user beware.
+.PP
+Only the PMAP_NPMEM flag bit is copied from
+.I pi_flags
+to
+.IR pm_flags .
+Use PMAPIOCEXCL or PMAPIOCNXCL to set or clear the PMAP_EXCL bit.
+.PP
+NOTE:
+This ioctl allows the superuser to associate a file
+with any range of physical addresses,
+including MULTIBUS mapping registers, nonexistent memory, etc.
+Specifying incorrect values for
+.I pi_paddr
+or
+.I pi_size
+can lead to catastrophic results.
+.sp 2
+.ne 2
+.nf
+.ft 3
+.ta 0.7i 1.4i 2.1i
+ioctl(fd, PMAPIOCEXCL, 0)
+int	fd;
+.ft 1
+.fi
+.PP
+PMAPIOCEXCL verifies that there is
+at most one open at the time of the ioctl,
+and ensures that no further (non-superuser) opens are allowed on the unit
+until it is closed or the PMAPIOCNXCL ioctl is called.
+PMAPIOCEXCL fails (returning EBUSY)
+if there is already more than one open.
+Any process may execute this call.
+Note that the semantics are similar, but not identical,
+to TIOCEXCL in the terminal driver.
+.sp 2
+.ne 2
+.nf
+.ft 3
+.ta 0.7i 1.4i 2.1i
+ioctl(fd, PMAPIOCNXCL, 0)
+int	fd;
+.ft 1
+.fi
+.PP
+PMAPIOCNXCL disables exclusive use of the unit,
+thus allowing further opens.
+Any process may execute this call.
+.SH "SEE ALSO"
+mmap(2), pmap(8), getpagesize(2),
+.I "Guide to Parallel Programming"

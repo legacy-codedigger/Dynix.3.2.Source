@@ -1,0 +1,2 @@
+
+(defun startline nil (byte-code "ÂA@!ˆebˆÃÄ@!S!ˆÁ‰‡" [command-line-args-left nil find-file forward-line string-to-int] 5))

@@ -1,0 +1,48 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: end.3 1.4 86/05/13 $
+.TH END 3 "\*(V)" "7th Edition"
+.SH NAME
+end, etext, edata \- last locations in program
+.SH SYNOPSIS
+.nf
+.B extern end;
+.B extern etext;
+.B extern edata;
+.fi
+.SH DESCRIPTION
+These names refer neither to routines nor to locations with interesting
+contents.  The address of
+.I etext
+is the first address above the program text,
+.I edata
+above the initialized data region, and
+.I end
+above the uninitialized data region.
+.PP
+When execution begins, the program break coincides with
+.I end,
+but it is reset by the routines
+.IR brk (2),
+.IR malloc (3), 
+standard input/output
+.RI ( stdio (3)),
+the profile
+.RB ( \-p )
+option of 
+.IR cc (1),
+etc.
+The current value of the program break is reliably returned by `sbrk(0)',
+see
+.IR brk (2).
+.SH "SEE ALSO"
+brk(2), malloc(3)

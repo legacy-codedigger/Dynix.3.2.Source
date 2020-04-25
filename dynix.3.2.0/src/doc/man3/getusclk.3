@@ -1,0 +1,100 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986 Sequent Computer Systems, Inc.
+.\" All rights reserved
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: getusclk.3 1.5 1991/06/12 21:02:21 $
+.TH GETUSCLK 3 "\*(V)" "DYNIX"
+.SH NAME
+getusclk, usclk_init \- get/init microsecond clock
+.SH SYNOPSIS
+.nf
+\f2C syntax:\fP
+.PP
+	\f3#include <usclkc.h>
+	void usclk_init()\fP
+.PP
+	\f3usclk_t getusclk()\fP
+.PP
+\f2FORTRAN syntax:\fP
+.PP
+	\f3$INCLUDE /usr/include/usclkf.h
+	subroutine usclk_init()
+.PP
+	\f3integer*4 function getusclk()\fP
+.PP
+\f2Pascal syntax:\fP
+.PP
+	\f3{$I /usr/include/usclkp.h}
+	procedure usclk_init;
+	cexternal;\fP
+.PP
+	\f3function getusclk : longint;
+	cexternal;\fP
+.fi
+.SH DESCRIPTION
+The Sequent microsecond clock (usclk) is a programmatically accessible
+32-bit up-counter
+which increments in real (wall clock) time
+at a one microsecond per tick rate.  It is reset to zero at
+power-up and free runs thereafter.  There is no notification as the
+clock rolls over its maximum value and returns to zero.
+.PP
+.I Usclk_init
+maps the microsecond clock into process address
+space, making it accessible for subsequent use.
+.I Usclk_init
+should be called
+only once and must precede the first call to
+.I getusclk .
+.PP
+.I Getusclk
+returns the current 32-bit microsecond clock value.
+.PP
+The routines described here are in
+.I /usr/lib/libseq.a.
+They are linked into a program using
+the
+.B \-lseq
+option in the
+\f3cc\f1,
+\f3fortran\f1,
+\f3pascal\f1,
+or
+.B ld
+command line.
+See the
+.I /usr/sequent/usclk.demo
+directory for sample usage.
+.SH "NOTES"
+The mapping established by
+.I usclk_init
+is inherited by forked processes.
+.PP
+The call overhead for \f2getusclk\f1 is almost nil on Symmetry, approximately
+25 microseconds on Balance.
+.SH "DIAGNOSTICS"
+.I Usclk_init
+fails with exit status 1 if it cannot open, map,
+or access the microsecond clock device.
+.PP
+On Balance, a
+.I SIGBUS
+access error signal is delivered if the microsecond clock device is
+improperly accessed (this cannot happen if
+.IR getusclk (3)
+is used).
+.SH "SEE ALSO"
+getitimer(2), gettimeofday(2)
+.SH BUGS
+(Balance only.)
+A slight chance exists that a user-mode program making an improper
+access to the microsecond clock device will cause a DYNIX panic.
+No panic occurs if the device is accessed exclusively with the
+software interfaces provided for it.

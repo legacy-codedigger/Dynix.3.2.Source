@@ -1,0 +1,11 @@
+			echo 'System V: shmem\c'>/dev/console
+/bin/rm -rf /usr/tmp/SysVshmem
+/bin/mkdir /usr/tmp/SysVshmem
+/bin/chmod 777 /usr/tmp/SysVshmem
+			echo ' editor files\c'	>/dev/console
+(cd /tmp; /usr/lib/expreserve -)
+/bin/ps -ef >/dev/null
+# /bin/rm -f /usr/spool/lp/SCHEDLOCK
+# /usr/lib/lpsched
+#			echo ' lpsched\c' >/dev/console
+			echo '.'		>/dev/console

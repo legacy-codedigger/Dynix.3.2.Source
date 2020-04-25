@@ -1,0 +1,154 @@
+#! /bin/sh
+#
+# /etc/buildmini miniroot (e.g. zd1b) distroot 
+#
+# Used to build a distribution tape.
+# Ties in with /etc/maketape.
+#
+if [ "$#" -eq 2 ] ;then
+	MINIROOT=$1
+	DISTROOT=$2
+else
+	echo 'usage: buildmini miniroot (e.g. zd1b) distroot'
+	exit 1
+fi
+#
+date
+miniroot=/miniroot$$
+/etc/umount /dev/${MINIROOT} 2>/dev/null
+#
+# v3.1.1 currently uses 3022 blocks and 350 inodes
+# each cylinder is 32*16=512 blocks
+# 14 cylinders=7168 blocks
+# 15 cylinders=7680 blocks etc.
+# 25 cylinders=12800
+#  9216 bytes per inode is 416 inodes for 15 cylinders
+#  9216 bytes per inode is 690 inodes for 25 cylinders
+# Note mkfs on 3.0.17 dosn't get the number of bytes per inode right.
+#
+			# WARNING: don't change the following sector
+			# count (12800) without also changing the size
+			# that is dd'ed to tape in "tmpos/etc/maketape".
+/etc/mkfs /dev/${MINIROOT} 12800 32 16 4096 512 16 0 60 9216
+/etc/fsck /dev/r${MINIROOT}
+mkdir $miniroot
+/etc/mount /dev/${MINIROOT} $miniroot
+if [ $? != 0 ]
+then
+	echo 'mount failed. Exiting'
+	exit 1
+fi
+cd $miniroot
+#
+if [ `pwd` = '/' ]
+then
+	echo You just '(almost)' destroyed the root
+	exit 1
+fi
+rm -rf bin; mkdir bin
+rm -rf dev; mkdir dev
+rm -rf etc; mkdir etc; mkdir etc/vtoc; mkdir etc/diskinfo
+rm -rf tmp; mkdir tmp
+rm -rf stand; mkdir stand 
+rm -rf usr; mkdir usr; mkdir usr/ucb; mkdir usr/etc
+rm -rf ssm; mkdir ssm
+cp $DISTROOT/bin/awk bin
+cp $DISTROOT/bin/cat bin
+cp $DISTROOT/bin/chgrp bin
+cp $DISTROOT/bin/chmod bin
+cp $DISTROOT/bin/cmp bin
+cp $DISTROOT/bin/cp bin
+cp $DISTROOT/bin/csh bin
+cp $DISTROOT/bin/date bin
+cp $DISTROOT/bin/dd bin
+cp $DISTROOT/bin/df bin
+cp $DISTROOT/bin/diff bin
+cp $DISTROOT/bin/du bin
+cp $DISTROOT/bin/echo bin
+cp $DISTROOT/bin/ed bin
+cp $DISTROOT/bin/expr bin
+cp $DISTROOT/bin/false bin
+cp $DISTROOT/bin/grep bin
+cp $DISTROOT/bin/ln bin
+cp $DISTROOT/bin/ls bin
+cp $DISTROOT/bin/make bin
+cp $DISTROOT/bin/mkdir bin
+cp $DISTROOT/bin/mt bin
+cp $DISTROOT/bin/mv bin
+cp $DISTROOT/bin/od bin
+cp $DISTROOT/bin/pagesize bin
+cp $DISTROOT/bin/ps bin
+cp $DISTROOT/bin/pwd bin
+cp $DISTROOT/bin/rm bin
+cp $DISTROOT/bin/rmdir bin
+cp $DISTROOT/bin/sed bin
+cp $DISTROOT/bin/sh bin
+cp $DISTROOT/bin/stty bin; ln bin/stty bin/STTY
+cp $DISTROOT/bin/sync bin
+cp $DISTROOT/bin/tar bin
+cp $DISTROOT/bin/test bin; ln bin/test bin/\[
+cp $DISTROOT/bin/true bin
+# cp $DISTROOT/ssm/* ssm !!! needs to be fixed
+cp $DISTROOT/dev/MAKEDEV dev
+> dev/MAKEDEV.local
+( cd dev
+./MAKEDEV std \
+	  sd0 sd1 sd2 \
+	  wd0 wd1 wd2 \
+	  st0 st1 \
+	  ts0 \
+	  tm0 \
+	  xt0 xp0 zd0) &
+cp $DISTROOT/etc/format etc/format
+cp $DISTROOT/etc/chown etc
+cp $DISTROOT/etc/disktab etc
+cp $DISTROOT/etc/dump etc
+cp $DISTROOT/etc/fsck etc
+cp $DISTROOT/etc/halt etc
+cp $DISTROOT/etc/init etc
+cp $DISTROOT/etc/mknod etc
+cp $DISTROOT/etc/mkvtoc etc
+cp $DISTROOT/etc/prtvtoc etc
+cp $DISTROOT/etc/mount etc
+cp $DISTROOT/etc/newfs etc
+ln etc/newfs etc/mkfs
+cp $DISTROOT/etc/fsirand etc
+cp $DISTROOT/etc/online etc
+ln etc/online etc/offline
+cp $DISTROOT/etc/reboot etc
+cp $DISTROOT/etc/restore etc
+cp $DISTROOT/etc/restore.root etc
+cp $DISTROOT/etc/restore.oldroot etc
+cp $DISTROOT/etc/restore.oldmore etc
+cp $DISTROOT/etc/showcfg etc
+cp $DISTROOT/etc/rc.shutdown etc
+cp $DISTROOT/etc/termcap etc
+cp $DISTROOT/etc/umount etc
+cp $DISTROOT/etc/installboot etc
+cp $DISTROOT/etc/format etc/format
+cp $DISTROOT/stand/boot?? stand
+cp $DISTROOT/stand/boot??_v stand
+cp $DISTROOT/boot .
+cp $DISTROOT/usr/etc/savecore usr/etc
+cp $DISTROOT/usr/ucb/vi usr/ucb
+cp $DISTROOT/etc/vtoc/* etc/vtoc
+cp $DISTROOT/etc/diskinfo/* etc/diskinfo
+cp $DISTROOT/.profile .
+cp $DISTROOT/gendynix .
+cat >etc/passwd <<EOF
+root::0:0::/:/bin/sh
+daemon::1:10::/:
+EOF
+cat >etc/group <<EOF
+root:*:0:root
+daemon:*:10:root
+EOF
+cat >etc/mtab <<EOF
+EOF
+wait
+sync
+cd /; sync
+/etc/umount $miniroot
+/etc/fsck /dev/r${MINIROOT}
+rm -rf $miniroot
+date

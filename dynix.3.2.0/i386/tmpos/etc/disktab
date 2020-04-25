@@ -1,0 +1,251 @@
+#
+# Disk geometry and partition layout tables. 
+# Key:
+#	ty	type of disk
+#	ns	#sectors/track
+#	nt	#tracks/cylinder
+#	nc	#cylinders/disk
+#	rm	#revolutions per minute
+#	ft	disk format type
+#	p[a-h]	partition sizes in sectors
+#	b[a-h]	partition block sizes in bytes
+#	f[a-h]	partition fragment sizes in bytes
+#
+
+#
+# Drives on SCSI (with Adaptec target adaptor)
+#
+
+# 3 physical cylinders are not available 
+# because of bad blocks and diagnostic tracks.  The controller
+# actually hides direct access to the bad blocks but
+# the result is that the disk is logically shorter.
+# Thus partitions are calculated as if the disk had
+# "nc-3" cylinders.
+#
+vertex170|vertex|Vertex model 170 with interleave 1-1:\
+	:ty=winchester:ns#17:nt#7:nc#987:rm#3600:\
+	:ft=scsi:\
+	:pa#15884:ba#8192:fa#1024:\
+	:pb#33440:\
+	:pc#117096:bc#8192:fc#1024:\
+	:pd#15884:bd#8192:fd#1024:\
+	:pe#51888:be#8192:fe#1024:\
+	:pg#67772:bg#8192:fg#1024:
+fujitsu2243|fujitsu|Fujitsu model 2243AS with interleave 1-1:\
+	:ty=winchester:ns#17:nt#11:nc#754:rm#3600:\
+	:ft=scsi:\
+	:pa#15884:ba#8192:fa#1024:\
+	:pb#33440:\
+	:pc#140436:bc#8192:fc#1024:\
+	:pd#15884:bd#8192:fd#1024:\
+	:pe#75228:be#8192:fe#1024:\
+	:pg#91112:bg#8192:fg#1024:
+maxtor1140|maxtor140|maxtor|Maxtor model XT1140 with interleave 1-1:\
+	:ty=winchester:ns#17:nt#15:nc#918:rm#3600:\
+	:ft=scsi:\
+	:pa#15884:ba#8192:fa#1024:\
+	:pb#33440:\
+	:pc#233324:bc#8192:fc#1024:\
+	:pd#15884:bd#8192:fd#1024:\
+	:pe#168116:be#8192:fe#1024:\
+	:pg#184000:bg#8192:fg#1024:
+
+#
+# CCS drives on SCSI
+#
+
+# The last two physical cylinders on the disk are reserved for
+# diagnostics.  Thus partitions are calculated as if the disk had
+# "nc-2" cylinders.
+#
+wren3|Wren3|CDC Wren III 94161:\
+	:ty=winchester:ns#35:nt#9:nc#965:rm#3600:\
+	:ft=scsi:\
+	:pa#15884:ba#8192:fa#1024:\
+	:pb#33440:\
+	:pc#303975:bc#8192:fc#1024:\
+	:pd#15884:bd#8192:fd#1024:\
+	:pe#238767:be#8192:fe#1024:\
+	:pg#254651:bg#8192:fg#1024:
+wren4|Wren4|CDC Wren IV 94171:\
+	:ty=winchester:ns#54:nt#9:nc#1324:rm#3600:\
+	:ft=scsi:\
+	:pa#15884:ba#8192:fa#1024:\
+	:pb#33440:\
+	:pc#639332:bc#8192:fc#1024:\
+	:pd#15884:bd#8192:fd#1024:\
+	:pe#574124:be#8192:fe#1024:\
+	:pg#590008:bg#8192:fg#1024:
+microp1375|Microp1375|Micropolis 1375:\
+	:ty=winchester:ns#35:nt#8:nc#1016:rm#3600:\
+	:ft=scsi:\
+	:pa#15884:ba#8192:fa#1024:\
+	:pb#33440:\
+	:pc#284480:bc#8192:fc#1024:\
+	:pd#15884:bd#8192:fd#1024:\
+	:pe#219272:be#8192:fe#1024:\
+	:pg#235156:bg#8192:fg#1024:
+m2246sa|M2246SA|Fujitsu 2246sa:\
+	:ty=winchester:ns#33:nt#10:nc#819:rm#3600:\
+	:ft=scsi:\
+	:pa#15884:ba#8192:fa#1024:\
+	:pb#33440:\
+	:pc#270270:bc#8192:fc#1024:\
+	:pd#15884:bd#8192:fd#1024:\
+	:pe#205062:be#8192:fe#1024:\
+	:pg#220946:bg#8192:fg#1024:
+m2249sa|M2249SA|Fujitsu 2249sa:\
+ 	:ty=winchester:ns#35:nt#15:nc#1239:rm#3600:\
+ 	:ft=scsi:\
+ 	:pa#15884:ba#8192:fa#1024:\
+ 	:pb#33440:bb#8192:fb#1024:\
+ 	:pc#650475:bc#8192:fc#1024:\
+ 	:pd#15884:bd#8192:fd#1024:\
+ 	:pe#585267:be#8192:fe#1024:\
+ 	:pf#300575:bf#8192:ff#1024:\
+ 	:pg#601151:bg#8192:fg#1024:\
+	:ph#300576:bh#8192:fh#1024:
+
+#
+# Drives on Multibus
+#
+
+# Partition 'c' really has 774640(46*20*842) blocks but
+# we have to subtract 3 physical cylinders for bad blocks
+# and diagnostics tracks, thus we use 771880(46*20*839).
+#
+eagle|Eagle|eagle46|Fujitsu Eagle with 46 sectors:\
+	:ty=winchester:ns#46:nt#20:nc#842:rm#3961:\
+	:ft=dec144:\
+	:pa#15884:ba#8192:fa#1024:\
+	:pb#66880:bb#8192:fb#1024:\
+	:pc#771880:bc#8192:fc#1024:\
+	:pd#15884:bd#8192:fd#1024:\
+	:pe#307200:be#8192:fe#1024:\
+	:pf#72680:bf#8192:ff#1024:\
+	:pg#396520:bg#8192:fg#1024:\
+	:ph#291346:bh#8192:fh#1024:
+
+#
+# Drives on ZDC
+#
+# 3 physical cylinders are not available.
+# These are the first (cylinder 0) and the last 2 cylinders.
+# Cylinder 0 is reserved and contains the disk description data
+# and bad block lists. The last 2 cylinders are reserved for diagnostics.
+# None of the partitions below include these cylinders.
+# Thus partition sizes are calculated as if the disk had
+# "nc-3" cylinders.
+#
+
+m2333k|M2333K|zdswallow|Fujitsu M2333K (Swallow) with 66 sectors:\
+	:ty=winchester:ns#66:nt#10:nc#823:rm#3600:\
+	:ft=zdc:\
+	:pa#16500:ba#8192:fa#1024:\
+	:pb#67320:bb#8192:fb#1024:\
+	:pc#541200:bc#8192:fc#1024:\
+	:pd#270600:bd#8192:fd#1024:\
+	:pe#270600:be#8192:fe#1024:\
+	:pf#236940:bf#8192:ff#1024:\
+	:pg#236940:bg#8192:fg#1024:\
+	:ph#220440:bh#8192:fh#1024:
+m2351a|M2351A|zdeagle|Fujitsu M2351A (Eagle) with 46 sectors:\
+	:ty=winchester:ns#46:nt#20:nc#842:rm#3961:\
+	:ft=zdc:\
+	:pa#16560:ba#8192:fa#1024:\
+	:pb#67160:bb#8192:fb#1024:\
+	:pc#771880:bc#8192:fc#1024:\
+	:pd#385480:bd#8192:fd#1024:\
+	:pe#385480:be#8192:fe#1024:\
+	:pf#352360:bf#8192:ff#1024:\
+	:pg#352360:bg#8192:fg#1024:\
+	:ph#335800:bh#8192:fh#1024:
+m2344k|M2344K|zdswallow4|Fujitsu M2344K (Swallow 4) with 66 sectors:\
+	:ty=winchester:ns#66:nt#27:nc#624:rm#3600:\
+	:ft=zdc:\
+	:pa#17820:ba#8192:fa#1024:\
+	:pb#67716:bb#8192:fb#1024:\
+	:pc#1106622:bc#8192:fc#1024:\
+	:pd#552420:bd#8192:fd#1024:\
+	:pe#554202:be#8192:fe#1024:\
+	:pf#518562:bf#8192:ff#1024:\
+	:pg#520344:bg#8192:fg#1024:\
+	:ph#500742:bh#8192:fh#1024:
+m2382k|M2382K|zdswallow5|Fujitsu M2382K (Swallow 5) with 81 sectors:\
+	:ty=winchester:ns#81:nt#27:nc#745:rm#3600:\
+	:ft=zdc:\
+	:pa#17496:ba#8192:fa#1024:\
+	:pb#69984:bb#8192:fb#1024:\
+	:pc#1622754:bc#8192:fc#1024:\
+	:pd#811377:bd#8192:fd#1024:\
+	:pe#811377:be#8192:fe#1024:\
+	:pf#776385:bf#8192:ff#1024:\
+	:pg#776385:bg#8192:fg#1024:\
+	:ph#758889:bh#8192:fh#1024:
+m2392k|M2392K|zdswallow6|Fujitsu M2392K (Swallow 6) with 81 sectors:\
+	:ty=winchester:ns#81:nt#21:nc#1916:rm#3600:\
+	:ft=zdc:\
+	:pa#20412:ba#8192:fa#1024:\
+	:pb#69741:bb#8192:fb#1024:\
+	:pc#3254013:bc#8192:fc#1024:\
+	:pd#1626156:bd#8192:fd#1024:\
+	:pe#1627857:be#8192:fe#1024:\
+	:pf#1602342:bf#8192:ff#1024:\
+	:pg#1581930:bg#8192:fg#1024:\
+	:ph#1581930:bh#8192:fh#1024:
+cdc9715-340|CDC9715-340|CDC 9715-340 MB (FSD) with 34 sectors:\
+	:ty=winchester:ns#34:nt#24:nc#711:rm#3600:\
+	:ft=zdc:\
+	:pa#17136:ba#8192:fa#1024:\
+	:pb#67728:bb#8192:fb#1024:\
+	:pc#577728:bc#8192:fc#1024:\
+	:pd#288864:bd#8192:fd#1024:\
+	:pe#288864:be#8192:fe#1024:\
+	:pf#254592:bf#8192:ff#1024:\
+	:pg#255408:bg#8192:fg#1024:\
+	:ph#237456:bh#8192:fh#1024:
+cdc9771-800|CDC9771-800|CDC 9771-800 MB (XMD) with 85 sectors:\
+	:ty=winchester:ns#85:nt#16:nc#1024:rm#2160:\
+	:ft=zdc:\
+	:pa#16320:ba#8192:fa#1024:\
+	:pb#68000:bb#8192:fb#1024:\
+	:pc#1388560:bc#8192:fc#1024:\
+	:pd#694960:bd#8192:fd#1024:\
+	:pe#693600:be#8192:fe#1024:\
+	:pf#659600:bf#8192:ff#1024:\
+	:pg#660960:bg#8192:fg#1024:\
+	:ph#643280:bh#8192:fh#1024:
+cdc9720-850|CDC9720-850|CDC 9720-850 MB (EMD) with 68 sectors:\
+	:ty=winchester:ns#68:nt#15:nc#1378:rm#3600:\
+	:ft=zdc:\
+	:pa#17340:ba#8192:fa#1024:\
+	:pb#67320:bb#8192:fb#1024:\
+	:pc#1405560:bc#8192:fc#1024:\
+	:pd#702780:bd#8192:fd#1024:\
+	:pe#702780:be#8192:fe#1024:\
+	:pf#669120:bf#8192:ff#1024:\
+	:pg#669120:bg#8192:fg#1024:\
+	:ph#651780:bh#8192:fh#1024:
+cdc9720-1230|CDC9720-1230|CDC 9720-1230 MB (EMD) with 83 sectors:\
+	:ty=winchester:ns#83:nt#15:nc#1635:rm#3600:\
+	:ft=zdc:\
+	:pa#19920:ba#8192:fa#1024:\
+	:pb#68475:bb#8192:fb#1024:\
+	:pc#2031840:bc#8192:fc#1024:\
+	:pd#1015920:bd#8192:fd#1024:\
+	:pe#1015920:be#8192:fe#1024:\
+	:pf#976080:bf#8192:ff#1024:\
+	:pg#987285:bg#8192:fg#1024:\
+	:ph#956160:bh#8192:fh#1024:
+sabre5-1230|SABRE5-1230|UPDATED CDC 9720-1230 MB (EMD) with 83 sectors:\
+	:ty=winchester:ns#83:nt#15:nc#1635:rm#3600:\
+	:ft=zdc:\
+	:pa#19920:ba#8192:fa#1024:\
+	:pb#68475:bb#8192:fb#1024:\
+	:pc#2031840:bc#8192:fc#1024:\
+	:pd#1015920:bd#8192:fd#1024:\
+	:pe#1015920:be#8192:fe#1024:\
+	:pf#976080:bf#8192:ff#1024:\
+	:pg#987285:bg#8192:fg#1024:\
+	:ph#956160:bh#8192:fh#1024:

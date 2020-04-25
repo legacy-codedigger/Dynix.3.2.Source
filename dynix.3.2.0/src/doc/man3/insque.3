@@ -1,0 +1,56 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: insque.3 1.8 90/02/07 $
+.TH INSQUE 3 "\*(V)" "4BSD"
+.SH NAME
+insque, remque \- insert/remove element from a queue
+.SH SYNOPSIS
+.nf
+.DT
+.ft 3
+struct qelem {
+	struct	qelem *q_forw;
+	struct	qelem *q_back;
+	char	q_data[];
+};
+.PP
+.ft 3
+insque(elem, pred)
+struct qelem *elem, *pred;
+.PP
+.ft 3
+remque(elem)
+struct qelem *elem;
+.ft 1
+.SH DESCRIPTION
+.I Insque
+and 
+.I remque
+manipulate queues built from doubly linked lists.  Each
+element in the queue must in the form of ``struct qelem''.
+.I Insque
+inserts 
+.I elem
+in a queue immediately after 
+.IR pred ;
+.I remque
+removes an entry
+.I elem 
+from a queue.
+.SH BUGS
+.PP
+The functions
+.I insque
+and
+.I remque
+do not return a value, but are declared as integer functions
+to maintain compatibility.

@@ -1,0 +1,145 @@
+echo "
+*** Not set-up for Multi-User operation ***
+
+You first need to check and change these files:
+	/etc/rc
+	/etc/rc.local
+	/etc/rc.dumpstrings
+	/etc/ttys
+	/dev/MAKEDEV
+	/etc/ttytype
+
+Then delete the lines through the line \"exit 1\"
+from \"/etc/rc\". ">/dev/console
+exit 1
+HOME=/; export HOME
+PATH=/bin:/usr/bin
+/etc/online -a > /dev/console 2>&1
+if [ -f /etc/mirror ]
+then	if /etc/mirror -a >/dev/console 2>&1
+	then
+		echo Mirroring started >/dev/console
+	else
+		echo Mirroring failure--get help! >/dev/console
+		exit 1
+	fi
+fi
+if [ -r /fastboot ]
+then
+	/bin/rm -f /fastboot
+	echo Fast boot ... skipping disk checks >/dev/console
+elif [ $1x = autobootx ]
+then
+	echo Automatic reboot in progress... >/dev/console
+	date >/dev/console
+	/etc/fsck -p >/dev/console
+	case $? in
+	0)
+		date >/dev/console
+		;;
+	4)
+		echo "Root fixed - rebooting" >/dev/console
+		if [ -f /etc/mirror ]; then
+			/etc/unmirror -a >/dev/console 2>&1
+		fi
+		/etc/reboot -q -n
+		;;
+	8)
+		echo "Automatic reboot failed... help!" >/dev/console
+		exit 1
+		;;
+	12)
+		echo "Reboot interrupted" >/dev/console
+		exit 1
+		;;
+	*)
+		echo "Unknown error in reboot" > /dev/console
+		exit 1
+		;;
+	esac
+else
+	date >/dev/console
+fi
+/bin/rm -f /etc/nologin
+
+# attempt to rationally recover the passwd file if needed
+if [ -s /etc/ptmp ]
+then
+	if [ -s /etc/passwd ]
+	then
+		ls -l /etc/passwd /etc/ptmp >/dev/console
+		/bin/rm -f /etc/ptmp		# should really remove the shorter
+	else
+		echo 'passwd file recovered from ptmp' >/dev/console
+		mv /etc/ptmp /etc/passwd
+	fi
+elif [ -r /etc/ptmp ]
+then
+	echo 'removing passwd lock file' >/dev/console
+	/bin/rm -f /etc/ptmp
+fi
+
+/bin/sh /etc/rc.local
+
+/usr/etc/swapon -a						>/dev/console
+
+# syslogd needs to be started before the other deamons.
+if [ -f /etc/syslogd ]; then
+	/etc/syslogd & echo 'starting system logger.'	>/dev/console
+fi
+				echo preserving editor files 	>/dev/console
+(cd /tmp; /usr/lib/ex3.7preserve -a)
+if [ -r /etc/rc.sys5 ]
+then
+	att /bin/sh /etc/rc.sys5
+fi
+				echo clearing /tmp 		>/dev/console
+(cd /tmp; /bin/rm -f - *)
+				echo -n standard daemons:	>/dev/console
+/etc/update &			echo -n ' update'		>/dev/console
+/etc/cron &			echo -n ' cron'			>/dev/console
+cd /usr/spool
+/bin/rm -f uucp/LCK/LCK.* rwho/*
+if [ -f /usr/lib/lpd ]; then
+	/bin/rm -f /dev/printer /usr/spool/lpd.lock
+	/usr/lib/lpd &		echo -n ' printer'		>/dev/console
+fi
+if [ -f /usr/adm/acct ]; then
+	/usr/etc/accton /usr/adm/acct &	echo -n ' accounting'	>/dev/console
+fi
+				echo '.'			>/dev/console
+
+cd /
+echo -n starting network:					>/dev/console
+echo -n ' pseudos'						>/dev/console
+( 
+  cd /dev
+  files="`/bin/echo pty??`"
+  /etc/chown root $files
+  /bin/chmod 666 $files
+  files="`/bin/echo tty[p-wP-W]?`"
+  /etc/chown root $files
+  /bin/chmod 666 $files
+)
+if [ -f /etc/inetd ]; then
+	/etc/inetd & echo -n ' inet'				>/dev/console
+fi
+if [ -f /usr/etc/rwhod ]; then
+	/usr/etc/rwhod & echo -n ' rwhod'			>/dev/console
+fi
+				echo '.'			>/dev/console
+
+if [ -d /usr/pci ]; then
+	(TERM=ansi export TERM;
+	 echo -n starting PCI:					>/dev/console
+	 cd /usr/pci
+	 rm -f .m .mlock; echo -n ' locks'			>/dev/console
+	 /usr/pci/eshare & echo -n ' disk'			>/dev/console
+	 sleep 5
+	 /usr/pci/email & echo -n ' mail'			>/dev/console
+	 /usr/pci/eprint & echo -n ' printer'			>/dev/console
+	 echo '.'						>/dev/console
+	)
+fi
+				date				>/dev/console
+exit 0

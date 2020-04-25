@@ -1,0 +1,440 @@
+#! /bin/sh
+#
+# restore.root
+#
+# This shell script is used during initial system load from
+# tape. It prompts the user for affirmative replies prior to
+# loading files from tape.
+#
+/etc/online -a
+/bin/echo 'Build the root file system'
+(cd /dev;./MAKEDEV ctape) >/dev/null 2>&1
+TAPE=/dev/ctape8
+TFILE=16
+if [ "$TFILE" != 16 ]
+then
+	/bin/echo -n "tape drive with root dump on (eg $TAPE) "
+	read TAPE
+fi
+	 
+/bin/mt -f $TAPE noret >/dev/null 2>&1
+/bin/mt -f $TAPE rewind &
+#
+# get the type of disk
+#
+if [ "$1" = "" ]
+then
+	/bin/echo -n 'disk name for root? (e.g. sd0, wd0, xp0 or zd0) '
+	read DISK
+else
+	DISK=$1
+	echo "disk name for root is $DISK"
+	shift
+fi
+
+(cd /dev;./MAKEDEV $DISK) 2>/dev/null
+
+TYPE=`format -i r$DISK 2>/dev/null`
+if [ $? != 0 -o "$TYPE" = "" ]
+then
+	TYPES=`(cd /etc/diskinfo;echo *.geom | sed -e 's/\.geom/, /g')`
+	until	/bin/echo -n "disk type? (e.g. $TYPES) "
+		read TYPE
+		/bin/grep -w -s "$TYPE" /etc/diskinfo/*
+		case "$?" in 
+		0)	;;	*)	false;;
+		esac
+	do
+	/bin/echo 'unknown disk type
+'
+	done
+else
+	echo "$DISK is a $TYPE"
+fi
+
+case $DISK in 
+zd*)
+	DISC=zd
+	if [ "$DISK" != "zd0" ] ;then
+		echo -n "Drive number on controller? (0,1,...15) "
+		read drivenum
+		echo -n "Controller number for drive? (0,1,2,3,4) "
+		read controller
+		#
+		# zd unit composed of following bits:
+		#
+		# 0-3 drive number on controller
+		# 4-6 controller number
+		controller=`expr $controller \* 16`
+		diskunit=`expr $controller + $drivenum`
+	else
+		diskunit=0
+	fi
+	;;
+xp*)
+	DISC=xp
+	if [ "$DISK" != "xp0" ] ;then
+		echo -n "Drive number on controller? (0,1,2,3) "
+		read drivenum
+		echo -n "Controller number for drive? (0,1,2,3) "
+		read controller
+		echo -n "Drive type - index into xpst table? (normally 0 for eagle) "
+		read drivetype
+		echo -n "Multibus adapter number for controller? "
+		read mbad
+		#
+		# xp unit composed of following bits:
+		#	
+		#  0-2	drive number on controller
+		#  3-5	controller number
+		#  6-8	drive type - index into xpst table
+		#  9-11	multibus adaptor number
+		controller=`expr $controller \* 8`
+		drivetype=`expr $drivetype \* 64`
+		mbad=`expr $mbad \* 512`
+		diskunit=`expr $mbad + $drivetype + $controller + $drivenum`
+	else
+		diskunit=0
+	fi
+	;;
+sd*|wd*)	
+	DISC=`expr $DISK : '\(..\)'`
+	UNIT=`expr $DISK : '..\(.*\)'`
+	if [ "$UNIT" != "0" ] ;then
+		case "$TYPE" in
+		wren*|microp1375|m2246sa|m2249sa|hp97548|hp97544) # embedded scsi
+			unitnum=0	# always zero for embedded SCSI disk
+			echo -n "Target number select? (0,1,...,7) "
+			read ta
+			;;
+		*)					# adaptec scsi
+			echo -n "Unit number of the disk? (0,1,...,7) "
+			read unitnum
+			echo -n "Controller select (target adapter)? (0,1,...,7) "
+			read ta
+			;;
+		esac
+		echo -n "Drive type? (normally 0) (0,1,...,7) "
+		read drivetype
+		echo -n "SCED board number? (0,1,...,7) "
+		read sced
+		#
+		# sd and wd unit number composed of following bits:
+		#
+ 		# 0-2: unit number on the hardware (up to 8)
+ 		# 3-5: controller select (target adapter) (up to 8)
+ 		# 6-8: drive  type (up to 8), index into configuration table 
+ 		# 9-11: scsi board number
+		ta=`expr $ta \* 8`
+		drivetype=`expr $drivetype \* 64`
+		sced=`expr $sced \* 512`
+		diskunit=`expr $sced + $drivetype + $ta + $unitnum`
+	else
+		case "$TYPE" in
+		wren*|microp1375|m2246sa|m2249sa|hp97548|hp97544) # embedded scsi
+			diskunit=0
+			;;
+		*)	
+			diskunit=48
+			;;
+		esac
+	fi
+	;;
+esac
+
+NTYPE=$TYPE
+/bin/echo -n "Do you want to write a new VTOC?"
+read v
+if [ "$v" = "y" -o "$v" = "yes" ]
+then
+	if mkvtoc /dev/r$DISK $TYPE; then
+		:
+	else
+		echo "mkvtoc failed.  Be sure /dev/r$DISK is valid."
+		exit 1
+	fi
+	NTYPE=
+fi
+if [ "$TFILE" = 16 ]
+then
+/bin/echo '
+	Press the AUTO button so an automatic reboot can happen.
+'
+fi
+
+#
+# If we don't have a VTOC, do a pre-3.1 newfs so that it (hopefully) isn't
+# too small for root.
+#
+if /etc/prtvtoc /dev/r${DISK}a > /dev/null 2>&1; then
+	/etc/newfs /dev/r${DISK}a $NTYPE
+else
+	/etc/newfs -C /dev/r${DISK}a $NTYPE
+fi
+if /etc/showcfg | grep -i -s ssm; then
+	:
+else
+	/etc/installboot r${DISK}
+fi
+case "$?" in
+0)	;;	*)	exit;;
+esac
+/bin/echo 'Check the file system'
+/etc/fsck /dev/r${DISK}a
+/bin/mkdir /a
+/etc/mount /dev/${DISK}a /a
+/bin/chgrp daemon /a
+cd /a
+/bin/echo 'Restore the dump image of the root file system'
+wait
+/etc/restore rsf $TFILE $TAPE		# 's 16' = skip to dump of root on tape
+case "$?" in
+0)	;;	*)	exit;;
+esac
+/bin/rm -f restoresymtable
+# make a log file for subsequent installations of software
+echo "`/bin/date`  - DYNIX V3.2.0 PN: 1003-xxxxx" > /a/etc/versionlog
+chmod 644 /a/etc/versionlog
+/bin/echo ' '
+/bin/echo 'Making standard devices std pty0 ...'
+cd /a/dev
+(
+./MAKEDEV std pty0
+./MAKEDEV alm
+./MAKEDEV usclk
+) 2>&1 | grep -v "File exists"
+# Look at the hardware configuration information.
+# Edit out all but the last boot configuration.
+/a/etc/dmesg > /tmp/dmesg
+/bin/ed /tmp/dmesg << EOE > /dev/null
+$
+?avail mem?
+.+1,$ d
+?Mem?
+1,.-1 d
+w
+q
+EOE
+# make devices that match the hardware configuration
+/bin/echo -n 'Making configuration specific devices...'
+
+for i in ts0 tm0
+do
+	/bin/grep -s "$i found" /tmp/dmesg
+	case "$?" in 
+	0)	/bin/echo -n " $i"
+		./MAKEDEV "$i"& ;;
+	esac
+done
+/bin/echo -n " ctape"
+./MAKEDEV ctape >/dev/null 2>&1
+
+if [ "$TFILE" = "16" ]
+then
+	for i in sd0 sd1 sd2 sd3 wd0 wd1 wd2 wd3 
+	do
+		/bin/grep -s "$i found" /tmp/dmesg
+		case "$?" in 
+		0)	/bin/echo -n " $i"
+			./MAKEDEV "$i"& ;;
+		esac
+	done
+
+	for i in xp0 xp1 xp2 xp3 xp4 xp5 xp6 xp7
+	do
+		/bin/grep -s "$i at" /tmp/dmesg
+		case "$?" in 
+		0)	/bin/echo -n " $i"
+			./MAKEDEV "$i"& ;;
+		esac
+	done
+
+	# gendynix anchors drives, dynix does not, so just start with 0 and work up.
+	#
+	j=0
+	for i in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 \
+		16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 \
+		32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 \
+		48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63
+	do
+		if /bin/grep -s "zd$i bound" /tmp/dmesg; then
+			/bin/echo -n " zd$j"
+			./MAKEDEV zd$j &
+			j=`/bin/expr $j + 1`
+		fi
+	done
+
+	# create devices we always want to exist
+	./MAKEDEV xt0 lp0 &
+
+	for i in xt1 xt2 xt3
+	do
+		/bin/grep -s "$i at" /tmp/dmesg
+		case "$?" in 
+		0)	/bin/echo -n " $i"
+			./MAKEDEV "$i"& ;;
+		esac
+	done
+
+	for i in lp1 lp2 lp3
+	do
+		/bin/grep -s "$i found" /tmp/dmesg
+		case "$?" in
+		0)	/bin/echo -n " $i"
+			./MAKEDEV "$i"& ;;
+		esac
+	done
+
+	for i in st0 st1 st2 st3 st4 st5 
+	do
+		/bin/grep -s "$i found" /tmp/dmesg
+		case "$?" in 
+		0)	/bin/echo -n " $i"
+			./MAKEDEV "$i"&
+			name=st
+			unit=`expr $i : "$name\(.*\)"`
+			case $unit in
+			0) ch=h ;; 1) ch=i ;; 2) ch=j ;; 3) ch=k ;;
+			4) ch=l ;; 5) ch=m ;; 6) ch=n ;; 7) ch=o ;;
+			esac
+			case $ch in
+			h|i|j|k|l|m|n|o)
+				eval `echo $ch $unit $major |
+				  /bin/awk ' { ch = $1 } END {
+				    for (i = 0; i < 16; i++) {
+					printf("unknown tty%s%x\n",ch,i)\
+						>> "/a/etc/ttytype"
+					printf("12tty%s%x\n",ch,i) >> "/a/etc/ttys" }}'`
+				;;
+			esac
+		esac
+	done
+fi
+/bin/echo ""
+/bin/rm -f /tmp/dmesg
+cd /
+/bin/sync
+cd /a
+if [ -f dynix ]
+then
+	mv dynix dynix.old
+fi
+case "$DISK" in
+zd*) /bin/rm -f dynix_sd dynix_xp dynix_wd
+	if [ "$DISK" != "zd0" ] ;then
+		/a/etc/bootflags -p -c "n0=zd($diskunit,0)gendynix $DISK" "f=0"
+		/bin/ln gendynix dynix
+		/bin/echo 'Remember to rebuild your kernel and reboot.'
+	else
+		/a/etc/bootflags -p -c "n0=zd($diskunit,0)dynix" "f=0"
+		/bin/ln dynix_zd dynix
+	fi
+	# edit dump string in /a/etc/rc.dumpstrings
+	/bin/ed /a/etc/rc.dumpstrings > /dev/null 2>&1 << EOE
+	g/^DUMPER/s/^/#/
+	/DUMPER="zd(/
+	s/^#//
+	s/zd(0,/zd($diskunit,/g
+	s/zd0/$DISK/
+	g/^KERNEL/s/^/#/
+	/KERNEL="zd(/
+	s/^#//
+	s/zd(0,/zd($diskunit,/g
+	w
+	q
+EOE
+;;
+xp*)	/bin/rm -f dynix_sd dynix_zd dynix_wd
+	if [ "$DISK" != "xp0" ] ;then
+		/a/etc/bootflags -p -c "n0=xp($diskunit,0)gendynix $DISK" "f=0"
+		/bin/ln gendynix dynix
+		/bin/echo 'Remember to rebuild your kernel and reboot.'
+	else
+		/a/etc/bootflags -p -c "n0=xp($diskunit,0)dynix" "f=0"
+		/bin/ln dynix_xp dynix
+	fi
+	# edit dump string in /a/etc/rc.dumpstrings
+	/bin/ed /a/etc/rc.dumpstrings > /dev/null 2>&1 << EOE
+	g/^DUMPER/s/^/#/
+	/DUMPER="xp(/
+	s/^#//
+	s/xp(0,/xp($diskunit,/g
+	s/xp0/$DISK/
+	g/^KERNEL/s/^/#/
+	/KERNEL="xp(/
+	s/^#//
+	s/xp(0,/xp($diskunit,/g
+	w
+	q
+EOE
+;;
+sd*)
+	/bin/rm -f dynix_xp dynix_zd dynix_wd
+	if [ "$DISK" != "sd0" ] ;then
+		/a/etc/bootflags -p -c "n0=sd($diskunit,0)gendynix $DISK" "f=0"
+		/bin/ln gendynix dynix
+		/bin/echo 'Remember to rebuild your kernel and reboot.'
+	else
+		/a/etc/bootflags -p -c "n0=sd($diskunit,0)dynix" "f=0"
+		/bin/ln dynix_sd dynix
+	fi
+	# edit dump string in /a/etc/rc.dumpstrings
+	/bin/ed /a/etc/rc.dumpstrings > /dev/null 2>&1 << EOE
+	g/^DUMPER/s/^/#/
+	/DUMPER="sd(/
+	s/^#//
+	s/sd(0,/sd($diskunit,/g
+	s/sd0/$DISK/
+	g/^KERNEL/s/^/#/
+	/KERNEL="sd(/
+	s/^#//
+	s/sd(0,/sd($diskunit,/g
+	w
+	q
+EOE
+	;;
+wd*)
+	/bin/rm -f dynix_xp dynix_zd dynix_sd
+	if [ "$DISK" != "wd0" ] ;then
+		/a/etc/bootflags -p -c "n0=wd($diskunit,0)gendynix $DISK" "f=0"
+		/bin/ln gendynix dynix
+		/bin/echo 'Remember to rebuild your kernel and reboot.'
+	else
+		/a/etc/bootflags -p -c "n0=wd($diskunit,0)dynix" "f=0"
+		/bin/ln dynix_wd dynix
+	fi
+	# edit dump string in /a/etc/rc.dumpstrings
+	/bin/ed /a/etc/rc.dumpstrings > /dev/null 2>&1 << EOE
+	g/^DUMPER/s/^/#/
+	/DUMPER="wd(/
+	s/^#//
+	s/wd(0,/wd($diskunit,/g
+	s/wd0/$DISK/
+	g/^KERNEL/s/^/#/
+	/KERNEL="wd(/
+	s/^#//
+	s/wd(0,/wd($diskunit,/g
+	w
+	q
+EOE
+	;;
+esac
+cd /a/etc
+if [ -f fstab ]
+then
+	mv fstab fstab.old
+fi
+/bin/echo "/dev/${DISK}a /    4.2 rw          1 1" > /a/etc/fstab
+cd /
+wait
+/bin/sync
+/etc/umount /a
+/bin/sync
+/etc/fsck /dev/r${DISK}a
+/etc/mount /dev/${DISK}a /a
+/bin/echo 'Root file system extracted'
+if [ "$TFILE" = "16" ]
+then
+	/bin/echo 'Now booting off real root file system...'
+	/a/etc/shutdown -r now > /dev/null 2>&1
+fi

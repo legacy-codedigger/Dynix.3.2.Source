@@ -1,0 +1,1601 @@
+!<arch>
+Init            445768695   100   205   100640  740       `
+#
+(echo $TERM > /dev/null) >& /tmp/l$$
+if (-z /tmp/l$$) exit 0
+cat << '%'
+To do the lessons on 'vi', I need to know your terminal type, and your terminal
+must have an "addressable cursor".  You can still use 'vi' (in something
+called "open mode") on other kinds of terminals, but not with these lessons.
+
+I will put you out of learn.  Find out the terminal type for the
+terminal you are using (this may mean asking someone), then type
+
+setenv TERM xxx
+tset
+
+where you replace xxx with your terminal type.
+
+Some common types are:	TERMINAL MODEL		TERMINAL TYPE
+			Televideo 912/920C	tvi920c
+			Televideo 925		tvi925
+			LSI adm3a		adm3a
+			Zenith/Heathkit H19	h19
+			Datamedia 1520		dm1520
+
+When you are done type "learn vi" again.
+'%'
+exit 1
+L0              445768697   100   205   100640  14        `
+#next
+1.1a 10
+L1.1a           445768698   100   205   100640  968       `
+#print
+    This is a sequence of lessons in the use of the text-editing
+program called 'vi'.  'Vi' stands for 'Visual' and is really a
+screen-oriented mode of the editor 'ex'.  It allows you to create and
+change files containing text, programs, or pretty much anything else.
+These lessons are due for the most part to Pavel Curtis at Cornell.
+
+    You can run the vi program by using the command
+			vi <filename>
+where '<filename>' stands for the name of the file you want to create
+or change.  In most of these lessons, vi will be called automatically
+by 'learn'; you'll usually not need to use the above command until
+after you've completed this course.
+
+    If at any time you want to leave the learn program and you have a
+percent sign as a prompt, just type 'bye' and learn will quit.  There is
+a logical stopping place about 20 minutes into the tutorial which is well
+marked.
+
+    Type 'ready' when you're ready to go on to the first lesson.
+#user
+#next
+1.1b	10
+L1.1b           445768700   100   205   100640  2829      `
+#print
+    When you enter the vi editor, it will show you the first screenful
+of your file.  If your file is shorter than the size of your screen, the
+lines past the end of the file will appear blank, with a tilde (~) in
+the first column.  This is so that you can tell where the end of your
+file is, even when it ends in a blank line.  In a moment, you'll
+go into vi and be able to see this for yourself.
+
+    There are two commands to keep in mind in case of difficulties with vi:
+first, the 'Escape' key.  This key is usually located near the upper lefthand
+corner of the keyboard.  Whenever you aren't sure whether vi is listening to
+you or what state it's in, just hit Escape a few times, until it beeps.
+The key is truly harmless and will make vi go back to its normal state.
+
+    The second command is used whenever the screen gets messed up; for
+example, when someone writes you a message.  Just hit the 'L' key while
+holding down the 'CTRL' or Control button.  This is usually called
+'Control-L' and written '^L'.  The ^L command will clear and redraw the
+screen, leaving the cursor where it was.  On some terminals, ^R must be used
+instead of ^L; we'll explore this in a moment, when you're inside the editor.
+
+    You'll now be placed inside the editor.  You'll be given instructions
+on what to do when you get there.  Type 'ready' now to enter vi.
+#user
+#create QuitTest
+    You are now inside the vi editor.  Note the name and numbers at the
+bottom of the screen.  They tell you that you're editing the file named
+QuitTest and how many lines and characters the file has.  The tildes in
+the first column of several of the lines near the bottom of the screen
+represent lines beyond the end of this file.
+    First, try out the Escape command.  Hitting Escape should make the
+terminal beep. Now, try out the ^L command.  ^L should make the screen
+clear and be redrawn.  (Remember, ^L is typed by holding down the
+'Control' key and hitting 'L').  On some types of terminals the ^L command
+doesn't work.  If when you typed ^L nothing happened except for the cursor
+moving one letter to the right, you're using one of those terminals.  In
+this case, use ^R (hold down 'Control' and hit 'R') to redraw the screen.
+Make sure you know which one will work for you.
+    The other command you'll need to know right now is the command to
+quit and get out of the editor.  (Oh, yeah....)  First, hit the colon
+key, ':'.  The cursor should move to the bottom line of the screen and
+print a colon.  Vi is now ready for a 'colon-command'.  Now type a
+'q'.  When you hit the return key, you'll leave the editor.  If it
+doesn't work, it means you accidentally made changes to the file and vi
+doesn't want you to lose them.  We don't care about this file, though,
+so just type ':q!' and it will give up.  Bye!!
+#
+vi QuitTest
+#next
+1.2 10
+
+L1.2            445768701   100   205   100640  2084      `
+#print
+    So far, you've learned how to force vi to listen to you (the Escape
+key), to redraw the screen (the ^L or ^R command), how to get out of vi
+(the :q command), and how to quit even when vi thinks you shouldn't
+(the :q! command).  Suppose that vi is right, however, when it prevents
+you from quitting.  Suppose that you really do want to save the changes
+you've made to the file.  For this vi uses the :w command.  'w' stands for
+write, meaning that vi is going to write out its private copy of the file,
+thereby saving your work.
+
+   You use the :w command in the same way as you use :q.  That is, you type 
+a colon, the cursor moves to the bottom of the screen, you type 'w' and hit
+return, and vi saves the file.  If you wanted vi to save the file under a
+different name, you could type ':w <filename>', where <filename> stands for
+the new name.  Very frequently, you want to both write out the file and then
+quit.  You could use the :w command followed by the :q command.  Vi also
+provides a shorthand version, :wq, which will both save the file and then quit.
+
+    Now you are ready to try out the :w command, but this time I want you to
+get into the editor yourself.  When you see the percent sign, type
+       vi WriteText
+and when you've quit the editor type 'ready' to go to the next lesson.
+#create WriteText
+    Use the :w command to save this file under the name SaveTest and then
+use the :wq command to save it also under its old name.
+
+    If you don't remember how to do this, just type :q and you'll get to
+see the lesson again.
+
+    When you see the percent sign, don't forget to type 'ready' to
+go on to the next lesson.
+#user
+#cmp WriteText SaveTest
+#succeed
+Very good.  Now that you can save anything you do, let's go on.
+#fail
+Try again.  To save a file in a new place, type
+		:w <filename>
+using the new name instead of '<filename>'.  For example, to save it under
+the name 'blort', you'd type
+		:w blort
+
+To save it under its old name and then quit, just type
+		:wq
+
+When 'learn' types a percent sign, type 'vi WriteText' to try it again.
+#next
+2.1  10
+L2.1            445768703   100   205   100640  1745      `
+#print
+                Basic Movement - Small movements
+
+    The next few lessons will cover the basic movement commands, allowing
+you to move around in a file.  In this lesson we'll talk about moving small
+distances, such as up and down a line, forward a character, etc.
+
+    Moving up and down a line is accomplished with the - command (to go up)
+and the return key (to go down).  Going forward and backward is done with
+the space bar (for going forward) and the backspace key (for going backward).
+
+    If your terminal has arrow keys, you can also use them to move around
+in the appropriate directions.  As a last resort you can even use the
+h, j, k and l keys just like arrow keys:
+                      k - up
+	h - backward    	l - forward
+                     j - down
+   Now go into vi for practice by typing
+	  vi Movement1
+There will be instructions.  After quitting, type 'ready' to move on.
+#create Movement1
+   You can go between lines using minus ('-') to go up and return to go down.
+You can move forward and backward using the space bar and the backspace key.
+
+   If your terminal has arrow keys, you can move using them and if not, you
+can use h, j, k and l as follows:
+
+                        k - up
+
+                h - backward    l - forward
+
+                        j - down
+
+   Note that 'k' works differently than '-' in that when you use '-', vi
+always puts you at the first character on the new line.  'k', on the other
+hand, just moves the cursor straight up, leaving it in the same column if
+possible.  The same difference exists between 'j' and the return key.
+   Try it!  When you're done, type :q to leave the editor, and when you see
+the percent sign type 'ready' to go on to the next lesson.
+#user
+#next
+2.2 10
+
+L2.2            445768704   100   205   100640  2127      `
+#print
+			Basic Movement - Screen Movement
+
+   As you might have noticed, while the arrow keys are handy for moving
+short distances, they're a little slow for moving all the way across the
+screen, for example.  Vi has many ways of moving greater distances, some
+of which will be covered in much later lessons.  For now, though, let's
+see how to move to the extremes of the screen.
+
+   Horizontally - Moving to the ends of a line is accomplished with the
+'$' key (to go to the end) and the '^' key (to go to the beginning).  Un-
+like most of the vi commands, there doesn't appear to be any mnemonic
+reason for choosing those characters, so you just have to remember them.
+
+   Vertically - There are three commands for positioning the cursor at the
+top, middle and bottom of the screen, namely H (for the 'high' top), M (for
+the middle) and L (for the 'low' bottom).
+
+   Type 'ready' now and I'll put you into vi now to practice these
+movement commands.
+#user
+#create Movement2
+   The beginning and end of lines are reached with ^ and $.
+
+   The top, middle, and bottom of the screen are reached with H, M, and L.
+
+   Note that the ^ command actually puts the cursor on the first non-blank
+character of a line, not the true beginning.  While this is usually what
+you want, vi also provides the 0 (that's a zero) command, which places the 
+cursor on the very first character of the line, be it blank or otherwise.
+
+   The rest of this page is here to give you enough text on the screen to make
+using the H, M, and L commands worthwhile.  You won't be held responsible for
+the material covered here.
+
+   A little-known feature of the H and L commands is that you can precede
+them with a number to move to cursor to that many lines away from the top
+or bottom.  For example, the command 5L will move the cursor to the fifth
+line from the bottom of the screen.  Similarly, 4H will move it to the fourth
+line from the top.  Try it!
+
+   Remember to type :q to get out of vi when you're ready to go on.  This
+is the last time you'll be reminded, so you'd better have that command, at
+least, truly memorized.
+#
+vi Movement2
+#next
+2.3 10
+
+L2.3            445768706   100   205   100640  1719      `
+#print
+		    Basic Movement - File movements
+
+   Now you'd probably like to be able to move around in files which are
+longer than one page, eh?  You could probably look through the whole thing
+using '-' and return to go up and down a line at a time, but...
+
+   The ^D and ^U commands are used for moving by half-pages. (Remember, ^D
+means hitting the D key while holding down the 'Control' button...).  ^D will
+move the screen down a half-page in the file.  ^U, oddly enough, does the
+reverse, moving you up a half-page.
+
+   If you're in more of a hurry, try ^F and ^B, which move you forward and
+backward a full page at a time, respectively.
+
+   If you know exactly which line you want to go to (i.e. you know its line
+number) then the 'G' command was made for you.  You just type the line
+number followed by a 'G' and vi will 'go' to that line.  If you type 'G'
+without a preceding number, vi will go to the end of the file.  Here's a
+little trick:  if you want to see line numbers in vi type ':set nu'.
+
+   Type 'ready' now to get practice in moving in larger files.
+#user
+#create Movement3
+   The commands for moving around in larger files are as follows:
+
+	^D - Scroll forward (down) a half-screen
+	^U - Scroll backward (up) a half-screen
+	^F - Page forward one full screen
+	^B - Page backward one full screen
+	 G - Go to a particular line.  56G goes to line
+	     56.  G goes to the end of the file.
+
+-----------------------------
+The text which follows is intended to serve as a practice file in this and
+future lessons.  You'll get a new copy of it each time, so don't worry about
+accidentally messing it up.
+-----------------------------
+#
+cat /usr/lib/learn/vi/longtext >> Movement3
+vi Movement3
+#next
+2.4 10
+
+L2.4            445768708   100   205   100640  1443      `
+#print
+			First Review
+
+These are the commands we've covered so far.  Do you remember them all?
+
+		 Escape = Make vi listen
+	       ^L or ^R = Redraw the screen
+		     :q = Quit
+	        :w  :wq = Save your changes (:wq also quits)
+	    '-'  return = Move up and down a line
+       space  backspace = Move forward and backward a character
+arrow-keys (or h j k l) = Move left, down, up, and right (respectively)
+		^  $  0 = Move to beginning and end of a line
+		H  M  L = Move to top, middle, and bottom of screen
+		 ^D  ^U = Scroll down and up a half screen
+		 ^F  ^B = Move forward and backward a full screen
+		      G = Go to a particular line
+
+Type 'ready' to go into vi and refresh your memory.  If you remember it all,
+you don't have to practice very long.
+#user
+#create Review1
+
+		 Escape = Make vi listen
+	       ^L or ^R = Redraw the screen
+		     :q = Quit
+	        :w  :wq = Save your changes (:wq also quits)
+	    '-'  return = Move up and down a line
+       space  backspace = Move forward and backward a character
+arrow-keys (or h j k l) = Move left, down, up, and right (respectively)
+		^  $  0 = Move to beginning and end of a line
+		H  M  L = Move to top, middle, and bottom of screen
+		 ^D  ^U = Scroll down and up a half screen
+		 ^F  ^B = Move forward and backward a full screen
+		      G = Go to a particular line
+
+---------------------------------------
+#
+cat /usr/lib/learn/vi/longtext >> Review1
+vi Review1
+#next
+3.1 10
+
+L3.1            445768709   100   205   100640  2908      `
+#print
+		Basic Alteration - Insert and Delete I
+
+   So now you can move around nearly to your heart's content.  Wouldn't it
+be nice if you could change something?  In the next two lessons you'll see
+how to make basic changes to a file: inserting and deleting characters and
+lines.  
+
+   Inserting and deleting text are just a matter of moving to the right
+place and using the right command.  We'll be looking at these six commands:
+
+	i    a      These are the most common insertion commands.  'i' will
+		    allow you to insert text before the character the cursor
+		    is on and 'a' will append it after the current character.
+	I    A      These are for inserting text at the beginning of the
+		    current line and appending it to the end of said line.
+	x    X      These are the commands for deleting characters.  'x' will
+		    delete the character the cursor is on and 'X' gets rid of
+		    the character before the cursor.
+
+   Type 'ready' now to learn more about inserting and deleting.
+#user
+#create Insert1
+   Inserting text takes four steps:
+	1) Move to the proper place in the file.
+	2) Type the correct insertion command (i, I, a, or A).  This puts you
+	   into 'insert' mode.
+	3) Enter the new text.
+	4) Hit the Escape key.  This brings you back out of insert mode.
+
+   The insertion commands, again, are as follows:
+	i   inserts before the current character
+	a   appends (i.e. inserts after the current character)
+	I   inserts before the beginning of the current line
+	A   appends text after the end of the current line
+
+   Try inserting some text now anywhere in the file.  Don't touch anything past
+the dashed line, though.
+
+   Deleting text is merely a matter of moving the cursor to the characters to
+be deleted and hitting x once per character.  They should disappear.  You can
+also use the X command, which deletes the character right before the current
+one.  This doesn't appear to get used too frequently, however.  Try deleting 
+some text now, anywhere in the file.  Still don't touch things after the dashed
+line, though.  When you're done, do the exercise below.
+--------------------------------------------------------------------------
+EXERCISE 
+	Delete the words 'blort' and 'gronk' below.  Don't delete the
+dashes or equals signs.  Then insert the word 'blather' between the equals
+signs.  Be sure to save your changes before you leave the editor.
+
+		-blort==gronk-
+#create Answer
+		-=blather=-
+#
+vi Insert1
+grep =- Insert1 > Attempt
+#cmp Attempt Answer
+#succeed
+Not bad... Not bad at all.  It looks like you pick up this stuff pretty
+quickly.
+#fail
+
+Accidents will happen.  Give it another try.  This time spend a little more
+time practicing before you do the exercise.  If you managed to do it but
+couldn't remember how to save the file, try it again anyway.  You save your
+work by using the :w command.
+
+Type 'ready' when the learn program types a percent sign.
+#next
+3.2 10
+L3.2            445768711   100   205   100640  3243      `
+#print
+		Basic Alteration - Insert and Delete II
+
+   Now we'll see how to change things at a larger scale than individual
+characters.  Suppose you wanted to put a blank line into your file.  You could
+use the A command to start inserting at the end of the line, hit return and
+then hit Escape.  That would do it, but there's an easier way.  The o and O
+commands 'open' a new line either after or before the current line.  You can
+then add more text if you like and hit Escape when you're done to get out of
+insert mode.  'o' opens a blank line after the current one and O does it before
+the current one.
+
+   To get rid of a line, just move to that line and hit 'dd'.  That's really
+two d's there, not one.  This is a single case of a more general command which
+we'll look at later.  If you want to change a line, i.e. delete the old one and
+type a new one in its place, move to the line and type 'cc'.  We'll see more
+of the d and c commands later.
+
+   Type 'ready' (as usual) to practice these commands and learn some others.
+#user
+#create Insert2
+   The commands for opening up new blank lines are o (to open one after the
+current line) and O (to open one before the current line).
+
+   The dd command will delete the current line and the cc command will both
+delete it and let you type in a replacement.  You can try these out on the
+sample text after the dashed line below.
+
+   You may notice when you use the dd command that the lines don't seem to
+go away entirely.  There always seems to be a line with an at-sign (@) on
+it where the old lines were.  This only happens on so-called 'dumb' terminals
+which can't quickly delete lines.  Those lines aren't really in the file 
+(as you'll see if you try to move onto them), they're just a convenience
+so that vi doesn't have to take the time to redraw a lot of your screen 
+every time you delete a line.  You can use the ^R command to 'repair' the
+screen at any time.  Try it!
+
+   Another handy command for changing text is the r command to replace a
+character.   If you only need to turn one character into another, just move
+the cursor to the character in question and hit r followed by the new
+character.  This will replace the old one.   If you want to overwrite more
+than one character, use the R command.  You move to the first character to
+be overwritten, type R, type the new text over the old, and hit Escape to
+leave overwrite mode.
+
+   The last command we'll look at here is the s command, for substituting
+characters.  Suppose there is a character you want to replace with more
+than one other characters.  Just move to the old character, type s, type
+the new characters, and hit Escape to leave substitution mode.  If you
+need to substitute for more than one character, you can just precede the
+s command with a count.  For example, to replace 3 characters with 5 others,
+move to the first character to be replaced, type 3s, type the 5 new characters
+and hit Escape.
+
+   We've just looked at a lot of commands at once.  Spend enough time
+practicing them so that you'll remember them well.  They're the commands
+you'll end up using most frequently.
+---------------------------------------------------------------
+#
+cat /usr/lib/learn/vi/longtext >> Insert2
+vi Insert2
+#next
+3.3 10
+
+L3.3            445768713   100   205   100640  1870      `
+#print
+		Basic Alteration - Undoing and Redoing
+
+   The worst thing about the delete command is that sometimes you wish you
+hadn't.   No matter what single change you make to the file, though, vi can
+unchange it.  If you accidentally remove 64 lines of the choicest prose you've
+ever composed (presumably by typing 64dd), simply hit the u key.  Voila,
+those priceless words are back in the file.  If you change your mind and
+want to be rid of them again, just hit that u key once again.  Whammo, vi
+has undone its previous undo! Of course, you could then undo that
+undo and bring the lines back again.  This can go on a long time, one undo
+bringing the lines back, the next getting rid of them again.  Be careful,
+however!  Vi can only undo the very most recent change you've made to the file.
+   As a special case of this undo feature, if you make several changes all
+to the same line and want to undo all of them, just type U and the line
+will be restored to the way it was when you came to it.
+   Another great convenience is the . command, for redoing the last change.
+This can be handy if you want to insert the same text in several places.  Just
+do it once and then, for each other occurence, move to the proper place and hit
+the period key.  Vi will automatically make the same change in the new place.
+
+   Type 'ready' once again to try out these features.
+#user
+#create UndoRedo
+   The undoing and redoing commands are as follows:
+	u  will undo the most recent change, including another undo
+	U  will restore the current line to the way it was when you last came
+	   to it
+        .  will redo whatever the last change did
+
+   Play around for a while with these commands and get a feel for what they
+can do and what their limits are.
+--------------------------------------------------------
+#
+cat /usr/lib/learn/vi/longtext >> UndoRedo
+vi UndoRedo
+#next
+3.4 10
+L3.4            445768715   100   205   100640  8704      `
+#print
+			Second Review
+
+These are the commands we've seen for making changes to a file:
+
+	i   a = Insert text before ('i') or after ('a') current character
+	I   A = Insert text at beginning ('I') or end ('A') of line
+	x   X = Delete current ('x') or previous ('X') character
+	o   O = Open a new blank line before ('O') or after ('o') current line
+	   dd = Delete the current line
+	   cc = Change the current line
+	r   R = Replace one ('r') or more ('R') characters by overwriting
+	    s = Substitute new characters for old ones
+
+   Type 'ready' to go into vi and get some more practice with these
+commands.  As before, be sure that you understand how each one works;
+they're the ones you'll use every day.
+#user
+#create Review2
+
+	i   a = Insert text before ('i') or after ('a') current character
+	I   A = Insert text at beginning ('I') or end ('A') of line
+	x   X = Delete current ('x') or previous ('X') character
+	o   O = Open a new blank line before ('O') or after ('o') current line
+	   dd = Delete the current line
+	   cc = Change the current line
+	r   R = Replace one ('r') or more ('R') characters by overwriting
+	    s = Substitute new characters for old ones
+
+
+Here is a set of examples, one per command.  If you don't remember how
+something works, you might take a look.
+---------------------------------------------------------------------------
+EXAMPLES
+
+Command		Explanation
+-------		-----------
+   i		In the text below, if one wanted to fix the word 'novate'
+		so that it read 'renovate', one would move the cursor to
+		the 'n' in novate and type 'i' (to go into insert mode),
+		're' (to add the fix), and hit Escape (to leave insert mode).
+
+			I'm going to novate my house.
+				   ||
+				   ||
+				   \/
+			I'm going to renovate my house.
+
+   a		In the text below, suppose one wanted the word 'searching'
+		instead of 'search'.  One could move the cursor to the 'h'
+		in search, hit 'a' (to enter insert mode, appending to the
+		current character), type 'ing' to add the fix, and hit the
+		Escape key (to exit insert mode).
+
+			Chapter Five of this tutorial is on search.
+					||
+					||
+					\/
+			Chapter Five of this tutorial is on searching.
+
+   I	A	Strictly speaking, the 'I' and 'A' commands aren't needed
+		at all.  One could always just move the cursor to the
+		beginning or end of the line and type 'i' or 'a'.  They are
+		merely conveniences for when you are somewhere in a line
+		and need to insert some text at the front or back of the
+		line.  I personally find myself using 'A' constantly, to
+		add a period on the end of a sentence that I forgot earlier,
+		to continue a sentence that I interrupted, etc.  'I' is less
+		frequently-used, but nice at least for completeness.  Anyway,
+		here's the example:
+		Suppose one wanted to enclose the following C statment in
+		a comment.  This involves putting a '/*' on the front and a
+		'*/' on the back.  Assume the cursor is somewhere in the
+		middle of the line.  One would type 'I' (to go into insert
+		mode at the front of the line), '/*' (to add the opening of
+		the comment), Escape (to leave insert mode), 'A' (to insert
+		at the end of the line), '*/' (to close the comment), and
+		Escape again (to again leave insert mode).
+
+			if (getchar() != EOF) count++;
+				||
+				||
+				\/
+			/*if (getchar() != EOF) count++;*/
+
+   x   X	In the expression below, suppose one wanted to be rid of the
+		'(or -)' phrase.  One could move the cursor to that opening
+		parenthesis and type 'xxxxxxx' (i.e. seven x's).  An easier
+		way would be to type '7x', which has the same effect.  For
+		people used to a back-space style deletion, move the cursor
+		to the 's' and type 'XXXXXXX' or '7X'.
+
+			(-b + (or -) sqrt(b*b - 4*a*c)) / (2*a)
+				    ||
+				    ||
+				    \/
+			(-b + sqrt(b*b - 4*a*c)) / (2*a)
+
+   o   O	Any time you want to add a line of text to your file, you'll
+		probably use the 'open' commands.  Which one you use generally
+		depends entirely upon where you happen to be in relation to
+		where you want to add the line.  If you're right above it,
+		you'll use 'o', if right below, it'll be 'O'.
+		To add another item to the end of the list below, one would 
+		move the cursor to the current last line (#3), hit 'o' (to
+		open up space for the new line), type the new item, and hit
+		Escape (to leave insert mode).
+
+			1. Finish writing that darn tutorial
+			2. Find out about VAX Prolog implementation
+			3. Set up meeting times with NET committee
+				    ||
+				    ||
+				    \/
+			1. Finish writing that darn tutorial
+			2. Find out about VAX Prolog implementation
+			3. Set up meeting times with NET committee
+			4. Buy a loaf of bread on way home
+
+   dd	^R	A very easy command to use.  To delete item #2 in the list
+		below, just move the cursor to that line and type 'dd'.
+		The line will go away, but (if you're using a 'dumb'
+		terminal) it will be replaced by a blank line with an
+		at-sign ('@') in the first column. To get rid of that
+		pseudo-line, just type ^R.  Remember, those at-sign lines
+		aren't really in your file, they're just a convenience so
+		that vi won't take time to redraw the screen every time
+		you delete a line.
+
+			1. Finish writing that darn tutorial
+			2. Find out about VAX Prolog implementation
+			3. Set up meeting times with NET committee
+			4. Buy a loaf of bread on way home
+				    ||
+				    ||
+				    \/
+			1. Finish writing that darn tutorial
+			3. Set up meeting times with NET committee
+			4. Buy a loaf of bread on way home
+
+   cc		To change item #2 in the list below, just move the cursor
+		to that line, hit 'cc' (the line will disappear and you'll
+		be in insert mode), type the replacement line, and hit
+		Escape (to leave insert mode).	
+
+			1. Finish writing that darn tutorial
+			2. Find out about VAX Prolog implementation
+			3. Set up meeting times with NET committee
+			4. Buy a loaf of bread on way home
+				    ||
+				    ||
+				    \/
+			1. Finish writing that darn tutorial
+			2. Write folks at Rochester about Prolog/VAX
+			3. Set up meeting times with NET committee
+			4. Buy a loaf of bread on way home
+
+   r		Having deleted an item from the list below, it would be
+		nice to fix up the line numbers.  Just move the cursor
+		to the '3' and type 'r2' to replace it with a '2'.  Similarly,
+		move to the '4' and type 'r3'.
+
+			1. Finish writing that darn tutorial
+			3. Set up meeting times with NET committee
+			4. Buy a loaf of bread on way home
+				    ||
+				    ||
+				    \/
+			1. Finish writing that darn tutorial
+			2. Set up meeting times with NET committee
+			3. Buy a loaf of bread on way home
+
+   R		To change the table entries below when Prof. Conway gets
+		his new Ambassador, one could just use the 'x' command to
+		delete the word 'Datamedia' and then use 'i' to type in
+		'Ambassador', but that's a lot of work and besides, it
+		might mess up the nice way in which the table lines up.
+		Instead, move the cursor to the 'D' on Conway's line,
+		type 'R' (to go into overwrite mode), type 'Ambassador',
+		and hit Escape (to leave overwrite mode).
+
+		 tty     where      what           baud    device  who
+		-----  ----------  -----           ----    ------  --- 
+		ttyh0  422  Upson  Ambassador      9600    TS  7   Demers
+		ttyi0  419c Upson  Datamedia       9600    TS  8   Gilbert
+		ttyj0  408  Upson  Datamedia       9600    TS  9   Conway
+		ttyk0  415c Upson  Ambassador      9600    TS  10  Gries
+				    ||
+				    ||
+				    \/
+		 tty     where      what           baud    device  who
+		-----  ----------  -----           ----    ------  --- 
+		ttyh0  422  Upson  Ambassador      9600    TS  7   Demers
+		ttyi0  419c Upson  Datamedia       9600    TS  8   Gilbert
+		ttyj0  408  Upson  Ambassador      9600    TS  9   Conway
+		ttyk0  415c Upson  Ambassador      9600    TS  10  Gries
+
+   s		Substituting is usually handy when there are some number
+		of characters that you want to replace with some other number
+		of characters.  If the two numbers are the same, you could use
+		the 'R' command.  If not, 's' is probably your best bet.  For
+		example, suppose, in the list below, you wanted to change
+		the word 'VAX' to 'PDP11'.  You'd move the cursor to the 'V'
+		and hit '3s', meaning that you're going to type some stuff to
+		replace the next three characters.  You'd then type 'PDP11'
+		and hit Escape, to leave insert mode.
+
+			1. Finish writing that darn tutorial
+			2. Find out about VAX Prolog implementation
+			3. Set up meeting times with NET committee
+			4. Buy a loaf of bread on way home
+				    ||
+				    ||
+				    \/
+			1. Finish writing that darn tutorial
+			2. Find out about PDP11 Prolog implementation
+			3. Set up meeting times with NET committee
+			4. Buy a loaf of bread on way home
+#
+vi Review2
+#next
+4.0  10
+L4.0            445768717   100   205   100640  633       `
+#print
+		The First Stopping Point
+
+   It would be understandable if, at this point, you were feeling a little
+dazed about all of the commands you've learned.  If so, here is a good place
+to take a rest.  You might consider stopping the tutorial at this point
+and using what you know in day-to-day practice for a while.  When you're
+ready to go on and learn some more, you should use the command
+	
+			learn vi 4.0
+
+which will let the learn program know where you left off.
+
+   If you want to stop here, just type 'bye'.  If you want to go on and learn
+about Intermediate Movement and Searching, just type 'ready'.
+#user
+#next
+4.1  10
+
+L4.1            445768719   100   205   100640  1627      `
+#print
+		More Movement - Words and Sentences
+
+   Actually, vi knows about much more than just characters and lines in 
+files.  It has a concept of words and sentences.  Vi defines a word in one
+of two ways:
+	1) Letters, digits and '_' surrounded by spaces or punctuation
+	2) Any characters at all, surrounded by spaces
+
+   Both definitions have their uses and vi has two parallel sets of commands
+for dealing with them.  In the list below, the lower-case commands use the
+first definition and the upper-case ones use the second one.
+
+	w  W = Move the cursor forward one word.
+	b  B = Move the cursor backward one word.
+	e  E = Move the cursor to the end of the current word or, if already
+		there, to the end of the next word forward.
+
+   For sentences, vi uses ')' to move forward one sentence and '(' to move
+backward one sentence.
+
+   Type 'ready' now to try out the word and sentence commands.
+#user
+#create Words
+Vi defines a word in one of two ways:
+	1) Letters, digits and '_' surrounded by spaces or punctuation
+	2) Any characters at all, surrounded by spaces
+
+   In the list below, the lower-case commands use the first definition and
+the upper-case ones use the second one.
+
+	w  W = Move the cursor forward one word.
+	b  B = Move the cursor backward one word.
+	e  E = Move the cursor to the end of the current word or, if already
+		there, to the end of the next word forward.
+
+   For sentences, vi uses ')' to move forward one sentence and '(' to move
+backward one sentence.
+----------------------------------------------------------------------------
+#
+cat /usr/lib/learn/vi/longtext >> Words
+vi Words
+#next
+4.2  10
+
+L4.2            445768721   100   205   100640  1754      `
+#print
+		More Movement - Search in the Line
+
+   Frequently one would like to be able to say, "Move the cursor over to
+the character 'x'", for some x.  This would be nicer than having to hit the
+space bar a jillion times or even than using the word commands.  Vi provides
+such a facility in the 'find' commands.
+
+   To move the cursor to the next 'x' on the current line, type 'fx'.  This
+'finds' the next 'x'.  If there isn't one, vi will beep at you.  To move in
+the other direction (i.e. to find the previous 'x' on this line), type 'Fx'.
+Since you frequently find that the one it moved to wasn't the one you wanted,
+just one that you didn't see, vi provides an easy way to repeat the search, by
+using the ';' key.  To repeat it but in the opposite direction, use ','.
+
+   Variants of this command which will, for a time, appear to be almost
+useless are the 't' and 'T' commands, which work exactly like the 'f' and 'F'
+commands but stop one character short of the destination, going up 'to' the
+character you're searching for but not on it.  We'll see why this command
+exists when you look at the concept of 'targets' for commands.
+
+   Type 'ready' to try out the inline searching facilities.
+#user
+#create Inline
+The inline searching commands are as follows:
+	fx = Find next 'x' on current line, for any 'x'.
+	Fx = Find previous 'x' on current line, for any 'x'.
+        tx = Like 'fx' but stops one character short
+	Tx = Like 'Fx' but stops one character short
+	 ; = Repeat previous inline search
+	 , = Repeat previous inline search but in opposite direction
+
+The ';' and ',' commands unfortunately seem to have utterly un-mnemonic names.
+They were chosen, however, because of their convenient placement on most
+keyboards.
+#
+vi Inline
+#next
+4.3  10
+L4.3            445768722   100   205   100640  1803      `
+#print
+		More Movement - Searching in the File
+
+   The last, but certainly not least, method we'll look at for moving around
+in the file is searching.  The command to search for a particular word or
+phrase or whatever is '/'.  When you type a /, vi will move the cursor to 
+the bottom of the screen, echo the / and wait.  You then type in the text
+you want to search for and hit return.  If the text exists anywhere in the
+file, vi will move the cursor forward to the next occurence.  If it gets
+to the end of the file without finding it, vi will wrap around to the front
+of the file and continue searching.
+
+   If you want vi to start searching in the backward direction, i.e, toward
+the beginning of the file, use ? instead of /.  Note that ? is just a shifted
+/ on most terminals.
+
+   To repeat a previous search with the same text, just hit 'n', for 'next'.
+To repeat the search in the opposite direction, hit 'N'.
+
+   Type 'ready' now to try out the search commands.
+#user
+#create Search
+   Searching uses these commands:
+
+	/ = To search forward for some text
+	? = To search backward for some text
+	n = To repeat the previous search (i.e. go on to the 'next' occurance)
+	N = To repeat the previous search but in the opposite direction
+
+   We'll see later how to specify a pattern to search for, rather than
+just straight text.  This will make a lot of searches much easier.
+
+   Oftentimes, you will do a search and then want to go back to where you
+were previously.  The '' command (that's two single quotes) will move you
+back to the last place you were.  This is a special case of a command we'll
+look at in more detail later, in the section on marking.
+--------------------------------------------------------------------------
+#
+cat /usr/lib/learn/vi/longtext >> Search
+vi Search
+#next
+5.1  10
+
+L5.1            445768724   100   205   100640  2600      `
+#print
+		More Alteration - Targets
+
+   When we first looked at the 'dd' and 'cc' commands, we said that they were
+special cases of more general commands.  In fact, 'd' and 'c' are the basis
+for some of the most powerful commands in vi.  We'll only talk about the 'd'
+command here, but it's all applicable to 'c' as well.  
+
+   The idea behind targets is to somehow combine the simple idea of deleting
+things with the movement commands, yielding a whole set of new commands.
+For example, the 'w' command will move the cursor ahead one word.  The
+'dw' command will delete everything from where we are up to the beginning
+of the next word.  ')' moves forward a sentence; 'd)' deletes a sentence.
+You can use this for practically all movement commands, including all of 
+the following:
+			-  return  space
+			^  $  0  H  L  M
+			w  b  e  W  B  E  (  )
+			f  F  t  T  ;  ,
+			/  ?  n  N
+
+   Type 'ready' and try out these commands.  Take your time and experiment!!
+#user
+#create Targets
+   The idea behind targets is to somehow combine the simple idea of deleting
+things with the movement commands, yielding a whole set of new commands.
+For example, the 'w' command will move the cursor ahead one word.  The
+'dw' command will delete everything from where we are up to the beginning
+of the next word.  ')' moves forward a sentence; 'd)' deletes a sentence.
+You can use this for practically all movement commands, including all of 
+the following:
+			-  return  space
+			^  $  0  H  L  M
+			w  b  e  W  B  E  (  )
+			f  F  t  T  ;  ,
+			/  ?  n  N
+
+  Now you may be able to see the usefulness of the 't' and 'T' commands.
+Recall that 'tx' moves the cursor to the character before the next 'x' on the
+line.   Therefore, 'dtx' will delete everything up to, but not including,
+the next 'x' on the line.  'dfx', on the other hand, will delete everything
+up to and including the 'x'.  Both commands have their uses.
+
+   Remember that all of these targets can also be used with the 'c' command.
+That is, 'c3w' will allow you to change the next three words.  When you try 
+this, note that vi doesn't actually erase the words and then put you into
+insert mode (That's a lot of redrawing that may not be necessary).  It instead
+places a dollar sign at the last character to be changed.  When you hit
+Escape to get out of insert mode, the line will be fixed up.  Try it!
+
+   In the next three lessons, we'll see other commands which, like 'c' and 'd',
+can use targets.
+-------------------------------------------------------------------------------
+#
+cat /usr/lib/learn/vi/longtext >> Targets
+vi Targets
+#next
+5.2  10
+L5.2            445768726   100   205   100640  1604      `
+#print
+			Yanking and Putting
+
+   Often you will want to move text from one place in the file to another.
+You do this in vi by first deleting it, all in one chunk (e.g. to delete 5 lines
+type '5dd', not 'dddddddddd'), moving to the new location, and typing 'p'.
+This stands for 'put' and it simply inserts the most-recently deleted text.
+The 'p' command will insert it after the current line or character (depending
+upon the type of delete done) and 'P' inserts it before said line/character.
+
+   If you just want to copy the text, what you'd like is some way to 'delete'
+the text without really deleting it.  For this, vi provides the 'yank'
+command, which does just that.  To copy five lines to somewhere else, say
+'5yy' (this memorizes the next five lines), then move the cursor to the
+new location and hit 'p'.  The 'y' command can use any targets that 'd' can
+use.  (In general, targetable commands can always be doubled, as in 'yy',
+to make them refer to the current line.)
+
+   Type 'ready' now to try out yanking and putting.
+#user
+#create YankPut
+   'p' puts the most-recently deleted text after the current position and
+   'P' puts it before the current position.
+   'y' works just like the 'd' command except that it doesn't actually
+	delete the text, it only memorizes it.
+
+   Note that putting doesn't make vi forget what it last yanked or deleted.
+That is, you can yank something once and then put it several times, to make
+several copies of it.
+---------------------------------------------------------------------------
+#
+cat /usr/lib/learn/vi/longtext >> YankPut
+vi YankPut
+#next
+5.3  10
+L5.3            445768727   100   205   100640  1264      `
+#print
+		Move Alteration - Shifting
+
+   Often, especially when editing programs, it would be handy to be able
+to shift parts of the file over some number of spaces to the right or left.
+Vi provides the '>' and '<' commands for this.  They move lines in the 
+obvious directions eight spaces at a time.  They can take targets, like the
+'d', 'c', and 'y' commands, but usually you'll only want to use those which
+affect lines (e.g. not 'w' or ')'); the others all work, but probably aren't
+frequently useful.
+
+   Of course, if you double the commands (i.e. '>>' and '<<'), they refer to
+single lines.
+
+   If you'd prefer them to shift text by some amount other than 8 spaces, you
+can set an option to that effect:
+		:set shiftwidth=n
+where 'n' is the number of spaces you want them to shift.  The word shiftwidth
+can be abbreviated sw.
+
+   Type 'ready' to try out these commands.
+#user
+#create Shift
+  The shift commands:
+
+		     >  = Shift text right shiftwidth spaces (default 8)
+		     <  = Shift text left shiftwidth spaces
+    :set sw=n
+       or  		= Change the value of shiftwidth to n
+    :set shiftwidth=n
+
+
+   The :set command has many different options which can be set and changed.
+We'll go over a list of them in a later lesson.
+#
+vi Shift
+#next
+5.4  10
+L5.4            445768729   100   205   100640  4605      `
+#print
+		    More Alteration - Filtering
+
+   One of the most convenient and powerful features of vi is the ability
+to take parts of your text and run it through a program.  This is called
+'filtering' and is quite commonly used with programs like nroff, fmt,
+spell, sort, uniq, and others.  It is much more convenient to use this
+than to write a portion of the file out, leave the editor, run the program
+on that portion into a temporary file, re-enter the editor, and read in
+the contents of the temporary file.
+
+   The filtering command in vi is '!' and it can take any targets that the
+'d', 'c', 'y', '>', or '<' commands can.  Thus, to run your whole text
+through nroff, you would simply type
+	1G	To go to the very beginning of the file
+	!G	To filter the whole file through a program.  Vi will prompt
+		with a '!' at the bottom of screen.   You type
+	nroff	and hit return and whammo, off it goes.  Your file will be
+		replaced by the nroff output.  Use the undo command to go
+		back to the original text afterwards if you wish.
+
+   Type 'ready' to try out this command.
+#user
+#create FilterTest
+EXERCISE
+	Use the ! command to run the part of this file below the dashed line
+through the program 'sort'.  When you've done that, delete all of these
+instructions, upto and including the dashed line.  Then exit, saving your
+changes.
+-----------------------------------------------------------------------------
+to.vax135
+net.bugs.v7
+net.rec.scuba
+net.columbia
+net.games.trivia
+net.trivia
+net.oa
+net.news.b
+net.applic
+net.music
+net.misc
+fa.arms-d
+fa.railroad
+fa.arpa-bboard
+cu.bboard
+net.bugs.2bsd
+net.bugs.4bsd
+fa.space
+net.space
+net.eunice
+net.rec.bridge
+net.cycle
+cu.games.empire
+net.cse
+net.news.newsite
+net.games.rogue
+net.rec.skydive
+cu.info-bitgraph
+net.math
+fa.poli-sci
+net.general
+cu.general
+net.travel
+net.sport.baseball
+to.cornell
+net.lang.apl
+net.dcom
+fa.telecom
+fa.info-cpm
+net.lan
+net.games.pacman
+net.aviation
+net.ham-radio
+fa.info-micro
+net.info-micro
+net.micro
+net.rec.photo
+net.auto
+fa.editor-p
+fa.digest-p
+fa.tcp-ip
+cu.tcp-ip
+net.games.dip
+net.games.frp
+net.lang.lisp
+net.lisp
+net.news.group
+cu.msggroup
+net.followup
+cu.followup
+net.jokes.q
+net.rumor
+net.ucds
+net.unix-wizards
+net.rec.birds
+net.records
+net.sources
+net.movies
+net.jokes
+net.games
+cu.games
+net.wines
+net.taxes
+net.bugs
+net.periphs
+net.cooks
+fa.works
+net.works
+cu.works
+net.cms
+fa.info-terms
+cu.info-terms
+fa.sf-lovers
+net.sf-lovers
+net.chess
+fa.human-nets
+cu.localnets
+net.news
+cu.info-pcnet
+net.test
+net.auto.vw
+fa.info-vax
+cu.info-vax
+net.usenix
+net.unix
+net.sport.hockey
+fa.energy
+#create SortedList
+cu.bboard
+cu.followup
+cu.games
+cu.games.empire
+cu.general
+cu.info-bitgraph
+cu.info-pcnet
+cu.info-terms
+cu.info-vax
+cu.localnets
+cu.msggroup
+cu.tcp-ip
+cu.works
+fa.arms-d
+fa.arpa-bboard
+fa.digest-p
+fa.editor-p
+fa.energy
+fa.human-nets
+fa.info-cpm
+fa.info-micro
+fa.info-terms
+fa.info-vax
+fa.poli-sci
+fa.railroad
+fa.sf-lovers
+fa.space
+fa.tcp-ip
+fa.telecom
+fa.works
+net.applic
+net.auto
+net.auto.vw
+net.aviation
+net.bugs
+net.bugs.2bsd
+net.bugs.4bsd
+net.bugs.v7
+net.chess
+net.cms
+net.columbia
+net.cooks
+net.cse
+net.cycle
+net.dcom
+net.eunice
+net.followup
+net.games
+net.games.dip
+net.games.frp
+net.games.pacman
+net.games.rogue
+net.games.trivia
+net.general
+net.ham-radio
+net.info-micro
+net.jokes
+net.jokes.q
+net.lang
+net.lang.apl
+net.lang.lisp
+net.lisp
+net.math
+net.micro
+net.misc
+net.movies
+net.music
+net.news
+net.news.b
+net.news.group
+net.news.newsite
+net.oa
+net.periphs
+net.rec.birds
+net.rec.bridge
+net.rec.photo
+net.rec.scuba
+net.rec.skydive
+net.records
+net.rumor
+net.sf-lovers
+net.sources
+net.space
+net.sport.baseball
+net.sport.hockey
+net.taxes
+net.test
+net.travel
+net.trivia
+net.ucds
+net.unix
+net.unix-wizards
+net.usenix
+net.wines
+net.works
+to.cornell
+to.vax135
+#
+vi FilterTest
+#cmp FilterTest SortedList
+#succeed
+Quite impressive!  And you should be impressed too, at how simple it was to
+do that.   Now you're good enough to go on to the tricky stuff...
+#fail
+Not quite.  What you need to do is to move the cursor to the first line
+after the dashed line.  Then type '!G' (to tell vi you want to pipe the rest
+of the file through a program).  Vi will prompt at the bottom of the screen
+and you type 'sort' and hit return.  After a moment, the old, unsorted list
+should be replaced by a brand spanking new sorted one (hopefully of the same
+elements).  You then go back and delete the instructions (all of them, through
+the dashed line) using the 'dd' command and Voila!, you're done.  Just type
+:wq to save your changes and exit.
+
+When the learn program types a percent sign, just type 'ready' to try it again.
+#next
+6.1  10
+
+L6.1            445768730   100   205   100640  2039      `
+#print
+	    Misc. Useful Features - Advanced Insert Mode
+
+   There are a few things which you can do in insert mode which we didn't
+talk about before.  For example, you probably noticed that you can use the
+backspace key to backup.  You can also use your 'kill' character (usually @,
+but often reset to ^X or ^U) to back up over everything you've inserted on
+that line.  If for some reason you need to insert a control character into
+your file, just prefix a ^V to it.  For example, typing '^V^H' will insert a
+backspace character (^H), instead of erasing the preceeding character.  Lastly,
+you can use ^W to backspace over a whole word at once.
+   Another commonly-useful insert feature is auto-indent mode.  This feature
+makes vi automatically indent each new line the same amount as the previous
+line.  This is highly convenient when typing programs and indented paragraphs
+and tables.  To turn this feature on, type ':set autoindent' or ':set ai'.
+Once this is on, if you want to move backwards beyond the indent, you'll need
+to use the ^D command, standing for 'detab'.  This is different from the ^D
+command which scrolls in that this one is only useful while you're in insert
+mode.
+   Type 'ready' to try out autoindenting and the other insert-mode features.
+#user
+#create AdvInsert
+   A summary of the commands usable with insert mode:
+		backspace = Just that
+	   kill character = Backspace over whole line (usually @ or ^X or ^U)
+		       ^V = To insert a control character
+		       ^W = Backspace over the last word
+	:set autoindent
+	       or	  = Turn on autoindenting
+	   :set ai
+
+	:set noautoindent
+	       or	  = Turn off autoindenting
+	   :set noai
+
+		   ^D  ^T = Move backwards or forwards one shiftwidth
+
+Except for the :set commands, all of these only work while you're in insert
+mode.  Experiment with them, especially the ^D and ^T commands with
+autoindenting turned on.
+--------------------------------------------------------------------------
+#
+cat /usr/lib/learn/vi/longtext >> AdvInsert
+vi AdvInsert
+#next
+6.2  10
+
+L6.2            445768733   100   205   100640  4681      `
+#print
+		Misc. Useful Features - The Outer Editor I
+
+   You may remember that we said at the outset that vi is built on top of
+another, line-oriented, editor, called 'ex'.  Whenever you use a colon
+command (e.g. :q, :w, :set), you are really accessing this outer editor.
+One of the most useful commands available in the outer editor is the
+substitution command.  You can find out all about 'ex' by leaving learn
+with 'bye' (when you see the percent sign) and then typing 'learn editor'.
+The substitution command is for those times when you want to make a change
+several times in the file without having to move to each one in turn.
+Suppose we wanted to change all occurances of 'masticate' to 'chew'.  We'd
+use this command:
+			:1,$s/masticate/chew/g
+What does it mean?  Well, ':' is just the command to move the cursor to the
+bottom of the screen on the command line.  '1,$' means "do this on every line
+of the file from line 1 to line $ (i.e. the end)".  's/masticate/chew/' means
+"if there's an instance of masticate on this line, change it to chew".  The
+final 'g' stands for global, meaning "do this as many times as possible on this
+line".  Otherwise, the s command only changes the first occurance on the line.
+   In place of the '1,$' we could have used any two line numbers or the
+character '.', which stands for the current line.  ":.,.+5s/mast/pole/g" would
+change all masts to poles in the next six lines.
+   Type 'ready' to try out this handy command.
+#user
+#create Substitute
+   You can learn all about the substitution command when you try
+'learn editor', but remember to leave your present session with 'bye'.
+Once you get the hang of it (it's rather crude at first in comparison
+to vi), if you want to skip to the lessons on this command, type
+'again 30.1a' from within learn, and do the lessons as they are presented.
+To get a real understanding of substitutions you will need to do this at
+some time, but you may want to get a glimpse of them here.
+
+   The format of a substitute command is as follows:
+		:<address>s/<pattern>/<replacement>/<options>
+
+where	<address>	is either of the form
+				<line1>,<line2>
+			or
+				g/<pattern>/
+			In the first case, <line1> and <line2> can be any of
+				1.  A line number
+				2.  '$', meaning the last line in the file
+				3.  '.', meaning the current line
+			    or  4.  A sum of these, like .+5
+			The meaning of this type of address is all lines
+			between <line1> and <line2>.
+			In the second case, vi uses all lines of the file
+			containing the text <pattern>.
+
+	<pattern>	is the text to look for
+	<replacement>	is the text to replace <pattern> with
+and	<options>	is any number of the following
+				g, which makes the change happen to all 
+				   occurances of <pattern> on the line
+				c, which makes vi confirm each change before
+				   doing it
+			    or  p, which makes vi print out each changed line
+				   as it goes
+
+Examples:
+	:1,$s/masticate/chew/g
+			For all lines in the file, changes every occurance of
+			'masticate' on each line to 'chew'.
+	:1,$s/masticate/chew/
+			Same as the previous one, but only changes the first
+			'masticate' on each line.
+	:g/fundamental/s/fundamental/basic/cp
+			Finds every line in which the word 'fundamental' occurs
+			and changes it to 'basic' after first asking for
+			confirmation.  In this mode, vi will print the line
+			in which the pattern occurs, underline the pattern, and
+			wait.  If you type 'y', the change will be made.  Any
+			other character causes the change not to be done.
+			Because of the 'p' at the end of the command above, vi
+			will print out the line each time after it makes a
+			substitution.
+
+Play around with this command for a while and then try this exercise:
+-----------------------------------------------------------------------------
+EXERCISE
+	Compose and execute a command which will change every instance of
+	the word 'rogue' in this file to the word 'rouge'.  Make sure you
+	even get the instance in these instructions.  Then exit, saving your
+	changes.
+-----------------------------------------------------------------------------
+#create Empty
+#
+cat /usr/lib/learn/vi/longtext >> Substitute
+vi Substitute
+grep rogue Substitute > Answer
+#cmp Answer Empty
+#succeed
+You should be proud of yourself for learning this complicated command even
+with very muddled explanations...  Sorry...
+#fail
+Try it again.  The kind of command you're looking for looks like this:
+		  :1,$s/rogue/rouge/g
+If you forgot the 'g' on the end, it won't work, since vi will only change
+the first instance of 'rogue' on each line and there are lines with two
+instances.
+
+When the learn program types a percent sign, type 'ready' to try it again.
+#next
+6.3  10
+
+L6.3            445768734   100   205   100640  1884      `
+#print
+	    Misc. Useful Features - The Outer Editor II
+
+   When you invoke vi, you execute a command like 'vi <filename>'.
+If you want to look at several files, one at a time, you can use a command like
+		vi <file1> <file2> <file3> <file4> ...
+This would be equivalent to running vi on each file separately.
+Once you've done this, however, how to you tell vi to go on to the next file?
+You use the ':n' command, of course.  If you have made changes that you don't
+care about saving, you'll have to type ':n!'.
+   Often, you'll want to read in another file and have its contents inserted
+into the file at a certain point.  For this vi has the ':r' command.  Just say
+':r <filename>' and vi will insert that file into yours at the current line.
+   Finally, if you're inside vi and want to execute a normal shell command,
+just type
+		:!<command>
+where <command> is the command you want to execute.  You can try these commands
+out on your own.  Once again, you can find out more by doing the 'learn editor'
+sequence.  Type 'vi junk stuff' to practice with ex.
+#
+cp %s/longtext longtext
+#create junk
+   You have entered vi with two files.  Before going on to the next
+one you may be interested to know that whenever you are in vi, you
+can get into ex by typing Q.  The cursor will move to the bottom of
+the screen and you will have a permanent colon prompt sign.  You can
+always get from ex back into vi with the command 'vi' followed by the
+return key (this time you do not type in a file name).  Try that now:
+type Q to get to ex, and then vi to get back to vi.
+   Now type :n to move on to edit the next file.
+#create stuff
+   This is the next file and is very short.  There is a file called
+'longtext', a copy of which you can read into this file after the
+current line by typing ':r longtext'.
+Put the cursor on this line and try that, then type :wq and 'ready'.
+#user
+#next
+6.4  10
+L6.4            445768736   100   205   100640  762       `
+#print
+   You've now completed that part of vi which might be used every day.
+There are a fair number of other sets of features which make certain
+jobs easier, but you know all of the common commands.
+
+   This concludes the Vi learn sequence.  The recommendation at this
+point is that you get used to using vi on a regular basis.  After
+you're accustomed to working in the editor and feel quite comfortable
+with it, get a copy of the reference manual for vi, called
+"An Introduction to Display Editing with Vi".
+There are a number of features described there which make specific
+types of editing jobs much easier.  A little reading will probably
+give a large yield in your productivity and satisfaction.  Good Luck!
+
+   Type 'ready' now to finish this sequence.
+longtext        445768739   100   205   100640  6373      `
+
+                       BARCHESTER TOWERS
+
+                       Anthony Trollope
+
+
+In the latter days of July in the year 185-, a most important
+question was for ten days hourly asked in the cathedral city of
+Barchester, and answered every hour in various ways -- Who was to
+be the new bishop?
+
+   The death of old Dr. Grantly, who had for many years filled
+that chair with meek authority, took place exactly as the minis-
+try of Lord ----- was going to give place to that of Lord -----.
+The illness of the good old man was long and lingering, and it
+became at last a matter of intense interest to those concerned
+whether the new appointment should be made by a conservative or
+liberal government.
+
+   It was pretty well understood that the outgoing premier had
+made his selection and that if the question rested with him, the
+mitre would descend on the head of Archdeacon Grantly, the old
+bishop's son.  The archdeacon had long managed the affairs of the
+diocese, and for some months previous to the demise of his father
+rumour had confidently assigned to him the reversion of his
+father's honours.
+
+   Bishop Grantly died as he had lived, peaceably, slowly,
+without pain and without excitement.  The breath ebbed from him
+almost imperceptibly, and for a month before his death it was a
+question whether he were alive or dead.
+
+   A trying time was this for the archdeacon, for whom was
+designed the reversion of his father's see by those who then had
+the giving away of episcopal thrones.  I would not be understood
+to say that the prime minister had in so many words promised the
+bishopric to Dr. Grantly.  He was too discreet a man for that.
+There is a proverb with reference to the killing of cats, and
+those who know anything either of high or low government places
+will be well aware that a promise may be made without positive
+words and that an expectant may be put into the highest state of
+encouragement, though the great man on whose breath he hangs may
+have done no more than whisper that "Mr. So-and-so is certainly a
+rising man."
+
+   Such a whisper had been made, and was known by those who heard
+it to signify that the cures of the diocese of Barchester should
+not be taken out of the hands of the archdeacon.  The then prime
+minister was all in all at Oxford, and had lately passed a night
+at the house of the Master of Lazarus.  Now the Master of Lazarus
+-- which is, by the by, in many respects the most comfortable as
+well as the richest college at Oxford -- was the archdeacon's
+most intimate friend and most trusted counsellor.  On the occa-
+sion of the prime minister's visit, Dr. Grantly was of course
+present, and the meeting was very gracious.  On the following
+morning Dr. Gwynne, the master, told the archdeacon that in his
+opinion the thing was settled.
+
+   At this time the bishop was quite on his last legs; but the
+ministry also were tottering.  Dr. Grantly returned from Oxford,
+happy and elated, to resume his place in the palace and to con-
+tinue to perform for the father the last duties of a son, which,
+to give him his due, he performed with more tender care than was
+to be expected from his usual somewhat worldly manners.
+
+   A month since, the physicians had named four weeks as the out-
+side period during which breath could be supported within the
+body of the dying man.  At the end of the month the physicians
+wondered, and named another fortnight.  The old man lived on wine
+alone, but at the end of the fortnight he still lived, and the
+tidings of the fall of the ministry became more frequent.  Sir
+Lamda Mewnew and Sir Omicron Pie, the two great London doctors,
+now came down to lunch in the episcopal dining-room, whispered to
+the archdeacon their own private knowledge that the ministry must
+fall with five days.  The son returned to his father's room and,
+after administering with his own hands the sustaining modicum of
+madeira, sat down by the bedside to calculate his chances.
+
+   The ministry were to be out within five days: his father was
+to be dead within -- no, he rejected that view of the subject.
+The ministry were to be out, and the diocese might probably be
+vacant at the same period.  there was much doubt as to the names
+of the men who were to succeed to power, and a week must elapse
+before a cabinet was formed.  Would not vacancies be filled by
+the outgoing men during this week?  Dr. Grantly had a kind of
+idea that such would be the case but did not know, and then he
+wondered at his own ignorance on such a question.
+
+   He tried to keep his mind away from the subject, but he could
+not.  The race was so very close, and the stakes were so very
+high.  He then looked at the dying man's impassive, placid face.
+There was no sign there of death or disease; it was something
+thinner than of yore, somewhat grayer, and the deep lines of age
+more marked; but, as far as he could judge, life might yet hang
+there for weeks to come.  Sir Lamda Mewnew and Sir Omicron Pie
+had thrice been wrong, and might yet be wrong thrice again.  The
+old bishop slept during twenty of the twenty-four hours, but dur-
+ing the short periods of his waking moments, he knew both his son
+and his dear old friend, Mr. Harding, the archdeacon's father-
+in-law, and would thank them tenderly for their care and love.
+Now he lay sleeping like a baby, resting easily on his back, his
+mouth just open, and his few gray hairs straggling from beneath
+his cap; his breath was perfectly noiseless, and his thin, wan
+hand, which lay above the coverlid, never moved.  Nothing could
+be easier than the old man's passage from this world to the next.
+
+   But by no means easy were the emotions of him who sat there
+watching.  He knew it must be now or never.  He was already over
+fifty, and there was little chance that his friends who were now
+leaving office would soon return to it.  No probable British
+prime minister but he who was now in, he who was so soon to be
+out, would think of making a bishop of Dr. Grantly.  Thus he
+thought long and sadly, in deep silence, and then gazed at that
+still living face, and then at last dared to ask himself whether
+he really longed for his father's death.
+
+   The effort was a salutary one, and the question was answered
+in a moment.  The proud, wishful, worldly man sank on his knees
+by the bedside and, taking the bishop's hand within his own,
+prayed eagerly that his sins might be forgiven him.
+

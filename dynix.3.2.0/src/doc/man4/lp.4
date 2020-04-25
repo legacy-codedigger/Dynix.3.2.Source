@@ -1,0 +1,146 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+.V= $Header: lp.4 1.6 90/10/15 $
+.TH LP 4 "\*(V)" "DYNIX"
+.SH NAME
+lp \- Systech parallel line printer interface
+.SH SYNOPSIS
+.B "device lp0 at mbad? csr 0x400 maps 2 bin 4 intr 2"
+.SH DESCRIPTION
+The
+.I lp
+device driver supports the Systech MLP-2000 controller for
+line printers using the Centronics or Dataproducts parallel interfaces.
+It supports up to two line printers per controller.
+The standard controller names consist of ``lp'' followed by the
+controller unit number (e.g. lp0, lp1).
+.PP
+The unit number of the printer is specified by the minor device number.
+The standard device names consist of ``lp'' followed by the line
+printer unit number
+(e.g. lp0, lp1).
+Each device is exclusive access on open.
+.PP
+Each controller occupies 32 contiguous bytes of MULTIBUS I/O address space
+starting at the csr address.
+.SH CONFIGURATION
+The default characteristics
+include aligning to top of form on open and close, 132 columns, and
+66 lines per page.
+Lines longer than the maximum line length are silently truncated.
+.PP
+Each printer can be configured for special characteristics,
+including line lengths, column lengths,
+and special modes.  The special modes are:
+upper case only mode and
+raw mode.
+.PP
+In normal mode,
+the driver interprets
+newlines, backspaces, tabs, and form feeds.
+Tab stops are every 8 columns starting at column 8 (i.e. 8, 16, 24...).
+Most printers can operate in both print and plot modes
+using the normal operation mode.
+.PP
+In the upper case only mode, lower case letters are mapped
+into upper case.  Other characters are mapped to similar characters
+overstruck with ``-'' according to the following table:
+.PP
+.TS
+center;
+c c.
+Input	Mapped to
+
+{	\o"-("
+}	\o"-)"
+\`	\o"-\'"
+|	\o"\-!"
+~	\o"\-^"
+.TE
+.PP
+Raw mode provides an eight-bit data path to the printer.
+Tabs, formfeeds, newlines and other special characters
+are not expanded, and no line or page adjustments are made.
+.PP
+The configuration options are specified in a table in the binary
+configuration file,
+.IR /sys/conf/conf_lp.c .
+The first column specifies the line length.  The second column
+specifies the number of lines per page.  The third column specifies
+the mode.
+The printer characteristics are indexed by the minor number
+of the device. If the minor number is greater than the 
+number of entries in
+the array, the configuration options for the last entry in the table
+are used.
+.PP
+For example, if you had the following hardware configuration:
+.sp
+.TS
+l r r l.
+printer 0	80 columns	25 lines	upper case only 
+printer 1	132 columns	25 lines	raw
+printer 2	132 columns	96 lines	normal
+printer 3	80 columns	66 lines	normal
+printer 4	132 columns	66 lines	normal
+printer 5	132 columns	66 lines	normal
+.TE
+.bp
+you could use the following configuration table:
+.sp
+.TS
+l l l l l r.
+struct	lp_printer	lpconfig[] = {
+
+/*	cols,	ht,	special_map 
+					*/	
+{	80,	25,	LPCAPS	} ,	/* 0 */	
+{	132,	25,	LPRAW	} ,	/* 1 */	
+{	132,	96,	LPDEFAULT	} ,	/* 2 */	
+{	80,	66,	LPDEFAULT	} ,	/* 3 */	
+{	132,	66,	LPDEFAULT	} ,	/* 4 */	
+};
+.TE
+.PP
+Note that the sixth printer (number 5) is not specified
+in the configuration but will have the same
+characteristics as printer number 4.
+.PP
+The default configuration is as follows:
+.sp
+.TS
+l l l l l r.
+struct	lp_printer	lpconfig[] = {
+
+/*	cols,	ht,	special_map
+					*/	
+{	132,	66,	LPDEFAULT	} ,	/* 0 */	
+{	132,	66,	LPDEFAULT	} ,	/* 1 */	
+};
+.TE
+.SH "BUFFER SIZE"
+The number of maps specified in the entry for the controller in the
+kernel configuration file determines the size of the data buffer.
+The maximum buffer size per printer is 8K bytes.
+Each printer is allocated half the number of maps specified for
+its controller (since each controller supports up to two printers).
+Each map results in 1K bytes of buffering.  Thus in the example
+listed in the
+.BR SYNOPSIS ,
+each printer connected to lp0 has a 1K-byte buffer.
+.SH FILES
+/dev/lp*
+.br
+/sys/conf/conf_lp.c 
+.SH "SEE ALSO"
+lpr(1), pr(1), printcap(5)
+.SH DIAGNOSTICS
+None.

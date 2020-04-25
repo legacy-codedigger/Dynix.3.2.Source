@@ -1,0 +1,69 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: getpeername.2 1.7 1991/04/15 22:50:22 $
+.TH GETPEERNAME 2 "\*(V)" "4BSD"
+.SH NAME
+getpeername \- get name of connected peer
+.SH SYNOPSIS
+.nf
+.PP
+.ft 3
+getpeername(s, name, namelen)
+int s;
+struct sockaddr *name;
+int *namelen;
+.fi
+.SH DESCRIPTION
+.I Getpeername
+returns the name of the peer connected to
+socket
+.IR s .
+The
+.I namelen
+parameter should be initialized to indicate
+the amount of space pointed to by
+.IR name .
+On return it contains the actual size of the name
+returned (in bytes).
+.SH DIAGNOSTICS
+A 0 is returned if the call succeeds, \-1 if it fails.
+.SH ERRORS
+The call succeeds unless:
+.TP 15
+[EBADF]
+The argument \f2s\fP is not a valid descriptor.
+.TP 15
+[ENOTSOCK]
+The argument \f2s\fP is a file, not a socket.
+.TP 15
+[ENOTCONN]
+The socket is not connected.
+.TP 15
+[ENOBUFS]
+Insufficient resources were available in the system
+to perform the operation.
+.TP 15
+[EFAULT]
+The 
+.I name
+parameter or the
+.I namelen
+parameter point to memory not in a valid part of the
+process address space.
+.TP 15
+[EINVAL]
+The 
+.I namelen
+parameter specifies a buffer size which is negative or is larger than
+the largest buffer accepted by the system call.
+.SH "SEE ALSO"
+bind(2), socket(2), getsockname(2)

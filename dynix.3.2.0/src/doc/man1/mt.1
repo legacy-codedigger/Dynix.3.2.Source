@@ -1,0 +1,119 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: mt.1 1.9 86/05/13 $
+.TH MT 1 "\*(V)" "4BSD/DYNIX"
+.SH NAME
+mt \- magnetic tape manipulating program
+.SH SYNOPSIS
+.B mt
+[
+.B \-f
+.I tapename
+]
+.I command
+[
+.I count
+]
+.SH DESCRIPTION
+.I Mt
+is used to give commands to a magnetic tape drive.
+If a tape name is not specified, the environment variable
+TAPE is used;  if TAPE does not exist,
+.I mt
+uses the device
+.IR /dev/rmt12 .
+Note
+that
+.I tapename
+must reference a raw (not block) tape device.
+By default
+.I mt
+performs the requested operation once.  Operations
+may be performed multiple times by specifying
+.IR count .
+.PP
+The available commands are listed below.  Only as many
+characters as are required to uniquely identify a command
+need be specified.
+.TP
+.BR eof , " weof"
+Write 
+.I count
+end-of-file marks at the current position on the tape.
+.TP
+.B fsf
+Forward space
+.I count
+files.
+.TP
+.B fsr
+Forward space 
+.I count
+records.
+.TP
+.B bsf
+Back space 
+.I count
+files.
+.TP 
+.B bsr
+Back space
+.I count
+records.
+.TP
+.B rewind
+Rewind the tape
+.RI ( Count
+is ignored.)
+.TP
+.BR offline , " rewoffl"
+Rewind the tape and place the tape unit off-line
+.RI ( Count
+is ignored.)
+.TP
+.BR retension , " ret"
+Retension the tape.
+This command is used for streamer tapes and should be done
+once per data access on 5 \(14'' drives to minimize tape stretch.
+.TP
+.BR eod , " seod"
+Spaces to end of valid data.
+Used (possibly mandatory) on streamer tape drives to append
+data to the logical end of tape.
+.TP
+.BR noret
+Don't retension the tape this time.
+Streamer tapes are normally retensioned once on the first physical I/O
+operation following insertion of the tape into the drive.
+To disable this automatic retensioning, issue this command between
+inserting the tape and beginning I/O operations.
+Automatic tape retensioning will resume with the next tape insertion.
+.TP
+.B status
+Print status information about the tape unit.
+.TP
+.B erase
+Erase the tape.
+.PP
+.I Mt
+returns a 0 exit status when the operation(s) were successful,
+1 if the command was unrecognized, and 2 if an operation failed.
+.SH FILES
+.DT
+/dev/rmt*	Raw magnetic tape interface
+.SH "SEE ALSO"
+mtio(4), dd(1), ioctl(2), environ(7)
+.SH BUGS
+.B \-t
+is a synonym for
+.B \-f
+on the command line, for backwards compatibility.

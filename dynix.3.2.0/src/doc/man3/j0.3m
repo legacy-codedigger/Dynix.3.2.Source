@@ -1,0 +1,48 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: j0.3m 1.4 86/05/13 $
+.TH J0 3M "\*(V)" "7th Edition"
+.SH NAME
+j0, j1, jn, y0, y1, yn \- bessel functions
+.SH SYNOPSIS
+.nf
+.B #include <math.h>
+.PP
+.B double j0(x)
+.B double x;
+.PP
+.B double j1(x)
+.B double x;
+.PP
+.B double jn(n, x)
+.B double x;
+.PP
+.B double y0(x)
+.B double x;
+.PP
+.B double y1(x)
+.B double x;
+.PP
+.B double yn(n, x)
+.B double x;
+.fi
+.SH DESCRIPTION
+These functions calculate Bessel functions of the first
+and second kinds for real arguments and integer orders.
+.SH DIAGNOSTICS
+Negative arguments cause
+.I y0, y1,
+and
+.I yn
+to return a huge negative value and set
+.I errno
+to EDOM.

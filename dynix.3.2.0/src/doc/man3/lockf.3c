@@ -1,0 +1,177 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: lockf.3c 1.6 90/03/06 $
+.TH LOCKF 3C "\*(V)" "DYNIX"
+.SH NAME
+lockf \- record locking on files
+.SH SYNOPSIS
+.nf
+.ft 3
+#include <unistd.h>
+.PP
+.nf
+.ft 3
+lockf (fildes, function, size)
+int fildes, function;
+long size;
+.fi
+.ft 1
+.SH DESCRIPTION
+The \f2lockf\f1 call will allow sections of a file
+to be locked (advisory write locks).
+(Mandatory or enforcement mode record locks are
+not currently available.)
+Locking calls from other processes which attempt
+to lock the locked file section will
+either return an error value or be put to sleep until the resource
+becomes unlocked.
+All the locks for a process are removed when the process terminates.
+[See \f2fcntl\fP(2) for more information about record locking.]
+.PP
+\f2Fildes\fP is an open file descriptor.
+The file descriptor must have
+.SM O_WRONLY
+or
+.SM O_RDWR
+permission in order to establish lock with this function call.
+.PP
+\f2Function\fP is a control value which specifies the action to be taken.
+The permissible values for \f2function\fP are defined in \f3<unistd.h>\fP
+as follows:
+.br
+.sp
+.nf
+.ta 0.8i 1.8i 2.2i
+#define	F_ULOCK	0	/\(** Unlock a previously locked section \(**/
+#define	F_LOCK	1	/\(** Lock a section for exclusive use \(**/
+#define	F_TLOCK	2	/\(** Test and lock a section for exclusive use \(**/
+#define	F_TEST	3	/\(** Test section for other processes locks \(**/
+.sp
+.fi
+.PP
+All other values of \f2function\fP are reserved for future extensions and will
+result in an error return if not implemented.
+.PP
+.SM F_TEST
+is used to detect if a lock by another process is
+present on the specified section.
+.SM F_LOCK
+and
+.SM F_TLOCK
+both lock a section of a file if the section is available.
+.SM F_UNLOCK
+removes locks from a section of the file.
+.PP
+\f2Size\fP is the number of contiguous bytes to be locked or unlocked.
+The resource to be locked starts at the
+current offset in the file and extends forward
+for a positive size and backward for a negative size.
+If \f2size\fP is zero,
+the section from the current offset through the largest file
+offset is locked (i.e., from the current offset through the
+present or any future end-of-file).
+An area need not be allocated to the file in order to be locked, as such locks
+may exist past the end-of-file.
+.PP
+The sections locked with
+.SM F_LOCK
+or
+.SM F_TLOCK
+may, in whole or in part,
+contain or be contained by a previously locked section for the same process.
+When this occurs,
+or if adjacent sections occur,
+the sections are combined into a single section.
+If the request requires that a new element be added to the table of active
+locks and this table is already full,
+an error is returned,
+and the new section is not locked.
+.PP
+.SM F_LOCK
+and
+.SM F_TLOCK
+requests differ only by the action taken if the resource
+is not available.
+.SM F_LOCK
+will cause the calling process to sleep until the resource is available.
+.SM F_TLOCK
+will cause the function to return a \-1 and set
+\f2errno\fP to
+.SM [EACCES]
+error if the section is already locked by another process.
+.PP
+.SM F_ULOCK
+requests may, in whole or in part,
+release one or more locked sections controlled by the process.
+When sections are not fully released,
+the remaining sections are still locked by the process.
+Releasing the center section of a locked section requires an additional element in the table
+of active locks.
+If this table is full,
+an
+.SM [EDEADLK]
+error is returned and the requested section is not released.
+.PP
+A potential for deadlock occurs if a process controlling a locked
+resource is put to sleep by accessing another process's locked resource.
+Thus calls to \f2lock\fP or \f2fcntl\fP scan
+for a deadlock prior to sleeping on a locked resource.
+An error return is made if sleeping on the locked resource would cause a deadlock.
+.PP
+Sleeping on a resource is interrupted with any signal.
+.SH ERRORS
+The \f2lockf\fP utility will fail if one or more of the following are true:
+.br
+.sp
+.TP
+.SM [EBADF]
+\f2Fildes\fP is not a valid open descriptor.
+.TP
+.SM [EACCES]
+\f2Cmd\fP is
+.SM F_TLOCK
+or
+.SM F_TEST
+and the section is already locked by another process.
+.TP
+.SM [EDEADLK]
+\f2Cmd\fP is
+.SM F_LOCK
+or
+.SM F_TLOCK
+and a deadlock would occur.
+Also the \f2cmd\fP is either of the above or
+.SM F_ULOCK
+and the number of entries in the lock table
+would exceed the number allocated on the system.
+.TP "\w`Close note:  `u"
+Close note:
+When a file is closed, all outstanding record locks owned by the 
+process holding the file descriptor being closed are removed.
+.SH RETURN VALUE
+Upon successful completion,
+a value of 0 is returned.
+Otherwise, a value of \-1 is returned and \f2errno\fP is set to
+indicate the error.
+.SH CAVEATS
+Unexpected results may occur in processes that do buffering
+in the user address space.
+The process may later read/write data which is/was locked.
+The standard I/O package is the most common source of
+unexpected buffering.
+.SH SEE ALSO
+close(2),
+creat(2),
+fcntl(2),
+open(2),
+read(2),
+write(2).

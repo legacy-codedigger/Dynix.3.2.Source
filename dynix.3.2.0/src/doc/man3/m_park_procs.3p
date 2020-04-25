@@ -1,0 +1,78 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986 Sequent Computer Systems, Inc.
+.\" All rights reserved
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: m_park_procs.3p 1.6 90/02/07 $
+.TH M_PARK_PROCS 3P "\*(V)" "DYNIX"
+.SH NAME
+m_park_procs, m_rele_procs \- suspend and resume child process execution
+.SH SYNOPSIS
+.PP
+.nf
+\f2C syntax:\fP
+.PP
+\f3#include <parallel/microtask.h>
+m_park_procs();
+(serial code)
+m_rele_procs();\fP
+.PP
+\f2Pascal syntax\fP
+.PP
+\f3procedure m_park_procs ;
+cexternal ;
+procedure m_rele_procs ;
+cexternal ;\fP
+.PP
+\f2FORTRAN syntax\fP
+.PP
+\f3subroutine m_park_procs\fP
+\f3subroutine m_rele_procs\fP
+.fi
+.SH DESCRIPTION
+The
+.I m_park_procs 
+routine suspends execution of child processes created by an
+.I m_fork
+call. Typically, you would suspend child processes
+while the parent
+process is doing extensive I/O or setting up another phase of
+the program.
+The
+.I m_rele_procs
+routine resumes child process
+execution when the child processes are again required.
+.PP
+Do not call 
+.I m_park_procs 
+when
+.I m_fork
+is executing.
+Likewise, do not call
+.I m_park_procs
+when the child processes are already suspended.
+To suspend child process execution within an \f2m_fork\fP
+call, use \f2m_single\fP and \f2m_next\fP.
+.SH RETURN VALUE
+Upon successful completion, a value of 0 is returned.
+Otherwise, a value of \-1 is returned and
+.I errno
+is set to indicate the error.
+.SH ERRORS
+These routines can return the following error:
+.TP 15
+[EINVAL]
+The routine was called in an inappropriate context.
+For example, 
+the routine was called from a subprogram executing in an
+.I m_fork
+call, or
+the processes were already suspended.
+.SH "SEE ALSO"
+m_single(3P), \f2Guide to Parallel Programming\fP

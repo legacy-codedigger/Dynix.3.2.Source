@@ -1,0 +1,48 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: uusnap.8c 1.7 87/06/18 $
+.TH UUSNAP 8C "\*(V)" "4BSD"
+.\"
+.\"	@(#)uusnap.8c	6.2 (Berkeley) 4/24/86
+.\"
+.UC 5
+.SH NAME
+uusnap \- show snapshot of the UUCP system
+.SH SYNOPSIS
+.B uusnap
+.SH DESCRIPTION
+.I Uusnap
+displays in tabular format a synopsis of the current UUCP
+situation.  The format of each line is as follows:
+.Ps
+.I "site   N Cmds   N Data   N Xqts   Message"
+.Pe
+Where
+.I site
+is the name of the site with work,
+.I N
+is a count of each of the three possible types of work: command, data,
+or remote execute,
+and
+.I Message
+is the current status message for that site as found in the STST file.
+.PP
+.I Message
+can include the time left before UUCP can re-try the call,
+and the count of the number of times that UUCP has unsuccessfully tried
+to reach the site.
+.SH "SEE ALSO"
+uucp(1C),
+uuq(1C),
+uux(1C),
+uucico(8C),
+.I "Installation and Operation of UUCP"

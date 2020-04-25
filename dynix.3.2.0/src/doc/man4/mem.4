@@ -1,0 +1,103 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: mem.4 1.8 86/05/13 $
+.TH MEM 4 "\*(V)" "4BSD/DYNIX"
+.SH NAME
+mem, kmem, kMBmem, kMWmem \- main memory
+.SH DESCRIPTION
+.lg
+.I Mem
+is a special file that is an image of the main memory
+of the computer.
+It may be used, for example, to examine
+(and even to patch) the system.
+.PP
+Byte addresses in
+.I mem
+are interpreted as physical memory addresses.
+References to non-existent locations cause errors to be returned.
+.PP
+Examining and patching device registers is likely
+to lead to unexpected results when read-only or write-only
+bits are present.
+.PP
+The file
+.I kmem
+is the same as 
+.I mem
+except that kernel virtual memory
+rather than physical memory is accessed.
+.PP
+The files
+.I kMBmem
+and
+.I kMWmem
+represent MULTIBUS address space,
+consecutively mapped 1 megabyte per MULTIBUS controller,
+starting at 0 for the first controller.
+(Deconfigured controllers still reserve their own address space.)
+Accesses via
+.I kMBmem
+are one byte at a time, while accesses via
+.I kMWmem
+are two bytes at a time (one 16-bit word).
+.SH "MAPPING INTERFACES
+Through the
+.IR mmap (2)
+system call, these memory files may be mapped,
+subject to the following restrictions:
+.TP
+.I /dev/mem
+All of what
+.I /dev/mem
+can access through read and write system calls may be mapped;
+that is, contiguous physical memory starting at physical address zero
+(limited by reserved memory, if any).
+ENXIO results if a mapping attempts to reference memory outside of this range.
+.I /dev/mem
+maps as non-paged memory (MM_NPMEM).
+.TP
+.I /dev/kmem
+All of what
+.I /dev/kmem
+can read and write may be mapped.
+A read-write file descriptor may not be used to map any part of system code.
+Parts of the system address space that change dynamically will map
+to a generic page if the relevant part of the system address space
+is invalid at the time of the map.
+This generic page is initially zero, but is subject to change
+as the result of a PROT_WRITE mapping.
+.I /dev/kmem
+maps as non-paged memory (MM_NPMEM).
+.TP
+.IR /dev/kMBmem , \0/dev/kMWmem
+All of what these devices can read or write may be mapped.
+A mapping request cannot cross an MBAd boundary,
+and must be made to an existing MBAd.
+There is no checking to prevent a mapping request from referencing
+non-existent MBAd or I/O address space.
+These devices map as physical maps (MM_PHYS).
+.SH FILES
+/dev/mem
+.br
+/dev/kmem
+.br
+/dev/kMBmem
+.br
+/dev/kMWmem
+.SH BUGS
+Memory files
+.I /dev/mem
+and
+.I /dev/kmem
+are accessed one byte at a time,
+an inappropriate method for some device registers.

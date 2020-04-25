@@ -1,0 +1,191 @@
+.\" $Copyright:	$
+."Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+."Sequent Computer Systems, Inc.   All rights reserved.
+." 
+."This software is furnished under a license and may be used
+."only in accordance with the terms of that license and with the
+."inclusion of the above copyright notice.   This software may not
+."be provided or otherwise made available to, or used by, any
+."other person.  No title to or ownership of the software is
+."hereby transferred.
+.\" Copyright (c) 1984, 1985, 1986 Sequent Computer Systems, Inc.
+.\" All rights reserved
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+.\"
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: types.5 1.2 90/10/09 $
+.TH TYPES 5 "\*(V)" "4BSD"
+.SH NAME
+types \- primitive system data types
+.SH SYNOPSIS
+.B #include <sys/types.h>
+.SH DESCRIPTION
+The data types defined in the include file
+are used in UNIX system code;
+some data of these types are accessible to user code:
+.PP
+.nf
+.ta \w'typedef\ \ 'u +\w'minor(x)\ \ 'u +\w' short\ \ 'u
+/*
+ * types.h
+ *	Basic system types and major/minor device constructing/busting macros.
+ */
+
+/* major part of a device */
+#define	major(x)	((int)(((unsigned)(x)>>16)&0xFFFF))
+
+/* minor part of a device */
+#define	minor(x)	((int)((x)&0xFFFF))
+
+/* make a device number */
+#define	makedev(x,y)	((dev_t)(((x)<<16) | (y)))
+
+typedef	unsigned char	u_char;
+typedef	unsigned short	u_short;
+typedef	unsigned int	u_int;
+typedef	unsigned long	u_long;
+typedef	unsigned short	ushort;		/* sys III compat */
+
+/*
+ * Savejmp/longjmp context.  Also used in context switching.
+ */
+
+#ifdef	ns32000
+typedef	struct	_physadr { int r[1]; } *physadr;
+typedef struct	label_t {
+	int	lt_r3;
+	int	lt_r4;
+	int	lt_r5;
+	int	lt_r6;
+	int	lt_r7;
+	int	lt_fp;
+	int	lt_sp;
+        int	lt_pc;
+} label_t;
+#endif	ns32000
+
+#ifdef	i386
+typedef	struct	_physadr { int	r[1]; } *physadr;
+typedef struct	label_t {
+	int	lt_esp;
+	int	lt_ebp;
+        int	lt_eip;
+	int	lt_ebx;
+	int	lt_esi;
+	int	lt_edi;
+} label_t;
+#endif	i386
+
+typedef	struct	_quad { long val[2]; } quad;
+typedef	long	daddr_t;
+typedef	char *	caddr_t;
+typedef	u_long	ino_t;
+typedef	long	swblk_t;
+typedef	int	size_t;
+typedef	long	time_t;
+typedef	long	dev_t;
+typedef	int	off_t;
+typedef	int	bool_t;
+typedef	int	spl_t;
+typedef long	key_t;		/* used for system V ipc */
+typedef u_short	uid_t;
+typedef u_short gid_t;
+
+/*
+ * Select uses bit masks of file descriptors in longs.
+ * These macros manipulate such bit fields (the filesystem macros use chars).
+ * FD_SETSIZE may be defined by the user.
+ */
+
+#ifndef	FD_SETSIZE
+#define	FD_SETSIZE	256
+#endif
+
+typedef	long	fd_mask;
+#define	NFDBITS	(sizeof(fd_mask) * 8)		/* bits per mask */
+#ifndef	howmany
+#define	howmany(x, y)	(((x)+((y)-1))/(y))
+#endif
+
+typedef	struct fd_set {
+	fd_mask	fds_bits[howmany(FD_SETSIZE, NFDBITS)];
+} fd_set;
+
+#define	FD_SET(n, p)	((p)->fds_bits[(n)/NFDBITS] |= (1 << ((n) % NFDBITS)))
+#define	FD_CLR(n, p)	((p)->fds_bits[(n)/NFDBITS] &= ~(1 << ((n) % NFDBITS)))
+#define	FD_ISSET(n, p)	((p)->fds_bits[(n)/NFDBITS] & (1 << ((n) % NFDBITS)))
+#define FD_ZERO(p)	bzero((char *)(p), sizeof(*(p)))
+#define	FD_SET_SZ(n)	(howmany((n), NFDBITS) * sizeof(fd_mask))
+
+/*
+ * For mutex data-structures.
+ *
+ * For ease of use for user-level code, we declare lock and sema struct's
+ * here.  More detail is in h/mutex.h and machine/mutex.h.
+ */
+
+typedef	unsigned char	gate_t;
+
+#ifdef	ns32000
+typedef	struct	{
+	gate_t		l_gate;
+	char		l_state;
+} lock_t;
+#endif	ns32000
+
+#ifdef	i386
+typedef	unsigned char	lock_t;
+#endif	i386
+
+#ifdef	KERNEL
+typedef	struct	{
+	struct	proc	*s_head;
+	struct	proc	*s_tail;
+	short		s_count;
+	gate_t		s_gate;
+	char		s_flags;
+} sema_t;
+#else
+/*
+ * Version for lint and other user needs.
+ */
+typedef	struct	{
+	int		*s_head;
+	int		*s_tail;
+	short		s_count;
+	gate_t		s_gate;
+	char		s_flags;
+} sema_t;
+#endif	KERNEL
+
+#endif	_TYPES_
+.fi
+.PP
+The form
+.I daddr_t
+is used for disk addresses except in an
+i-node on disk, see
+.IR fs (5).
+Times are encoded in seconds since 00:00:00 GMT, January 1, 1970.
+The major and minor parts of a device code
+specify kind and unit number of a device
+and are installation-dependent.
+Offsets are measured in bytes from the beginning of a file.
+The
+.I label_t
+variables are used to save the processor state
+while another process is running.
+.SH SEE ALSO
+fs(5), time(3), lseek(2), ddt(1)

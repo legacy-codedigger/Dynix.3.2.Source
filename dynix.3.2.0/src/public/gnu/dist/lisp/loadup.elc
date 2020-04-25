@@ -1,0 +1,94 @@
+
+(load "subr")
+
+(garbage-collect)
+
+(load "loaddefs.el")
+
+(garbage-collect)
+
+(load "simple")
+
+(garbage-collect)
+
+(load "help")
+
+(garbage-collect)
+
+(load "files")
+
+(garbage-collect)
+
+(load "indent")
+
+(load "window")
+
+(load "paths.el")
+
+(garbage-collect)
+
+(load "startup")
+
+(load "lisp")
+
+(garbage-collect)
+
+(load "page")
+
+(load "register")
+
+(garbage-collect)
+
+(load "paragraphs")
+
+(load "lisp-mode")
+
+(garbage-collect)
+
+(load "text-mode")
+
+(load "fill")
+
+(garbage-collect)
+
+(load "c-mode")
+
+(garbage-collect)
+
+(load "isearch")
+
+(garbage-collect)
+
+(load "replace")
+
+(if (eq system-type (quote vax-vms)) (progn (garbage-collect) (load "vmsproc")))
+
+(garbage-collect)
+
+(load "abbrev")
+
+(garbage-collect)
+
+(load "buff-menu")
+
+(if (eq system-type (quote vax-vms)) (progn (garbage-collect) (load "vms-patch")))
+
+(if (load "site-load" t) (garbage-collect))
+
+(load "version.el")
+
+(message "Finding pointers to doc strings...")
+
+(if (fboundp (quote dump-emacs)) (let ((name emacs-version)) (while (string-match "[^-+_.a-zA-Z0-9]+" name) (setq name (concat (downcase (substring name 0 (match-beginning 0))) "-" (substring name (match-end 0))))) (copy-file (expand-file-name "../etc/DOC") (concat (expand-file-name "../etc/DOC-") name) t) (Snarf-documentation (concat "DOC-" name))) (Snarf-documentation "DOC"))
+
+(message "Finding pointers to doc strings...done")
+
+(load "site-init" t)
+
+(garbage-collect)
+
+(if (or (equal (nth 3 command-line-args) "dump") (equal (nth 4 command-line-args) "dump")) (if (eq system-type (quote vax-vms)) (progn (message "Dumping data as file temacs.dump") (dump-emacs "temacs.dump" "temacs") (kill-emacs)) (let ((name (concat "emacs-" emacs-version))) (while (string-match "[^-+_.a-zA-Z0-9]+" name) (setq name (concat (downcase (substring name 0 (match-beginning 0))) "-" (substring name (match-end 0))))) (message "Dumping under names xemacs and %s" name)) (condition-case nil (delete-file "xemacs") (file-error nil)) (dump-emacs "xemacs" "temacs") (let ((name (concat "emacs-" emacs-version))) (while (string-match "[^-+_.a-zA-Z0-9]+" name) (setq name (concat (downcase (substring name 0 (match-beginning 0))) "-" (substring name (match-end 0))))) (add-name-to-file "xemacs" name t)) (kill-emacs)))
+
+(setq purify-flag nil)
+
+(or (fboundp (quote dump-emacs)) (eval top-level))

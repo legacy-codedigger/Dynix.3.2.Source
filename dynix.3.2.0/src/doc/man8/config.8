@@ -1,0 +1,94 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: config.8 1.13 90/03/20 $
+.TH CONFIG 8 "\*(V)" "4BSD/DYNIX"
+.SH NAME
+config \- build system configuration files
+.SH SYNOPSIS
+.B /usr/etc/config
+[
+.B \-src
+]
+.I config_file
+.SH DESCRIPTION
+.PP
+.B Config
+builds a set of system configuration files from a short file that describes
+the system being configured.  It also accepts input files
+that tell
+.B config
+what files are needed to generate a system.
+This can be augmented by a configuration-specific set of files
+that give alternate files for a specific machine.
+Additional input files describe other system configuration attributes
+(see "FILES" later in this entry).
+If the
+.B \-src
+option is supplied,
+.B config
+makes a system that uses the DYNIX source code.
+.PP
+.B Config
+should be run from the
+.I conf
+subdirectory of the system source (usually \f2/sys/conf\f1).
+.B Config
+assumes that a directory
+.I "../config_file"
+has already been created, and it places all its output files there.  
+The output of
+.B config
+consists of a number of files:
+.I ioconf.c
+contains a description
+of what I/O devices are attached to the system;
+.I conf.c
+contains a description of the block and character device table
+entry points;
+.I makefile
+is a file used by
+.BR make (1)
+in building the system; a set of header files contains
+the number of various devices to be compiled into the system;
+and a set of swap configuration files contains definitions for
+the disk areas to be used for swapping, the root file system,
+and argument processing.
+.PP
+If you have supplied the
+.B \-src
+option, you will need to invoke
+``make depend''
+in the directory in which the new makefile was created
+after running
+.BR config .
+.B Config
+reminds you of this upon completion.
+.PP
+If you get any other error messages from
+.B config,
+fix the problems in your configuration file and try again.
+If you try to compile a system that had configuration errors, you
+will probably meet with failure.
+.SH FILES
+.nf
+.ta +\w'/sys/conf/controllers.balance'u+3m
+/sys/conf/makefile.balance	generic makefile for DYNIX 
+/sys/conf/files	common files from which system is built
+/sys/conf/files.balance	DYNIX-specific files
+/sys/conf/devices.balance	major device mapping file for DYNIX 
+/sys/conf/controllers.balance	possible controller types with config flags
+/sys/conf/DYNIX	DYNIX kernel file	
+.fi
+.SH SEE ALSO
+"Managing the DYNIX Kernel," \f2DYNIX System Administration Guide\f1
+.SH BUGS
+The line numbers reported in error messages are usually off by one.

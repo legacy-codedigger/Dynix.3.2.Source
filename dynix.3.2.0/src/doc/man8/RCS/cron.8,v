@@ -1,0 +1,217 @@
+head	2.2;
+access;
+symbols;
+locks;
+comment	@# @;
+
+
+2.2
+date	93.03.23.16.00.31;	author bruce;	state Exp;
+branches;
+next	2.1;
+
+2.1
+date	93.03.23.15.27.30;	author bruce;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	93.03.23.15.25.42;	author bruce;	state Exp;
+branches;
+next	;
+
+
+desc
+@Initial revision is as distributed with Dynix Source V3.2.0,
+    file dated Aug 6 1991.
+Initial revision had RCS ident:
+    $Header: cron.8 1.5 1991/08/06 23:48:03 $
+@
+
+
+2.2
+log
+@Allow 0 or 7 for Sunday -- to be compatible with more modern cron's.
+@
+text
+@.\"	$Header$
+.\"	@@(#) from cron.8	6.5 (Berkeley) 5/16/86
+.\"
+.TH CRON 8 "March 23, 1993"
+.AT 3
+.SH NAME
+cron \- clock daemon
+.SH SYNOPSIS
+.B /etc/cron
+.SH DESCRIPTION
+.I Cron
+executes commands at specified dates and times
+according to the instructions in the files
+/usr/lib/crontab and /usr/lib/crontab.local.
+None, either one, or both of these files may be present.
+Since
+.I cron
+never exits,
+it should only be executed once.
+This is best done by running
+.I cron
+from the initialization
+process through the file
+/etc/rc;
+see
+.IR init (8).
+.PP
+The
+crontab files
+consist of lines of seven fields each.
+The fields are separated by spaces or tabs.
+The first five are integer patterns to specify:
+.in +2m
+.TP 2m
+\(bu
+minute (0-59)
+.nr .0 \n()Pu
+.nr )P 0
+.TP 2m
+\(bu
+hour (0-23)
+.TP 2m
+\(bu
+day of the month (1-31)
+.TP 2m
+\(bu
+month of the year (1-12)
+.TP 2m
+\(bu
+day of the week (1-7 with 1 = Monday;
+for compatibility  with newer systems, Sunday may also be specified as day 0)
+.nr )P \n(.0u
+.in -2m
+.LP
+Each of these patterns may contain:
+.in +2m
+.TP 2m
+\(bu
+a number in the range above
+.nr .0 \n()Pu
+.nr )P 0
+.TP 2m
+\(bu
+two numbers separated by a minus
+meaning a range inclusive
+.TP 2m
+\(bu
+a list of numbers separated by
+commas meaning any of the numbers
+.TP 2m
+\(bu
+an asterisk meaning all legal values
+.nr )P \n(.0u
+.in -2m
+.LP
+The sixth field is a user name: the
+command will be run with that user's uid and permissions.
+The seventh field consists of all the text
+on a line following the sixth field,
+including spaces and tabs;
+this text is treated as a command
+which is executed by the Shell at the
+specified times.
+A percent character (``%'')
+in this field is translated to a new-line
+character.
+.PP
+Both
+crontab files are checked by
+.I cron
+every minute, on the minute.
+.SH FILES
+/usr/lib/crontab
+.br
+/usr/lib/crontab.local
+@
+
+
+2.1
+log
+@Updated to reflect our use of cron(8) built from 4.3 Mt. Xinu source
+    (primarily to support username field).
+This revision is as distributed with 4.3 Mt. Xinu, file dated May 28 1986.
+@
+text
+@d1 2
+a2 1
+.\"	@@(#)cron.8	6.5 (Berkeley) 5/16/86
+d4 1
+a4 1
+.TH CRON 8 "May 16, 1986"
+d50 2
+a51 1
+day of the week (1-7 with 1 = Monday)
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d1 4
+a4 13
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: cron.8 1.5 1991/08/06 23:48:03 $
+.TH CRON 8 "\*(V)" "7th Edition"
+d12 3
+a14 2
+according to the instructions in the file
+/usr/lib/crontab.
+d27 3
+a29 2
+Crontab
+consists of lines of six fields each.
+d31 35
+a65 12
+The first five are integer patterns to
+specify the
+minute (0-59),
+hour (0-23),
+day of the month (1-31),
+month of the year (1-12),
+and day of the week (1-7 with 1=Monday).
+Each of these patterns may
+contain a number in the range above;
+two numbers separated by
+a minus
+meaning a range inclusive;
+d67 14
+a80 4
+commas meaning any of the numbers;
+or an asterisk meaning all legal values.
+The sixth field is a string
+that is executed by the Bourne shell at the
+d82 1
+a82 1
+A percent character
+a84 4
+Only the first line (up to a % or end of line)
+of the command field is executed by the Shell.
+The other lines are made available to the
+command as standard input.
+d86 2
+a87 1
+Crontab is examined by
+d89 1
+a89 1
+every minute.
+d92 2
+@

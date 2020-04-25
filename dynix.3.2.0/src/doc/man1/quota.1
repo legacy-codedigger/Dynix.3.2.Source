@@ -1,0 +1,58 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: quota.1 1.7 1991/07/09 16:44:26 $
+.\" @(#)quota.1	1.2 87/02/10 NFSSRC
+.\" @(#)quota.1 1.1 86/09/24 SMI; from UCB 4.2
+.\" .TH QUOTA 1  "21 August 1985"
+.\" .UC 4
+.TH QUOTA 1  "\*(V)" "4BSD"
+.SH NAME
+quota \- display disk usage and limits
+.SH SYNOPSIS
+.B quota
+[
+.B \-v
+] [
+.I user
+]
+.SH DESCRIPTION
+The
+.I quota
+command displays users' disk usage and limits. 
+The disk usage and limit values are displayed in
+terms of 1K blocks.
+Only the super-user may use the optional
+.I user
+argument to view the limits of other users.
+.LP
+The
+.I quota
+command without options displays only warnings 
+about mounted filesystems where usage is over quota.
+Remotely mounted filesystems that are mounted with
+the "noquota" option
+(see 
+.IR fstab (5))
+are ignored.
+.SH OPTIONS
+.IP \fB\-v\fP
+display user's quotas on all mounted filesystems where quotas exist
+.SH FILES
+.TP 15
+quotas
+quota file at the filesystem root
+.TP
+/etc/mtab
+list of currently mounted filesystems
+.DT
+.SH "SEE ALSO"
+quotactl(2), quotaon(8), edquota(8), rquotad(8C), fstab(5)

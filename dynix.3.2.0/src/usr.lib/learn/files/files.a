@@ -1,0 +1,1971 @@
+!<arch>
+Init            445768457   100   205   100640  39        `
+#
+stty erase  kill @ start ^Q stop ^S
+
+L0              445768459   100   205   100640  15        `
+#next
+0.01a 10
+
+L0.01a          445768460   100   205   100640  947       `
+#print
+This course will help you learn about basic file handling commands.
+First you should understand how to give an answer that learn requests.
+
+The most important thing to remember is that whenever you type a
+command to UNIX or a response to "learn", you must press the
+RETURN key or the system won't see your typing.
+
+Sometimes learn asks you to come up with the right answer,
+and then enter "answer", followed immediately by a space and the
+single word which answers the question (and then RETURN).
+This means that you would enter "answer WORD", where instead of
+typing WORD you would type the word that is the correct answer.
+
+For example, if the answer to a question were "bug", you would enter
+
+answer bug
+
+Type that in now, and don't forget to hit RETURN at the end of
+the line.  Don't use any quotation marks in your response.
+#copyin
+#user
+#uncopyin
+#match bug
+#bad answerbug
+Leave a space between "answer" and "bug".
+#log
+#next
+0.1a 5
+
+L0.1a           445768462   100   205   100640  950       `
+#print
+Now you should understand the special characters ^H and @:
+
+   ^H     cancels the previous character typed (called control-h)
+    @     cancels the line being typed and puts you on a new line
+
+^H is typed by holding down the CTRL (for control) key and pressing
+the letter 'h'.  The reason that there are the two characters
+'^' and 'H' to represent one special character is that ^H usually
+will not print on the screen.
+
+If you make a typing mistake, you can use ^H and @ to correct it
+before you finish the line and the computer won't ever know about it.
+For example, what will the computer really receive if you type
+
+st^Hhe@thf^He
+
+at it?  Figure this out in your head and reply "answer WORD" where
+WORD is the word as it will be interpreted, and don't forget RETURN.
+For example, if you think it will get "dog", type
+
+answer dog
+
+#copyin
+#user
+#uncopyin
+#match the
+#bad answerthe
+Leave a space between "answer" and "the".
+#log
+#next
+0.1b 5
+L0.1b           445768463   100   205   100640  837       `
+#print
+You should also understand a few simple commands.
+When UNIX types a "%" at you, you can type a command.
+For example, if you type "date" the computer will tell
+you the current date and time. If you see "%" and type "who",
+UNIX will tell you who is logged on at present.  There are
+many other commands, too.  You must type a RETURN at the
+end of each command line.
+
+Try the "date" command now: find out what
+date it is, and after the computer has responded, type "ready".
+And don't forget the RETURN!
+#copyin
+#user
+#uncopyin
+grep date .copy >/dev/null
+#bad day
+You were supposed to type "date" (without quotes).
+The computer is very intolerant of spelling errors.
+Try again.
+#bad "date"
+Don't type those quote marks. Try again.
+#bad time
+The time command does not tell you the wall-clock time.
+Try date next time.
+#log
+#next
+0.1c 5
+
+L0.1c           445768465   100   205   100640  603       `
+#print
+The computer keeps track of information in "files."
+A file might contain a letter to a friend,
+or a memo (or part of it) that you are typing,
+or any number of other things.
+You can list the names of your files
+by typing the command "ls".
+Try "ls" now; then type "ready".
+Remember that each command must go on a separate line
+and each line must be ended with RETURN.
+#create letter
+Dear John:
+ 
+I'm terribly sorry...
+#create memo
+This is a memo.
+#create memo1
+Another memo.
+#copyin
+#user
+#uncopyin
+grep '^ls' .copy >/dev/null
+#bad "ls"
+Don't type the quotes, please. Try again.
+#log
+#next
+0.1d 10
+
+L0.1d           445768466   100   205   100640  635       `
+#print
+File names are essentially arbitrary,
+although usually one names files sensibly:
+the files that make up a memo
+might be called "memo1", "memo2", etc.
+
+The contents of a file are also entirely up to you:
+for example, a file named "memo" could contain
+
+   Analysis of Irregular Statistics
+        John B. Pencilpusher
+
+  Bell Laboratories, Murray Hill, NJ
+    ....
+
+To get at the information in a file,
+you have to use the file name,
+which in this case is "memo". 
+
+Is there a difference between the name of a file
+and the contents of a file?
+Type "yes" or "no".
+#copyin
+#user
+#uncopyin
+#match yes
+#log
+#next
+1.1a    10
+1.2a    5
+
+L1.1a           445768468   100   205   100640  214       `
+#print
+The "ls" command will list the names of the files
+in your directory.  Is there a file named "junk"
+present?  Find out and then type "yes" or "no".
+#copyin
+#user
+#uncopyin
+#match no
+#log
+#next
+2.1a 10
+2.2a 5
+L1.2a           445768469   100   205   100640  296       `
+#print
+Use the "ls" command to determine if there is a file
+named for a state in the current directory.
+Find out and type "yes" or "no".
+(Don't use the list you got earlier - I've changed things.)
+#create texas
+dallas, houston, etc.
+#copyin
+#user
+#uncopyin
+#match yes
+#log
+#next
+2.1a  10
+2.2a  5
+L1.2b           445768471   100   205   100640  543       `
+#print
+You can use the "ls" command to find out how
+many files you have in your directory.
+How many files are there in the current
+directory now?  Make another list - the list of files
+that you made before is no longer right because I added
+some files to the directory.  When you find out
+how many files there are in this directory, type
+"answer N" where N is the number of files.
+#create a1
+file a1
+#create a2
+file a2
+#create X1
+file a1
+#copyin
+#user
+#uncopyin
+ls | %s/../bin/lcount >X1
+tail -1 .copy >X2
+#cmp X1 X2
+#log
+#next
+2.1a 10
+2.2a 5
+
+L10.1a          445768472   100   205   100640  554       `
+#print
+When you are done with something, you will want to know
+how to get rid of the file it is on.  The command
+for that is "rm" (remove).  For example
+  rm junk
+throws away the file named "junk".  Once it
+is gone, it is really gone - there is no way
+to "undo" a remove command.  Hence this command
+should be used with caution.
+In this directory there is one file named
+for a baseball player.  Remove it.
+Then type "ready".
+#create kernighan
+#create yastrzemski
+#user
+if (!(! -r yastrzemski && -r kernighan)) exit(1)
+#log
+#next
+11.1a 10
+11.2a 5
+11.3a 2
+L10.2a          445768475   100   205   100640  299       `
+#print
+The way to get rid of a file you are finished with
+is with the "rm" (remove) command.  For example,
+  rm junk
+will get rid of the file named "junk".
+In this directory there is a file named "harry" -
+remove it.
+Then type "ready".
+#create harry
+#user
+test ! -r harry
+#log
+#next
+10.2b 5
+10.3a 2
+
+L10.2b          445768476   100   205   100640  474       `
+#print
+You can remove several files at once with the "rm" command.
+And you can use the familiar "*" and "?" characters
+to abbreviate several file names.  BUT BE CAREFUL -
+"rm" is irreversible, and it is all too easy to type something
+like "rm *" and get rid of all your files.
+In this directory are two files named 
+"part1" and "part2".
+Remove both; then type "ready".
+#create part1
+#create part2
+#user
+test ! -r part1 || test ! -r part2
+#log
+#next
+11.1a 10
+11.2a 5
+11.3a 2
+L10.3a          445768478   100   205   100640  397       `
+#print
+When you are done with something, you will want to
+get rid of the file containing it.  The command for that
+is "rm" (remove).  For example
+  rm junk
+throws away the file named "junk".  Try that -
+there's a file named "junk" in this directory, as you can
+verify by doing an "ls".  Try another "ls" after the "rm junk";
+then type "ready".
+#create junk
+#user
+test ! -r junk
+#log
+#next
+10.3b 2
+
+L10.3b          445768479   100   205   100640  267       `
+#print
+Often you will use "ls" with "rm"
+to first find the name of a file, and then remove it.
+This directory contains one file whose name begins with "g".
+Find out what it is and remove it.
+Then type "ready".
+#create george
+#user
+test ! -r george
+#log
+#next
+10.3c 2
+
+L10.3c          445768481   100   205   100640  333       `
+#print
+You can remove several files at once with the
+"rm" command; for example,
+  rm tom dick harry
+will remove the files "tom", "dick", and "harry".
+There are two files in this directory named
+for birds: get rid of both.
+Then type "ready".
+#create eagle
+#create bluejay
+#user
+test ! -r eagle || test ! -r bluejay
+#log
+#next
+10.3d 2
+
+L10.3d          445768482   100   205   100640  404       `
+#print
+You can also use "*" and "?" with
+the "rm" command.  BUT BE VERY CAREFUL
+since, for example, "rm *" will throw away
+ALL the files in a directory.
+In this directory are some files named
+chunk1, chunk2, chunk3 and chunk4.
+Get rid of them.  Then type "ready".
+#create X1
+#
+ls >X2
+#create chunk1
+#create chunk2
+#create chunk3
+#create chunk4
+#user
+ls >X1
+#cmp X1 X2
+#log
+#next
+11.1a 10
+11.2a 5
+11.3a 2
+L11.1a          445768484   100   205   100640  942       `
+#print
+To create a second copy of a file, the easiest
+way is to use the "cp" (copy) command.
+If you tell the computer
+  cp x y
+a copy of file "x" is made and named "y".
+Note that this is similar to "mv" in that a new
+file named "y" appears, but the difference is
+that the old file is not removed.
+(If there was already a file named "y", though, the
+old contents are lost; be careful.)
+
+In this directory there is a file which has
+a five letter name whose first four letters
+are "part".
+Print it out; it will tell you to copy
+it and what to call the copy.
+Do that and then type "ready".
+#create X1
+#create george
+#create part00
+this is not the right file and you shouldn't
+have printed it.  Use
+ part?
+not
+ part*
+in this example.
+#create part3
+This is the file "part3".  I hope you
+used a command like
+  ls part?
+or
+  cat part?
+to find it.
+Make a copy of this file on file "george".
+#user
+#cmp george part3
+#log
+#next
+12.1a 10
+12.2a 5
+12.3a 2
+L11.2a          445768485   100   205   100640  317       `
+#print
+To make a new copy of a file, the easiest
+way is to use the "cp" command.
+If you type 
+  cp x y
+a copy of file "x" is made and named "y".
+This directory contains a file named "george";
+make a copy named  "steve".
+Then type "ready".
+#create george
+this is file george
+#user
+#cmp steve george
+#log
+#next
+11.2b 5
+
+L11.2b          445768487   100   205   100640  469       `
+#print
+Contrast 
+ cp old new
+with 
+ mv old new
+as commands; both cause "new" to appear,
+but "cp" does not remove "old".
+Both, by the way, destroy anything
+that happened to be around named "new".
+There is a file in this directory
+whose name ends in "x".  Use "ls"
+with the "*x" construction to find its name;
+then copy it to file "new", and type "ready".
+#create new
+old new
+#create pix
+new new
+#create xip
+nothing
+#user
+#cmp pix new
+#log
+#next
+12.1a 10
+12.2a 5
+12.3a 2
+
+L11.3a          445768488   100   205   100640  412       `
+#print
+To make a copy of a file, you can use the
+"cp" (copy) command.  For example
+ cp old new
+will make a copy of file "old", named "new".
+This directory contains a file named "old";
+try the "cp" command to make a file named "new".
+Print the file to check on the copy.
+When done, type "ready".
+#create old
+The Brooklyn Museum is at 188 Eastern Parkway,
+Brooklyn, NY 11238.
+#user
+#cmp old new
+#log
+#next
+11.3b 2
+L11.3b          445768490   100   205   100640  194       `
+#print
+Now there is a file named "good"
+in this directory.  Make a copy named "better",
+then type ready.
+#create good
+This file has 
+three lines
+in it.
+#user
+#cmp good better
+#log
+#next
+11.3c 2
+L11.3c          445768492   100   205   100640  396       `
+#print
+This is a little trickier.  The directions
+for this step are in a file whose
+name begins with "p".  Print that file;
+it will tell you what to do.  Then type "ready".
+#create delaware
+narrowsburg
+port jervis
+delaware water gap
+easton
+trenton
+philadelphia
+#create pub
+Make a copy of the file "delaware" which is
+named "hudson".
+#user
+#cmp delaware hudson
+#log
+#next
+12.1a 10
+12.2a 5
+12.3a 2
+L12.1a          445768493   100   205   100640  1179      `
+#print
+Another very useful command is the command
+ diff x y
+which compares two files.  It will not print
+any output if the two files are the same, but
+if the files are different it will print
+out the lines that are changed in the two files,
+indicating the lines from the first file (x) by a leading "<"
+and the lines from the second file (y) by a leading ">".
+There are two files in this directory named "old" and "new".
+Why don't you first print both files, and then
+try using "diff" to compare them?  Suppose the files
+were hundreds of lines long, and you needed to know
+the single difference - do you see how valuable "diff" can be?
+As evidence that you did at least half of this,
+type "answer word" where "word" is the word added to the
+second file.
+#create new
+Four score and seven
+years ago our fathers
+brought forth on this
+continent a new nation,
+conceived in liberty
+and dedicated to the 
+proposition that all
+men are created equal.
+#create old
+Four score and seven
+years ago our fathers
+brought forth on this
+continent a new nation,
+conceived in liberty
+and dedicated the 
+proposition that all
+men are created equal.
+#copyin
+#user
+#uncopyin
+#match to
+#log
+#next
+13.01a
+
+L12.2a          445768495   100   205   100640  554       `
+#print
+To compare two files, you can use the command
+"diff" (differences); the line
+  diff xx yy
+will compare the files xx and yy and tell you about
+any differences between them.  If the files are the same,
+the command says nothing.  Are the files
+"tom" and "dick" the same in this directory?
+Find out (print them if you feel insecure)
+and reply "yes" or "no".
+#create dick
+This stuff is not only in
+file tom but also
+in file dick
+#create tom
+This stuff is not only in
+file tom but also
+in file dick
+#copyin
+#user
+#uncopyin
+#match yes
+#log
+#next
+12.2b 5
+L12.2b          445768496   100   205   100640  435       `
+#print
+Now are the files "dick" and "harry" the same?
+Again reply "yes" or "no".
+If there are differences between files, "diff" prints
+the lines that are different, indicating those
+from the first file by "<" and those from
+the second file by ">".
+#create dick
+new york
+bridgeport
+new haven
+new london
+providence
+boston
+#create harry
+new york
+bridgeport
+new haven
+providence
+boston
+#copyin
+#user
+#uncopyin
+#match no
+#log
+#next
+12.2c 5
+
+L12.2c          445768498   100   205   100640  590       `
+#print
+This directory contains two files named "old" and "new";
+What word is in one file but not the other?  Find
+out.  Reply "answer WORD" where WORD is that word.
+#create new
+Four score and seven
+years ago our fathers
+brought forth on this
+continent a new nation,
+conceived in liberty
+and dedicated to the 
+proposition that all
+men are created equal.
+#create old
+Four score and seven
+years ago our fathers
+brought forth on this
+continent a new nation,
+conceived in liberty
+and dedicated the 
+proposition that all
+men are created equal.
+#copyin
+#user
+#uncopyin
+#match to
+#log
+#next
+13.01a
+L12.3a          445768499   100   205   100640  446       `
+#print
+A very useful command is the command
+  diff x y
+which compares the two files x and y and tells
+you any differences between the files.  If the files
+are the same, it says nothing.  To test that,
+copy file "george" onto file "harry";
+then say
+  diff george harry
+to verify that the files are the same.
+#create george
+london bridge
+is falling down.
+#copyin
+#user
+#uncopyin
+#match diff george harry
+#match diff harry george
+#log
+#next
+12.3b 2
+L12.3b          445768501   100   205   100640  364       `
+#print
+Are the files "memo1" and "memo2" the same?
+If they are different, "diff" will print the
+lines that are not the same.
+Reply "yes" or "no".
+#create memo1
+A quick brown fox jumps over the lazy dog.
+We were away a year ago.
+#create memo2
+A quick brown fox jumps over the lazy dog.
+We were away a year ago.
+#copyin
+#user
+#uncopyin
+#match yes
+#log
+#next
+12.3c 2
+L12.3c          445768502   100   205   100640  491       `
+#print
+Are the files "old" and "new" in this directory the same?
+Again, if they are not, "diff" will print out the differences
+marking the lines in the first file named by "<" and the
+lines in the second file by ">".  Check the results of
+diff by printing the files.  Then type "yes" or "no".
+#create new
+This file has three
+lines of text in
+it to read.
+and this has one more.
+#create old
+This file has three
+lines of text in
+it to read.
+#copyin
+#user
+#uncopyin
+#match no
+#log
+#next
+12.2c 5
+
+L13.01a         445768504   100   205   100640  1258      `
+#print
+You may have been wondering what to do in
+case Unix prints faster than you can read.
+It is often helpful to suspend Unix
+output temporarily in order to read it,
+and then restart it to let more output print.
+
+On Unix a ^S "suspends" output printing temporarily,
+and a ^Q "quits suspension" of output, that is,
+it restarts printing.  ^S, or "control-s", is entered
+by holding down the CTRL key and pressing the letter 's'
+(and similarly for ^Q).  Neither of these
+characters appear on your terminal,
+so as not to be confused with the real output.
+
+There is a file in this directory called "zip".
+Print its contents while controlling the output
+with ^S and ^Q, and then do what it says.
+#create zip
+This
+is
+a
+file
+called
+zip
+which
+should
+print
+rather
+quickly.
+You
+were
+asked
+to
+do
+something
+that
+the
+file
+explained
+but
+right
+now
+I'm
+stalling.
+Actually,
+I
+want 
+you
+to
+make
+a
+copy
+of
+the
+file
+beginning
+with
+a
+capital
+letter
+x
+and
+ending
+in
+the
+digit
+1
+in
+a
+file
+which
+I
+think
+should
+be
+called
+um...
+..
+.
+um, let's see now
+..
+.
+oh
+yes,
+I
+remember!
+It's
+called
+X2.
+See
+if
+you
+can
+manage
+that.
+When
+you're
+done
+you
+can
+type
+the
+same
+old
+ready
+that
+you're
+so
+used
+to
+typing
+by
+now.
+#create X1
+ooga booga
+#copyin
+#user
+#uncopyin
+#cmp X1 X2
+#log
+#next
+13.1a 5
+L13.1a          445768506   100   205   100640  264       `
+#print
+Let's do a quick review of the things covered
+in the files course. To begin, how many files
+are there in the current directory? Type "answer N",
+where N is the number that you found.
+#create X1
+#create X2
+#copyin
+#user
+#uncopyin
+#match 2
+#log
+#next
+13.1b 5
+L13.1b          445768508   100   205   100640  285       `
+#print
+There is a file in this directory whose name begins
+with 'z'. Do what it tells you to, then type "ready".
+#create X1
+#create X2
+#create zip
+Rename the file named "mary" to "joe".
+#create joe
+I am a file
+#
+rm -f mary
+ls >X1
+mv joe mary
+#user
+ls >X2
+#cmp X1 X2
+#log
+#next
+13.1c 5
+
+L13.1c          445768509   100   205   100640  559       `
+#print
+There are two files in this directory whose names begin with
+the letter 'r'. On what line do they differ?
+Type "answer N", where N is the line number where they
+first are different.
+#create ref
+This is a very short file
+which contains several lines
+some one of which will be changed
+in the other version, and your
+job is to find out which.
+#create refnew
+This is a very short file
+which contains several lines
+some  one of which will be changed
+in the other version, and your
+job is to find out which.
+#copyin
+#user
+#uncopyin
+#match 3
+#log
+#next
+13.1d
+
+L13.1d          445768511   100   205   100640  250       `
+#print
+There are several files in this directory whose names
+begin with "easy". Remove them, then type "ready".
+#create X1
+#create X2
+#
+ls >X2
+#create easy1
+#create easyer
+#create easyrider
+#create easyenough
+#user
+ls >X1
+#cmp X1 X2
+#log
+#next
+13.1e
+L13.1e          445768512   100   205   100640  256       `
+#print
+This one is tougher than the last one. There are
+several files in this directory whose names
+begin with "hard". Remove them, then type "ready".
+#create X1
+#create X2
+#
+ls >X2
+cp X1 "hard 1"
+cp X1 "hard er"
+#user
+ls >X1
+#cmp X1 X2
+#log
+#next
+13.1f
+L13.1f          445768514   100   205   100640  527       `
+#print
+Suppose you have two files named "dick" and "jane", and you
+want to interchange them, so that "dick" contains whatever
+was originally in "jane", and "jane" contains what was in "dick".
+Will this sequence of commands do the job?
+
+mv dick jane
+mv jane dick
+
+There are two files named "john" and "mary"
+in this directory, if you wish to experiment.
+When you have decided, type yes or no.
+#create john
+this is originally file john
+#create mary
+this is originally file mary
+#copyin
+#user
+#uncopyin
+#match no
+#log
+#next
+13.1g
+
+L13.1g          445768515   100   205   100640  639       `
+#print
+Suppose that we really do want to interchange the contents
+of the files "dick" and "jane". One way to do it is
+to move the contents of "dick" into some temporary file,
+then move "jane" onto "dick" (which of course clobbers
+the old contents of "dick", but we saved them already),
+then finally to move the temporary copy of "dick" to
+"jane". There are two files named "dick" and "jane" in this
+directory. Interchange their contents, then type "ready".
+#create Ref
+short file for dick
+#create dick
+short file for dick
+#create jane
+another file for jane
+#create Ref1
+another file for jane
+#user
+cmp -s jane Ref || cmp -s dick Ref1
+#log
+
+L2.1a           445768517   100   205   100640  504       `
+#print
+The "mv" command changes the names of files.
+For example, "mv bob bill" changes the name
+of file "bob" to be "bill".  If there was already
+a file named "bill", the old version is destroyed.
+
+There is a file in
+the current directory whose name begins with
+the letter "g", like "grant" or "grover".
+Find out what the file name really is, and
+then change that file to have the name "john".
+Then type "ready".
+#create george
+this should become john
+#user
+test -r john
+#log
+#next
+3.1a 10
+3.2a 5
+3.3a 2
+L2.2a           445768518   100   205   100640  420       `
+#print
+The "mv" command changes the names of files.
+For example, "mv thomas james" changes the
+name of the file "thomas" to be "james".
+
+There is a file in the current directory named
+"thomas".  Change that file to have the
+name "james".  Then type "ready".
+(The "mv" command, by the way, is like many
+UNIX commands in that it is silent unless there is an error.)
+#create thomas
+xx
+#user
+test -r james
+#log
+#next
+2.2b 5
+L2.2b           445768520   100   205   100640  640       `
+#print
+Now your directory contains a file with a name
+that starts with "a" (like "adam", "arthur", etc.).
+Find out what it is using the "ls" command
+and change its name to "martin".
+Then type "ready".
+By the way, if there was already a file around
+named "martin", the old version is clobbered
+by the new one.
+#create andrew
+stuff
+#user
+test -r martin
+#fail
+Do you remember that the "ls" command will
+tell you the names of the files in the current
+directory? Thus you can use "ls" to tell you
+what your file names are; and then you can use
+"mv" to change the name of the file
+beginning with "a" to "martin".
+#log
+#next
+3.1a 10
+3.2a 5
+3.3a 2
+L3.1a           445768521   100   205   100640  706       `
+#print
+The "cat" command prints the contents of one or more files.
+In fact, it is named "cat" as an abbreviation
+for "concatenate".  To print the files named "dog"
+and "mouse" in succession, you could type either
+  cat dog
+  cat mouse
+or just
+  cat dog mouse
+If you print them with one command,
+the contents are printed in sequence with nothing
+between them.
+
+How many lines are there in all the files
+whose names begin with "b"?  Find out, then type
+"answer N" where N is the total number of lines.
+#create ben
+the file ben has
+a total of three
+short lines.
+#create bernie
+this file has
+two lines.
+#create bruce
+only one line here.
+#copyin
+#user
+#uncopyin
+#match 6
+#log
+#next
+4.1a  10
+4.2a    5
+4.3a    2
+L3.2a           445768523   100   205   100640  616       `
+#print
+The command "cat" will print files.  For example, you
+can print the file named "food" by typing "cat food".
+Your current directory has a file named "sam" and a
+file named "steve".  Which is longer?  Find out and
+type "answer sam" or "answer steve", giving the name
+of the longer file.
+#create sam
+this is the file sam.  it contains
+only two lines of text.
+#create steve
+this file is named steve.  it is a
+file which contains five lines of text.
+this is of course a very short file
+by any ordinary standards, although
+on UNIX most files are rather short.
+#copyin
+#user
+#uncopyin
+#match steve
+#log
+#next
+3.2b 5
+L3.2b           445768525   100   205   100640  749       `
+#print
+The "cat" command can also print several files
+at once.  In fact, it is named "cat" as an abbreviation
+for "concatenate".  To print the files named "dog"
+and "mouse" in succession, you could either
+type:
+  cat dog
+  cat mouse
+or just
+  cat dog mouse
+If you print them with one command,
+the files are listed in sequence with nothing
+between them.
+
+This directory contains two files
+named "chester" and "charley".  What is the
+longest word in either file?  Type "answer WORD"
+where WORD is the longest word you find.
+#create charley
+most of this file is short but at one place
+there is a surprisingly long word.
+#create chester
+and of the but here now stop go
+#copyin
+#user
+#uncopyin
+#match surprisingly
+#log
+#next
+4.1a  10
+4.2a    5
+4.3a    2
+
+L3.3a           445768526   100   205   100640  360       `
+#print
+A file can be printed on your terminal
+by using the "cat" command.  Just say
+"cat file" where "file" is the file name.
+For example, there is a file named
+"food" in this directory.  List it
+by saying "cat food"; then type "ready".
+#create food
+  this is the file
+  named food.
+#copyout
+#user
+#uncopyout
+tail -2 .ocopy >X1
+#cmp X1 food
+#log
+#next
+3.3b  2
+L3.3b           445768528   100   205   100640  547       `
+#print
+Of course, you can print any file with "cat".
+In particular, it is common to first use
+"ls" to find the name of a file and then "cat"
+to print it.  Note the difference between
+"ls", which tells you the name of the files,
+and "cat", which tells you the contents.
+
+One file in the current directory is named for
+a President.  Print the file, then type "ready".
+#create roosevelt
+  this file is named roosevelt
+  and contains three lines of
+  text.
+#copyout
+#user
+#uncopyout
+cp .ocopy X2
+tail -3 .ocopy >X1
+#cmp X1 roosevelt
+#log
+#next
+3.2b 2
+
+L4.1a           445768529   100   205   100640  345       `
+#print
+The "ls" command may be given with one
+or more file names.  In that case,
+it will tell which of the files exist.
+How many of the files "doug", "dave", and
+"dennis" exist in this directory?  Find out
+and then type "answer N" where N is the number
+you found.
+#create dennis
+#create doug
+#copyin
+#user
+#uncopyin
+#match 2
+#log
+#next
+5.1a  10
+
+L4.2a           445768531   100   205   100640  429       `
+#print
+If a file name is given with the "ls" command,
+it tells you whether that file exists.
+The file name is listed if the file exists;
+if it doesn't, a complaint is typed.
+For example,
+  ls george
+will type "george" if the file exists,
+and "george not found" if it is missing.
+
+Is there a file named "alexander" in the
+current directory?  Find out, then type "yes" or "no".
+#copyin
+#user
+#uncopyin
+#match no
+#log
+#next
+4.2b 10
+
+L4.2b           445768532   100   205   100640  493       `
+#print
+You can inquire about several files at once
+with the "ls" command.  If you type, for example,
+   ls fee fi fo fum
+you will be told which of the four files "fee", "fi", "fo",
+and "fum" exist.  In the current directory only one
+of the files "grover", "gerald", or "george" exists.
+Find out which one; then rename it "grant".
+Type "ready" when you are done.
+#create gerald
+file
+#create garbage
+garbage it is.
+#user
+#create X1
+file
+#
+cmp -s X1 grant || test ! -r gerald
+#log
+#next
+5.1a  10
+
+L4.3a           445768534   100   205   100640  584       `
+#print
+You can use the "ls" command to ask whether
+a single file exists without listing the entire
+directory.  For example, "ls george" will list
+"george" if there is a file with that name, and
+complain if there is not one.  This directory
+contains a file named "arthur" but no file named
+"alan".  You can verify that by typing the
+ordinary "ls" command.  Then try typing "ls arthur"
+to see what happens, and follow that by "ls alan".
+Then type "ready".
+#create arthur
+xxx
+#copyin
+#user
+#uncopyin
+grep 'ls arthur' .copy >/dev/null || grep 'ls alan' .copy >/dev/null
+#log
+#next
+4.3b 0
+L4.3b           445768536   100   205   100640  359       `
+#print
+With the "ls" command, you can inquire about several
+specific files at once.  For example, in the previous
+case, you could type
+
+ls arthur alan
+
+and be told about both files.
+
+Which one of the files "bruce" and "ben" exists?
+Type "answer NAME", where NAME is the one you find.
+#create bruce
+bruce
+#copyin
+#user
+#uncopyin
+#match bruce
+#log
+#next
+4.3c 2
+
+L4.3c           445768538   100   205   100640  385       `
+#print
+Your directory contains only one of the following
+files: "richard", "robert", "ralph", "roger".  Find out
+which one exists, and print the contents of that file
+on your terminal (remember the "cat" command?).
+Then type "ready".
+#create robert
+this is the contents of file
+robert which you had to print.
+#copyin
+#user
+#uncopyin
+grep 'cat rob' .copy >/dev/null
+#log
+#next
+5.1a  10
+
+L5.1a           445768539   100   205   100640  918       `
+#print
+Most UNIX commands, like "ls" and "cat", let you
+specify any number of file names after the command.
+To make this as easy as possible, there are some
+ways to abbreviate file names.  This is usually
+faster and more accurate than typing out the list in full.
+
+For example, when the character "?" is used in a file name,
+it will represent any character that might be
+in a file name.  That is, the name "a?" is
+an abbreviation for the files "a1", "a2", "aa",
+and so forth.  You can say
+  ls a?
+and if there are any file names beginning with
+"a" that are exactly two letters long, the computer
+will tell you their names.  Try that here.
+First list all the file names with "ls"; then type
+  ls a?
+to get all the two letter names beginning with "a".
+Then type "ready".
+#create a1
+#create a12
+#create abcdef
+#create ax
+#create aa
+#copyin
+#user
+#uncopyin
+grep '^ls a?$' .copy >/dev/null
+#log
+#next
+5.1b 0
+5.1c 5
+5.1e 10
+L5.1b           445768541   100   205   100640  363       `
+#print
+Will the name
+  xyz
+be selected by the pattern
+  x?
+in an "ls" command?
+Type "yes" or "no".  If you
+have trouble, there is such a file
+in the current directory,
+so you can find out by trial and error.
+(For example, you might do an ordinary "ls"
+and then try "ls x?" and compare the results.)
+#create xyz
+#copyin
+#user
+#uncopyin
+#match no
+#log
+#next
+5.1c 0
+
+L5.1c           445768542   100   205   100640  523       `
+#print
+The "?" may appear anywhere in the name.
+For example you can type
+  a?bc
+to match the list of names
+  axbc, aybc, a3bc
+and so forth.
+But the number of characters must always agree.
+How many of the following file names
+are matched by "x?xx"?
+  x1xx, y1xx, x1xxa, xxx
+Type "answer N" where N is the number of matching names.
+You can experiment in the current directory to
+check your answer before typing it.
+#create x1xx
+#create x1xxa
+#create y1xx
+#create xxx
+#copyin
+#user
+#uncopyin
+#match 1
+#log
+#next
+5.1d 0
+5.1e 5
+
+L5.1d           445768544   100   205   100640  159       `
+#print
+Will the name
+  ?xx
+match "axx"?  Again, you may
+experiment before typing your
+answer.
+#create axx
+#copyin
+#user
+#uncopyin
+#match yes
+#log
+#next
+5.1e 0
+
+L5.1e           445768545   100   205   100640  664       `
+#print
+Not only may the ? appear anywhere in a name,
+but there may be several ? characters in it.
+For example,
+  g??rge
+will match "george" and "goerge", among others.
+And "a??" will match "abc" or "a11" (but NOT "ax").
+Look at the files in the current directory and decide
+how many names the pattern
+   a?b?c
+will select.  Again, you can try this out
+by comparing an ordinary "ls" with "ls a?b?c"
+to see what happens.  When you figure
+out how many names are selected,
+type "answer N" where N is the number of file names.
+#create a0b0c
+#create a0bc
+#create a0x0c
+#create a1bxc
+#create aabbc
+#create azbzcz
+#copyin
+#user
+#uncopyin
+#match 3
+#log
+#next
+6.1a 5
+6.2a 2
+L6.1a           445768547   100   205   100640  875       `
+#print
+Since the "?" character only matches single characters,
+it isn't useful for such questions as "how many files
+have names beginning with g?"  There is another character,
+  *
+which can be used in patterns for file names, and which matches
+any number of characters of any sort.  Thus
+   g*
+matches anything beginning with g.
+And
+   *x
+matches anything ending in x.  
+There is one file in this directory whose name ends
+in "memo".  Find out that file name
+and print the contents of the file.  Then type "ready".
+#create mymemo
+This is the 7-line file "mymemo";  you should
+have typed "ls *memo", which would print
+"mymemo", and then typed the
+command "cat mymemo".
+Or just plain "cat *memo" would have worked.
+But whatever you did, you got it right
+and now you can type "ready".
+#copyout
+#user
+#uncopyout
+tail -7 .ocopy >X2
+#cmp mymemo X2
+#log
+#next
+6.1b 0
+6.1c 5
+6.1e 10
+
+L6.1b           445768548   100   205   100640  222       `
+#print
+Will the file name "abcd"
+be matched by "a*d"?  Again,
+if you are not sure, you can experiment
+in this directory with commands like
+"ls" and "ls a*d".
+#create abcd
+#copyin
+#user
+#uncopyin
+#match yes
+#log
+#next
+6.1c
+L6.1c           445768550   100   205   100640  246       `
+#print
+There is one file in this directory whose name begins
+with "g".  Rename it so the "g" at the beginning
+of the name is replaced by "h".
+Then type ready.
+#create g23
+g23, of course
+#user
+test -r h23 || test ! -r g23
+#log
+#next
+6.1d 0
+6.1e 5
+L6.1d           445768551   100   205   100640  291       `
+#print
+What does "*b*" match?  Clearly, any file
+with a "b" anywhere in its name.  Similarly,
+how many files in this directory have
+"se" somewhere in their name?
+Type "answer N" when you figure it out.
+#create arise
+#create reset
+#create set
+#copyin
+#user
+#uncopyin
+#match 3
+#log
+#next
+6.1e
+
+L6.1e           445768553   100   205   100640  262       `
+#print
+There is exactly one file name which matches both
+   ab*
+and
+    a?d
+in the current directory.  What is it?
+Type "answer NAME" where NAME is its name.
+#create abc
+#create abd
+#create add
+#copyin
+#user
+#uncopyin
+#match abd
+#log
+#next
+7.1a 10
+7.2a 5
+7.3a 2
+L6.2a           445768554   100   205   100640  709       `
+#print
+Since the '?' character only matches single
+characters in file names, it is not useful for
+questions like "how many files have names which
+begin with the letter g?"  There is another character
+  *
+which can be used in patterns for file names
+and matches any number of any kind of characters.
+So
+  g*
+selects all file names beginning with g, and
+  *x
+selects all file names which end in x.  Try
+  ls *x
+How many files match?
+Compare with an ordinary
+  ls
+if you like.  Type "answer N" eventually where
+N is the number of files whose names end in "x".
+#create abcx
+#create abcxdef
+#create memox
+#create memoy
+#create memoz
+#create x
+#create x53x
+#copyin
+#user
+#uncopyin
+#match 4
+#log
+#next
+6.2b 8
+6.1a 1
+
+L6.2b           445768556   100   205   100640  511       `
+#print
+There is one file in this directory whose name ends
+in "memo".  Find out that file name and print
+the contents of the file.  Then type "ready".
+#create mymemo
+This is the 7-line file "mymemo";  you should
+have typed "ls *memo", which would print
+"mymemo", and then typed the
+command "cat mymemo".
+Or just plain "cat *memo" would have worked.
+But whatever you did, you got it right
+and now you can type "ready".
+#copyout
+#user
+#uncopyout
+tail -7 .ocopy >X2
+#cmp mymemo X2
+#log
+#next
+6.1b 0
+6.1c 5
+6.1e 10
+
+L7.1a           445768558   100   205   100640  876       `
+#print
+Sometimes ? is too flexible, and you
+only want to allow a few characters.  For example,
+you might want to abbreviate
+  ls memo.ab memo.ac
+without picking up "memo.ad", memo.ae", etc.
+You can match one of a set of particular characters by 
+putting them in brackets "[]" in the list you use with "ls".
+For example,
+  [bc]
+matches either b or c but no other letters,
+so "ls memo.a[bc]" is the abbreviation for
+"ls memo.ab memo.ac".
+You can have as many characters as needed between [ and ].
+
+Type the "ls" command that recognizes
+  a1cat
+  a2cat
+  a3cat
+and no other files.  Then type "ready".
+#create a1bat
+#create a1cat
+#create a2cat
+#create a3cat
+#create a4cat
+#create acat
+#copyin
+#user
+#uncopyin
+#match ls a[123]cat
+#match ls a[1-3]cat
+#match ls a1cat a2cat a3cat
+You were supposed to use a[123]cat.
+Imagine doing it your way with 10 files.
+#log
+#next
+8.1a 10
+8.2a 5
+L7.2a           445768560   100   205   100640  677       `
+#print
+Sometimes ? is too flexible, and you
+only want to allow a few characters.  For example,
+you might want to abbreviate
+  ls memo.ab memo.ac
+without picking up "memo.ad", "memo.ae", and so forth.
+You can match one of a set of particular characters by 
+putting them in brackets "[]" in the list you use with "ls".
+For example,
+  [bc]
+matches either b or c but no other letters.  Thus
+  ls memo.a[bc]
+will list exactly "memo.ab" and "memo.ac" if present.
+
+How many of the files
+  xya, xyb, xyc, xyd
+exist in this directory?
+Type "answer N" where N is the number.
+#create xyb
+#create xyc
+#create xye
+#create xyf
+#create xy1
+#copyin
+#user
+#uncopyin
+#match 2
+#log
+#next
+7.2b 10
+
+L7.2b           445768561   100   205   100640  727       `
+#print
+You can put any number of characters between [..]
+characters, as in
+  [abcdef]
+which matches any of the six letters from a to f;
+and you can put something like that anywhere in a pattern
+for a file name.  For example,
+  ls [abcd]x
+matches any of
+ ax, bx, cx, dx
+You can also combine this with other operators such as
+* or ?.  For example,
+  ls [ab]?
+matches all two-letter names beginning with a or b.
+How would you ask for all names, of any length, ending
+in 1 2 or 3?
+You can experiment in this directory; eventually,
+type the "ls" command you decide on followed by "ready".
+#create a1
+#create a12
+#create a1a
+#create a2
+#create a23
+#create aa1
+#create abc1
+#copyin
+#user
+#uncopyin
+#match ls *[123]
+#log
+#next
+8.1a 10
+
+L7.3a           445768563   100   205   100640  737       `
+#print
+Sometimes ? is too flexible, and you
+only want to allow a few characters.  For example,
+you might want to abbreviate
+  ls memo.ab memo.ac
+without picking up "memo.ad", "!"memo.ae", and so forth.
+You can match one of a set of particular characters by 
+putting them in brackets "[]" in the list you use with "ls".
+For example,
+  [bc]
+matches either b or c but no other letters.
+Thus the command
+  ls memo.a[bc]
+would match "memo.ab", "memo.ac", and nothing else.
+Try that command in this directory: type a plain
+"ls" first, and then "ls memo.a[bc]".
+How many files does "ls memo.a[bc]" match?
+Type "answer N" where N is the number.
+#create memo.ab
+#create memo.abc
+#create memo.bc
+#copyin
+#user
+#uncopyin
+#match 1
+#log
+#next
+7.3b 2
+
+L7.3b           445768565   100   205   100640  314       `
+#print
+You can use the [] characters anywhere you want
+in a file name.  For example,
+ ls a[bc]d
+would match abd or acd, right?
+What is the command that finds out how
+many files are named "ax" or "bx"?
+Type that command, then "ready".
+#create ax
+#create bx
+#copyin
+#user
+#uncopyin
+#match ls [ab]x
+#log
+#next
+7.3c 2
+L7.3c           445768567   100   205   100640  459       `
+#print
+You can put any number of characters between the
+brackets.  For example,
+  ab[123456789]
+could match up to 9 names, of the sort
+  ab1, ab2, ab3, ab4, ab5, ...
+How many of the following names exist in this
+directory?
+  p1end, p2end, p3end, p4end, p5end
+Check with a ordinary "ls".  Type "answer N" when you
+know.
+#once #create p1end
+#once #create p3endx
+#once #create p4end
+#once #create p6end
+#copyin
+#user
+#uncopyin
+#match 2
+#log
+#next
+8.1a 10
+8.2a 5
+
+L8.1a           445768569   100   205   100640  429       `
+#print
+Sometimes you want to request one of a limited
+range of characters.  This is possible with an
+expression like
+  [a-d]
+which matches a, b, c, or d.  Thus, to take
+some combinations
+  ab[c-f]
+matches
+  abc, abd, abe, abf
+Try typing "ls a[0-9]"
+and see how many files it matches.  Type that
+number in the form "answer N".
+#create a0
+#create a1
+#create a5
+#create ax
+#copyin
+#user
+#uncopyin
+#match 3
+#log
+#next
+9.1a 10
+9.2a 4
+
+L8.2a           445768570   100   205   100640  186       `
+#print
+Will the command
+  ls georg[a-f]
+match the name
+  george
+Type yes or no.
+Experiment first if you want.
+#create george
+#copyin
+#user
+#uncopyin
+#match yes
+#log
+#next
+8.2b 5
+9.1a 10
+L8.2b           445768571   100   205   100640  346       `
+#print
+The command
+ ls [aeiou]*.c
+will match all but one of the following names.
+  e.c
+  alpha.c
+  edward
+  u23.c
+Which one?  Type "answer NAME" where NAME
+is the file that doesn't match.  You can experiment
+first, as usual.
+#create alpha.c
+#create e.c
+#create edward
+#create u23.c
+#copyin
+#user
+#uncopyin
+#match edward
+#log
+#next
+8.2c 5
+9.1a 10
+L8.2c           445768573   100   205   100640  421       `
+#print
+As an example more complicated than you will
+probably ever need, consider
+  ?[a-c]*
+which matches what?  Well the first character
+can be anything; the second must be a, b, or c; and
+nothing matters thereafter.    So it matches
+ aaa
+ abc
+ xa
+ 3c25
+but not
+ a
+ ghi
+and so forth.
+Will it match
+ %a25
+Try some experiments, then type yes or no.
+#create %a25
+#copyin
+#user
+#uncopyin
+#match yes
+#log
+#next
+9.1a 10
+9.2a 4
+
+L9.1a           445768574   100   205   100640  851       `
+#print
+The patterns for selecting file names that have been discussed
+can be used with other commands than "ls".  For example,
+they can be used with the "cat" command to print files.
+It is common for a memo stored in several
+files to use files named "part1", "part2", etc.
+so that commands like
+  cat part*
+will print everything.
+In this directory there are several
+short files named "sec0", "sec1", "sec3",
+and so forth.
+There are various names of animals in the files;
+find out the largest animal named in the files
+and type "answer NAME" where NAME is that animal.
+#create sec0
+dog mouse cat 
+#create sec1
+rabbit weasel
+pig hamster
+#create sec2
+this file doesn't happen
+to have any animal names in it.
+#create sec3
+fox elephant sheep
+duck  rat
+#create sec4
+groundhog bobcat
+mole  beaver
+#copyin 
+#user
+#uncopyin
+#match elephant
+#log
+#next
+10.1a 10
+
+L9.2a           445768576   100   205   100640  595       `
+#print
+You can use patterns for file names with commands
+other than "ls".  For example, you can use them with
+the "cat" command to print files.
+This directory has three files named
+  parta
+  partb
+  partc
+You can use
+  cat part?
+to print all of them.  Try that; then
+type "ready".
+#create parta
+This is file parta;
+it has two lines.
+#create partb
+File partb here - has only one line.
+#create partc
+And now in file partc, which has
+the enormous total of
+three lines.
+#create partxxx
+You shouldn't have printed this one.
+#copyin
+#user
+#uncopyin
+grep 'cat part?' .copy >/dev/null
+#log
+#next
+9.2b 5
+
+L9.2b           445768578   100   205   100640  500       `
+#print
+You can also use the "*" operator.  For example,
+print the contents of all the files in this
+directory whose names begin with the letter 'p'.
+Use just one "cat" command.
+Then type "ready".
+#create p1
+There are only two such files.  This is the first
+one and it is two lines long.
+#create ppx
+
+This is the second file.  Its first line
+is blank, and then there are three lines of
+text of which this is the last.
+#copyin
+#user
+#uncopyin
+grep 'cat p\*' .copy >/dev/null
+#log
+#next
+10.1a 10
+9.2c 5
+L9.2c           445768579   100   205   100640  356       `
+#print
+And as an example of the [] operators again,
+print all the files in this directory whose
+names begin with either 'a' or 'c'.
+That will tell you to type either 'yes'
+or 'no' - do what it says.
+#create a1
+Type
+#create a2
+y
+#create b
+n
+o
+#create cxx
+e
+#create cz23
+s
+(on one line, please)
+#copyin
+#user
+#uncopyin
+#match yes
+#log
+#next
+10.1a 10
+10.3a 2

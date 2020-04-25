@@ -1,0 +1,60 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: yppasswd.3r 1.4 87/05/26 $
+.\" @(#)yppasswd.3r 1.1 85/12/28 SMI; new on release 3.0
+.TH YPPASSWD 3R "\*(V)" "4BSD"
+.SH NAME
+yppasswd \- update user password in yellow pages
+.SH SYNPOSIS
+.nf
+\f3#include <rpcsvc/yppasswd.h>
+.sp
+yppasswd(oldpass, newpw)
+	char *oldpass;
+	struct passwd *newpw;\f1
+.fi
+.SH DESCRIPTION
+If
+.I oldpass
+is indeed the old user password,
+.I yppasswd
+replaces the password entry with
+.IR newpw .
+It returns 0 if successful.
+.SH RPC INFO
+.nf
+program number:
+	YPPASSWDPROG
+.sp 1
+xdr routines:
+	xdr_ppasswd(xdrs, yp)
+		XDR *xdrs;
+		struct yppasswd *yp;
+	xdr_yppasswd(xdrs, pw)
+		XDR *xdrs;
+		struct passwd *pw;
+procs:
+	YPPASSWDPROC_UPDATE
+		Takes \fIstruct yppasswd\fP as argument, returns integer.
+		Same behavior as \fIyppasswd()\fP wrapper.
+		Uses UNIX authentication.
+versions:
+	YPPASSWDVERS_ORIG
+.sp 1	
+structures:
+	struct yppasswd {
+		char *oldpass;	/* old (unencrypted) password */
+		struct passwd newpw;	/* new pw structure */
+	};
+.fi
+.SH SEE ALSO
+yppasswd(1), yppasswdd(8C)

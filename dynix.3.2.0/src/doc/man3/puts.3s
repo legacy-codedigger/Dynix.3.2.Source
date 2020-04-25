@@ -1,0 +1,59 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: puts.3s 1.4 86/05/13 $
+.TH PUTS 3S "\*(V)" "7th Edition"
+.SH NAME
+puts, fputs \- put a string on a stream
+.SH SYNOPSIS
+.B #include <stdio.h>
+.PP
+.B puts(s)
+.br
+.B char *s;
+.PP
+.B fputs(s, stream)
+.br
+.B char *s;
+.br
+.SM
+.B FILE
+.B *stream;
+.SH DESCRIPTION
+.I Puts
+copies the null-terminated string
+.I s
+to the standard output stream
+.B stdout
+and appends a
+newline character.
+.PP
+.I Fputs
+copies the null-terminated string
+.I s
+to the named output
+.IR stream .
+.PP
+Neither routine copies the terminal null character.
+.SH "SEE ALSO"
+fopen(3S),
+gets(3S),
+putc(3S),
+printf(3S),
+ferror(3S)
+.br
+fread(3S) for
+.I fwrite
+.SH BUGS
+.I Puts
+appends a newline,
+.I fputs
+does not, all in the name of backward compatibility.

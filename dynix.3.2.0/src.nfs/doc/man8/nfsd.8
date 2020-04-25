@@ -1,0 +1,46 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: nfsd.8 1.7 87/06/17 $
+.\" @(#)nfsd.8 1.1 85/12/28 SMI;
+.TH NFSD 8 "\*(V)" "4BSD"
+.SH NAME
+nfsd, biod \- NFS daemons
+.SH SYNOPSIS
+.B /etc/nfsd
+[ \f2nservers\f1 ]
+.sp
+.B /etc/biod
+[ \f2nservers\f1 ]
+.SH DESCRIPTION
+.\".IX  "network file system"  "nfsd daemon"  ""  "\f2nfsd\fP daemon"
+.\".IX  "network file system"  "biod daemon"  ""  "\f2biod\fP daemon"
+.\".IX  "nfsd daemon"  ""  "\f2nfsd\fP daemon"
+.\".IX  "biod daemon"  ""  "\f2biod\fP daemon"
+.\".IX  "daemons"  "nfsd daemon"  ""  "\f2nfsd\fP daemon"
+.\".IX  "daemons"  "biod daemon"  ""  "\f2biod\fP daemon"
+.I Nfsd
+starts the 
+.IR NFS (4)
+server daemons that handle client filesystem requests.
+.I Nservers
+is the number of file system request daemons to start.
+This number should be based on the load expected on this server.
+.LP
+.I Biod
+starts
+.I nservers
+asynchronous block I/O daemons.  This command is used on a NFS client to
+handle buffer cache read-ahead and write-behind.
+.SH "SEE ALSO"
+nfs(4),
+exports(5),
+mountd(8c)

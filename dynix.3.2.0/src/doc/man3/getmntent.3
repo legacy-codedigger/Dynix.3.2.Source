@@ -1,0 +1,126 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: getmntent.3 1.6 87/05/26 $
+.\" @(#)getmntent.3 1.1 85/12/28 SMI; from UCB 4.2
+.TH GETMNTENT 3 "\*(V)" "4BSD"
+.SH NAME
+addmntent, endmntent, getmntent, hasmntopt, setmntent \- get file system descriptor file entry
+.SH SYNOPSIS
+.nf
+\f3#include <stdio.h>
+#include <mntent.h>
+.sp
+int addmntent(filep, mnt)
+FILE *filep;
+struct mntent *mnt;
+.sp
+int endmntent(filep)
+FILE *filep;
+.sp
+char *hasmntopt(mnt, opt)
+struct mntent *mnt;
+char *opt;
+.sp
+struct mntent *getmntent(filep)
+FILE *filep;
+.sp
+FILE *setmntent(filep, type)
+char *filep;
+char *type;\f1
+.fi
+.\".IX  "setmntent function"  ""  "\f2setmntent\fP \(em get filesystem descriptor file entry"
+.\".IX  "getmntent function"  ""  "\f2getmntent\fP \(em get filesystem descriptor file entry"
+.\".IX  "addmntent function"  ""  "\f2addmntent\fP \(em get filesystem descriptor file entry"
+.\".IX  "endmntent function"  ""  "\f2endmntent\fP \(em get filesystem descriptor file entry"
+.\".IX  "hasmntopt function"  ""  "\f2hasmntopt\fP \(em get filesystem descriptor file entry"
+.\".IX  "get filesystem descriptor file entry"  "setmntent"  ""  "\f2setmntent\fP"
+.\".IX  "get filesystem descriptor file entry"  "getmntent"  ""  "\f2getmntent\fP"
+.\".IX  "get filesystem descriptor file entry"  "addmntent"  ""  "\f2addmntent\fP"
+.\".IX  "get filesystem descriptor file entry"  "endmntent"  ""  "\f2endmntent\fP"
+.\".IX  "get filesystem descriptor file entry"  "hasmntopt"  ""  "\f2hasmntopt\fP"
+.\".IX  "filesystem descriptor"  "get file entry"
+.SH DESCRIPTION
+These routines replace the
+.I getfsent
+routines for accessing the file system description file
+.IR /etc/fstab .
+They are also used to access the mounted file system description file
+.IR /etc/mtab .
+.PP
+.I Setmntent
+opens a file system description file and returns
+a file pointer which can then be used with
+.IR getmntent ,
+.IR addmntent ,
+or
+.IR endmntent .
+The 
+.I type
+argument is the same as in
+.IR fopen (3).
+.I Getmntent
+reads the next line from
+.I filep
+and returns a pointer to an object with the following structure
+containing the broken-out fields of a line in the filesystem description file,
+.IR <mntent.h> .
+The fields have meanings described in
+.IR fstab (5).
+.if t .ta \w'struct\0\0'u +\w'mntent\0{'u +\w'*mnt_fsname;\0\0\0\0'u
+.if n .ta \w'struct\0'u +\w'mntent\0{'u +\w'*mnt_fsname;\0\0'u
+.Ps
+struct mntent {
+	char	*mnt_fsname;	/* file system name */
+	char	*mnt_dir;	/* file system path prefix */
+	char	*mnt_type;	/* 4.2, nfs, swap, or xx */
+	char	*mnt_opts;	/* ro, quota, etc. */
+	int	mnt_freq;	/* dump frequency, in days */
+	int	mnt_passno;	/* pass number on parallel fsck */
+};
+.Pe
+.PP
+.I Addmntent
+adds the
+.I mntent
+structure
+.I mnt
+to the end of the open file
+.IR filep .
+Note that
+.I filep
+has to be opened for writing if this is to work.
+.I Hasmntopt
+scans the
+.I mnt_opts
+field of the
+.I mntent
+structure
+.I mnt
+for a substring that matches
+.IR opt .
+It returns the address of the substring if a match is found,
+0 otherwise.
+.I Endmntent
+closes the file.
+.SH FILES
+/etc/fstab
+.br
+/etc/mtab
+.SH "SEE ALSO"
+getfsent(3),
+fstab(5)
+.SH DIAGNOSTICS
+Null pointer (0) returned on EOF or error.
+.SH BUGS
+The returned
+.I mntent
+structure points to static information that is overwritten in each call.

@@ -1,0 +1,165 @@
+#! /bin/sh 
+
+# $Copyright:	$
+# Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+# Sequent Computer Systems, Inc.   All rights reserved.
+#  
+# This software is furnished under a license and may be used
+# only in accordance with the terms of that license and with the
+# inclusion of the above copyright notice.   This software may not
+# be provided or otherwise made available to, or used by, any
+# other person.  No title to or ownership of the software is
+# hereby transferred.
+
+# $Header: run 1.5 87/04/10 $
+fmtr=nroff; export fmtr
+
+for i in $*
+do
+	case $i in
+
+	cacm)
+		refer -e /usr/doc/cacm/p* | tbl | $fmtr -msbell
+		;;
+	ed*)
+		$fmtr -msbell /usr/doc/edtut/e*
+		;;
+	adv.ed)
+		$fmtr -msbell /usr/doc/adv.ed/ae*
+		;;
+	shell)
+		refer -e /usr/doc/shell/t* | $fmtr -msbell
+		;;
+	ms*)
+		tbl /usr/doc/msmacros/ms | $fmtr -msbell
+		tbl /usr/doc/msmacros/refcard | eqn | $fmtr
+		$fmtr -ms /usr/doc/msmacros/ms.diffs
+		;;
+	eqn)
+		eqn /usr/doc/eqn/e* | $fmtr -msbell
+		;;
+	eqnguide)
+		eqn /usr/doc/eqn/g* | $fmtr -msbell
+		;;
+	tbl)
+		tbl /usr/doc/tbl | eqn | $fmtr -msbell
+		;;
+	pub*)
+		tbl /usr/doc/refer/pubuse | $fmtr -rP1 -msbell
+		;;
+	troff)
+		/usr/doc/troff/tprint
+		;;
+	trofftut)
+		$fmtr -msbell /usr/doc/trofftut/tt*
+		;;
+	lint)
+		refer -e /usr/doc/lint | $fmtr -msbell
+		;;
+	make)
+		$fmtr -msbell /usr/doc/make
+		;;
+	uprog)
+		sed -f /usr/doc/cwscript /usr/doc/p? | \
+			$fmtr -msbell /usr/doc/p.mac -
+		;;
+	yacc)
+		refer -e /usr/doc/yacc/ss* | $fmtr -msbell
+		;;
+	lex)
+		tbl /usr/doc/lex | $fmtr -msbell
+		;;
+	m4)
+		$fmtr -msbell /usr/doc/m4 
+		;;
+	sed)
+		$fmtr -msbell /usr/doc/sed
+		;;
+	awk)
+		refer -e /usr/doc/awk | tbl | $fmtr -msbell
+		;;
+	dc)
+		eqn /usr/doc/dc | $fmtr -msbell
+		;;
+	bc)
+		$fmtr -msbell /usr/doc/bc
+		;;
+	impl*)
+		refer -e /usr/doc/implement | $fmtr -msbell
+		;;
+	iosys)
+		$fmtr -msbell /usr/doc/iosys 
+		;;
+	uucp)
+		$fmtr -msbell /usr/doc/uucp/network
+		;;
+	uucpimp*)
+		$fmtr -msbell /usr/doc/uucp/implement
+		;;
+	secur*)
+		$fmtr -msbell /usr/doc/security
+		;;
+	password)
+		tbl /usr/doc/password | eqn | $fmtr -msbell
+		;;
+	uchanges)
+		tbl /usr/doc/uchanges/*.t | $fmtr -ms
+		;;
+	csh)
+		$fmtr -ms /usr/doc/csh/csh.*
+		;;
+	ex|vi)
+		(cd /usr/doc/ex; make TROFF=$fmtr)
+		;;
+	Mail)
+		tbl /usr/doc/Mail/mail?.nr | $fmtr -me
+		;;
+	rogue)
+		tbl /usr/doc/rogue | $fmtr -me
+		;;
+	me*)
+		$fmtr -me /usr/doc/memacros/intro.nr /usr/doc/memacros/ref.nr
+		;;
+	diction)
+		eqn /usr/doc/diction/rm? /usr/doc/diction/ap? | $fmtr -msbell
+		;;
+	refer)
+		refer /usr/doc/refer/refer | tbl | $fmtr -msbell
+		;;
+	curses)
+		(cd /usr/doc/curses; make TROFF=$fmtr troff)
+		;;
+	config)
+		tbl /usr/doc/config/*.t | $fmtr -ms
+		;;
+	lpd)
+		tbl /usr/doc/lpd/*.t | $fmtr -ms
+		;;
+	fsck)
+		(cd /usr/doc/fsck; $fmtr -ms *.t)
+		;;
+	sendmail)
+		$fmtr -me /usr/doc/sendmail/intro.me
+		$fmtr -me /usr/doc/sendmail/op.me
+		$fmtr -me /usr/doc/sendmail/usenix.me
+		;;
+	sysman)
+		tbl /usr/doc/sysman/*.t | $fmtr -ms
+		;;
+	fs)
+		(cd /usr/doc/fs; make)
+		;;
+	gprof)
+		(cd /usr/doc/gprof; make TROFF=$fmtr troff)
+		;;
+	ipc)
+		tbl /usr/doc/ipc/*.t | $fmtr -ms
+		;;
+	trek)
+		$fmtr /usr/doc/trek
+		;;
+	*)
+		echo 'what is' $i 1>&2
+		;;
+	esac
+done

@@ -1,0 +1,175 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987 Sequent Computer Systems, Inc.
+.\" All rights reserved
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+.V= $Header: ds.4 1.2 91/04/08 $
+.TH DS 4 "\*(V)" "DYNIX"
+.CX
+.SH NAME
+ds \- (disk) stripe device interface
+.SH SYNOPSIS
+.B ds?
+.SH DESCRIPTION
+.PP
+The stripe device interface allows users to combine various
+block devices into one logical device.
+Normally, this is used only for disk devices, allowing several
+disk partitions to be logically treated as a single partition.
+Benefits of disk \fIstriping\fR include elimination of the restriction
+that a file system reside in a single partition (or physical disk),
+enhanced throughput due to the parallelism available from having 
+multiple disk arms and CCUs working on the same file system, and
+the possibility of better disk-drive load balancing.
+.PP
+There are currently 256 stripe devices available. Each is
+referenced with a different minor device number (0-255).
+By convention, the special files
+.I /dev/rds0
+through
+.I /dev/rds255
+are used to access the raw stripe devices.  The special files
+.I /dev/ds0
+through
+.I /dev/ds255
+are used to access the block stripe devices.
+Each stripe device can combine up to 32 other block devices, such
+as disk partitions.
+There is no requirement that the block devices be of the same size
+or physical layout, although such parameters may affect the efficiency
+of disk transfers.
+.PP
+Before a stripe device can be accessed, a table
+that specifies the layout of the stripe device must be loaded into
+the memory of the DYNIX kernel.
+(In particular, the stripe table must be loaded before \fImkfs\|(8)\fP, 
+\fIfsck\|(8)\fP, or
+\fImount\|(8)\fP can be
+invoked on the stripe device, and should never be changed
+while the stripe device is mounted, or while the device is being accessed.)
+Normally, the script
+.I /etc/rc
+and 
+\fIinit\|(8)\fP invoke
+\fIputst\|(8)\fP
+in order to load all the stripe tables at reboot time.
+Alternately, the table loading may be done manually with the program
+.I putst.
+The layout of this table is specified in the file
+.IR /usr/include/sys/stripe.h ,
+and includes the major/minor device numbers of the component block devices,
+information on the number and size of the component blocks, and the stripe
+block size.
+.PP
+Normal users should make the stripe table using \fInewst\|(8)\fP, which
+automatically handles all the low-level details.
+Make sure the stripe table is loaded by an invocation of
+.I putst
+in
+.I /etc/rc
+at every reboot.
+.PP
+Though it is preferable to use the utilities \fIputst\|(8)\fP and 
+\fIgetst\|(8)\fP, there are two ioctl's available for loading and 
+retrieving the stripe table information.
+These basic ioctl's use the structure defined in
+.IR <sys/stripe.h> :
+.PP
+.ta .5i 1.2i 2.0i 3.2i
+.nf
+.ft 3
+struct stripe_dev {
+	dev_t	st_dev[MAX_STRIPE_PARTITIONS];
+	struct	{
+		long	st_start;	/* starting block of this stripe */
+		long	st_size;	/* size (blocks) of each partition */
+		int	st_ndev;	/* number of devices in this stripe */
+		int	st_block;	/* stripe block size */
+	} st_s[MAX_STRIPE_PARTITIONS];
+	long	st_total_size;		/* total size of the device- blocks */
+};
+
+typedef struct stripe_dev stripe_t;
+.ft R
+.fi
+.PP
+Usage for stripe-related ioctl's is as follows:
+.PP
+.B #include <sys/ioctl.h>
+.br
+.B #include <sys/stripe.h>
+.PP
+.B ioctl(fildes, code, (char *) &tbl_ptr)
+.br
+.B stripe_t *tbl_ptr;
+.PP
+The applicable codes are:
+.IP STPUTTABLE 15
+Set up a stripe table in the kernel according to the pointed-to 
+\fIstripe_dev\fR structure.
+.ns
+.IP STGETTABLE
+Copy the proper stripe table information into
+the pointed-to \fIstripe_dev\fR structure.
+.PP
+The device driver comes with a DYNIX binary configuration
+file,
+.I conf_stripe.c,
+which contains driver parameters to be statically tuned in the
+DYNIX kernel.  Since the driver implementation shares a local
+pool of type
+.IR struct 
+.IR buf
+both the size of this pool (
+.I nstripebufs
+) and the number of elements from it
+dedicated to any one I/O request (
+.I stripe_maxbufs
+) are declared and initialized in this source file and may
+be adjusted for your specific site needs.
+.SH FILES
+.PP
+/dev/rds?
+.br
+/dev/ds? 
+.br
+/etc/stripecap
+.SH SEE ALSO
+putst\|(8), getst\|(8), newst\|(8), stripecap\|(5)
+.SH CAVEATS
+For security reasons, you must be superuser and be the only one
+accessing a stripe partition to successfully execute the STPUTTABLE
+ioctl. Also, the component partition devices must be ordered
+by size, in descending order.
+Stripe block sizes must be a minimum of 16 or a multiple thereof
+(representing 8kbytes).
+Stripe section sizes must be a multiple of the that section's stripe
+block size and section start offsets are expected to contain no gaps.  
+Finally, the total size of the entire stripe partition must be less 
+than 2 gigabytes.  This is currently a DYNIX addressing limitation.
+.PP
+Be careful that composit partitions do not overlap
+on the same device or data corruption may result from their use.
+Likewise, care must be taken to ensure that the same 
+configuration is repeatedly used to access the stripe partition.
+Otherwise, previously written data may appear to be corrupt and 
+subsequently get corrupted.
+.PP
+Performance may be reduced if partitions in the stripe partition are not
+on distict disk drives.  It is also recommended that they be located on
+distinct disk controller channels.  Likewise, it is best for partitions
+to be of equal lengths on identical drives and controllers, although not
+necessary.
+.PP
+Stripe partitions cannot be used for the root file system, since the DYNIX
+kernel and standalone utilities do not know the stripe partitions layout.
+This information is not available until the root file system is being used
+to execute putst.  Similarly, do not use it as a swap partition.
+.PP
+The stripe partition's data may be corrupted if one of its composit
+partitions is written to directly.

@@ -1,0 +1,82 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: bind.2 1.7 86/05/13 $
+.TH BIND 2 "\*(V)" "4BSD"
+.SH NAME
+bind \- bind a name to a socket
+.SH SYNOPSIS
+.nf
+.ft 3
+#include <sys/types.h>
+#include <sys/socket.h>
+.PP
+.ft 3
+bind(s, name, namelen)
+int s;
+struct sockaddr *name;
+int namelen;
+.fi
+.SH DESCRIPTION
+.I Bind
+assigns a name to an unnamed socket.
+When a socket is created 
+with
+.IR socket (2)
+it exists in a name space (address family)
+but has no name assigned.
+.I Bind
+requests the
+.IR name ,
+be assigned to the socket.
+.SH NOTES
+Binding a name in the UNIX domain creates a socket in the file
+system which must be deleted by the caller when it is no longer
+needed (using
+.IR unlink (2)).
+The file created
+is a side-effect of the current implementation,
+and will not be created in future versions
+of the UNIX ipc domain.
+.PP
+The rules used in name binding vary between communication domains.
+Consult the manual entries in section 4 for detailed information.
+.SH "RETURN VALUE
+If the bind is successful, a 0 value is returned.
+A return value of \-1 indicates an error, which is
+further specified in the global \f2errno\fP.
+.SH ERRORS
+The \f2bind\fP call will fail if:
+.TP 20
+[EBADF]
+\f2S\fP is not a valid descriptor.
+.TP 20
+[ENOTSOCK]
+\f2S\fP is not a socket.
+.TP 20
+[EADDRNOTAVAIL]
+The specified address is not available from the local machine.
+.TP 20
+[EADDRINUSE]
+The specified address is already in use.
+.TP 20
+[EINVAL]
+The socket is already bound to an address.
+.TP 20
+[EACCES]
+The requested address is protected, and the current user
+has inadequate permission to access it.
+.TP 20
+[EFAULT]
+The \f2name\fP parameter is not in a valid part of the user
+address space.
+.SH SEE ALSO
+connect(2), listen(2), socket(2), getsockname(2)

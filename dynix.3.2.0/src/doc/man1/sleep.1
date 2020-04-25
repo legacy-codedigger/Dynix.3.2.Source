@@ -1,0 +1,43 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: sleep.1 1.4 86/05/13 $
+.TH SLEEP 1 "\*(V)" "7th Edition"
+.SH NAME
+sleep \- suspend execution for an interval
+.SH SYNOPSIS
+.B sleep
+time
+.SH DESCRIPTION
+.I Sleep
+suspends execution for
+.I time
+seconds.
+It is used to execute a command after a certain amount of time as in:
+.PP
+	(sleep 105; command)&
+.PP
+or to execute a command every so often, as in:
+.PP
+	while true
+.br
+	do
+.br
+		command
+.br
+		sleep 37
+.br
+	done
+.SH "SEE ALSO"
+setitimer(2), alarm(3C), sleep(3)
+.SH BUGS
+.I Time
+must be less than 2,147,483,647 seconds.

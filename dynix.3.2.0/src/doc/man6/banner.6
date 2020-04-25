@@ -1,0 +1,59 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: banner.6 1.5 1991/08/07 19:44:56 $
+.TH BANNER 6 "\*(V)" "3BSD"
+.SH NAME
+banner \- print large banner on printer
+.SH SYNOPSIS
+.B /usr/games/banner
+[
+.BI \-w n
+]
+message ...
+.SH DESCRIPTION
+.I Banner
+prints a large, high quality banner on the standard output.
+If the message is omitted, it prompts for and
+reads one line of its standard input.  If
+.B \-w
+is given, the output is scrunched down from a width of 132 to
+.I n ,
+suitable for a narrow terminal.  If
+.I n
+is omitted, it defaults to 80.
+.PP
+The output should be printed on a hard-copy device, up to 132 columns wide,
+with no breaks between the pages. The volume is enough that you want
+a printer or a fast hardcopy terminal, but if you are patient, a
+decwriter or other 300 baud terminal will do.
+.PP
+An example usage of 
+.I bannner
+with output piped to printer 
+.I lp2
+is
+shown below:
+.IP "" 5n
+/usr/games/banner "Welcome, Jim" | lpr -Plp2
+.IP "" 5n
+.SH BUGS
+Several ASCII characters are not defined, notably <, >, [, ], \\,
+^, _, {, }, |, and ~.  Also, the characters ", ', and & are funny
+looking (but in a useful way.)
+.PP
+The
+.B \-w
+option is implemented by skipping some rows and columns.
+The smaller it gets, the grainier the output.
+Sometimes it runs letters together.
+.SH AUTHOR
+Mark Horton

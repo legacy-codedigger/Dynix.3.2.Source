@@ -1,0 +1,128 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: time.1 1.14 1991/06/12 23:57:51 $
+.TH TIME 1 "\*(V)" "4BSD"
+.SH NAME
+time, ptime \- time a command
+.SH SYNOPSIS
+.B time
+[
+.B \-a
+]
+[
+.B \-r
+]
+[
+.B \-v
+] command
+.PP
+.B ptime
+[
+.B \-a
+]
+[
+.B \-r
+]
+[
+.B \-v
+] command
+.SH DESCRIPTION
+After a given command has been executed, 
+.B time
+prints the elapsed time during the command, the time
+spent in the system, and the time spent in execution
+of the command.
+Time is reported in seconds.
+.SH OPTIONS
+When the 
+.B \-a
+option is specified,
+or when invoked as
+.B ptime,
+.B time
+shows the execution time for each process.
+.PP
+When the
+.B \-r
+option is specified,
+.B time
+also includes resource usage information.
+.PP
+The resource usage fields are:
+.TP "\w'majorPF   'u"
+.B pid
+numerical user-id of process owner
+.TP
+.B ppid
+numerical user-id of parent of process
+.TP
+.B MaxRSS
+maximum real memory (resident set) size (in pages)
+.TP
+.B MajorPF
+major page faults
+.TP
+.B MinorPF
+minor page faults
+.TP
+.B Swaps
+count of process swaps
+.TP
+.B blkI
+count of block input operations
+.TP
+.B blkO
+count of block output operations
+.TP
+.B Nsig
+count of signals received
+.TP
+.B Vcsw
+voluntary context switches
+.TP
+.B Icsw
+involuntary context switches
+.PP
+When the
+.B \-v
+option is specified,
+.B time
+traces process events such as fork, exec, and exit
+as they occur.
+.PP
+The times are printed on the diagnostic output stream.
+.PP
+.B Time
+is a built-in command to
+.BR csh (1),
+with a different syntax and a different output format.
+This command is available as
+.I /bin/time
+to
+.I csh
+users.
+.SH BUGS
+Due to the multiprocessing nature of DYNIX, it is possible for the
+CPU time (user + system time) for the command to greatly exceed 
+real time, thus giving percentages greater than 100% for CPU utilization.
+.PP
+The
+.B \-a
+option
+returns a smaller number for the system time because it does not include
+the time used to exit the process.
+.PP
+Using
+.I ptime
+to measure parallel fork/exit times results in serializing all fork and
+exit operations in the program being timed.  These results are misleading
+as parallel fork/exit does perform faster than a sequential implementation.

@@ -1,0 +1,10 @@
+@(#)how_pxp	1.1 (Berkeley) 3/2/81
+To profile a program do
+	pxp -z name.p
+after a translation specifying this option to pc and an execution, i.e.:
+	pc -z name.p
+	a.out
+To use pxp to reformat a program, you can use the command:
+	pxp name.p >newname.p
+The complete format for pxp is
+	pxp [ -acdefjnstuw_ ] [ -23456789 ] [ -z [ name ... ] ] name.p

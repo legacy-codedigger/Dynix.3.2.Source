@@ -1,0 +1,36 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: system.3 1.4 86/05/13 $
+.TH SYSTEM 3 "\*(V)" "7th Edition"
+.SH NAME
+system \- issue a shell command
+.SH SYNOPSIS
+.nf
+.B system(string)
+.B char *string;
+.fi
+.SH DESCRIPTION
+.I System
+causes the
+.I string
+to be given to
+.IR  sh (1)
+as input as if the string had been typed as a command
+at a terminal.
+The current process waits until the shell has
+completed, then returns the exit status of the shell.
+.SH "SEE ALSO"
+popen(3S),
+execve(2),
+wait(2)
+.SH DIAGNOSTICS
+Exit status 127 indicates the shell couldn't be executed.

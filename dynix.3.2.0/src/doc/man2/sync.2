@@ -1,0 +1,39 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: sync.2 1.5 90/02/07 $
+.TH SYNC 2 "\*(V)" "4BSD"
+.SH NAME
+sync \- update super-block
+.SH SYNOPSIS
+.B sync()
+.SH DESCRIPTION
+.I Sync
+causes all information in core
+memory that should be on disk to be written out.
+This includes modified super blocks,
+modified i-nodes, and delayed block I/O.
+.PP
+.I Sync
+should be used by programs which examine a file system,
+for example
+.I "fsck, df,"
+etc.
+.I Sync
+is mandatory before a boot.
+.SH "RETURN VALUE
+This system call always succeeds, returning 0.
+.SH "SEE ALSO"
+fsync(2), sync(8), update(8)
+.SH BUGS
+The writing, although scheduled, is not necessarily
+complete upon return from 
+.IR sync .

@@ -1,0 +1,35 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: symorder.1 1.6 87/05/26 $
+.TH SYMORDER 1 "\*(V)" "3BSD"
+.SH NAME
+symorder \- rearrange name list
+.SH SYNOPSIS
+.B symorder
+orderlist symbolfile
+.SH DESCRIPTION
+.I Orderlist
+is a file containing symbols to be found in symbolfile,
+1 symbol per line.
+.PP
+.I Symbolfile
+is updated to put the requested symbols first
+in the symbol table, in the order specified. 
+This is done by creating a module entry at the beginning of the 
+symbol table, followed by the definitions of the requested symbols.
+If all of the order symbols are not found, an
+error is generated.
+.PP
+This program was specifically designed to cut down on the
+overhead of getting symbols from /dynix.
+.SH "SEE ALSO"
+nlist(3)

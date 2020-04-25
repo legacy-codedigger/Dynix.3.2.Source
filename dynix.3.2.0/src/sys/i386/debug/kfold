@@ -1,0 +1,177 @@
+# $Copyright:	$
+# Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+# Sequent Computer Systems, Inc.   All rights reserved.
+#  
+# This software is furnished under a license and may be used
+# only in accordance with the terms of that license and with the
+# inclusion of the above copyright notice.   This software may not
+# be provided or otherwise made available to, or used by, any
+# other person.  No title to or ownership of the software is
+# hereby transferred.
+#
+#
+#	kfold - Takes modified kextract output, and puts it back into the
+#		kernel source.  If it cannont parse the kextract input, it
+#		skips the current file and goes to the next one.
+#
+#		Kfold's basic system is to begin reading the source file
+#		and outputing it to a new file.  Whenever a string from the
+#		kextract output is recognized, the new comment is output to
+#		the new file instead of the old comment.  So basically each
+#		new file is built, line by line.  This seems to be a rather
+#		safe way to make the updates.  Once we've determined that
+#		there were no errors, ccsedit and ccsput are called via
+#		system() to check in the new file.
+#
+#
+#		Flags:
+#		eofstat - have we reached the end of the current source file?
+#		first - Is this the first source file we've edited?
+#		error - Was there an error in updating the file?
+#
+#
+
+BEGIN {
+	eofstat = 1;
+	first = 1;
+	error = 0;
+	eof = 1;
+	ungot = 0;
+}
+
+END {
+	if (eof)
+		finishit(current)
+}
+
+#  Filenames begin with the string +++++ to identify them..
+#  Finish the last source file, and then start the new one.
+/^\+\+\+\+/ { 
+		if (!first) {
+			finishit(current)
+		}
+		while (eof && ((getline y <$2) < 0)) {
+			printf("Couldn't find file: %s\n",$2);
+			eof = getline;
+			while (eof && (index($1, "++++") == 0)) {
+				eof = getline;
+			}
+		}
+		if (eof) {
+			current = $2
+			printf("Updating %s\n",current);
+			newfile = sprintf("%s.new",$2)
+			print y >newfile;
+			first = 0
+			eofstat = 1;
+		}
+}
+
+# We've found a comment that we need to fix up.  Search for it in the
+# current source file, and try to replace it with the new comment.
+#
+/^.Eh/ { split($0,a,"\"");
+	matchit(sprintf("\"%s\"",a[4]),current)
+	if (eofstat <= 0) {
+		printf("An Error occured with file %s with Line %s\n", current, a[4])
+		printf("You will need to make the changes manually.\n")
+		printf("I will not touch the file\n")
+		error = 1
+	}
+
+}
+
+#  We found one of the comments, we need to expand it into the new file.
+/^[0-9]+\*\+/	{
+		expand($0, newfile);
+		}
+
+#
+#	function matchit - searches for the str within the current file,
+#	outputing each line that doesn't match to the newfile.
+#	Once it finds the string, it outputs lines until the start of
+#	the comment, and then returns to let the new comment be put in.
+#
+function matchit(str, file)
+{
+	while (getone(file) > 0) {
+		print x >newfile
+		if (index(x, str) != 0) {
+			while(getone(file) >0) {
+				if (index(x, "*+") == 0)
+					print x >newfile
+				else {
+					break
+				}
+			}
+			while((getone(file) > 0) && (index(x, "*+") != 0));
+			unget(x)
+			break
+		}
+	}
+}
+
+#
+#	function finishit - Once all the strings and comments have been
+#	done, the rest of the current file needs to be output to the
+#	newfile.  This takes care of it.
+#	Then, if there were no error's, it updates the file in ccs.
+#
+function finishit(file)
+{
+	while (getone(file) > 0)
+		print x >newfile
+	close(file)
+	close(newfile)
+	if (!error) {
+		if (system("cmp -s " file " " newfile)) {
+			system("/ccsbin/ccsedit " file)
+			system("mv " newfile " " file)
+			system("/ccsbin/ccsput -m \"Fixed cmn_err with kfold\" " file)
+		} else {
+			system("rm " newfile )
+		}
+	}
+	error = 0;
+	eofstat = 1;
+}
+
+#
+# function getone - gets a string from the file, checking to see if there's
+#	anything in the unget buffer.
+#
+function getone(file) 
+{
+#	if (eofstat < 0)
+#		return -1
+	if (ungot) {
+		x = ungotline
+		ungot = 0
+		return 1
+	}
+	return eofstat = (getline x <file)
+}
+
+#	makes it possible to store a line in case you read one to many.
+function unget(s)	{ ungotline = s; ungot = 1 }
+
+#
+# function expand - expands the indention number at the beginning of
+#	each comment into the appropriate tabs and spaces, and then
+#	outputs it to the file.
+#
+function expand(str, newfile)
+{
+		i = split(str, temp, "*");
+		while(temp[1] >= 8) {
+			printf("	") >newfile;
+			temp[1] -= 8;
+		}
+		while(temp[1] > 0) {
+			printf(" ") >newfile;
+			temp[1] -= 1;
+		}
+		for (j = 2; j <= i  ; j++)
+		printf("*%s",temp[j]) >newfile;
+		printf("\n") >newfile;
+}

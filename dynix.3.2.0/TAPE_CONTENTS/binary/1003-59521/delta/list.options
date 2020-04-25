@@ -1,0 +1,8 @@
+nfs	true	-
+base	false	-
+att	false	/usr/att
+doc	true	/usr/doc
+man	true	/usr/man/man
+games	true	/usr/games
+vfont	false	/usr/lib/vfont
+gnu	false	/usr/local/gnu

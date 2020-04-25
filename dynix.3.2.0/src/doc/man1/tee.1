@@ -1,0 +1,36 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: tee.1 1.4 86/05/13 $
+.TH TEE 1 "\*(V)" "7th Edition"
+.SH NAME
+tee \- pipe fitting
+.SH SYNOPSIS
+.B tee
+[
+.B \-i
+] [
+.B \-a
+]
+[ file ] ...
+.SH DESCRIPTION
+.I Tee
+transcribes the standard input to the standard
+output and makes copies in the 
+.I files.
+Option
+.B \-i
+ignores interrupts;
+option
+.B \-a
+causes the output to be appended to the
+.I files
+rather than overwriting them.

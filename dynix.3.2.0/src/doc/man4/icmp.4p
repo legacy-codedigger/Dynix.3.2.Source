@@ -1,0 +1,115 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: icmp.4p 1.5 87/05/26 $
+.\" @(#)icmp.4p 1.1 85/12/28 SMI; from UCB 4.2
+.TH ICMP 4P "\*(V)" "4BSD"
+.SH NAME
+icmp \- Internet Control Message Protocol
+.SH SYNOPSIS
+None; included automatically with
+.IR inet (4F).
+.SH DESCRIPTION
+.\".IX  "icmp device"  ""  "\f2icmp\fP \(em Internet Control Message Protocol"  ""  PAGE START
+.\".IX  Internet  "control message protocol icmp"  ""  "control message protocol \(em \f2icmp\fP"  PAGE START
+The Internet Control Message Protocol (ICMP) is used by
+gateways and destination hosts that process datagrams to communicate
+errors in datagram-processing to source hosts.
+The datagram level of Internet is discussed in
+.IR ip (4P).
+ICMP uses the basic support of IP as if it were a higher level protocol;
+however, ICMP is actually an integral part of IP.
+ICMP messages are sent in several situations, such as
+when a datagram cannot reach its destination,
+when the gateway does not have the buffering capacity to forward a datagram,
+and when the gateway can direct the host to send traffic on a shorter route.
+.LP
+The Internet protocol is not designed to be absolutely reliable.  The purpose
+of these control messages is to provide feedback about problems in the
+communication environment, not to make IP reliable.  There are still no
+guarantees that a datagram will be delivered or that a control message will
+be returned.  Some datagrams can  be undelivered without any
+report of their loss.  The higher level protocols that use IP must implement
+their own reliability mechanisms, if reliable communication is required.
+.LP
+The ICMP messages typically report errors in the processing of datagrams;
+for fragmented datagrams, ICMP messages are sent only about errors in
+handling fragment zero of the datagram.
+To avoid the infinite regression of messages about messages, no ICMP messages
+are sent about ICMP messages.  However, ICMP can be sent in response to
+ICMP messages (for example, ECHOREPLY).
+There are eleven types of ICMP packets that can be received by the system.
+They are defined in
+.RI < netinet/ip_icmp.h >,
+which also defines the values of some additional codes specifying
+the cause of certain errors.
+.if t .ta \w'ICMP_SOURCEQUENCH\0\0\0\0'u
+.if n .ta \w'ICMP_SOURCEQUENCH\0\0'u
+.Ps
+ICMP_ECHOREPLY	echo reply
+ICMP_UNREACH	dest unreachable, codes:
+.if t .ta \w'ICMP_'u +\w'ICMP_UNREACH_PROTOCOL\0\0\0\0'u
+.if n .ta \w'ICMP_'u +\w'ICMP_UNREACH_PROTOCOL\0\0'u
+	ICMP_UNREACH_NET	bad net
+	ICMP_UNREACH_HOST	bad host
+	ICMP_UNREACH_PROTOCOL	bad protocol
+	ICMP_UNREACH_PORT	bad port
+	ICMP_UNREACH_NEEDFRAG	IP_DF caused drop
+	ICMP_UNREACH_SRCFAIL	src route failed
+.if t .ta \w'ICMP_SOURCEQUENCH\0\0\0\0'u
+.if n .ta \w'ICMP_SOURCEQUENCH\0\0'u
+ICMP_SOURCEQUENCH	packet lost, slow down
+ICMP_REDIRECT	shorter route, codes:
+.if t .ta \w'ICMP_'u +\w'ICMP_UNREACH_PROTOCOL\0\0\0\0'u
+.if n .ta \w'ICMP_'u +\w'ICMP_UNREACH_PROTOCOL\0\0'u
+	ICMP_REDIRECT_NET	for network
+	ICMP_REDIRECT_HOST	for host
+	ICMP_REDIRECT_TOSNET	for tos and net
+	ICMP_REDIRECT_TOSHOST	for tos and host
+.if t .ta \w'ICMP_SOURCEQUENCH\0\0\0\0'u
+.if n .ta \w'ICMP_SOURCEQUENCH\0\0'u
+ICMP_ECHO	echo service
+ICMP_TIMXCEED	time exceeded, code:
+.if t .ta \w'ICMP_'u +\w'ICMP_UNREACH_PROTOCOL\0\0\0\0'u
+.if n .ta \w'ICMP_'u +\w'ICMP_UNREACH_PROTOCOL\0\0'u
+	ICMP_TIMXCEED_INTRANS	ttl==0 in transit
+	ICMP_TIMXCEED_REASS	ttl==0 in reass
+.if t .ta \w'ICMP_SOURCEQUENCH\0\0\0\0'u
+.if n .ta \w'ICMP_SOURCEQUENCH\0\0'u
+ICMP_PARAMPROB	ip header bad
+ICMP_TSTAMP	timestamp request
+ICMP_TSTAMPREPLY	timestamp reply
+ICMP_IREQ	information request
+ICMP_IREQREPLY	information reply
+.Pe
+Arriving ECHO and TSTAMP packets cause the system to generate
+ECHOREPLY and TSTAMPREPLY packets.  IREQ packets are not yet processed
+by the system, and are discarded.   UNREACH, SOURCEQUENCH, TIMXCEED and
+PARAMPROB packets are processed internally by the protocols implemented
+in the system, or reflected to the user if a raw socket is being used;
+see
+.IR ip (4P). 
+REDIRECT, ECHOREPLY, TSTAMPREPLY and IREQREPLY are also reflected
+to users of raw sockets.  In addition, REDIRECT messages cause the
+kernel routing tables to be updated; see
+.IR routing (4N).
+.SH "SEE ALSO"
+inet(4F), ip(4P)
+.br
+Internet Control Message Protocol, RFC792, J. Postel, USC-ISI
+.SH BUGS
+IREQ messages are not processed properly: the address fields
+are not set.
+.LP
+Messages that are source routed are not sent back using inverted source routes,
+but go back through the normal routing mechanisms.
+.\".IX  "icmp device"  ""  "\f2icmp\fP \(em Internet Control Message Protocol"  ""  PAGE END
+.\".IX  Internet  "control message protocol icmp"  ""  "control message protocol \(em \f2icmp\fP"  PAGE END

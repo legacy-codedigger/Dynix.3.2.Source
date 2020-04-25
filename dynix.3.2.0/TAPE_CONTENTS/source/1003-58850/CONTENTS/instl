@@ -1,0 +1,120 @@
+#! /bin/sh
+#
+# instl
+#
+# Shell script to install the software source distribution.
+# It updates /etc/versionlog to log installation of software. It also
+# checks to make sure that there is enough space in /usr/src prior
+# to installing the sources. Must be run as root.
+#
+# This file is the first tape file on distribution tape.
+# The second tape file is a tar image of tools, libraries and header files.
+# The third tape file is a tar image of Dynix utilities sources.
+# The fourth tape file is a tar image of System V Applications Environment.
+#
+PATH=:/bin:/usr/bin:/usr/ucb:/etc; export PATH
+
+if [ `whoami` != root ]; then
+	echo "Sorry, this script must be run as super-user to work properly."
+	exit 1
+fi
+
+if [ ! -d /usr/lost+found ]; then
+	echo "/usr filesystem is not mounted (or /usr/lost+found is missing)."
+	echo "Please mount /usr and try again."
+	exit 1
+fi
+
+if [ ! -d /usr/src ]; then
+	mkdir /usr/src
+fi
+
+SRCDIR=/usr/src/dynix
+if [ ! -d $SRCDIR ]; then
+	mkdir $SRCDIR
+fi
+
+echo -n 'Do you want Dynix utilities sources installed?[y/n]'
+read DYNIX
+
+if [ "$DYNIX" = "y" ] ;then
+	SIZEALL=`expr 12261 + 40947`
+else
+	SIZEALL=12261
+fi
+
+echo -n 'Do you want System V Applications Environment sources installed?[y/n]'
+read SYS5
+
+if [ "$SYS5" = "y" ] ;then
+	SIZEALL=`expr $SIZEALL + 11884`
+fi
+
+AVAIL=`df $SRCDIR | awk '/\/dev\//{print $4}'`
+if [ $AVAIL -lt $SIZEALL ]; then
+	echo "$SRCDIR has $AVAIL blocks available.  $SIZEALL are required."
+	echo "See tape instruction sheet."
+	exit 1
+fi
+
+CWD=`pwd`
+cd $SRCDIR
+echo "Installing mandatory tools, libraries and header files."
+(mt -f /dev/rts8 rew; mt -f /dev/rts8 fsf 1; tar xpf /dev/rts8) &
+CNT=1
+while ps | grep -s "^ *$! "; do
+	if [ $CNT -gt 79 ] ;then 
+		CNT=1
+		echo ""
+	fi
+	echo -n .
+	CNT=`expr $CNT + 1`
+	sleep 3
+done
+echo ""
+if [ "$DYNIX" = "y" ] ;then
+	echo "Installing Dynix utilities sources."
+	(tar xpf /dev/rts8) &
+	CNT=1
+	while ps | grep -s "^ *$! "; do
+		if [ $CNT -gt 79 ] ;then 
+			CNT=1
+			echo ""
+		fi
+		echo -n .
+		CNT=`expr $CNT + 1`
+		sleep 3
+	done
+	echo ""
+	echo "`/bin/date`  - DYNIX V3.2.0 Utilities Source Domestic Distribution PN: 1003-58850" >> /etc/versionlog
+else
+	mt -f /dev/rts8 rewind
+#	mt -f /dev/rts8 fsf 1
+fi
+if [ "$SYS5" = "y" ] ;then
+	echo "Remove first tape and insert second source tape."
+	echo -n Press Enter when ready :
+	read OK
+	mt -f /dev/rts8 rewind ; mt -f /dev/rts8 noret
+	echo "Installing System V Applications Environment sources."
+	(tar xpf /dev/rts8) &
+	CNT=1
+	while ps | grep -s "^ *$! "; do
+		if [ $CNT -gt 79 ] ;then 
+			CNT=1
+			echo ""
+		fi
+		echo -n .
+		CNT=`expr $CNT + 1`
+		sleep 3
+	done
+	echo ""
+	echo "`/bin/date`  - DYNIX V3.2.0 Utilities Source Domestic Distribution PN: 1003-58852" >> /etc/versionlog
+fi
+echo ""
+echo "DYNIX V3.2.0 Utilities Source Domestic Distribution installed."
+echo "Rewinding tape..."
+mt -f /dev/rts8 rew
+echo "Done."
+cd $CWD
+rm instl

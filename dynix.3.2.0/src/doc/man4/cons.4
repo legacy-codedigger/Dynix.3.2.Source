@@ -1,0 +1,171 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: cons.4 1.18 1991/08/06 22:48:04 $
+.TH CONS 4 "\*(V)" "DYNIX"
+.SH NAME
+cons \- Sequent console interface
+.SH SYNOPSIS
+.B "device co0 at sec? doneq 10 req 10 bin 4 unit 0 # input"
+.br
+.B "device co0 at sec? doneq 10 req 10 bin 4 unit 1 # output"
+.sp
+.B "device sc0 at ssm? bin 4 unit 0 # local"
+.br
+.B "device sc1 at ssm? bin 4 unit 1 # remote"
+.SH DESCRIPTION
+The Sequent console interface
+provides access to the system console through
+a Sequent SCSI/Ethernet/Diagnostics (SCED) Board or Sequent
+System Services Module (SSM), depending on which board has taken
+control of the system during boot.  (If an SSM is present in a system,
+it will provide the console interface, even though a SCED board may
+also be present in the system.  If no SSM is present, the SCED board
+will provide the console interface.)
+.PP
+The
+.B co
+driver provides the SCED console interface functionality.  Similarly,
+the
+.B sc
+driver provides the SSM console interface functionality.
+.PP
+When DYNIX is running, the interface behaves like a normal DYNIX
+terminal; see
+.IR tty (4).
+Two terminal lines are available per SCED or SSM.
+All standard baud rates are supported on each of these lines.
+The hardware signals DTR and RTS are enabled on open of the
+lines and disabled on close.
+These signals may be changed via ioctl calls to the device driver
+and are used when flow control is enabled.
+Break character detection and generation is also supported.
+.PP
+An additional special file named 
+.I /dev/console 
+tracks the line selected by the monitor firmware as the console device.
+The line selected as console can be accessed from either the file
+.I /dev/console
+or the corresponding
+.I /dev/ttyc[0-7]
+or
+.I /dev/ttyb[0-7]
+name.
+Thus, there are two names for that terminal line.
+.PP
+A SCED console line selected as console gets default erase, kill, and interrupt
+characters from the monitor firmware settings for that line.
+In addition, if
+the SCED monitor firmware flags specify that break characters cause a
+return to monitor firmware, a break on the console line will cause an
+immediate return to firmware.
+Otherwise, the break character is interpreted according to
+.IR tty(4).
+.PP
+Other than these exceptions, the console works like any other DYNIX terminal.
+.SH DIAGNOSTICS
+SCED console diagnostic messages:
+.sp
+.B "se%d: console device not binary configured. "
+If a console device was not specified in the
+.I conf/conf_co.c 
+file, this message appears at boot time.
+.PP
+.B "co: stray interrupt, unit out of range %x. "
+An interrupt was received on a unit which was not configured.
+The interrupt is ignored.
+.PP
+.B "co: stray interrupt, dead unit %x. "
+An interrupt was received on a unit which was
+previously determined to be not functional.
+The interrupt is ignored.
+.sp
+SSM console diagnostic messages:
+.sp
+.B "sc:%d stray interrupt, unit out of range. "
+An interrupt was received on a unit that was not configured.
+The interrupt is ignored.
+.PP
+.B "sc%d: stray interrupt, dead unit. "
+An interrupt was received on a unit that was
+previously determined to be nonfunctional.
+The interrupt is ignored.
+.PP
+.B "sc%d: spurious interrupt received. "
+An interrupt was received from a unit for an SSM transfer that had not
+yet completed.  The interrupt is ignored and the transfer
+is allowed to complete.
+.PP
+.B "sc: no memory for state info pointers." 
+An attempt to allocate memory for the driver failed.
+.PP
+.B "sc: no memory for info structure. " 
+An attempt to allocate memory for the driver failed.
+.PP
+.B "sc: no memory for tty structure. " 
+An attempt to allocate memory for the driver failed.
+.PP
+.B "sc: Warning!  No /dev/console configured. " 
+No SSM console port was found that was designated as
+.I /dev/console. 
+.SH "MINOR NUMBERS"
+Minor numbers for device nodes corresponding to console lines
+are selected as follows:
+.RS
+.sp
+.nf
+.ta +\w'/dev/console  'u +\w'minor number  'u
+\f3device	minor number	location\fP
+/dev/ttyc0	0	SCED Board 0, local port
+/dev/ttyc1	1	SCED Board 0, remote port
+/dev/ttyc2	2	SCED Board 1, local port
+/dev/ttyc3	3	SCED Board 1, remote port
+/dev/ttyc4	4	SCED Board 2, local port
+/dev/ttyc5	5	SCED Board 2, remote port
+/dev/ttyc6	6	SCED Board 3, local port
+/dev/ttyc7	7	SCED Board 3, remote port
+
+/dev/ttyb0	0	SSM Board 0, local port
+/dev/ttyb1	1	SSM Board 0, remote port
+/dev/ttyb2	2	SSM Board 1, local port
+/dev/ttyb3	3	SSM Board 1, remote port
+/dev/ttyb4	4	SSM Board 2, local port
+/dev/ttyb5	5	SSM Board 2, remote port
+/dev/ttyb6	6	SSM Board 3, local port
+/dev/ttyb7	7	SSM Board 3, remote port
+/dev/console	64	(current console)
+.fi
+.RE
+.SH FILES
+/dev/console
+.br
+/dev/ttyc[0-7]
+.br
+/dev/ttyb[0-7]
+.br
+/sys/conf/conf_co.c
+.br
+/sys/conf/conf_sc.c
+.SH "SEE ALSO"
+tty(4) 
+.SH BUGS
+SCED modem control does not work properly.
+DTR and RTS always reflect the monitor firmware flags on a SCED-based
+system.
+.PP
+The SCED transmit break ioctl function does not work.
+.PP
+There are some SCED flow control problems.
+Data can be lost on transmit to another host because
+the local machine does not respond to flow control properly.
+.PP
+The SCED monitor firmware erase, kill, interrupt characters are not
+inherited when returning to single user operation from multiuser operation.

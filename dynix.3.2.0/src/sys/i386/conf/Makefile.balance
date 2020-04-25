@@ -1,0 +1,152 @@
+# $Copyright: $
+# Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+# Sequent Computer Systems, Inc.   All rights reserved.
+#  
+# This software is furnished under a license and may be used
+# only in accordance with the terms of that license and with the
+# inclusion of the above copyright notice.   This software may not
+# be provided or otherwise made available to, or used by, any
+# other person.  No title to or ownership of the software is
+# hereby transferred.
+
+# $Header: Makefile.balance 2.28 1991/04/25 21:52:24 $
+#
+# Makefile for Sequent Dynix kernel
+#
+# This makefile is constructed from a machine description:
+#	config -src machine
+# Most changes should be made in the machine description
+#	sys/conf/``machineid''
+# after which you should do
+#	config -src machineid
+#	cd ../machineid
+#	ccsmake depend 
+#	cssmake -f Makefile -f depend all
+#
+CPUDEF= -Uvax -Uns32000 -Di386
+SEDCMD= sed -f ../machine/asm.sed
+MIPCOPTS=-I. -I../h ${INCLUDE} ${IDENT} -DKERNEL
+COPTS=	 -W0,-Nn5000 ${MIPCOPTS}
+CPPOPTS= ${MIPCOPTS}
+CFLAGS=	 -O ${COPTS}
+CAFLAGS=
+SAFLAGS=
+LDFLAGS=-T 4000
+DEBUGLIBS= crash.o
+KLINT=/usr/local/bin/nawk -f ../debug/klint		# not part of product
+KEXTRACT=/usr/local/bin/nawk -f ../debug/kextract	# not part of product
+KFOLD=/usr/local/bin/nawk -f ../debug/kfold		# not part of product
+
+%SRCOBJS
+
+%OBJS
+
+%CFILES
+
+%SFILES
+
+%IOCHF
+
+%LOAD
+
+# depend:
+#	Generates list of #include dependencies, also including nested
+#	#includes.
+#
+depend: compiler_check
+	-${CC} -M ${COPTS} ${CFILES} \
+		../conf/param.c ../machine/genassym.c ../debug/crash.c | \
+	sed -e 's; \.\/\.\.; ..;' \
+	    -e 's; \..*\/h\/; ../h/;' \
+	    -e 's; \..*\/machine\/; ../machine/;' \
+	    -e 's; \..*\/net\/; ../net/;' \
+	    -e 's; \..*\/netinet\/; ../netinet/;' \
+	    -e 's; ${HDRS}\(/[^ ]\); $${HDRS}\1;' \
+	    -e 's; ${ROOT}\(/[^ ]\); $${ROOT}\1;' | \
+	awk ' { if ($$1 != prev) { print rec; rec = $$0; prev = $$1; } \
+		else { if (length(rec $$2) > 78) { print rec; rec = $$0; } \
+		       else rec = rec " " $$2 } } \
+	      END { print rec } ' > Depend
+	mv Depend depend
+
+compiler_check:
+	@if ${CC} ${CFLAGS} -V >/dev/null 2>&1; then \
+		echo "Error: Cannot use ATS C compiler to build Dynix."; \
+		echo "       See ATS C release notes for more information."; \
+		exit 1; \
+	else exit 0;\
+	fi;
+lint:
+	@${LINT} -hbxn ${CPUDEF} ${MIPCOPTS} ${PARAM} ${CFILES} \
+		../machine/lintasm.c ../conf/param.c conf.c ioconf.c \
+		| sed -f ../debug/lint.sed
+
+klint:
+	@${KLINT} ${CFILES}
+
+kextract:
+	@${KEXTRACT} ${CFILES}
+
+kfold:
+	@${KFOLD} ${CFILES}
+
+klint.base:	
+	@${KLINT} `echo ${CFILES}|sed -e 's/ ..\/net[^ ]*/ /g' \
+				      -e 's/ ..\/nfs[^ ]*/ /g' \
+				      -e 's/ ..\/rpc[^ ]*/ /g' \
+				      -e 's/ ..\/..\/common\/net[^ ]*/ /g' `
+				       
+clean:
+	rm -f assym.h genassym genassym.x refs tags vers.c version *.o depend Depend
+
+symbols.sort: Makefile ../conf/symbols.raw
+	${CPP} ${IDENT} ${CPUDEF} ../conf/symbols.raw | \
+		sed -e '/^#/d' -e '/^[ 	]*$$/d' | sort -u > symbols.sort
+
+ioconf.o: ioconf.c ../h/param.h ../h/mutex.h ../h/systm.h ../machine/ioconf.h ${IOCHF}
+	${CC} -c ${CFLAGS} ioconf.c
+
+conf.o:	conf.c ../h/param.h ../h/systm.h ../h/mutex.h ../h/buf.h ../h/tty.h ../h/conf.h
+	${CC} -c ${CFLAGS} conf.c
+
+param.c: ../conf/param.c
+	rm -f param.c; cp ../conf/param.c .
+
+param.o: param.c Makefile
+	${CC} -c ${CFLAGS} ${PARAM} param.c
+
+crash.c: ../debug/crash.c
+	rm -f crash.c; cp ../debug/crash.c .
+
+crash.o: crash.c Makefile
+	${CC} -c -g ${COPTS} ${PARAM} crash.c
+
+# genassym is dependent on ${PARAM} thus Makefile
+# Also genassym is in "depend" file.
+genassym:	../machine/genassym.c Makefile
+	/bin/cc ${MIPCOPTS} ${PARAM} ${CPUDEF} -o genassym ../machine/genassym.c
+genassym.x:	../machine/genassym.c Makefile
+	${CC} -SO ${MIPCOPTS} ${PARAM} ${CPUDEF} ../machine/genassym.c | \
+	${AS} -o genassym.x.o && ${CC} -o genassym.x genassym.x.o; \
+	rm -f genassym.x.o
+
+assym.h:&	genassym genassym.x
+	rm -f assym.h
+	./genassym > assym.h
+
+vers.c:
+	sh ../conf/newvers.sh
+	${CC} ${CFLAGS} -c vers.c
+
+
+# Binary kernel support (via libraries)
+binarylibs:	OBJSlib.a
+
+OBJSlib.a:	${OBJS} swapgeneric.o crash.o
+	@echo '	Fixing modes, groups, and owners on *.o'
+	@chmod    644 $?
+	@-chgrp daemon $? > /dev/null 2>&1
+	@-chown  root $? > /dev/null 2>&1
+	${AR} rv OBJSlib.a $?
+
+%RULES

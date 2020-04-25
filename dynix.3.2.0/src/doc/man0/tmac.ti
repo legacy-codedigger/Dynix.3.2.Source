@@ -1,0 +1,104 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+. \" Title Page macros
+.fp 1 LR
+.fp 2 LI
+.fp 3 LB
+. \" 4 = S, 5 = TT
+.fp 6 HR
+.fp 7 HI
+.fp 8 HB
+.nh
+.ad l
+.po 1i
+.nf
+. \" initial configuration now set
+. \" Set font, point size, distance from top of page, indent, line length.
+.de eV
+.ft \\$1
+.ps \\$2
+.vs \\$2+2
+.if !'\\$3'' .sp |\\$3-1v+1m
+.in \\$4
+.ll \\$5
+..
+. \" TM (trademark) symbol
+.ds Tm \v'-.6m'\s8\f1TM\fP\s0\v'+.6m'
+. \" Macro to begin title block:
+.de Ti
+.ds pS 20
+.if !'\\$1'' .ds pS \\$1
+.\" ft    ps     sp    in     ll
+.eV 8 \\*(pS 2.675i 1.75i 6.375i
+..
+. \" Macro for Marketing order number and date:
+.de Da
+.eV 8 12 4.5i 1.75i 6.375i
+\&\\$1\ \ \ \ \ \ \\$2
+..
+. \" Macro for software version numbers:
+.de Vs
+.eV 1 10 "" 1.75i 6.375i
+.sp
+\&\\$1
+.in +1m
+..
+. \" Macro for type of document:
+.de Dr
+.if '\\$1'D' .dD
+.if '\\$1'P' .dP
+.if '\\$1'I' .dI
+..
+.de dD \" REVIEW DRAFT
+.eV 6 18 7.0i 1.75i 6.375i
+REVIEW DRAFT
+.eV 6 12 "" 1.75i 6.375i
+.sp
+Information in this document is for reference only,
+and is subject to change without notice.
+..
+.de dP \" PRELIMINARY (pre-FCS)
+.eV 6 18 7.0i 1.75i 6.375i
+PRELIMINARY
+.eV 6 12 "" 1.75i 6.375i
+.sp
+Information in this document is for reference only,
+and is subject to change without notice.
+.sp 3
+.eV 8 12 "" 1.75i 6.375i
+THIS DOCUMENT IS SUPPLIED FOR PRODUCT
+EVALUATION AND TEST PURPOSES ONLY.
+..
+.de dI \" PRELIMINARY (post-FCS)
+.eV 6 18 7.0i 1.75i 6.375i
+PRELIMINARY
+.eV 6 12 "" 1.75i 6.375i
+.sp
+Portions of this document are complete; other
+portions are still under development.
+..
+. \" Macro for COMPANY CONFIDENTIAL message.
+.de Cc
+.eV 8 18 9.5i 0 7.5i
+.ce 1
+SEQUENT COMPANY CONFIDENTIAL
+..
+. \" Macro for marketing order number: OBSOLETE AS OF 3/22/85
+.de Mo
+.eV 6 10 10.25i 0 7.5i
+\&\\$1
+..
+.\" Macro for part number and rev letter
+.de Pn
+.eV 6 10 10.25i 0 7.5i
+\&\\$1\ Rev.\ \\$2
+..

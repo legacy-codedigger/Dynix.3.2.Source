@@ -1,0 +1,23 @@
+This software is in the PUBLIC DOMAIN.	It is a completely rewritten
+version of code first made available by the University of California at
+Berkeley.  Berkeley considered this a transition aid to help convert
+programs to use the new 4.2BSD directory structure (255-character file
+names, etc.).  It is more generally useful than that, however, as UNIX
+has long lacked a sensible interface for dealing with directories.
+This implementation is provided as a public service to help UNIX sites
+produce more portable source code, since this interface can now be made
+available on all UNIX systems, not just those from Berkeley.
+
+Please do not change the interface, as that defeats the whole purpose
+of this package!
+
+This implementation is provided by:
+
+	Douglas A. Gwyn
+	U.S. Army Ballistic Research Laboratory
+	AMXBR-VLD-V
+	Aberdeen Proving Ground, MD 21005-5066
+
+	(301)278-6647
+
+	gwyn@brl.arpa or decvax!brl-bmd!gwyn

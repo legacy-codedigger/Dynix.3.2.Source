@@ -1,0 +1,31 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: sum.1 1.4 86/05/13 $
+.TH SUM 1 "\*(V)" "7th Edition"
+.SH NAME
+sum \- sum and count blocks in a file
+.SH SYNOPSIS
+.B sum
+file
+.SH DESCRIPTION
+.I Sum
+calculates and prints a 16-bit checksum for the named file,
+and also prints the number of blocks in the file.
+It is typically used to look for bad spots, or
+to validate a file communicated over
+some transmission line.
+.SH "SEE ALSO"
+wc(1)
+.SH DIAGNOSTICS
+`Read error'
+is indistinguishable from end of file on
+most devices; check the block count.

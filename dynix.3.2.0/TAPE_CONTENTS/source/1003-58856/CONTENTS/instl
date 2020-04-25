@@ -1,0 +1,63 @@
+#! /bin/sh
+#
+# instl
+#
+# Shell script to install the software source distribution.
+# It updates /etc/versionlog to log installation of software. It also
+# checks to make sure that there is enough space in /usr/src prior
+# to installing the sources. Must be run as root.
+#
+# This file should be the first tape file on distribution tape.
+# Remaining files on the tape should be tar format source files.
+#
+PATH=:/bin:/usr/bin:/usr/ucb:/etc; export PATH
+
+if [ `whoami` != root ]; then
+	echo "Sorry, this script must be run as super-user to work properly."
+	exit 1
+fi
+
+if [ ! -d /usr/lost+found ]; then
+	echo "/usr filesystem is not mounted (or /usr/lost+found is missing)."
+	echo "Please mount /usr and try again."
+	exit 1
+fi
+
+if [ ! -d /usr/src ]; then
+	mkdir /usr/src
+fi
+
+SRCDIR=/usr/src/dynix
+if [ ! -d $SRCDIR ]; then
+	mkdir $SRCDIR
+fi
+
+AVAIL=`df $SRCDIR | awk '/\/dev\//{print $4}'`
+if [ $AVAIL -lt 5040 ]; then
+	echo "$SRCDIR has $AVAIL blocks available.  5040 are required."
+	echo "See tape instruction sheet."
+	exit 1
+fi
+
+CWD=`pwd`
+cd $SRCDIR
+echo "Installing DYNIX V3.2.0 NFS Kernel Source Distribution..."
+(mt -f /dev/rts8 rew; mt -f /dev/rts8 fsf 1; tar xpf /dev/rts8) &
+CNT=1
+while ps | grep -s "^ *$! "; do
+	if [ $CNT -gt 79 ] ;then 
+		CNT=1
+		echo ""
+	fi
+	echo -n .
+	CNT=`expr $CNT + 1`
+	sleep 3
+done
+echo "`/bin/date`  - DYNIX V3.2.0 NFS Kernel Source Distribution PN: 1003-58856" >> /etc/versionlog
+echo ""
+echo "DYNIX V3.2.0 NFS Kernel Source Distribution installed."
+echo "Rewinding tape..."
+mt -f /dev/rts8 rew
+echo "Done."
+cd $CWD
+rm instl

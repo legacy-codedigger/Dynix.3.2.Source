@@ -1,0 +1,84 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: pipe.2 1.9 86/05/13 $
+.TH PIPE 2 "\*(V)" "4BSD"
+.SH NAME
+pipe \- create an interprocess communication channel
+.SH SYNOPSIS
+.nf
+.ft 3
+pipe(fildes)
+int fildes[2];
+.fi
+.ft 1
+.SH DESCRIPTION
+The
+.I pipe
+system call
+creates an I/O mechanism called a pipe.
+The file descriptors returned can
+be used in read and write operations.
+When the pipe is written using the descriptor
+.IR fildes [1]
+up to 4096 bytes of data are buffered
+before the writing process is suspended.
+A read using the descriptor
+.IR fildes [0]
+will pick up the data.
+.PP
+It is assumed that after the
+pipe has been set up,
+two (or more)
+cooperating processes
+(created by subsequent
+.I fork
+calls)
+will pass data through the
+pipe with
+.I read
+and
+.I write
+calls.
+.PP
+The shell has a syntax
+to set up a linear array of processes
+connected by pipes.
+.PP
+Read calls on an empty
+pipe (no buffered data) with only one end
+(all write file descriptors closed)
+returns an end-of-file.
+.PP
+A signal is generated if a write on a pipe with only one end is attempted.
+.SH "RETURN VALUE
+The function value zero is returned if the
+pipe was created; \-1 if an error occurred.
+.SH ERRORS
+The \f2pipe\fP call will fail if:
+.TP 15
+[EMFILE]
+Too many descriptors are active.
+.TP 15
+[EFAULT]
+The \f2fildes\fP buffer is in an invalid area of the process's address
+space.
+.TP 15
+[ENOBUFS]
+There are not enough buffers currently available to create a new pipe.
+.TP 15
+[ENFILE]
+The file system table is full.
+.SH "SEE ALSO"
+sh(1), read(2), write(2), fork(2), socketpair(2)
+.SH BUGS
+Should more than 4096 bytes be necessary in any
+pipe among a loop of processes, deadlock will occur.

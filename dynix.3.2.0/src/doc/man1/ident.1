@@ -1,0 +1,77 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: ident.1 1.4 1991/06/12 01:29:07 $
+.TH IDENT 1 "\*(V)" "Purdue University"
+.SH NAME
+ident \- identify files
+.SH SYNOPSIS
+.B ident
+file ... 
+.SH DESCRIPTION
+.I Ident
+searches the named files for all occurrences of the pattern
+\f2$keyword:...$\f1, where \f2keyword\f1 is one of
+.nf
+
+        Author
+        Date
+        Header
+        Locker
+        Log
+        Revision
+        Source
+        State
+
+.fi
+These patterns are normally inserted automatically by the RCS command \f2co (1)\f1,
+but can also be inserted manually.
+.PP
+\f2Ident\f1 works on text files as well as object files.
+For example, if the C program in file f.c contains
+.nf
+
+        char rcsid[] = "$\&Header:  Header information $";
+
+.fi
+and f.c is compiled into f.o, then the command
+.nf
+
+        ident  f.c  f.o
+
+will print
+
+        f.c:
+                $\&Header:  Header information $
+        f.o:
+                $\&Header:  Header information $
+
+.SH IDENTIFICATION
+.de VL
+\\$2
+..
+Author: Walter F. Tichy,
+Purdue University, West Lafayette, IN, 47907.
+.sp 0
+Revision Number:
+.VL $\&Revision: 3.0 $
+; Release Date:
+.VL $\&Date: 82/12/04 12:09:59 $
+\&.
+.sp 0
+Copyright 1982 by Walter F. Tichy.
+.SH SEE ALSO
+ci (1), co (1), rcs (1), rcsdiff(1), rcsintro (1), rcsmerge (1), rlog (1), rcsfile (5).
+.sp 0
+Walter F. Tichy, "Design, Implementation, and Evaluation of a Revision Control
+System," in \f2Proceedings of the 6th International Conference on Software
+Engineering\f1, IEEE, Tokyo, Sept. 1982.
+.SH BUGS

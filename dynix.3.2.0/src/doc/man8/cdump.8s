@@ -1,0 +1,186 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: cdump.8s 1.2 1991/07/08 17:05:38 $
+.TH CDUMP 8S "\*(V)" "DYNIX"
+.SH NAME
+cdump \- standalone compress memory dumper
+.SH SYNOPSIS
+.BR "From the powerup monitor" :
+.br
+.sp
+.IR "on SCED-based systems" :
+.br
+*
+.B b 80
+.IR dv ( un , su )\c
+.B stand/cdump
+.I dumpdev offset dynixname
+[
+.I size
+] [
+.B \-o
+]
+.PP
+or
+.sp
+*
+.B b 80
+.IR dv ( un , su )\c
+.B stand/cdump
+.B \-f
+.I dumplist dynixname
+[
+.B \-o
+]
+.br
+.sp
+.IR "on SSM-based systems" :
+.br
+--->
+.B bh '88\c
+.IR dv ( un , su )\c
+.B stand/cdump
+.I dumpdev offset dynixname
+[
+.I size
+] [
+.B \-o
+]'
+.PP
+or
+.sp
+--->
+.B bh '88\c
+.IR dv ( un , su )\c
+.B stand/cdump
+.B \-f
+.I dumplist dynixname
+[
+.B \-o
+]'
+.SH DESCRIPTION
+.I Cdump
+dumps a compressed  image of memory. The compressed image is of a form
+which is readable by crash(8) "on-the-fly".
+.I Cdump
+writes the compressed image at 
+.I offset
+blocks (specified as a decimal integer) past the beginning of device
+.I dumpdev
+(specified in standalone file notation; see
+.IR boot (8S)).
+.I Dynixname
+should be the name of the same device as
+.I dumpdev
+expressed as a DYNIX file (usually beginning with
+.IR /dev/ ).
+.PP
+The
+.B \-f
+flag allows multiple dump devices to be specified.
+The
+.I dumplist
+file name must be specified in standalone notation, and
+.I dynixname
+should be the DYNIX equivalent of the standalone filename
+.IR dumplist .
+Each line in the
+.I dumplist
+file has the format:
+.RS
+.sp 1
+.I dumpdev offset dynixname
+[
+.I size
+]
+.sp 1
+.RE
+Each line of the file describes where a section of the dump will
+placed.
+.PP
+By default, all of memory is dumped, up to the size of the
+disk partition of a VTOC disk, or 16 Mbytes for a compatability disk,
+minus the
+.IR offset .
+Other memory sizes (smaller or larger) may be specified with the
+.I size
+parameter, measured in 512-byte sectors (as a decimal integer). The value of
+.I size
+is rounded down to the nearest mutiple of 32 Kbytes.
+If the disk has a VTOC, the size of the disk partition will be used as a
+limit on the value of
+.I size.
+Dump sizes are treated as the space available on a device, for the compressed
+image, and not as the amount of memory to be saved on that device.
+.
+.PP
+.I Cdump
+normally aborts if an attempt is made to overwrite an existing dump.
+If
+.B \-o
+is specified,
+.I cdump
+will proceed with the dump even if a previous dump has not been cleared.
+.PP
+The
+.B wn1
+powerup monitor command,
+or the
+.B n1=
+option of the
+.IR bootflags (8)
+command,
+can be used to store a permanent dump invocation,
+so that DYNIX can automatically generate dumps.
+The standard
+.I /etc/rc.local
+already invokes
+.IR bootflags
+to do this.
+A typical invocation of cdump looks like:
+.sp 1
+.RS
+b 80 sd(0,0)stand/cdump sd(0,1) 1000 /dev/sd0b
+.sp
+or
+.sp
+bh '88wd(0,0)stand/cdump wd(0,1) 1000 /dev/wd0b'
+
+.RE
+.PP
+A typical use of cdump specifying multiple dump partitions looks like:
+.sp 1
+.RS
+b 80 sd(0,0)stand/cdump -f sd(0,0)etc/DUMPLIST /etc/DUMPLIST
+.RE
+.sp 1
+An example of /etc/DUMPLIST looks like:
+.sp 1
+.RS
+sd(0,1) 1000 /dev/sd0b 33440
+.br
+sd(8,1)    0 /dev/sd1b 33440
+.br
+zd(0,1)    0 /dev/zd0b 67716
+.RE
+.PP
+.I Note:
+An equivalent compressed image of the memory can also be obtained by
+taking a regular dump (Using dump), and then invoking savecore with the 
+"-C" option. This is normally a faster method because savecore does
+compression in parallel. Cdump is slower but requires less swap space. 
+.sp 1
+.RE
+.SH "SEE ALSO"
+boot(8S),
+savecore(8),
+.I "DYNIX System Administration Guide"

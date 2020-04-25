@@ -1,0 +1,5 @@
+This directory is the location where the following files are made:
+	pc0	      -- First pass (or front-end) of the Pascal compiler.
+	pc3.1strings  -- String table for the first pass (pc0).
+
+Most of the source code for pc0 is contained in the directory ../src.

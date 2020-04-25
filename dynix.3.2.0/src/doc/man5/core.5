@@ -1,0 +1,64 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: core.5 1.7 91/04/01 $
+.TH CORE 5 "\*(V)" "7th Edition"
+.SH NAME
+core \- format of memory image file
+.SH SYNOPSIS
+.B #include <machine/param.h>
+.SH DESCRIPTION
+The UNIX System writes out a memory image of a terminated
+process when any of various errors occur.  See
+.IR sigvec (2)
+for the list of reasons; the most common are memory violations, illegal
+instructions, bus errors, and user-generated quit signals.
+The memory image is called `core' and is written in the process's
+working directory (provided it can be; normal access controls apply).
+.PP
+When a process dumps core, a message in the form
+.I dump_reason:
+.B core dumped
+is generated.
+.PP
+The maximum size of a
+.I core
+file is limited by
+.IR setrlimit (2).
+Files which would be larger than the limit are not created.
+.PP
+The core file consists of the
+.I u.
+area, whose size (in pages) is
+defined by the UPAGES manifest in the
+.RI < machine/param.h >
+file.  The 
+.I u.
+area starts with a 
+.I user
+structure as given in
+.RI < sys/user.h >.
+The remainder of the core file consists first of the data pages and then
+the stack pages of the process image.
+The amount of data and text space image in the core file is
+given (in pages) by the variable
+.I u_dsize
+in the
+.I u.
+area.
+The amount of stack image in the core file is given (in pages) by the
+variable 
+.I u_ssize
+in the 
+.I u.
+area.
+.SH "SEE ALSO"
+dbx(1), ddt(1), sigvec(2), setrlimit(2)

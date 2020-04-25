@@ -1,0 +1,44 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: ranlib.1 1.4 86/05/13 $
+.TH RANLIB 1 "\*(V)" "7th Edition"
+.SH NAME
+ranlib \- convert archives to random libraries
+.SH SYNOPSIS
+.B ranlib
+archive ...
+.SH DESCRIPTION
+.I Ranlib
+converts each
+.I archive
+to a form which the loader can load more rapidly.
+.I Ranlib
+does this by adding a table of contents called 
+.B _.SYMDEF
+to the beginning of the archive.
+.I Ranlib
+uses 
+.IR ar (1)
+to reconstruct the archive, so that sufficient temporary file space must
+be available in the file system which contains the current directory.
+.SH "SEE ALSO"
+ld(1), ar(1), lorder(1)
+.SH BUGS
+Because generation of a library by
+.I ar
+and randomization of the library by
+.I ranlib
+are separate processes, phase errors are possible.  The loader,
+.IR ld ,
+warns when the modification date of a library is more recent than the
+creation date of its dictionary;  but this means that you get the
+warning even if you only copy the library.

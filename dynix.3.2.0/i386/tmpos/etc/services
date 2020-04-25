@@ -1,0 +1,58 @@
+#
+# Network services, Internet style
+# This file is never consulted when the yellow pages are running
+#
+echo		7/udp
+echo		7/tcp
+discard		9/udp		sink null
+discard		9/tcp		sink null
+systat		11/tcp
+daytime		13/udp
+daytime		13/tcp
+netstat		15/tcp
+chargen		19/udp
+chargen		19/tcp
+ftp		21/tcp
+telnet		23/tcp
+smtp		25/tcp		mail
+time		37/udp		timserver
+time		37/tcp		timserver
+name		42/tcp		nameserver
+whois		43/tcp		nicname
+domain		53/udp
+domain		53/tcp
+mtp		57/tcp				# deprecated
+hostnames	101/tcp		hostname
+sunrpc		111/udp
+sunrpc		111/tcp
+#
+# Host specific functions
+#
+bootps		67/udp				# bootp server
+bootpc		68/udp				# bootp client
+tftp		69/udp
+rje		77/tcp
+finger		79/tcp
+link		87/tcp		ttylink
+supdup		95/tcp
+uucp		540/tcp		uucpd		# uucp daemon
+ingreslock	1524/tcp
+#
+# UNIX specific services
+#
+exec		512/tcp
+login		513/tcp
+shell		514/tcp		cmd		# no passwords used
+printer		515/tcp		spooler		# experimental
+efs		520/tcp
+courier		530/tcp		rpc		# experimental
+biff		512/udp		comsat
+who		513/udp		whod
+syslog		514/udp
+talk		517/udp
+ntalk		518/udp
+route		520/udp		router routed	# 521 also
+timed           525/udp		timeserver
+new-rwho	550/udp		new-who		# experimental
+rmonitor	560/udp		rmonitord	# experimental
+monitor		561/udp				# experimental

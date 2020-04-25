@@ -1,0 +1,97 @@
+.\" $Copyright: $
+.\"Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\"Sequent Computer Systems, Inc.   All rights reserved.
+.\" 
+.\"This software is furnished under a license and may be used
+.\"only in accordance with the terms of that license and with the
+.\"inclusion of the above copyright notice.   This software may not
+.\"be provided or otherwise made available to, or used by, any
+.\"other person.  No title to or ownership of the software is
+.\"hereby transferred.
+...
+.V= $Header: crash.8 1.1 1991/06/21 00:53:58 $
+.TH CRASH 8 "\*(V)" "4BSD/DYNIX" 
+.SH NAME
+crash \- examine system images
+.SH SYNOPSIS
+.B "/etc/crash [system_image] [system_namelist]"
+.SH DESCRIPTION
+.B crash
+is used to examine system memory images
+interactively.  It can be run on-line against
+.I /dynix
+and
+.I /dev/kmem.
+It may also be run against a
+.I savecore
+of a crashed system.  It can read both
+.I vmcore
+and the compressed
+.I vmcore.ZZ
+formats of core image "on-the-fly".
+The
+.B help
+command lists available commands.
+.PP
+.B help
+lists the following commands:
+.PP
+.TS
+tab(:);
+c l c
+c c c
+l l l.
+\f3Name:Long Name:Description
+       :or Option\f1
+
+(D):Debug:change debug settings
+(dis):disassemble:disassemble addr count
+(hdr):bufhdr:buffer headers
+(dp):dp:dump physical
+     ::\0i.e., dp addr [\f2count\f1] [\f3dhoxDHOXcs\f1]
+(dv):dv:dump virtual
+     ::\0i.e., dv addr [\f2count\f1] [\f3dhoxDHOXcs\f1]
+(file):file:file table
+(inode):inode:inode table
+(kfp):kfp:frame pointer for kernel stack
+::  trace start
+(every):every:repeat periodically
+(ex):expr:evaluate expressions
+(e):engine:display engine tables
+(map):map:display resources maps
+(N):News:news and features
+(p):proc:process table (one per line)
+            :\0\f3\-l\f1:process table (long listing)
+            :\0\f3\-r\f1:RUN & ONPROC procs only
+            :\0\f3\-o\f1:ONPROC procs only
+(q):quit:quit or exit
+(set):set var=expr:set variable equal to expression value
+(s):stack:kernel stack trace (all procs)
+           :\0\f3\-r\f1:kernel stack modifier (display
+           :: registers)
+           :\0\f3\-f\f1:kernel stack modifier (use kfp value)
+           :\0\f3\-e\f1 \f2value\f1:kernel stack trace (give engine #)
+           :\0value:kernel stack trace (give proc #)
+(t):trace:turn on debug tracing
+(upte):upte:dump user pte's (give proc #)
+(u):user:display user area (give proc #)
+(vnode):vnode:dump a vnode table (sort of)
+(vtop):vtop:virtual to physical
+        :\0\!!:escape to shell
+        :\0\!!!:repeat last command
+        :\0\.<\f2file\f1>:source a file
+(?):?:print this list of available commands
+(h):help:print this list of available commands
+(w):what:interpret addresses, symbols or
+::  expressions
+.TE
+.SH FILES
+.nf
+/dev/kmem	default system image
+/dynix	default system namelist
+.SH SEE ALSO
+.BR savecore (8),
+.BR ccompress (8).
+.SH WARNINGS
+This command is intended for system debugging and
+is not supported software.

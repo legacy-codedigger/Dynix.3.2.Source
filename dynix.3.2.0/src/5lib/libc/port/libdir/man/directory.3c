@@ -1,0 +1,151 @@
+.TH DIRECTORY 3C "Standard Extension"
+.SH NAME
+opendir, readdir, telldir, seekdir, rewinddir, closedir \- directory operations
+.SH SYNOPSIS
+.B "#include <dir.h>"
+.PP
+.B "DIR \(**opendir (filename)"
+.br
+.B "char \(**filename;"
+.PP
+.B "struct direct \(**readdir (dirp)"
+.br
+.B "DIR \(**dirp;"
+.PP
+.B "long telldir (dirp)"
+.br
+.B "DIR \(**dirp;"
+.PP
+.B "void seekdir (dirp, loc)"
+.br
+.B "DIR \(**dirp;"
+.br
+.B "long loc;"
+.PP
+.B "void rewinddir (dirp)"
+.br
+.B "DIR \(**dirp;"
+.PP
+.B "void closedir(dirp)"
+.br
+.B "DIR \(**dirp;"
+.SH DESCRIPTION
+.I Opendir\^
+opens the directory named by
+.IR filename\^ ,
+associates a
+``directory stream''
+with it,
+and
+returns a pointer to be used to identify the
+directory stream
+in subsequent operations.
+.SM
+.B NULL
+is returned if
+.I filename\^
+cannot be accessed or is not a directory,
+or if not enough memory can be obtained via
+.IR malloc\^ (3C)
+to hold a
+.SM
+.B DIR
+structure.
+.PP
+.I Readdir\^
+returns a pointer to the next directory entry
+and advances the ``current position'' of the
+directory stream.
+It returns
+.SM
+.B NULL
+upon reaching the end of the directory or
+upon detecting an invalid previous
+.I seekdir\^
+operation.
+.PP
+.I Telldir\^
+returns the current position associated with the
+directory stream.
+.PP
+.I Seekdir\^
+sets the position for the next
+.I readdir\^
+operation on the
+directory stream.
+The new position reverts to the one associated with the
+directory stream
+when the previous
+.I telldir\^
+operation from which
+.I loc\^
+was obtained was performed.
+Values returned by
+.I telldir\^
+are good only for the lifetime of
+the
+.SM
+.B DIR
+structure from which they are derived.
+If the directory is closed and then reopened,
+the location value from
+.I telldir\^
+may be invalidated
+due to undetected directory compaction.
+It is safe to use a previous
+.I telldir\^
+value immediately after a call to
+.I opendir\^
+and before any calls to
+.IR readdir\^ .
+.PP
+.I Rewinddir\^
+resets the position of the
+directory stream
+to the beginning of the directory.
+.PP
+.I Closedir\^
+closes the
+directory stream
+and frees the associated
+.SM
+.B DIR
+structure.
+.SH EXAMPLE
+Sample code which searches a directory for an entry matching
+.IR name\^ :
+.PP
+.br
+	dirp = opendir( "." );
+.br
+	while ( (dp = readdir( dirp )) != NULL )
+.br
+		if ( strcmp( dp\->d_name, name ) == 0 )
+.br
+			{
+.br
+			closedir( dirp );
+.br
+			return FOUND;
+.br
+			}
+.br
+	closedir( dirp );
+.br
+	return NOT_FOUND;
+.SH "SEE ALSO"
+open(2), close(2), read(2), lseek(2),
+ftw(3C).
+.SH WARNINGS
+.I Rewinddir\^
+is implemented as a macro,
+so its function address cannot be taken.
+.PP
+All UNIX programs which examine directories
+should be converted to use this package,
+since directory format is no longer the same on all UNIX systems.
+Unfortunately,
+this package is not yet
+supplied with all UNIX systems,
+although public-domain source code is available
+from BRL.

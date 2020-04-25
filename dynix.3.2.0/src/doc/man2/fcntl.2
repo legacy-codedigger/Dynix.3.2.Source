@@ -1,0 +1,277 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: fcntl.2 1.11 89/07/10 $
+.TH FCNTL 2 "\*(V)" "4BSD/DYNIX"
+.SH NAME
+fcntl \- file control
+.SH SYNOPSIS
+.nf
+.ft 3
+#include <fcntl.h>
+.PP
+.ft 3
+res = fcntl(fd, cmd, arg)
+int res;
+int fd, cmd, arg;
+.ft 1
+.SH DESCRIPTION
+.I Fcntl
+provides for control over descriptors.
+The argument
+.I fd
+is a descriptor to be operated on by
+.I cmd
+as follows:
+.TP 15
+F_DUPFD
+Return a new descriptor as follows:
+.IP
+Lowest numbered available descriptor greater than or equal to
+.I arg.
+.IP
+Same object references as the original descriptor.
+.IP
+New descriptor shares the same file pointer if the object
+was a file.
+.IP
+Same access mode (read, write or read/write).
+.IP
+Same file status flags (i.e., both file descriptors
+share the same file status flags).
+.IP
+The close-on-exec flag associated with the new file descriptor
+is set to remain open across
+.IR execv (2)
+system calls.
+.TP 15
+F_GETFD
+Get the close-on-exec flag associated with the file descriptor
+.IR fd .
+If the low-order bit is 0, the file will remain open across
+.IR exec ,
+otherwise the file will be closed upon execution of
+.I exec.
+.TP 15
+F_SETFD
+Set the close-on-exec flag associated with
+.I fd
+to the low order bit of
+.I arg
+(0 or 1 as above).
+.TP 15
+F_GETFL
+Get descriptor status flags, as described below.
+.TP 15
+F_SETFL
+Set descriptor status flags.
+.TP 15
+F_GETOWN
+Get the process group
+currently receiving SIGIO and SIGURG
+signals.
+.TP
+F_SETOWN
+Set the process group
+to receive SIGIO and SIGURG signals;
+if
+.I arg
+is negative, the absolute value of
+.I arg
+is used as the process group;
+if
+.I arg
+is positive, it is interpreted as a process ID,
+and the process group of that process is used.
+.TP
+F_GETLK
+Get the first lock which blocks the lock description given
+by the variable of type
+.I struct flock
+pointed to by
+.I arg
+(see below).
+The information retrieved overwrites the information passed to
+.I fcntl
+in the
+.I flock
+structure.
+If no lock is found that would prevent this lock from being created,
+then the structure is passed back unchanged except for the lock type
+which will be set to F_UNLCK.
+.TP
+F_SETLK
+Set or clear a file segment lock according to the variable of type
+.I struct flock
+pointed to by
+.I arg
+(see below).
+The
+.I cmd
+F_SETLK is used to establish read (F_RDLCK) and write (F_WRLCK) locks,
+as well as remove either type of lock (F_UNLCK).
+If a read or write lock cannot be set,
+.I fcntl
+returns immediately with an error value of \-1.
+.TP
+F_SETLKW
+This
+.I cmd
+is the same as F_SETLK except that if a read or write lock
+is blocked by other locks, the process will sleep until the segment
+is free to be locked.
+.LP
+The flags for the F_GETFL and F_SETFL commands are as follows:
+.TP 15
+FNDELAY
+Non-blocking I/O; if no data is available to a
+.I read
+call, or if a write operation would block,
+the call returns \-1 with the error EWOULDBLOCK.
+.TP
+FAPPEND
+Force each write to append at the end of file;
+corresponds to the O_APPEND flag of
+.IR open (2).
+.TP
+FASYNC
+Enable the SIGIO signal to be sent to the process group
+when I/O is possible, e.g.
+upon availability of data to be read.
+.TP
+FSYNC
+Make all write I/O operations synchronous for regular and block special files;
+corresponds to the O_SYNC flag of
+.IR open (2).
+.PP
+A read lock prevents any process from write locking the protected area.
+More than one read lock may exist for a given segment of a file
+at a given time.
+The file descriptor on which a read lock is being placed must have been opened
+with read access.
+.PP
+A write lock prevents any process from read locking or write locking the
+protected area.
+Only one write lock may exist for a given segment of a file at a given time.
+The file descriptor on which a write lock is being placed must have been opened
+with write access.
+.PP
+The structure
+.I flock
+(defined in
+.IR /usr/include/fcntl.h )
+describes the type, starting offset, size, and process ID of the segment
+of the file to be affected.
+The starting offset may be 0, 1, or 2, to indicate that the relative offset
+will be measured from the start of the file, the current position,
+or the end of the file, respectively.
+The process ID field is only used with the F_GETLK
+.I cmd
+to return the value for a blocking lock.
+.PP
+Locks may start and extend beyond the current end of file, but may not be
+negative relative to the beginning of the file.
+A lock may be set to always extend to the end of file by setting the
+size to zero.
+If such a lock also has the starting offset set to zero, the whole file will be
+locked.
+Changing or unlocking a segment from the middle of a larger locked segment
+leaves two smaller segments for either end.
+Locking a segment that is already locked by the calling process causes the
+old lock type to be removed and the new lock type to take affect.
+All locks associated with a file for a given process are removed when
+a file descriptor for that file is closed by that process or the process
+holding that file descriptor terminates.
+Locks are not inherited by a child process in a
+.IR fork (2)
+system call.
+.PP
+
+.SH "RETURN VALUE
+Upon successful completion, the value returned depends on
+.I cmd
+as follows:
+.sp .5v
+.nf
+.ta .25i 1.25i
+	F_DUPFD	A new file descriptor.
+	F_GETFD	Value of flag (only the low-order bit is defined).
+	F_GETFL	Value of flags.
+	F_GETOWN	Value of file descriptor owner.
+	other	Value other than \-1.
+.fi
+.sp .5v
+Otherwise, a value of \-1 is returned and
+.I errno
+is set to indicate the error.
+.SH ERRORS
+.I Fcntl
+will fail if one or more of the following are true:
+.TP 15
+[EBADF]
+.I Fildes
+is not a valid open file descriptor.
+.TP 15
+[EMFILE]
+.I Cmd
+is F_DUPFD and the maximum allowed number of file descriptors are currently
+open.
+.TP 15
+[EINVAL]
+.I Cmd
+is F_DUPFD and
+.I arg
+is negative or greater the maximum allowable number
+(see
+.IR getdtablesize (2)).
+.TP 15
+[EINVAL]
+.I Cmd
+is F_GETLK, F_SETLK, or F_SETLKW, and
+.I arg
+or the data it points to is not valid.
+.TP 15
+[EACCES]
+.I Cmd
+is F_SETLK, the type of lock is a read (F_RDLCK) or write (F_WRLCK) lock,
+and the segment of the file to be locked is already write locked by another
+process, or the type is a write lock and the segment of the file to be locked
+is already read or write locked by another process.
+.TP 15
+[ENOSPC]
+.I Cmd
+is F_SETLK or F_SETLKW, the type of lock is a read or write lock, and there
+are no more file locks available (too many segments are locked).
+(See
+.B NOTES
+later about configuring the number of system-wide file locks.)
+.TP 15
+[EDEADLK]
+.I Cmd
+is F_SETLKW, the lock is blocked by some lock from another process,
+and putting the calling process to sleep, waiting for that lock to become
+free, would cause a deadlock.
+.SH "SEE ALSO
+close(2), execve(2), getdtablesize(2), open(2), sigvec(2)
+.SH BUGS
+The asynchronous I/O facilities of FNDELAY and FASYNC
+are currently available only for tty operations.
+No SIGIO signal is sent upon draining of output sufficiently
+for non-blocking writes to occur.
+.SH NOTES
+Binary configuration of the number of record locks
+is provided via two defines in
+.IR /sys/conf/param.c :
+NFILCK and NFILNO.
+NFILNO is the (systemwide) maximum number of files that can have record
+locks asserted on them at one time.
+NFILCK is the (systemwide) maximum number of record locks
+that will be asserted at one time.

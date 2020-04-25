@@ -1,0 +1,158 @@
+#! /bin/sh
+#
+# maketape miniroot tmpos_root tmpos_usr distroot
+#
+# For example:
+#   maketape zd1b zd1a zd1h distroot
+#
+# Used to make a distribution tape. Ties in with /etc/buildmini.
+#
+if [ "$#" -ne "4" ] ;then
+	echo 'usage: /etc/maketape miniroot tmpos_root tmpos_usr distroot'
+	echo '   example: /etc/maketape zd1b zd1a zd1h distroot'
+	exit 1
+else
+	MINIROOT=$1
+	TMPOS_ROOT=$2
+	TMPOS_USR=$3
+	DISTROOT=$4
+fi
+CK1=/tmp/checksum.base1		# checksum file for first tape of base
+CK2=/tmp/checksum.base2		# checksum file for second tape of base
+ID=/tmp/sqnt_tapeid2		# null file used to ID 2nd tape of base
+partition1=/dev/${TMPOS_ROOT}	# /
+partition2=/dev/${TMPOS_USR}	# /usr
+tape=/dev/ctape8		# do not rewind
+rewindtape="mt -f $tape rewind"
+erasetape="mt -f $tape erase"
+if [ ! -f /dev/ctape8 ]; then
+	ln /dev/rts8 /dev/ctape8
+fi
+#
+$erasetape
+$rewindtape
+date
+/etc/umount $DISTROOT/usr
+/etc/umount $DISTROOT
+/etc/mount $partition1 $DISTROOT
+rm -rf $DISTROOT/lost+found
+/etc/mount $partition2 $DISTROOT/usr
+cat > /tmp/tape.info$$ << 'BLAH'
+TAPE 1
+tapefile	what			format
+--------	----			------
+0		/stand/bootts		dd
+1		/boot			dd
+2		tape.info		ascii
+3		/stand/cat		dd
+4		/stand/copy		dd
+5		/stand/copy2		dd
+6		/stand/dump		dd
+7		/stand/formatscsi	dd
+8		/stand/fsck		dd
+9 		/stand/ls		dd
+10		/stand/wdformat		dd
+11		/stand/xpformat		dd
+12		/stand/zdformat		dd
+13		/stand/sdformat		dd
+14		mini-root file sys	dd
+15		real root file sys	dump
+
+TAPE 2
+tapefile	what			format
+--------	----			------
+16	        /tmp/sqnt_tapeid2       tar (zero length)	
+17		most of /usr file sys	tar
+18		unformatted man pages	tar
+19		/usr/doc		tar
+20		/usr/games		tar
+21		/usr/lib/vfont		tar
+22		/usr/local/gnu		tar
+BLAH
+cd $DISTROOT/stand
+echo "Checksum for tape 1 of base " >$CK1
+#
+# Make sure tape boot loader is first tape file.
+#
+dd if=bootts		of=$tape bs=512 conv=sync	# file 0
+dd if=bootts		bs=512 conv=sync | sum >>$CK1
+dd if=../boot		of=$tape bs=512 conv=sync	# file 1
+dd if=../boot		bs=512 conv=sync | sum >>$CK1
+dd if=/tmp/tape.info$$	of=$tape			# file 2
+dd if=/tmp/tape.info$$  bs=512 conv=sync | sum >>$CK1
+dd if=cat		of=$tape			# file 3
+sum cat >>$CK1
+dd if=copy		of=$tape			# file 4
+sum copy >>$CK1
+dd if=copy2		of=$tape			# file 5
+sum copy2 >>$CK1
+dd if=dump		of=$tape			# file 6
+sum dump >>$CK1
+dd if=formatscsi	of=$tape			# file 7
+sum formatscsi >>$CK1
+dd if=fsck		of=$tape			# file 8
+sum fsck >>$CK1
+dd if=ls		of=$tape			# file 9 
+sum ls >>$CK1
+dd if=wdformat		of=$tape			# file 10
+sum wdformat >>$CK1
+dd if=xpformat		of=$tape			# file 11
+sum xpformat >>$CK1
+dd if=zdformat		of=$tape			# file 12
+sum zdformat >>$CK1
+dd if=sdformat		of=$tape			# file 13
+sum sdformat >>$CK1
+rm /tmp/tape.info$$
+sync
+echo "** Add dump of mini-root file system"
+size=6400	# WARNING: size calculated from the sector count when
+		# running mkfs on the miniroot.  Do not change one
+		# without the other.  Currently 12800 sectors, at
+		# 512 bytes/sec this make 6400 1k blocks.  See comment
+		# in tmpos/etc/buildmini.
+dd if=/dev/r${MINIROOT} bs=1k count=$size conv=sync | tee $tape |
+	sum >>$CK1 # file 14
+echo "** Add full dump of real file system"
+/etc/dump 0uf - ${partition1} | tee $tape | sum >>$CK1   # file 15
+
+list=` /bin/ls $DISTROOT/usr | egrep -v 'doc|games|lib|local|man' `
+list_local=`/bin/ls $DISTROOT/usr/local | egrep -v 'gnu' `
+list_local=`for i in $list_local ;do echo local/$i ;done `
+list_lib=`/bin/ls $DISTROOT/usr/lib | egrep -v 'vfont$' `
+list_lib=`for i in $list_lib ;do echo lib/$i ;done `
+list="$list $list_local $list_lib"
+catlist=` /bin/ls $DISTROOT/usr/man | egrep -v 'man*' `
+manlist=` /bin/ls $DISTROOT/usr/man | egrep -v 'cat*' `
+mlist=`for file in $manlist ;do echo man/$file ;done`
+clist=`for file in $catlist ;do echo man/$file ;done`
+
+echo "** Done with tape 1. Rewinding."
+$rewindtape
+echo -n "** Ready for second tape.  Hit return when second tape in drive:"
+read JUNK
+echo ""
+echo "** Erasing and rewinding second tape "
+$erasetape
+$rewindtape
+
+echo "Checksum for tape 2 of base " >$CK2
+
+echo "** Add tar file for second tape ID"
+rm -f $ID
+cp /dev/null $ID
+tar cf - $ID | tee $tape | sum >>$CK2		   # file 16
+
+echo "** Add tar image of most of /usr"
+cd $DISTROOT/usr && tar cf - $list $clist | tee $tape | sum >>$CK2 # file 17
+echo "** Add tar image of unformatted man pages"
+cd $DISTROOT/usr && tar cf - $mlist       | tee $tape | sum >>$CK2 # file 18
+echo "** Add tar image of /usr/doc"
+cd $DISTROOT/usr && tar cf - doc          | tee $tape | sum >>$CK2 # file 19
+echo "** Add tar image of /usr/games"
+cd $DISTROOT/usr && tar cf - games        | tee $tape | sum >>$CK2 # file 20
+echo "** Add tar image of varian fonts"
+cd $DISTROOT/usr/lib && tar cf - vfont    | tee $tape | sum >>$CK2 # file 21
+echo "** Add tar image of /usr/local/gnu"
+cd $DISTROOT/usr/local && tar cf - gnu	  | tee $tape | sum >>$CK2 # file 22
+echo "Done with second tape. Rewinding."
+$rewindtape

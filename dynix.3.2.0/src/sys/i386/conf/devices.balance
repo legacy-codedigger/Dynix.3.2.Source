@@ -1,0 +1,72 @@
+# $Copyright:	$
+# Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+# Sequent Computer Systems, Inc.   All rights reserved.
+#  
+# This software is furnished under a license and may be used
+# only in accordance with the terms of that license and with the
+# inclusion of the above copyright notice.   This software may not
+# be provided or otherwise made available to, or used by, any
+# other person.  No title to or ownership of the software is
+# hereby transferred.
+
+# $Header: devices.balance 2.21 91/04/05 $
+#
+#   Bdevsw	  Cdevsw	Pseudo
+#   O  open	  O  open	Z  zero
+#   C  close	  C  close	N  nodev
+#   S  strategy	  R  read	U  nulldev
+#   M  minphys	  W  write	T  seltrue
+#   P  size	  I  ioctl
+#   F  flags	  S  stop
+#		  L  select
+#		  M  mmap
+#
+
+## Block Device Specification ##
+#
+# Name	b|c  	Major#	Functions [ optional flags ]
+sd	b	1	OCSMPZ
+wd	b	2	OCSMPZ
+# ts	b	3	OCSMUF	B_TAPE
+sw/*	b	4	NNSMZZ
+# xp/xy	b	5	OCSMPZ
+xt/zt	b	6	OCSMUF	B_TAPE
+zd	b	7	OCSMPZ
+mirror	b	8	OCSMPZ
+# tm	b	9	OCSMUF  B_TAPE
+tg	b	10	OCSMUF	B_TAPE
+stripe  b       11      OCSUPZ
+
+## Character Device Specification ##
+#
+# Name	b|c  	Major#	Functions
+cons	c	1	OCRWISLN
+sy/*	c	2	OCRWIULN
+mm/*	c	3	UURWNNTM
+sw/*	c	4	UURWNNNN
+pts/pty	c	5	OCRWISLN
+ptc/pty	c	6	OCRWIULN
+st	c	7	OCRWISLN
+sd	c	8	OCRWIUTN
+ts	c	9	OCRWIUTN
+sm	c	10	OURWIUTN
+pmap	c	11	OCNNINNM
+# xp/xy	c	12	OCRWIUTN
+xt/zt	c	13	OCRWIUTN
+pci	c	14	OCRWINTN
+promisc	c	15	NNRNINNN
+lp	c	16	OCNWNUNN
+zd	c	17	OCRWIUTN
+kp	c	18	OURNIUNN
+usclk	c	19	ONNNNNNM
+mirror	c	20	OCRWIUTN
+vlsi	c	21	OCRNINNN
+wd	c	22	OCRWIUTN
+tm	c	23	OCRWIUTN
+sc	c	24	OCRWISLN
+sp	c	25	OCRWNUNN
+ss	c	26	OURWIUTN
+co	c	27	OCRWISLN
+smem	c	28	OURWIUTN
+tg	c	29	OCRWIUTN
+stripe  c       30      OCRWIUTN

@@ -1,0 +1,26 @@
+*
+*#ident	"$Header: m2333k 1.1 90/01/30 $"
+* Fujitsu M2333K (Swallow 3) with 66 sectors
+*
+* Dimensions:
+*   512 bytes/sector
+*    66 sectors/track
+*    10 tracks/cylinder
+*   823 cylinders
+*   820 user accessible cylinders
+*
+* Types:
+*	00	No Partition
+*	01	Regular Partition
+*	02	Boot Block
+*	03	Reserved Disk Area
+*
+* Partition	Type	Start Sector	Size in Sectors	   Block Sz    Frag Sz
+   00		1	221100		49500		   8192        1024
+   01		1	270600		67320		   8192        1024
+   02		1	337920		203940		   8192        1024
+   03		1	692		220408		   8192        1024
+   12		3	0		660		   0           0
+   13		3	541860		1320		   0           0
+   14		2	660		16		   0           0
+   15		3	676		16		   0           0

@@ -1,0 +1,28 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: hangman.6 1.4 86/05/13 $
+.TH HANGMAN 6 "\*(V)" "4BSD"
+.SH NAME
+hangman \- Computer version of the game hangman
+.SH SYNOPSIS
+.B /usr/games/hangman
+.SH DESCRIPTION
+In
+.I hangman,
+the computer picks a word from the on-line word list
+and you must try to guess it.
+The computer keeps track of which letters have been guessed
+and how many wrong guesses you have made on the screen in a graphic fashion.
+.SH FILES
+/usr/dict/words     On-line word list
+.SH AUTHOR
+Ken Arnold

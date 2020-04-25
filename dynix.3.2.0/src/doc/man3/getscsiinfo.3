@@ -1,0 +1,63 @@
+.\" $Copyright:	$
+.\"Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989 
+.\"Sequent Computer Systems, Inc.   All rights reserved.
+.\" 
+.\"This software is furnished under a license and may be used
+.\"only in accordance with the terms of that license and with the
+.\"inclusion of the above copyright notice.   This software may not
+.\"be provided or otherwise made available to, or used by, any
+.\"other person.  No title to or ownership of the software is
+.\"hereby transferred.
+...
+.V= $Header: getscsiinfo.3 1.2 91/02/28 $
+.TH GETSCSIINFO 3 "\*(V)" "DYNIX"
+.SH NAME
+getscsiinfo, getscsimatch \- get scsiinfo structure
+.SH SYNOPSIS
+\f3#include <zdc/zdc.h>
+.br
+\f3#include <diskinfo.h>
+.PP
+\f3struct scsiinfo *
+.br
+getscsimatch(vendor, product)
+.br
+char *vendor, *product;
+.PP
+\f3struct scsiinfo *
+.br
+getscsiinfo()\fP
+.SH DESCRIPTION
+.B getscsimatch
+takes the vendor and product names of the disk as returned by
+the SCSI INQUIRY command and locates the \f2.scsi\f1 (e.g. wren3.scsi)
+file in
+.I /etc/diskinfo
+with matching vendor and product strings.  It then returns the
+data in this file in a \f2scsiinfo\f1 structure.  
+.B getscsiinfo
+finds the next \f2.scsi\f1 file in
+.I /etc/diskinfo
+and creates and returns a \f2scsiinfo\f1 structure built from that file.
+On error or when there are no more \f2.scsi\f1 files in the directory,
+.SM
+.B NULL
+is returned.
+This information is used by the 
+.B format
+program.  Note that the vendor string must be padded with blanks to
+be 8 characters long, and the product string must be padded to 16
+characters, as this is the way the strings are returned by the
+SCSI INQUIRY command.
+See
+.I /usr/include/diskinfo.h
+for a description of the fields in
+.IR "struct scsiinfo" .
+.SH "SEE ALSO"
+.BR diskinfo (5)
+.BR format (8)
+.SH NOTES
+This are Sequent library routines.  To use them, specify the
+\f3-lseq\f1 option to link with the Sequent library.  Since
+this is a Sequent extension, code using this routine may not be
+portable to other systems.

@@ -1,0 +1,16 @@
+.\"	$Header: tmac.an 2.3 86/06/26 $
+.de th
+.if t .so /usr/lib/tmac/tmac.an6t
+.if n .so /usr/lib/tmac/tmac.an6n
+.t1 "\\$1" "\\$2" "\\$3"
+..
+'	# pull revision date from Header (for DYNIX pages only)
+.de V=
+.ds V) \\$3 \\$4
+..
+.de TH
+.rn TH xx
+.so /usr/lib/tmac/tmac.an.new
+.TH "\\$1" "\\$2" "\\$3" "\\$4" "\\$5"
+.rm xx
+..

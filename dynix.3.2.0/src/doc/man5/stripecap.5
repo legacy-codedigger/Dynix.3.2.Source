@@ -1,0 +1,160 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987 Sequent Computer Systems, Inc.
+.\" All rights reserved
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: stripecap.5 1.1 91/04/08 $
+.TH STRIPECAP 5 "\*(V)" "DYNIX"
+.CX
+.SH NAME
+stripecap \- striped disk partition description data base
+.SH SYNOPSIS
+/etc/stripecap
+.SH DESCRIPTION
+.B Stripecap
+is a data base describing striped disk partitions,
+used by
+.IR putst (8)
+and
+.IR newst (8).
+.PP
+Striped disk partitions are logical disk partitions which are
+interleaved over several physical disk partitions.  Striped disk partitions
+are used to take advantage of performance improvements made possible by
+the parallel operation of the several disk arms which make up the striped
+disk partition.  This parallelism can be acheived either by distributing 
+large transfers over many disks or by spreading multiple simultaneous requests 
+to the same partition across multiple disks.  
+Another possible advantage may come from the ability
+to create multi-volume virtual partitions whose size is larger than that
+of any physical disk involved in it.  
+Striped disk partitions may be accessed just as "normal" disk partitions
+are, including for creating and mounting DYNIX file systems on them.
+.PP
+Striped partitions are described in
+.B stripecap
+by a textual descriptor, which contains information on the physical disk
+partitions which make up the striped partition, and information about
+the layout of the logical sections which make up the stripes.
+.PP
+Logical sectioning is the mechanism by which composit partitions may differ
+in size, yet still have at least one section where data can be interleaved
+between them.  The first section normally uses the first
+.IR n
+blocks from each composit partition, where
+.IR n
+is the number of blocks in the shortest composit partition, truncated to
+a multiple of the stripe block size (interleave factor) for that section.
+Each subsequent section is determined in a similar manner using the remaining
+blocks of the composit partitions, and at least one fewer of the partitions
+(the shortest one).  This is done until no more sections can be created.
+.PP
+Entries in
+.B stripecap
+consist of a number of `:' separated fields.
+The first entry for each partition gives the names which are known for the
+partition, separated by `|' characters.  The
+.IR newst (8)
+and
+.IR putst (8)
+utilities assume that each stripe partition has one name of the form
+.BI ds X,
+where
+.I X
+is a numerical digit corresponding to the minor device number of
+the stripe disk pseudo-device
+.IR /dev/rds? .
+.SH CAPABILITIES
+.PP
+.nf
+.ta \w'Name   'u +\w'Type   'u
+\fBName	Type	Description\fR
+np	num	number of partitions comprising the stripe partition.
+M?	num	major device number of partition ?.
+m?	num	minor device number of partition ?.
+D?	num	number of devices (partitions) in section ?.
+S?	num	"stripe blocksize" (interleave factor) of section ?.
+B?	num	number of blocks in section ? contributed by
+		each partition.
+.fi
+.PP
+.B A Sample Entry
+.PP
+.nf
+Invoking the \fBnewst\fP utility from /dev using:
+
+/etc/newst -e rds6 zd0a mk2344k zd1h mk2344k zd2g mk2344k
+
+yields a stripecap entry such as:
+
+.ta \w`:D1#2:B1#37408:S1#37408:\\      `u
+:ds6:\\	\fIName of this stripe device.\fP
+:np#3:\\	\fINumber of partitions included (3).\fP
+:M0#7:m0#15:\\	\fIDevice numbers of 3 partitions\fP
+:M1#7:m1#22:\\	   \fIsorted from largest size to\fP
+:M2#7:m2#0:\\	      \fIsmallest size.\fP
+:D0#3:B0#17808:S0#16:\\	\fIFirst section uses all 3 partitions.\fP
+:D1#2:B1#482928:S1#16:\\	\fISecond section uses first 2 partitions.\fP
+:D2#1:B2#37408:S2#37408:\\	\fIThird section uses first partition.\fP
+.fi
+.PP
+Entries may continue onto multiple lines by giving a \e as the last
+character of a line, and that empty fields
+may be included for readability (here between the last field on a line
+and the first field on the next).
+.PP
+.ne 0.5i
+.B Fields Within the Descriptor
+.PP
+All fields have names which are two character codes.  For most of the
+field names,
+the second character is uniquely chosen from the set [0-9a-zA-Z] in an
+ascending sequence.  For example, the minor device numbers of the
+first 5 disk partitions would be `m0', `m1', `m2', `m3', and `m4'.
+Numeric fields are followed by the character `#' and then the value.
+Thus \fBnp\fR, which indicates the number of disk partitions making up
+the striped partition, gives the value `3' for the example above.
+.PP
+.SH FILES
+.DT
+/etc/stripecap	file containing partition descriptions
+.SH SEE ALSO
+newst(8), putst(8), st(4)
+.SH CAVEATS
+It is assumed that the major and minor device numbers for the
+composit partitions are for the block interface, not the raw
+interface.  Be careful that they are not overlapping partititions
+on the same device or data corruption may result from their use.
+.PP
+The partitions specified in the stripecap must be such that 
+partition sizes are in descending order as the the partitions are
+in ascending order.
+.PP
+Stripe block sizes must be a minimum of 16 or a multiple thereof
+(representing 8kbytes).
+Stripe section sizes must be a multiple of the that section's stripe
+block size.  This can result in some wasted space and the end of each
+composit partition. 
+.PP
+Performance may be reduced if partitions in the stripe partition are not
+on distict disk drives.  It is also recommended that they be located on
+distinct disk controller channels.  Likewise, it is best for partitions
+to be of equal lengths on identical drives and controllers, although not
+necessary.
+.PP
+Note that the 
+.IR newst(8)
+utility sets the stripe block size to match the stripe section size (no
+interleave) when only one partition is involved or when multiple partitions
+in that section reside on the same physical drive.  In this situation 
+a performance degradation may result otherwise.  Also, some experimentation
+with stripe block sizes may be useful to tune performance to your application.
+.PP
+The total size of the entire stripe partition must be less than 2 gigabytes.
+This is currently a DYNIX addressing limitation.

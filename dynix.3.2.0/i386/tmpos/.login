@@ -1,0 +1,1 @@
+stty dec crt

@@ -1,0 +1,45 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+. \" $Header: copyr.xr 1.11 90/02/23 $
+\0
+.in +.5i
+.ll 6.5i
+.ft 1
+.sp |5i
+.ps 10
+Balance and DYNIX are registered trademarks,
+and Symmetry is a trademark of Sequent Computer Systems, Inc.
+.sp
+UNIX is a registered trademark of AT&T.
+.sp
+MULTIBUS is a trademark of Intel Corporation.
+.sp
+Ethernet is a trademark of Xerox Corporation.
+.sp
+Appletalk is a trademark of Apple Computer Corporation.
+.sp
+Sun, NFS, and XDR are trademarks of Sun Microsystems, Inc.
+.sp .5i
+Copyright 1984, 1985, 1986, 1987, 1988, 1989, 1990 by Sequent Computer Systems, Inc.
+All rights reserved.
+This document may not be copied or reproduced 
+in any form without permission from
+Sequent Computer Systems, Inc.  
+Information in this document is subject to change without notice.
+.sp
+Copyright 1979, 1980, The Regents of the University of California.
+Portions of
+this document are based on articles
+obtained under license from the Regents of the University of
+California.
+.sp
+Printed in the United States of America.

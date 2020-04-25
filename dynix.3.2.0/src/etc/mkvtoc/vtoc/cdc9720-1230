@@ -1,0 +1,26 @@
+*
+*#ident	"$Header: cdc9720-1230 1.1 90/01/30 $"
+* CDC 9720-1230 MB (EMD) with 83 sectors
+*
+* Dimensions:
+*   512 bytes/sector
+*    83 sectors/track
+*    15 tracks/cylinder
+*  1635 cylinders
+*  1632 user accessible cylinders
+*
+* Types:
+*	00	No Partition
+*	01	Regular Partition
+*	02	Boot Block
+*	03	Reserved Disk Area
+*
+* Partition	Type	Start Sector	Size in Sectors	   Block Sz    Frag Sz
+   00		1	890175		49800		   8192        1024
+   01		1	939975		205425		   8192        1024
+   02		1	1145400		887685		   8192        1024
+   03		1	1277		888898		   8192        1024
+   12		3	0		1245		   0           0
+   13		3	2033085		2490		   0           0
+   14		2	1245		16		   0           0
+   15		3	1261		16		   0           0

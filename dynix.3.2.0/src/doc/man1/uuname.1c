@@ -1,0 +1,37 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: uuname.1c 1.2 87/06/17 $
+.TH UUNAME 1C "\*(V)" "4BSD"
+.\"
+.\"	@(#)uuname.1c	6.1 (Berkeley) 4/24/86
+.\"
+.UC 6
+.SH NAME
+uuname \- list names of \s-1UUCP\s0 hosts
+.SH SYNOPSIS
+.B uuname
+[
+.B \-l
+]
+.SH DESCRIPTION
+.I Uuname
+lists the \s-1UUCP\s0 names of known systems.
+The
+.B \-l
+option returns the local system name; this may differ from the
+.IR hostname (1)
+for the system if the
+.I hostname
+is very long.
+.SH SEE ALSO
+uucp(1C),
+uux(1C)

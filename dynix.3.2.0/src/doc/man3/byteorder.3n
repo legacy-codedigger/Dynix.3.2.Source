@@ -1,0 +1,48 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: byteorder.3n 1.7 87/03/04 $
+.TH BYTEORDER 3N "\*(V)" "4BSD"
+.SH NAME
+htonl, htons, ntohl, ntohs \- convert values between host and network byte order
+.SH SYNOPSIS
+.nf
+.B #include <sys/types.h>
+.B #include <netinet/in.h>
+.PP
+.B netlong = htonl(hostlong);
+.B u_long netlong, hostlong;
+.PP
+.B netshort = htons(hostshort);
+.B u_short netshort, hostshort;
+.PP
+.B hostlong = ntohl(netlong);
+.B u_long hostlong, netlong;
+.PP
+.B hostshort = ntohs(netshort);
+.B u_short hostshort, netshort;
+.fi
+.SH DESCRIPTION
+These routines convert 16 and 32 bit quantities between network
+byte order and host byte order.
+Since National 32Ks, Intel *86s, DEC Vaxs, and Motorola 68Ks use a different
+byte order, 
+these routines are needed to communicate between them.
+.PP
+These routines are most often used in conjunction with Internet
+addresses and ports as returned by
+.IR gethostent (3N)
+and
+.IR getservent (3N).
+.SH "SEE ALSO"
+gethostent(3N),
+getservent(3N)
+.I "A 4.2 BSD Interprocess Communication Primer"

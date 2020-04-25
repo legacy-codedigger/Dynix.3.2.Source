@@ -1,0 +1,249 @@
+.\" $Copyright:	$
+...
+.V= $Header: tm.4 1.2 90/10/08 $
+.TH TM 4 "\*(V)" "DYNIX"
+.SH NAME
+tm \- SCSI tape controller
+.SH SYNOPSIS
+.B "device tm0 at ssm? bin 5 maps 512 target 7 unit 0"
+.SH DESCRIPTION
+This device driver supports SCSI target adapters
+for streaming tape drives.
+It supports up to eight tape drive units 
+spread across the SSM boards in the system.
+The SCSI interface for the SSM board supports the target adapter on
+the SSM board plus seven additional target adapters.
+.PP
+The standard device names begin with ``rtm'' followed by a number
+representing the tape unit, that is, ``rtm0'' through ``rtm7''.
+The corresponding no-rewind device name is eight greater than the
+standard name, that is, ``rtm8'' through ``rtm15''.
+.SH "IMPLICATIONS OF STREAMING"
+Because the
+.I tm
+driver supports streaming tapes,
+the interface to the
+.I tm
+driver is different from that of ``standard''
+tape drives, in the following ways:
+.TP
+.B Block interface
+The block interface is not supported at all.  Attempts to use it will
+return ENXIO.
+.TP
+.B Raw interface
+The raw 
+.I tm
+interface has several differences
+from standard tape, as described below.
+.sp
+To provide reasonable performance and drive life, transfers to and from
+the tape must be done in large chunks.  The 
+.I tm
+driver assures this by
+buffering data internally.  One consequence of this is that errors on
+writes often cannot be reported until long after the user
+passed the data to the driver.  Write errors will be reported to the
+user program on the next write system call after the error occurred, or
+on the close system call following the error.
+.sp
+The raw interface does not support block sizes like the
+standard tape does.  The 
+.I tm
+tape device has a 512-byte physical block
+size.  User records are packed into these physical blocks on a
+write and
+unpacked from these blocks on a read. 
+When reading, the user gets the number of bytes requested,
+until end-of-file is encountered.  If less
+than a multiple of 512 bytes was written, the file size will be rounded
+up to a multiple of 512 bytes.  The extra bytes contain zeros.
+.sp
+Reading part-way into a file on the no-rewind device, closing the
+device, and re-opening it will not work as expected.  The tape will
+always space forward to the beginning of the next file on a close.
+.SH IOCTLs
+A subset of the ioctl functions are supported at this time.
+Here is a list of supported and non-supported functions:
+.RS
+.nf
+.ta +\w'MTERASE  'u +\w'is not supported.  'u
+MTFSF	is supported.	(mt fsf nn)
+MTWEOF	is supported.	(mt weof nn)
+MTFSR	is not supported.
+MTBSR	is not supported.
+MTSEOD	is supported.	(mt eod)
+MTREW	is supported.	(mt rewind)
+MTERASE	is supported.	(mt erase)
+MTOFFL	is not supported.
+MTBSF	is not supported.
+MTRET	is supported.	(mt retension)
+MTNORET	is supported.	(mt no retension)
+.fi
+.RE
+.PP
+The MTERASE ioctl erases the entire tape and then rewinds it.
+Reading status (mt status) is not supported.
+.PP
+Ioctls will not always behave as expected if they are intermixed with
+reads and writes in a program.
+.SH "OPERATIONAL INFORMATION"
+A tape is always retensioned when it is first opened for a read or
+ioctl call. 
+It is erased when it is first opened for a write.  Note that if
+the first operation performed on the tape after insertion (or booting)
+is ``mt retension'', the tape will be retensioned twice.  This
+automatic retensioning of the tape helps ensure good data
+transfer, especially on writes to the tape.
+.PP
+The data capacity of a tape will decrease with the number of soft
+errors on the tape and the number of times the drive must reposition
+between writes to the tape.  These consume tape space.  A reasonable
+expectation for a 450-foot tape is about 44 Mbytes.
+.PP
+The mean time between failure of the tape drive is also affected by
+the number of repositions while reading or writing the tape.  The tape
+drive will ``stream'' better when it is accessed under a 
+light system load.
+.SH CONFIGURATION
+The ``tm_bconf'' array in the device driver binary configuration file
+.RI ( /sys/conf/conf_tm.c )
+must contain an entry for each drive that may be configured; the
+entries must be in the same order as the ``device'' entries in the
+kernel configuration file (kernel configuration files are described in
+the article ``Building DYNIX Systems with Config'' in Volume 2).  As
+installed, ``tm_bconf'' has entries for 4 drives.  Superfluous entries
+are ignored.
+.SH "TUNING PARAMETERS"
+The following tuning parameters are defined for each drive in the
+``tm_bconf'' array of the binary configuration file:
+.IP (1)
+The buffer size (in K bytes) used to buffer data for I/O
+transfers.  Two buffers, each of this size, are allocated from the
+kernel's free page pool when the
+device is opened.  These buffers are used to improve tape streaming
+performance.  The buffer space is released when the device is closed.
+.PP
+NOTE: Increasing the size of the data buffers may cause problems with EOT
+handling on writes.  When the driver detects early-EOT from the tape drive,
+it attempts to write all buffered data to the tape.  If the data buffers are
+sufficiently large, the driver will not be able to write all remaining data
+to the tape and data will be lost.
+.IP (2)
+Flags for configurable features.  The flags available are:
+.RS
+.IP TMC_OPENFAIL
+When this flag is set, open calls to this device can fail for lack of
+physical memory for the buffers.   When this flag is clear, the buffer
+memory will always be allocated, but the process may block during this
+allocation process while other processes are swapped out to free up
+memory.
+.IP TMC_AUTORET
+When this flag is set, the device will retension automatically on the
+first access after the tape has been changed.  When clear, it will not
+retension automatically.
+.IP TMC_PRSENSE
+When this flag is set, all SCSI request sense buffers
+will be printed out, along with the command that caused the sense
+condition.  Otherwise, only sense buffers that are in some way
+unusual will be printed out, such as media and hardware errors.
+.IP TMC_RSENSE
+When this flag is set, all SCSI request sense buffers associated with
+SCSI READ operations that caused a sense condition will be printed out.
+.IP TMC_WSENSE
+When this flag is set all SCSI request sense buffers associated with
+SCSI write and write filemark operations that caused a sense condition
+will be printed out.
+.IP TMC_SSENSE
+When this flag is set all SCSI request sense buffers associated with
+SCSI space operations which caused a sense condition will be printed 
+out.
+.RE
+.IP (3)
+bits:  For the ADSI and Emulex target adapters, this should always
+be a 1 for proper operation of the device.
+.SH FILES
+.TP "\w'/sys/conf/conf_tm.c\ \ 'u"
+/dev/rtm*
+raw files
+.TP
+/sys/conf/conf_tm.c
+binary configuration file
+.SH "SEE ALSO"
+mt(1), mtio(4)
+.SH DIAGNOSTICS
+In the descriptions that follow tm\fIn\fR corresponds to an entry for a
+drive in the kernel configuration file, where \fIn\fR is the drive number.
+.PP
+.BI "tm" "n":
+.B " error writing buffer to tape."
+An I/O error occurred while writing the data to tape.
+.PP
+.BI "tm" "n":
+.B " error writing file mark on close."
+An I/O error occurred while writing a file mark to the tape.
+This message often occurs following the previous message.
+.PP
+.BI "tm" "n":
+.B " illegal read after write."
+The process attempted to read data on the tape after successfully
+completing a write to the tape,
+without rewinding or retensioning the tape first.
+.PP
+.BI "tm" "n":
+.B " illegal write after read."
+The process attempted to write data on the tape after successfully
+completing a read of the tape,
+without rewinding or retensioning the tape first.
+.PP
+.BI "tm" "n":
+.B " bad operation after write."
+The process attempted to issue an invalid ioctl after successfully
+completing a write to the tape.
+Only rewinding and retensioning are valid after a write.
+.PP
+.BI "tm" "n":
+.IB "error" " on command"
+.IB "command" "; error code="
+.IB "xx" "; filemark; end of media."
+Many error messages take this form.
+The ``error code'' is the device dependent hexadecimal code value for the 
+type of error that occurred.  
+``filemark'' and ``end of media'' are displayed only if these conditions
+are indicated by the sense information associated with the error.
+.I Error
+is one of:
+.RS
+.nf
+Aborted command
+Hardware error
+Illegal request
+Media error
+Protected Media 
+Recoverable error
+Tape not ready
+Unknown error
+Vendor unique error
+Volume overflow
+.fi
+.RE
+.I Command
+is one of:
+.RS
+.nf
+erase
+mode select
+read
+request sense
+retension
+rewind
+space
+test unit ready
+write
+write file marks
+.fi
+.RE
+Some error messages are accompanied by a display of the SCSI command 
+buffer and the sense data buffer at the time of the error.
+.SH BUGS
+The double file mark at the end of the tape cannot be supported.

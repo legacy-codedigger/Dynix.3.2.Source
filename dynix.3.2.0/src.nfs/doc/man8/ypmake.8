@@ -1,0 +1,91 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: ypmake.8 1.3 87/04/03 $
+.\" @(#)ypmake.8 1.1 85/12/28 SMI; 
+.TH YPMAKE 8 "\*(V)" "4BSD"
+.SH NAME
+ypmake \- rebuild yellow pages database
+.SH SYNOPSIS
+.B "cd /etc/yp ; make"
+[
+.I map
+]
+.SH DESCRIPTION
+.\".IX  "ypmake command"  ""  "\f2ypmake\fP \(em rebuild yellow pages database"
+.\".IX  "rebuild yellow pages database"  ""  "rebuild yellow pages database \(em \f2ypmake\fP"
+.\".IX  "yellow pages"  "rebuild database"  ""  "rebuild database \(em \f2ypmake\fP"
+The file called
+.I Makefile
+in
+.I /etc/yp
+is used by 
+.I make
+to build the yellow pages database.
+With no arguments,
+.I make
+creates
+.I dbm
+databases for any YP maps that are out-of-date
+and executes
+.I yppush 
+to notify slave databases that there has been a change.
+.LP
+If you supply a
+.I map
+on the command line,
+.I make
+only updates that map.
+Typing
+.I "make passwd"
+creates and
+.IR yppush es
+the password database (assuming it is out of date).
+Likewise,
+.I "make hosts"
+and
+.I "make networks"
+creates and
+.IR yppush es
+the host and network files,
+.I /etc/hosts
+and
+.IR /etc/networks ,
+respectively.
+.LP
+There are three special variables used by 
+.IR make :
+.BR DIR ,
+which gives the directory of the source files;
+.BR NOPUSH ,
+which when non-null inhibits doing a
+.I yppush
+of the new database files;
+and
+.BR DOM ,
+used to construct a domain other than the master's default domain.
+The default for
+.B DIR
+is
+.IR /etc ,
+and the default for
+.B NOPUSH
+is the null string.
+.LP
+Refer to
+.IR ypfiles (5)
+and
+.IR ypserv (8)
+for an overview of the yellow pages.
+.SH "SEE ALSO"
+make(1),
+makedbm(8),
+ypserv(8)

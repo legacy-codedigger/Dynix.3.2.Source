@@ -1,0 +1,72 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: catman.8 1.7 87/08/03 $
+.TH CATMAN 8 "\*(V)" "4BSD"
+.SH NAME
+catman \- create the cat files for the manual
+.SH SYNOPSIS
+.B /usr/etc/catman
+[
+.B \-p
+] [
+.B \-n
+] [
+.B \-w
+]
+[ sections ]
+.SH DESCRIPTION
+.I Catman
+creates the preformatted versions of the on-line manual from the nroff
+input files.
+Each manual page is examined and those whose preformatted versions are
+missing or out of date are recreated.
+If any changes are made,
+.I catman
+will recreate the
+.B /usr/lib/whatis
+database.
+.PP
+If a parameter does not begin with a `\-',
+it is interpreted as a list of manual sections within which
+.I catman
+looks.
+In the following example,
+.B catman
+updates only the manual sections
+1, 2, and 3:
+.IP
+.B catman 123
+.PP
+Options:
+.TP
+.B \-n
+prevents creations of
+.BR /usr/lib/whatis .
+.TP
+.B \-p
+prints what would be done instead of doing it.
+.TP
+.B \-w
+causes only the 
+.B /usr/lib/whatis
+database to be created.
+No manual reformatting is done.
+.SH FILES
+.ta 2i
+/usr/man/man?/*.*	raw (nroff input) manual sections
+.br
+/usr/man/cat?/*.*	preformatted manual pages
+.br
+/usr/lib/makewhatis	commands to make whatis database
+.DT
+.SH "SEE ALSO"
+man(1)

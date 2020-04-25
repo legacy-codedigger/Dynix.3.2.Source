@@ -1,0 +1,251 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: mailbug.1 1.16 90/12/18 $
+.TH MAILBUG 1 "\*(V)" DYNIX
+.SH NAME
+mailbug \- submit a bug report or enhancement request
+.SH SYNOPSIS
+.B mailbug
+.SH DESCRIPTION
+The
+.B mailbug
+utility allows you to submit machine-readable bug reports to a Sequent
+customer service representative.
+Check with your system administrator to ensure that the
+.B mailbug
+service is supported before submitting a bug report.
+.PP
+.B Mailbug
+prompts for the information needed to fill out the bug report.
+After you have entered everything,
+.B mailbug
+allows you to edit the bug report before mailing it 
+or to cancel the report completely.
+Unless the report is canceled,
+.B mailbug
+sends a copy to the customer service representative and one 
+to the user submitting the report, and saves a copy in the 
+\f2/usr/service/mailbug\fP directory.
+Refer to the
+.I "DYNIX System Administration Guide"
+for information on how to install the
+.B mailbug
+service.
+.PP
+.B Mailbug
+asks for the following information:
+.IP
+- Your real login name if you are currently logged in as 
+.BR root 
+.IP
+- Your full name, phone number, and return e-mail path.  This information
+can also be provided from the
+.I .mailbug
+text file, which you can create in your home directory.
+.I .Mailbug
+should look like this:
+.RS
+.IP
+.ft CW
+.nf
+Full name: Anne Harris
+Phone number: 123-4567
+Return email path: anneh@\f2system_name\fP
+.fi
+.ft 1
+.RE
+.sp 1
+.IP
+- Your company or organization name.  This information may
+be provided by a line in the
+.I /usr/service/site-information 
+file, which looks like this:
+.RS
+.IP
+.ft CW
+.nf
+site_name: Sequent Computer Systems, Inc.
+.RE
+.fi
+.ft 1
+.sp 1
+.IP
+- Whether the problem occurs on this system.
+If the answer is yes,
+.B mailbug
+retrieves as much system-specific data as it can from the system and 
+from the following files:
+.I /usr/service/site-information
+and
+.I /usr/service/serial-number .
+If the answer is no, 
+.B mailbug 
+prompts for some system-specific data such as this:
+.RS
+.IP
+System Serial Number
+.IP
+Operating System Type
+.IP
+Operating System Version
+.IP
+The type of system on which the problem occurred
+.RE
+.IP
+- A one-line summary of the bug
+.IP
+- An assessment of the severity of the bug.
+The choices are as follows:
+.RS
+.IP
+.B Critical
+\(em an essential component
+of the hardware or operating system cannot be used
+.IP
+.B Serious
+\(em a nonessential module or utility
+cannot be used
+.IP
+.B Normal
+\(em some feature of a nonessential module or utility
+doesn't work correctly
+and there is no convenient workaround
+.IP
+.B Low
+\(em some feature of a non-essential module or utility
+doesn't work correctly,
+but you can work around the problem
+without serious inconvenience
+.IP
+.B Enhancement
+\(em suggestions on how the product can be improved
+.IP
+.B For Your Information
+\(em for information only; no action is required
+.RE
+.IP
+- A guess as to the source of the problem:
+documentation,
+hardware,
+mechanical,
+software,
+diagnostics,
+or other
+.IP
+- For documentation problems,
+.B mailbug
+prompts for
+the name of the manual involved,
+the page number,
+and the revision number
+at the bottom of the manual's page.
+.IP
+- For hardware and mechanical bugs,
+.B mailbug
+prompts for the type of hardware component
+("Xylogics 472 tape controller", for example),
+its part number,
+revision number,
+and serial number.
+.IP
+- For software bugs,
+.B mailbug
+prompts for
+the name of the 
+software module that is suspected to be incorrect
+\(em for example, \f2csh\f1.
+.IP
+- For diagnostics bugs, 
+.B mailbug
+prompts for product type.  If the bug does not occur on this system,
+console processor type, system processor type, diagnostic version, and 
+firmware version are requested.
+.IP
+- A full description of the bug, which may be as long as necessary
+.PP
+While the problem description is being entered, certain operations may be 
+executed:
+.RS
+.IP
+If a line in the description begins with ~v , your
+.B $EDITOR
+(\f3vi\fP by default) is started so you can edit the 
+description text entered up to that point.
+.IP
+If a line in the description begins with ~r \f2filename\fP , 
+the contents of 
+.I filename 
+are included in the text of the description.
+.RE
+.PP
+Type a CTRL-D at the beginning
+of a line to end the problem description entry procedure.
+.PP
+If the requested information is unknown or not applicable,
+you can skip most fields by simply pressing RETURN in response to the prompt.
+.PP
+To use default values, which appear in square brackets, simply
+press RETURN in response to the prompt.
+.PP
+It is the responsibility of the system administrator to maintain the data
+in the 
+.I /usr/service 
+directory. This should be done at setup time or can be done at any time 
+by editing these files. The 
+.I /usr/service/site-information 
+file follows the format:
+.RS
+.sp .5
+.ft CW
+.nf
+site_name: Sequent Computer Systems, Inc.
+address: 15450 SW Koll Parkway
+city: Beaverton
+state_province_code: OR
+postal_code: 97006-6063
+country: USA
+phone_number: (503) 626-5700
+site_type: end user
+system_type: S81
+.fi
+.ft 1
+.RE
+.PP
+You may include mulitple address lines. Valid site types are OEM, VAR, 
+Distributor, and end user. Valid system types are B8, B21, S81, S27, and S3.
+.PP
+The 
+.I /usr/service/serial-number
+file follows the following format:
+.RS
+.sp .5
+.ft CW
+.nf
+serial_number: 89162 
+.sp .5
+.fi
+.ft 1
+.RE
+Both of these files are created when the file
+.I setup-pts.sh
+is executed.  If your mailbug UUCP connection is already 
+established, which would make it redundant to run 
+.IR setup-pts.sh ,
+you can create these files with information in
+the format shown above.
+.SH FILES
+/usr/service/mailbug/site-information
+.br
+/usr/service/mailbug/serial-number
+.SH "SEE ALSO"
+uucp(1)
+

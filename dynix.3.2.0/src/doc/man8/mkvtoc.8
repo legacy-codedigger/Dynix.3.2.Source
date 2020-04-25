@@ -1,0 +1,188 @@
+.\" $Copyright:	$
+."Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989 
+."Sequent Computer Systems, Inc.   All rights reserved.
+." 
+."This software is furnished under a license and may be used
+."only in accordance with the terms of that license and with the
+."inclusion of the above copyright notice.   This software may not
+."be provided or otherwise made available to, or used by, any
+."other person.  No title to or ownership of the software is
+."hereby transferred.
+.\"
+...
+.V= $Header: mkvtoc.8 1.5 90/12/14 $
+.TH MKVTOC 8 "\*(V)" "7th Edition"
+.SH NAME
+mkvtoc \- create VTOC on disks
+.SH SYNOPSIS
+.B /etc/mkvtoc
+[
+.B \-d
+arguments ] 
+[
+.B \-g
+] [
+.B \-f
+] [
+.B \-s
+datafile
+] disk disktype
+.SH DESCRIPTION
+.B mkvtoc\^
+creates the
+VTOC (volume table of contents) on disks.
+.SH OPTIONS
+.TP
+.B \-d
+Permits change to a single partition.
+\f2argument\f1s consist of a colon-separated list of
+entries similar to a line from \f2datafile\f1 (described below).
+.TP
+.B \-g
+The VTOC is initialized and the
+disk geometry is set from the
+file
+\f3/etc/diskinfo/\f2disktype\f3.geom\f1.
+This option must be supplied if the disk does not
+have a VTOC present.
+.TP
+.B \-f
+Allow partitions of type
+.B \s-1V_RESERVED\s0
+to be changed.  Use of this option is strongly
+discouraged.
+.TP
+.B \-s
+The VTOC is populated according to a
+.I datafile\^
+created by the user.  The
+.I datafile\^
+format is described below.
+.PP
+If no options are given, the VTOC
+is populated according to the specification of the default files 
+in directory
+.I /etc/vtoc\^ .
+The file \f2/etc/vtoc/disktype.disk\f1 is used 
+if it exists and if \f2disktype\f1 and \f2 disk\f1
+were supplied on the command line. 
+Otherwise, two files are tried in turn:  first, 
+\f2/etc/vtoc/disktype.controller\f1, where 
+\f2controller\f1 is the disk name without unit number, and
+then \f2/etc/vtoc/disktype\f1.
+For example, for a 792\(hymegabyte
+disk, 
+the \f2disktype\f1 specific would be \f3m2382k\f1 on zd0.
+Files would be tried in the following order:  first, \/etc/vtoc/m2383k.zd0,
+next, \f2/etc/vtoc/m2382k.zd\f1, and, last, \f2/etc/vtoc/m2582k\f1.
+
+This hierarchy of possibilities allows a system adminstrator
+to keep custom VTOC files corresponding to the various devices
+on the system without having to hand-override the VTOC description
+filename each time
+.I mkvtoc
+is run.
+.PP
+The
+.I disk
+on which the VTOC is installed must be specified as an unpartitioned
+disk name such as
+.B /dev/rzd0
+or
+.B /dev/rsd1.
+.PP
+The 
+.I datafile\^
+contains one specification line for each partition, starting with partition 0.  
+Lines beginning with an asterisk are treated as comments.
+A specification line is composed of position-dependent entries
+separated by white space. 
+A line has the following format:
+.PP
+.RS
+partition  type  starting_sector  size_in_sectors  block_size frag_size
+.RE
+.PP
+The entries have the following values:
+.PP
+.TP 14
+.I partition
+The partition number: 0-254.
+.TP
+.I type 
+The partition type: a decimal number.  The following are valid types:
+V_NOPART: 0, V_RAW: 1, V_BOOT: 2, V_RESERVED: 3, V_FW: 4, V_DIAG: 5.
+.TP
+.I starting sector
+The sector number on which the partition starts. 
+.TP
+.I size in sectors
+The number of sectors occupied by the partition.
+.bP
+.PP
+The partition types have the following meanings:
+.TP 14
+.B \s-1V_NOPART\s0
+This partition number does not represent valid, usable disk space.
+A partition may be marked as
+.B \s-1V_NOPART\s0
+to serve as a placeholder.  Note that if the datafile contains
+less than the maximum possible number of partitions, the
+remainder are marked
+.B \s-1V_NOPART\s0 .
+.TP
+.B \s-1V_RAW\s0
+This is a regular partition.
+.TP
+.B \s-1V_BOOT\s0
+This is an area of disk reserved for a bootstrap.  As such, filesystems
+should not be mounted here.  
+.B \s-1V_BOOT\s0
+is a descriptive tag and has no functional difference from
+.B \s-1V_RAW\s0 .
+.TP
+.B \s-1V_RESERVED\s0
+This is an area of the disk reserved for some disktype-specific
+purpose, such as bad block lists, diagnostic tracks, or the VTOC itself.
+Partitions of type
+.B \s-1V_RESERVED\s0
+are treated differently than partitions of other types in that
+they may not be changed via the
+.B mkvtoc
+command, unless the
+.B \-f
+flag is specified on the command line.
+In general it is not wise to alter 
+.B \s-1V_RESERVED\s0
+partitions in any
+way, since various parts of the system
+depend on these disk sectors to be unchanged.
+.TP
+.B \s-1V_FW\s0
+This is an area of disk reserved for system controller firmware.  As
+such, filesystems should not be mounted here.  
+.B \s-1V_FW\s0
+is a descriptive tag and has no functional difference from
+.B \s-1V_RAW\s0 .
+.TP
+.B \s-1V_DIAG\s0
+This is an area of the disk reserved for dumping model D hardware scan and
+cache data.  As such, filesystems should not be mounted here.
+.B \s-1V_DIAG\s0
+is also a descriptive tag and has no functional difference from
+.B \s-1V_RAW\s0 .
+.PP
+A number of sanity checks are performed on the new
+VTOC before it is written to disk.  For example, the
+block size and fragment sizes are checked against system
+norms and the total number of sectors in partitions are
+checked to make sure they do not exceed the size of the disk.
+In addition, if any two partitions have sectors which overlap, the
+.B mkvtoc
+command will fail.
+.SH SEE ALSO
+prtvtoc(8), rmvtoc(8)
+.SH WARNINGS
+If a disk which has not previously contained a VTOC has data present
+in sectors 16 through 31, that data
+will be overwritten by the VTOC.

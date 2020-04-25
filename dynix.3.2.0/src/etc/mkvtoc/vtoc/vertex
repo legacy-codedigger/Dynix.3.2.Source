@@ -1,0 +1,24 @@
+*
+*#ident	"$Header: vertex 1.1 90/01/30 $"
+* Vertex model 170 with interleave 1-1
+*
+* Dimensions:
+*   512 bytes/sector
+*    17 sectors/track
+*     7 tracks/cylinder
+*   987 cylinders
+*   984 user accessible cylinders
+*
+* Types:
+*	00	No Partition
+*	01	Regular Partition
+*	02	Boot Block
+*	03	Reserved Disk Area
+*
+* Partition	Type	Start Sector	Size in Sectors	   Block Sz    Frag Sz
+   00		1	32		49115		   8192        1024
+   01		1	49147		29274		   8192        1024
+   02		1	78421		38675		   8192        1024
+   13		3	117096		357		   0           0
+   14		2	0		16		   0           0
+   15		3	16		16		   0           0

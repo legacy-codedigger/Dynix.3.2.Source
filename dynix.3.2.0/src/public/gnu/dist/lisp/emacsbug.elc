@@ -1,0 +1,11 @@
+
+(defvar bug-gnu-emacs "bug-gnu-emacs@prep.ai.mit.edu" "\
+Address of site maintaining mailing list for Gnu emacs bugs.")
+
+(defun report-emacs-bug (topic) "\
+Report a bug in Gnu emacs.
+Prompts for bug subject.  Leaves you in a mail buffer." (interactive "sBug Subject: ") (byte-code "¿à√¿	
+#àdbàƒ≈∆ «#à»… !!á" [nil bug-gnu-emacs topic mail insert "
+In " emacs-version "
+
+" message substitute-command-keys "Type \\[mail-send] to send bug report."] 6))

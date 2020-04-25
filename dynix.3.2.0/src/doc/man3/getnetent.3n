@@ -1,0 +1,130 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: getnetent.3n 1.8 90/02/07 $
+.TH GETNETENT 3N "\*(V)" "4BSD"
+.SH NAME
+getnetent, getnetbyaddr, getnetbyname, setnetent, endnetent \- get network entry
+.SH SYNOPSIS
+.nf
+.ft 3
+#include <netdb.h>
+.PP
+.ft 3
+struct netent *getnetent()
+.PP
+.ft 3
+struct netent *getnetbyname(name)
+char *name;
+.PP
+.ft 3
+struct netent *getnetbyaddr(net)
+int net;
+.PP
+.ft 3
+setnetent(stayopen)
+int stayopen
+.PP
+.ft 3
+endnetent()
+.fi
+.SH DESCRIPTION
+.IR Getnetent ,
+.IR getnetbyname ,
+and
+.I getnetbyaddr
+each return a pointer to an object with the
+following structure
+containing the broken-out
+fields of a line in the network data base,
+.IR /etc/networks .
+.RS
+.PP
+.nf
+struct	netent {
+	char	*n_name;	/* official name of net */
+	char	**n_aliases;	/* alias list */
+	int	n_addrtype;	/* net number type */
+	long	n_net;		/* net number */
+};
+.ft 1
+.ad
+.fi
+.RE
+.PP
+The members of this structure are:
+.TP \w'n_addrtype'u+2n
+n_name
+The official name of the network.
+.TP \w'n_addrtype'u+2n
+n_aliases
+A zero terminated list of alternate names for the network.
+.TP \w'n_addrtype'u+2n
+n_addrtype
+The type of the network number returned; currently only AF_INET.
+.TP \w'n_addrtype'u+2n
+n_net
+The network number.  Network numbers are returned in machine byte
+order.
+.PP
+.I Getnetent
+reads the next line of the file, opening the file if necessary.
+.PP
+.I Setnetent
+opens and rewinds the file.  If the
+.I stayopen
+flag is non-zero,
+the net data base will not be closed after each call to 
+.I getnetent
+(either directly, or indirectly through one of
+the other \*(lqgetnet\*(rq calls).
+.PP
+.I Endnetent
+closes the file.
+.PP
+.I Getnetbyname
+and
+.I getnetbyaddr
+sequentially search from the beginning
+of the file until a matching
+net name or
+net address is found,
+or until EOF is encountered.
+Network numbers are supplied in host order.
+.SH FILES
+.nf
+/etc/networks
+/etc/yp/\f2domainname\f1/networks.byname
+/etc/yp/\f2domainname\f1/networks.byaddr
+.fi
+.SH "SEE ALSO"
+networks(5), ypserv(8)
+.SH DIAGNOSTICS
+Null pointer
+(0) returned on EOF or error.
+.SH BUGS
+All information
+is contained in a static area
+so it must be copied if it is
+to be saved.
+.PP
+Only Internet network
+numbers are currently understood.
+Expecting network numbers to fit
+in no more than 32 bits is probably
+naive.
+.PP
+The functions
+.I setnetent
+and
+.I endnetent
+do not return a value, but are declared as integer functions
+to maintain compatibility.

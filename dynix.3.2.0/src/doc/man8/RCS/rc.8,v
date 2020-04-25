@@ -1,0 +1,394 @@
+head	1.4;
+access;
+symbols;
+locks;
+comment	@# @;
+
+
+1.4
+date	93.03.19.04.37.10;	author bruce;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	93.03.19.04.34.51;	author bruce;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	93.03.19.03.52.01;	author bruce;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	93.03.18.13.31.14;	author bruce;	state Exp;
+branches;
+next	;
+
+
+desc
+@Initial revision is as distributed with Dynix Source V3.2.0,
+    file dated Dec 14 1990.
+Initial revision had RCS ident:
+    $Header: rc.8 1.11 90/10/25 $
+@
+
+
+1.4
+log
+@Added documentation of rc.boot -- executed first whenever the machine
+    is booted (feature of distributed init(8), but documented anywhere).
+@
+text
+@.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+V= $Header: /usr/src/dynix.3.2.0/src/doc/man8/RCS/rc.8,v 1.3 1993/03/19 04:34:51 bruce Exp $
+.TH RC 8 "\*(V)" "4BSD"
+.SH NAME
+rc.boot, rc, rc.local, rc.shutdown, rc.single \- command scripts for auto-reboot,
+daemons, shutdown, and single-user mode
+.SH SYNOPSIS
+.B /etc/rc.boot
+.br
+.B /etc/rc
+.br
+.B /etc/rc.local
+.br
+.B /etc/rc.shutdown
+.br
+.B /etc/rc.single
+.SH DESCRIPTION
+The
+command script
+.B rc.boot
+is executed whenever the machine is booted.
+The script
+.B rc
+controls the automatic reboot process.
+The script
+.B rc.local
+holds site-specific commands.
+The script
+.B rc.shutdown
+controls shutdowns, halts, and the shutdown portion
+of manual reboots.  The
+.B rc.single
+script holds commands to be run when the machine goes into single-user
+(whether booted that way, or brought down from multi-user mode).
+.PP
+The script
+.BR rc.boot ,
+if it exists,
+is executed by
+.I init
+whenever the machine is booted.
+By default,
+.B rc.boot
+does not exist.
+It could be used to do one-time initializations,
+such as configuring network interfaces.
+.PP
+If booting to single-user mode,
+.I init
+then executes
+.BR rc.single ,
+if it exists,
+and starts a single-user shell.
+.PP
+When an automatic reboot is in progress
+(i.e., booting to multi-user mode),
+.B rc
+is invoked with the argument
+.IR autoboot .
+It runs
+.I fsck
+with the
+.I \-p
+option to ``preen'' all the disks of minor inconsistencies resulting
+from the last system shutdown, and to check for serious inconsistencies
+caused by hardware or software failure.
+If this auto-check and repair fails, then the machine is left in
+single-user mode.
+.PP
+The second part of
+.B rc
+runs after the first part succeeds, and also when
+.B rc
+is invoked by virtue of a single-user shell terminating (refer to the
+.IR init (8)
+man page).
+This part executes
+.B rc.local
+(described below),
+starts additional swap devices,
+preserves editor files,
+clears the scratch directory
+.IR /tmp ,
+and starts daemons on the system.
+.PP
+Normally, the first part of
+.B rc.local
+uses
+.I domainname
+to define the machine's domain name,
+starts up local daemons,
+and uses 
+.I savecore
+to save any core image generated as a result of a system crash.
+The
+.I savecore
+command is included in the
+.B rc.local
+file because the directory in which core dumps are saved
+is usually site-specific.
+The 
+.B rc.local
+script also defines the machine's hostname using
+.I hostname
+and configures network interfaces using
+.IR ifconfig .
+.PP
+The script
+.B rc.shutdown
+is always called with a single argument.  It is called from
+.IR shutdown ,
+.IR halt , 
+and 
+.IR reboot .
+.PP
+The 
+.I shutdown 
+command calls
+.B rc.shutdown
+with the argument
+.I warn
+immediately before it sends the terminate signal (SIGTERM) to all non-system
+processes.
+This part of the script can be used by the system administrator to
+turn off databases and other system-wide applications that need to
+shut down gracefully. 
+(Refer to the  
+.IR shutdown (8)
+man page for details of the sequence of events during system shutdown).  
+After
+.I shutdown 
+sends all processes a kill signal (SIGKILL), it calls
+.B rc.shutdown
+with the argument
+.IR shutdown .
+This part of the
+.B rc.shutdown
+script handles any shutdown procedure that requires most processes to be
+gone, such as unmounting disks.  The only processes alive at this
+point are the system processes (init, swapper, pagedaemon),
+.IR shutdown ,
+a shell for 
+.BR rc.shutdown ,
+and any processes that did not die, if any.
+.PP
+The 
+.I halt
+command calls
+.B rc.shutdown
+with the argument
+.I halt
+before halting the last processor, and
+.I reboot
+similarly calls
+.B rc.shutdown
+with the argument
+.I reboot
+before the system is rebooted.
+.PP
+When the system is booted in single-user mode,
+and when the system is brought down from multi-user mode into single-user mode,
+.B rc.single
+is executed if it exists.  By default this
+script initializes the hostname and domainname of the system,
+based on the hostname and domainname settings in
+.BR rc.local .
+.SH SEE ALSO
+halt (8),
+init (8),
+reboot (8),
+savecore (8),
+shutdown (8),
+fsck (8),
+domainname (8),
+hostname (8),
+ifconfig (8)
+@
+
+
+1.3
+log
+@Clarified the role of rc.single -- it is invoked both when the machine
+    is booted single-user, AND when the machine is brought down from
+    multi-user mode.
+Made the "default" actions of rc.single seem a little more tentative
+    (since, given the above, they are not really correct and hence are
+    subject to local changes).
+Made hyphenation of "single-user" consistent.
+@
+text
+@d12 1
+a12 1
+.V= $Header: /usr/src/dynix.3.2.0/src/doc/man8/RCS/rc.8,v 1.2 1993/03/19 03:52:01 bruce Exp $
+d15 1
+a15 1
+rc, rc.local, rc.shutdown, rc.single \- command scripts for auto-reboot,
+d18 2
+d30 3
+d45 19
+@
+
+
+1.2
+log
+@Made use of bold and italics consistent:
+    Bold is used only for rc* file names.
+    Italics are used for command names.
+    "See Also" references are in plain font.
+Deleted two inconsistent instances of /etc/ pathname prefix.
+Minor fixes to mixed fonts (.IR, .BR).
+@
+text
+@d12 1
+a12 1
+.V= $Header: /usr/src/dynix.3.2.0/src/doc/man8/RCS/rc.8,v 1.1 1993/03/18 13:31:14 bruce Exp $
+d16 1
+a16 1
+daemons, shutdown, and single user mode
+d38 2
+a39 1
+script holds commands to be run when the machine is booted single user.
+d41 2
+a42 1
+When an automatic reboot is in progress,
+d53 2
+a54 3
+If this auto-check and repair succeeds, then the second part of
+.B rc
+runs.
+d58 1
+a58 1
+runs after an auto-reboot succeeds, and also if
+d60 1
+a60 1
+is invoked when a single-user shell terminates (refer to the
+d63 1
+a63 4
+Following a successful
+.IR fsck ,
+.B rc
+executes
+d65 6
+a70 5
+(described below), then
+.B rc
+starts all the daemons on the system, preserves editor files,
+and clears the scratch directory
+.IR /tmp .
+d146 2
+a147 1
+When the system is booted in single user mode,
+d150 2
+a151 2
+script initializes the hostname and domainname of the system.
+This is based on the hostname and domainname settings in
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d12 1
+a12 1
+.V= $Header: rc.8 1.11 90/10/25 $
+d43 1
+a43 1
+.I autoboot.
+d45 1
+a45 1
+.B fsck
+d47 1
+a47 1
+.B \-p
+d60 1
+a60 1
+.BR init (8)
+d63 1
+a63 1
+.BR fsck ,
+d76 1
+a76 1
+.B domainname
+d80 1
+a80 1
+.B savecore
+d83 1
+a83 1
+.B savecore
+d85 1
+a85 1
+.I rc.local
+d91 1
+a91 1
+.B hostname
+d93 1
+a93 1
+.BR ifconfig .
+d98 2
+a99 2
+.BR shutdown ,
+.BR halt , 
+d101 1
+a101 1
+.BR reboot .
+d104 1
+a104 1
+.B shutdown 
+d115 1
+a115 1
+.BR shutdown (8)
+d118 1
+a118 1
+.B shutdown 
+d128 1
+a128 1
+.BR shutdown ,
+d134 1
+a134 1
+.B halt
+d140 1
+a140 1
+.BR reboot
+d148 1
+a148 1
+.B  /etc/rc.single
+d152 1
+a152 1
+.B /etc/rc.local.
+d154 9
+a162 9
+.BR halt (8),
+.BR init (8),
+.BR reboot (8),
+.BR savecore (8),
+.BR shutdown (8),
+.BR fsck (8),
+.BR domainname (8),
+.BR hostname (8),
+.BR ifconfig (8)
+@

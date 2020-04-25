@@ -1,0 +1,42 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: floor.3m 1.4 86/05/13 $
+.TH FLOOR 3M "\*(V)" "7th Edition"
+.SH NAME
+fabs, floor, ceil \- absolute value, floor, ceiling functions
+.SH SYNOPSIS
+.nf
+.B #include <math.h>
+.PP
+.B double floor(x)
+.B double x;
+.PP
+.B double ceil(x)
+.B double x;
+.PP
+.B double fabs(x)
+.B double x;
+.nf
+.SH DESCRIPTION
+.I Fabs
+returns the absolute value
+.RI | \|x\| |.
+.PP
+.I Floor
+returns the largest integer not greater than
+.IR x .
+.PP
+.I Ceil
+returns the smallest integer not less than
+.IR x .
+.SH SEE ALSO
+abs(3)

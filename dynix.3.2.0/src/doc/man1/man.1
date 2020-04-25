@@ -1,0 +1,150 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: man.1 1.15 1991/08/06 23:58:12 $
+.TH MAN 1 "\*(V)" "4BSD"
+.SH NAME
+man \- find manual information by keywords; print out the manual
+.SH SYNOPSIS
+.br
+.B man
+.B \-k
+keyword ...
+.br
+.B man
+.B \-f
+file ...
+.br
+.B man
+[
+.B \-
+] [
+.B \-P
+.I path
+] [
+.B \-t
+] [
+section
+]
+title ...
+.SH DESCRIPTION
+.I Man
+is a program which gives information from the
+.IR "DYNIX Programmer's Manual" .
+It can be asked for one-line descriptions of commands specified by
+name, or for all commands whose description contains any of a set of
+keywords.  It can also provide on-line access to the sections of the
+printed manual.
+.PP
+When given the option
+.B \-k
+and a set of keywords,
+.I man
+prints out a one-line synopsis of each manual section whose
+listing in the table of contents contains that keyword.
+.PP
+When given the option
+.B \-f
+and a list of file names, \f2man\f1 attempts to locate manual
+sections related to those files, printing out the table of contents
+lines for those sections.
+This is the same as
+.I whatis (1).
+.PP
+When neither
+.B \-k
+nor
+.B \-f
+is specified,
+.I man
+formats a specified set of manual pages.
+If a section identifier is given,
+.I man
+looks in that section of the manual for the given
+.I titles.
+.I Section
+is an Arabic section number (3 for instance).  The number may be followed by
+a single letter classifier (1g for instance)
+indicating a graphics program in section 1.  If
+.I section
+is omitted,
+.I man
+searches all sections of the manual, giving preference to commands
+over subroutines in system libraries, and printing the first section
+it finds, if any.
+.PP
+If the standard output is a teletype, or if the flag
+.B \-
+is given,
+.I man
+pipes its output through
+.IR cat (1)
+with the option
+.B \-s
+to delete superfluous blank lines, through
+.IR ul (1)
+to create proper underlines for different terminals, and through
+.IR more (1)
+to stop after each page on the screen.
+(Note that not all commands normally associated with
+.IR more (1)
+such as 
+.B v
+will work when 
+.IR more (1)
+is used by
+.IR man .)
+Hit a space to continue or
+a control-D to scroll more lines when the output stops.
+The use of
+.IR more (1)
+as the pager can be changed by setting the environment variable PAGER.
+.PP
+The
+.B \-t
+flag causes
+.I man
+to arrange for the specified section to be
+.IR troff ed
+to a suitable raster output device; see
+.IR vtroff (1).
+The environment variable MANTROFF
+is interpreted as a printf-style string
+to generate the shell command that
+formats the specified section.
+The default string is:
+.sp
+troff -t -man /usr/lib/tmac/tmac.vcat %s\ |\ /usr/lib/rvsort
+\ |\ /usr/ucb/vpr -t
+.PP
+Normally 
+.I man 
+checks 
+.I /usr/man
+for manual information.  
+This can be changed by supplying an alternate path
+with the
+.B \-P
+flag.
+.PP
+Manual pages aliases are kept in /usr/man/aliases.
+.SH FILES
+/usr/man/man?/*
+.br
+/usr/man/cat?/*
+.br
+/usr/man/aliases
+.SH SEE\ ALSO
+more(1), ul(1), whatis(1), catman(8)
+.SH BUGS
+The manual is supposed to be reproducible either on the phototypesetter
+or on a typewriter.
+However, on a typewriter some information is necessarily lost.

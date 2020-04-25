@@ -1,0 +1,33 @@
+.\" $Copyright: $
+.\"Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\"Sequent Computer Systems, Inc.   All rights reserved.
+.\" 
+.\"This software is furnished under a license and may be used
+.\"only in accordance with the terms of that license and with the
+.\"inclusion of the above copyright notice.   This software may not
+.\"be provided or otherwise made available to, or used by, any
+.\"other person.  No title to or ownership of the software is
+.\"hereby transferred.
+...
+.V= $Header: showprocs.8 1.1 1991/04/16 16:07:09 $
+.TH SHOWPROCS 8 "\*(V)" "DYNIX"
+.SH NAME
+showprocs \- show processor information
+.SH SYNOPSIS
+.B /etc/showprocs
+.SH DESCRIPTION
+.B showprocs
+displays a table containing the following information for each processor
+in the system: processor number, type, speed, SLIC address, state, and
+FPA status.
+The speed that is displayed is the CPU rate in MHz.  A processor's state
+is either 'online' or 'offline'.  The FPA field indicates with a 'yes' or 'no'
+whether or not a Floating Point Accelerator is present; 'emu' indicates
+that an FPA is emulated in software.
+.B showprocs
+is especially useful for determining a processor number to use with the 
+.B on
+command.
+.SH "SEE ALSO"
+online(8), showcfg(8), on(8),
+tmp_ctl(2)

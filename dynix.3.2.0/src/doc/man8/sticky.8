@@ -1,0 +1,94 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+.\"
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.  This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: sticky.8 1.7 91/02/22 $
+.TH STICKY 8 "\*(V)" "4BSD"
+.SH NAME
+sticky \- executable files with persistent text and append-only directories
+.SH DESCRIPTION
+The
+.I "sticky bit"
+(file mode bit 01000, see
+.IR chmod (2))
+is used to indicate special treatment
+for certain executable files and directories.
+.SH "STICKY TEXT EXECUTABLE FILES"
+Normally,
+the text pages of a sharable executable file remain cached in memory
+long after all instances of a text image exit.
+The system's representation of shared text is reused on a
+.I least recently used
+basis
+(the system reuses the oldest text pages first).
+When the `sticky bit',
+is set on a sharable executable file,
+the system's representation of the shared text is
+.B never
+reused.
+.PP
+Sharable files are created using the
+.B \-n
+and
+.B \-z
+options of
+.IR ld (1).
+.PP
+To replace a sticky executable that has been used:
+.TP
+(1)
+Create a new file with the same name.
+Note that if the file is being executed by any process,
+writing is prevented;
+it suffices to simply remove the file and then rewrite it,
+being careful to reset the owner and mode with
+.IR chmod (2)
+and
+.IR chown (2)
+(see
+.IR install (1)).
+.TP
+(2)
+Set the sticky bit again.
+.PP
+Only the super-user can set the sticky bit on a sharable executable file.
+.SH "STICKY DIRECTORIES"
+A directory whose `sticky bit' is set
+becomes an append-only directory, or, more accurately,
+a directory in which the deletion of files is restricted.
+A file in a sticky directory may only be removed or renamed
+by a user if the user has write permission for the directory and
+the user is the owner of the file, the owner of the directory,
+the super-user, or the user has write permission on the file.
+This feature is usefully applied to directories such as /tmp
+which must be publicly writable but
+should deny users the license to arbitrarily
+delete or rename each others' files.
+.PP
+Any user may create a sticky directory.
+See
+.IR chmod (1)
+for details about modifying file modes.
+.SH NOTE
+.I Sticky
+executables are largely unnecessary on a virtual-memory machine,
+since text pages are normally cached as long as possible
+after all instances of a text image exit.
+.SH "SEE ALSO"
+chmod(2),
+chown(2),
+install(1)

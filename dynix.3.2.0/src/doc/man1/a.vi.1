@@ -1,0 +1,311 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: a.vi.1 1.10 90/06/12 $
+.TH A.VI 1 "\*(V)" "DYNIX"
+.SH NAME
+a.vi \- vi with extensions for Ada source files
+.SH SYNOPSIS
+.B a.vi
+[
+.B \-x
+] [
+.B \-t
+tag
+] [
+.B \-r
+] [
+\f3+\f1\f2command\f1
+] [
+.B \-l
+] [
+\f3\-w\f2n\f1
+]
+name ...
+.SH DESCRIPTION
+.I A.vi
+is a modified version of UNIX 4.2bsd
+.IR vi
+which facilitates the use of
+.I vi
+on Ada source files.
+If
+.I vi
+is invoked as
+.I a.vi
+or if the
+.I ada
+option is set,
+the extensions described here will apply.
+(Refer to
+.IR vi (1)
+for a description of the command line options.)
+.PP
+The extensions to
+.I a.vi
+are modeled after the standard
+.I vi
+support for C source files.
+In particular, the \*(lq%\*(rq, \*(lq[[\*(rq, and \*(lq]]\*(rq,
+and \*(lq^]\*(rq commands have been modified and
+two new commands, \*(lq*\*(rq, for syntactic closure, and
+\*(lq^O\*(rq, for finding specifications of tags, have been added.
+.PP
+.I A.vi
+has three new options not found in standard
+.IR vi :
+.IR ada ,
+.IR adapath ,
+and
+.IR atags .
+These options can be set in the same way as
+the standard
+.I vi
+options; either from within
+.I a.vi
+or from your
+.I .exrc
+file.
+Note that
+.I ada
+is a toggle option, while
+.I adapath
+and
+.I atags
+are string options (pathnames). 
+A space or tab character in string options must be escaped using a
+\*(lq\e\*(rq.
+If the
+.I adapath
+is not set,
+.I a.vi
+sets it, if possible, using the
+.I adapath
+found in the local
+.I ada.lib
+file
+(see the
+.IR "VADS Operations Manual"
+if the Ada compiler
+.IR ada (1)
+is installed on your system).
+.I A.vi
+also sets the
+.I atags
+path from the information in the
+.I ada.lib
+file, if that option is not already set.
+.PP
+.I A.vi
+will search the directories in your
+.I adapath
+for any files specified either on the command line, when
+.I a.vi
+is invoked, or as arguments to commands issued within
+.IR a.vi .
+If the file is not found in any directory in
+.IR adapath ,
+.I a.vi
+assumes the file is a new one.
+.PP
+The tags commands in
+.I a.vi
+are compatible with
+.IR a.tags (1),
+which
+produces a special Ada tags file called
+.IR atags .
+.I A.vi
+first checks the
+.I atags
+file in your local directory for the tag.
+If a unique tag is found, the
+proper file is displayed.
+If the tag is not found,
+.I a.vi
+checks all
+other tag files on the
+.I atags
+path for the tag.
+If the tag is still
+not found,
+.I a.vi
+then checks all the
+.I tags
+files along the
+.I tags
+path.
+(The
+.I tags
+option in
+.I a.vi
+is identical to the one in 4.2bsd
+.IR vi .) 
+If multiple instances of a tag are found in the
+.I atags
+or
+.I tags
+file (as
+in the case of overloaded procedures),
+.I a.vi
+will enter a special mode and present a list of tags.
+The user can then scan through the list and select the desired tag
+using the following commands:
+.TP "\w`ESC  `u"
+j
+move down in the list    
+.TP
+k
+move up in the list    
+.TP
+CR
+accept the displayed tag
+.TP
+n
+check next tag file 
+.TP
+ESC
+abort the tags command
+.PP
+Other keystrokes will give an error indication.
+.SH COMMANDS
+If
+.I vi
+is invoked as
+.I a.vi
+or if the
+.I ada
+option is set,
+.I vi
+assumes it is editing Ada source, and accepts the following commands.
+.TP
+%
+finds the matching
+.B end
+when the cursor is placed on:
+.BR if ,
+\f3for\fP, \f3while\fP,
+\f3loop\fP, \f3case\fP, \f3record\fP, \f3select\fP,
+\f3function\fP, \f3procedure\fP, \f3package\fP, or \f3task\fP.
+In the case of procedures, functions, packages, tasks, and declares,
+the matching \f3end\fP
+.I must
+have the \*(lqoptional\*(rq identifier.
+.IP
+``%'' also searches back from the \*(lqe\*(rq of
+\f3end if\fP, \f3end loop\fP, \f3end case\fP, \f3end record\fP,
+\f3end select\fP, and \f3end \f2xxxx\f1
+(where \f2xxxx\fP is the name of a \f3function\fP, \f3procedure\fP,
+\f3package\fP, \f3task\fP, or \f3declare\fP)
+to find the corresponding
+\f3if\fP, \f3for\fP, \f3while\fP,
+\f3loop\fP, \f3case\fP, \f3record\fP, \f3select\fP,
+\f3function\fP, \f3procedure\fP, \f3package\fP, or \f3task\fP.
+When matching an \f3end loop\fP,
+.I a.vi
+finds the corresponding
+\f3while\fP or \f3for\fP
+if they are on the same line as the
+\f3loop\fP.
+Otherwise,
+.I a.vi
+simply matches the corresponding \f3loop\fP.
+.IP
+\*(lq%\*(rq finds matching parentheses and braces (``{\|}'') as it does in C.
+.TP
+[[\ ]]
+move up and down (respectively) in the source file 
+to the next procedure, function, package, task, or declare block.  
+.TP
+^]
+tags command
+to read all of a qualified name.
+For example, if the cursor were placed on the
+\*(lqf\*(rq of \f3foo.bar.snik\fP,
+.I a.vi
+will look up the entire qualified name, \f3foo.bar.snik\fP
+in the tags file.
+(It is possible to specify a maximum tag
+length as a regular
+.I vi
+option.)
+.TP
+^O
+similar to \*(lq^]\*(rq except that it finds the tag with \*(lqs#\*(rq
+prepended.
+That is, it finds the specification of the tag, rather than the body.
+.TP
+*
+provides syntactic closure for \f3procedure\fP, \f3function\fP,
+\f3package\fP, \f3task\fP, \f3declare\fP, \f3select\fP, \f3record\fP,
+\f3if\fP, \f3while\fP, \f3for\fP, and \f3loop\fP.
+While in command mode, place the cursor on or near the line(s)
+you want analyzed and closed.  For example, if the procedure heading
+is three lines long, place the cursor on the top line and type \*(lq*\*(rq.
+Closure is performed if appropriate.  By default, the \*(lq*\*(rq command
+searches forwards for six lines.
+A count may be specified for larger
+searches (e.g.\*(lq9*\*(rq).
+.IP
+.nf
+Example:
+.RS
+.sp
+Given:
+.RS
+procedure big_foo(a:integer; b:integer) is
+.sp
+\*(lq*\*(rq finishes it off as:
+.sp
+procedure big_foo(a:integer; b:integer) is
+``begin''
+.sp
+end big_foo;
+.sp
+.RE
+.fi
+and leaves the cursor on begin.  You may use the undo (\*(lqu\*(rq)
+command if you change your mind about closure.
+.sp
+.SH NOTES
+.I A.vi
+is case sensitive.
+.PP
+Procedures, functions, and
+packages do not have to start in column 1, as in C.
+.PP
+.I A.vi
+searches for keywords and usually skips the ones in comments,
+in strings, and embedded in other text.
+.PP
+.I A.vi
+will also handle split lines with
+.I autoindent
+turned on.
+.SH FILES
+.DT
+/usr/lib/ex?.?strings		error messages
+.br
+/usr/lib/ex?.?recover		recover command
+.br
+/usr/lib/ex?.?preserve		preserve command
+.br
+/etc/termcap			describes capabilities of terminals
+.br
+~/.exrc				editor startup file
+.br
+/tmp/Vi\f2nnnnnn\f1			editor temporary
+.br
+/tmp/Ri\f2nnnnnn\f1			named buffer temporary
+.br
+/usr/preserve			preservation directory
+.SH SEE ALSO
+a.tags(1), ex(1), vi(1)

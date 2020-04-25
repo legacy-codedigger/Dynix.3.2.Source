@@ -1,0 +1,78 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+.\"
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: atof.3 1.6 1991/05/23 18:17:55 $
+.TH ATOF 3 "\*(V)" "7th Edition"
+.SH NAME
+atof, atoi, atol \- convert ASCII to numbers
+.SH SYNOPSIS
+.nf
+.B #include <math.h>
+.PP
+.B double atof(nptr)
+.B char *nptr;
+.PP
+.B atoi(nptr)
+.B char *nptr;
+.PP
+.B long atol(nptr)
+.B char *nptr;
+.fi
+.SH DESCRIPTION
+These functions convert a string pointed to by
+.I nptr
+to floating, integer, and long integer representation respectively.
+The first unrecognized character ends the string.
+.PP
+.I atof
+recognizes an optional string of spaces, then an optional sign, then
+a string of digits optionally containing a decimal
+point, then an optional `e' or `E' followed by an optionally signed integer.
+.PP
+.I atoi
+and
+.I atol
+recognize an optional string of spaces, then an optional sign, then a
+string of
+digits.
+.SH SEE ALSO
+scanf(3S)
+.SH DIAGNOSTICS
+.I atof
+clears 
+.I errno
+when no errors are encountered.
+If the exponent of the number pointed to by
+.I nptr
+is excessively large,
+.I atof
+will set
+.I errno
+to 
+.B ERANGE
+and will return
+.B MAXDOUBLE .
+If the exponent is not legitimate,
+.I atof
+will set 
+.I errno
+to 
+.B ERANGE
+and will return zero.
+.SH BUGS
+There are no provisions for overflow.

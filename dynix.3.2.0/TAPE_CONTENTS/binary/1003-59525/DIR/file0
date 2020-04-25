@@ -1,0 +1,15 @@
+rwxr-xr-x     0     1    86016 Mar 17 15:09 1992 preview
+rwxr-xr-x     0     1    86016 Mar 17 15:09 1992 delta linked to preview
+rwxr-xr-x     0     1    86016 Mar 17 15:09 1992 check linked to preview
+rwxr-xr-x     0     1    86016 Mar 17 15:09 1992 backout linked to preview
+rw-r--r--     0     1      153 Mar 17 15:09 1992 list.options
+rw-r--r--     0     1     8251 Mar 17 15:13 1992 list.delta
+rw-r--r--     0     1   410255 Mar 17 15:12 1992 list.new
+rw-r--r--     0     1   414086 Mar 17 15:14 1992 list.old
+rw-r--r--     0     1     2242 Mar 17 15:13 1992 list.new.alt
+rw-r--r--     0     1   415290 Mar 17 15:17 1992 list.old.alt
+rw-r--r--     0     1      131 Mar 17 15:09 1992 list.tools
+rw-r--r--     0     1     4544 Mar 17 15:09 1992 list.new.base
+rwxr-xr-x     0     1    36864 Mar 17 15:09 1992 tar
+rwxr-xr-x     0     1    20480 Mar 17 15:09 1992 mt
+rwxr-xr-x     0     1    28672 Mar 17 15:09 1992 id

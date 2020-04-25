@@ -1,0 +1,50 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: setgroups.2 1.7 86/05/13 $
+.TH SETGROUPS 2 "\*(V)" "4BSD"
+.SH NAME
+setgroups \- set group access list
+.SH SYNOPSIS
+.nf
+.ft 3
+#include <sys/param.h>
+.PP
+.ft 3
+setgroups(ngroups, gidset)
+int ngroups, *gidset;
+.fi
+.SH DESCRIPTION
+.I Setgroups
+sets the group access list of the current user process
+according to the array 
+.IR gidset .
+The parameter
+.I ngroups
+indicates the number of entries in the array and must be no
+more than NGROUPS, as defined in
+.RI < sys/param.h >.
+.PP
+Only the super-user may set new groups.
+.SH "RETURN VALUE
+A 0 value is returned on success, \-1 on error, with
+a error code stored in \f2errno\fP.
+.SH "ERRORS
+The \f2setgroups\fP call will fail if:
+.TP 15
+[EPERM]
+The caller is not the super-user.
+.TP 15
+[EFAULT]
+The address specified for \f2gidset\fP is outside the process
+address space.
+.SH "SEE ALSO
+getgroups(2), initgroups(3X)

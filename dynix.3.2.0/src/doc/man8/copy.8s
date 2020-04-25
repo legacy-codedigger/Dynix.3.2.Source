@@ -1,0 +1,46 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: copy.8s 1.5 90/10/13 $
+.TH COPY 8S "\*(V)" "DYNIX"
+.SH NAME
+copy \- perform a standalone simple data transfer
+.SH SYNOPSIS
+.BR "From the powerup monitor" :
+.br
+.sp
+.in +1
+.IR "on SCED-based systems" :
+.br
+*
+.B b 0
+.IR dv ( un , su )\c
+.B stand/copy
+.br
+.sp
+.IR "on SSM-based systems" :
+.br
+--->
+.B bh
+.IR dv ( un , su )\c
+.B stand/copy
+.SH DESCRIPTION
+.I Copy
+transfers all the data from one device (or device partition) to another.
+The copying is performed 10 Kbytes at a time.
+.PP
+.I Copy
+prompts for the two device names,
+which are specified in standalone file notation (see
+.IR boot (8S)).
+Messages are intended to be self-explanatory.
+.SH "SEE ALSO"
+cp(1), boot(8S), cat(8S), copy2(8S), ls(8S)

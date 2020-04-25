@@ -1,0 +1,204 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: man.7 1.9 86/08/19 $
+.TH MAN 7 "\*(V)" "7th Edition"
+.SH NAME
+man \- macros to typeset manual
+.SH SYNOPSIS
+.B
+nroff  \-man\ 
+file ...
+.PP
+.B
+troff  \-man\ 
+file ...
+.SH DESCRIPTION
+These macros are used to lay out pages of this manual.
+A skeleton page may be found in the file 
+/usr/man/man0/xx.
+.PP
+Any text argument
+.I t
+may be zero to six words.
+Quotes may be used to include blanks in a `word'.
+If 
+.I text
+is empty,
+the special treatment is applied to
+the next input line with text to be printed.
+In this way
+.BR . I
+may be used to italicize a whole line, or
+.BR . SM
+followed by
+.BR . B
+to make small bold letters.
+.PP
+A prevailing indent distance is remembered between
+successive indented paragraphs,
+and is reset to default value upon reaching a non-indented paragraph.
+Default units for indents
+.I i
+are ens.
+.PP
+Type font and size are reset to default values
+before each paragraph, and after processing
+font and size setting macros.
+.PP
+These strings are predefined by
+.BR \-man :
+.IP \e*R
+.if t `\*R', `(Reg)' in
+.if t .I nroff.
+.if n `(Reg)', trademark symbol in
+.if n .I troff.
+.IP \e*S
+Change to default type size.
+.SH FILES
+/usr/lib/tmac/tmac.an
+.br
+/usr/man/man0/xx
+.SH SEE ALSO
+troff(1), man(1)
+.SH BUGS
+Relative indents don't nest.
+.SH REQUESTS
+The following list is summary of the macros used to format DYNIX man pages.
+.sp
+.ta \w'.TH n c x v m'u +\w'Cause 'u +\w'Argument\ 'u
+.di xx
+			\ka
+.br
+.di
+.in \nau
+.ti0
+Request	Cause	If no	Explanation
+.ti0
+	Break	Argument
+.ti0
+.li
+\&.B \f2t\f1	no	\f2t\f1=n.t.l.*	Text
+.I t
+is bold.
+.ti0
+.li
+\&.BI \f2t\f1	no	\f2t\f1=n.t.l.	Join
+words of
+.I t
+alternating bold and italic.
+.ti0
+.li
+\&.BR \f2t\f1	no	\f2t\f1=n.t.l.	Join
+words of
+.I t
+alternating bold and Roman.
+.ti0
+.li
+\&.DT	no	.5i 1i...	Restore default tabs.
+.ti0
+.li
+\&.HP \f2i\f1	yes	\f2i\f1=p.i.*	Set prevailing indent to
+.I i.
+Begin paragraph with hanging indent.
+.ti0
+.li
+\&.I \f2t\f1	no	\f2t\f1=n.t.l.	Text
+.I t
+is italic.
+.ti0
+.li
+\&.IB \f2t\f1	no	\f2t\f1=n.t.l.	Join
+words of
+.I t
+alternating italic and bold.
+.ti0
+.li
+\&.IP \f2x i\f1	yes	\f2x\f1=""	Same as .TP with tag
+.I x.
+.ti0
+.li
+\&.IR \f2t\f1	no	\f2t\f1=n.t.l.	Join
+words of
+.I t
+alternating italic and Roman.
+.ti0
+.li
+\&.LP	yes	-	Same as .PP.
+.ti0
+.li
+\&.PD \f2d\f1	no	\f2d\f1=.4v	Interparagraph distance is 
+.I d.
+.ti0
+.li
+\&.PP	yes	-	Begin paragraph.
+Set prevailing indent to .5i.
+.ti0
+.li
+\&.RE	yes	-	End of relative indent.
+Set prevailing indent to amount of starting .RS.
+.ti0
+.li
+\&.RB \f2t\f1	no	\f2t\f1=n.t.l.	Join
+words of
+.I t
+alternating Roman and bold.
+.ti0
+.li
+\&.RI \f2t\f1	no	\f2t\f1=n.t.l.	Join
+words of
+.I t
+alternating Roman and italic.
+.ti0
+.li
+\&.RS \f2i\f1	yes	\f2i\f1=p.i.	Start relative indent,
+move left margin in distance
+.I i.
+Set prevailing indent to .5i for nested indents.
+.ti0
+.li
+\&.SH \f2t\f1	yes	\f2t\f1=n.t.l.	Section heading.
+.ti0
+.li
+\&.SM \f2t\f1	no	\f2t\f1=n.t.l.	Text
+.I t
+is small.
+.ti0
+.li
+\&.SS \f2i\f1	yes	\f2i\f1=p.i.	Subsection heading.
+.ti0
+.li
+\&.TH \f2n c x v m\f1	yes	-	Begin page named
+.I n
+of chapter
+.IR c;
+.I x
+is extra commentary, e.g. `local', for page foot center;
+.I v
+alters page foot left, e.g. `4th Berkeley Distribution';
+.I m
+alters page head center, e.g. `Brand X Programmer's Manual'.
+Set prevailing indent and tabs to .5i.
+.ti0
+.li
+\&.TP \f2i\f1	yes	\f2i\f1=p.i.	Set prevailing indent to
+.I i.
+Begin indented paragraph
+with hanging tag given by next text line.
+If tag doesn't fit, place it on separate line.
+.ti0
+.li
+\&.V=	no	-	Take rcs Header as argument,
+and set the V) string to the date and revision number
+(arguments 3 and 4).
+.PP
+.ti0
+* n.t.l. = next text line; p.i. = prevailing indent

@@ -1,0 +1,100 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+.\"
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.  This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: intro.4 1.14 1991/06/13 00:06:04 $
+.TH INTRO 4 "\*(V)" "4BSD/DYNIX"
+.SH NAME
+intro \- introduction to special files and hardware support
+.SH DESCRIPTION
+This section describes the special files, related driver functions,
+and networking support
+available in the system.
+In this part of the manual, the SYNOPSIS section of
+each configurable device gives a sample specification
+for use in constructing a system description for the
+.IR config (8)
+program.
+The DIAGNOSTICS section lists messages which may appear on the console
+and in the system error log
+.I /usr/adm/messages
+due to errors in device operation.
+.PP
+This section contains both devices
+which may be configured into the system, ``4'' entries,
+and network related information,
+``4N'', ``4P'', and ``4F'' entries;
+The networking support is introduced in
+.IR intro (4N).
+.SH "Sequent Balance and Symmetry series device support"
+This section describes the hardware supported on the Sequent Balance and 
+Symmetry machines.
+Software support for these devices comes in two forms.  A hardware
+device may be supported with a character or block
+.IR "device driver" ,
+or it may be used within the networking subsystem and have a
+.IR "network interface driver" .
+Block and character devices are accessed through files in the file
+system of a special type; c.f.
+.IR mknod (8).
+Network interfaces are indirectly accessed through the interprocess
+communication facilities provided by the system; see
+.IR socket (2).
+.PP
+A hardware device is identified to the system at configuration time
+and the appropriate device or network interface driver is then compiled
+into the system.  When the resultant system is booted, the
+autoconfiguration facilities in the system probe for the device.
+The autoconfiguration system is described in
+.IR autoconf (4).
+A list of the supported devices is given below.
+.SH SEE ALSO
+intro(4),
+intro(4N),
+autoconf(4),
+config(8)
+.SH "LIST OF DEVICES"
+The devices listed below are supported in this version of
+the system.  Devices are indicated by their functional interface.
+If second vendor products provide functionally identical interfaces
+they should be usable with the supplied software.
+(\f3Beware however that we promise the software works
+ONLY with the hardware indicated on the appropriate manual page.\fP)
+.sp
+.ta 1.0i
+.nf
+drum	Paging device
+lp	Systech parallel line printer interface
+mem	Main memory
+mr	Disk mirror
+null	Null device
+pmap	Physiscal memory mapper
+pty	Pseudo terminal driver
+sd	SCED SCSI disk controller
+se	SCED Ethernet interface
+smem	SCED memory driver
+sp	SSM parallel line printer interface
+st	Systech MTI-800/1600 communications multiplexor
+tg	SSM SCSI 1/2-inch magnetic tape interface
+tm	SSM SCSI tape controller
+ts	SCED SCSI tape controller
+usclk	32-bit microsecond counter
+wd	SSM SCSI disk controller
+xp	Xylogics 450 MULTIBUS disk interface
+xt	Xylogics 472 MULTIBUS magtape interface
+zd	Sequent dual-channel disk controller
+.fi

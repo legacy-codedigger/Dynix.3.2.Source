@@ -1,0 +1,89 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+.\"
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.  This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: ttys.5 1.11 1991/06/12 21:20:49 $
+.TH TTYS 5 "\*(V)" "7th Edition"
+.SH NAME
+ttys \- terminal initialization data
+.SH SYNOPSIS
+/etc/ttys
+.SH DESCRIPTION
+The
+.I /etc/ttys
+file is read by the
+.I init
+program
+and specifies which terminal special files
+are to have a process created
+so that people can log in.
+There is one line in the
+.I /etc/ttys
+file for each terminal line.
+.PP
+The first character of a line in the
+.I /etc/ttys
+file is either `0' or '1'.
+If the first character on the line is a `0',
+.I init
+ignores that line.
+If the first character on the line is a `1',
+.I init
+creates a login process for that line.
+.PP
+The second character of a line in the
+.I /etc/ttys
+file is passed to
+.IR getty (8).
+.I Getty
+uses this character to select an entry from the
+.I /etc/gettytab
+file
+(see
+.IR gettytab (5)).
+The entries in
+.I /etc/gettytab
+describe characteristics,
+including baud rate,
+of various terminal classes.
+For normal lines,
+the second character is `0',
+although other characters can be used
+(as for example,
+with hard-wired terminals where speed recognition is unnecessary
+or which have special characteristics).
+.PP
+The remainder of a line in the
+.I /etc/ttys
+file is the terminal's entry in the device directory,
+.I /dev.
+.PP 
+Note that editing
+.I /etc/ttys
+while the system is up and running in multiuser mode
+is not recommended.
+.SH FILES
+/etc/ttys
+.br
+/etc/gettytab
+.SH "SEE ALSO"
+getty(8),
+gettytab(5),
+init(8),
+login(1)
+.br
+.I "DYNIX System Administration Guide"

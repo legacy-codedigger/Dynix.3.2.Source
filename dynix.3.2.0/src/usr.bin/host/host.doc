@@ -1,0 +1,65 @@
+# @(#)$Copyright:	$
+# Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+# Sequent Computer Systems, Inc.   All rights reserved.
+#  
+# This software is furnished under a license and may be used
+# only in accordance with the terms of that license and with the
+# inclusion of the above copyright notice.   This software may not
+# be provided or otherwise made available to, or used by, any
+# other person.  No title to or ownership of the software is
+# hereby transferred.
+
+# @(#)$Header: host.doc 1.2 84/12/18 $
+NAME
+	host
+
+SYNOPSIS
+	host [ttyname] [-l file] [-r] [-g] [-n] [-M] [-f file]
+	[-Bbaud]
+
+DESCRIPTION
+	Host will act as a virtual terminal and downloading controller for
+	the diagnostics.  It talks to the user at his terminal, and uses
+	the environment variable HOSTPORT as the default terminal port to
+	work with.  If the user wishes to override the HOSTPORT variable,
+	or does not have it set, he may specify the terminal port.
+	Note: For backward compatibility, if the user does not have 
+	HOSTPORT set but does have a DDTPORT variable, host will use
+	that.  The -l option will download the file, it cooperates with "dbmon"
+	to do this.  The file must be in a.out format.  The -r option
+	will reset the db16k before any other operation by sending a
+	break to it.  The -g option will automatically send a "g" to
+	the db16k, thus starting the program downloaded.  The -M command
+	informs host that the remote cpu has no MMU.  Normally, host
+	cooperates with "tip" and "uucp" locking protocols, the "n" option
+	tells it to not create the lock file.
+	The -s option starts scripting in the specified file immediately
+	upon entry.  The -f option takes commands from a file instead of
+	the standard input.  There are also
+	several escape commands while in virtual terminal mode:
+
+		~#	send a break, this is usually fatal.
+		~e	toggle the local echo flag.
+		~r	send a break, nonfatal mode, program recovers.
+		~s	start or stop a script file.
+		~f	begin taking commands from a file
+		~l	down load a file.
+		~^Z	stop job host.
+		~.	terminate host.
+		~>	copy file from to remote.
+		~?	print help.
+
+	Host can handle certain file server requests from a running
+	program.  These are similar to a normal Unix commands for
+	open, read, write, close and lseek.  The remote program
+	must use the "remote.c" module from the standalone libraries
+	in "/ccs/sw/tools/tmpkernel/lib/libsa*.a".
+	Specifically the calls available are:
+		read an entire file	(readfile(name, buf))
+		turn on scripting	(scriptfile(name))
+		turn off scripting	(noscript())
+		open a file		(int ropen(name, mode))
+		read data		(int rread(fd, buf, count))
+		write	(not implemented) (int rwrite(fd, buf, count))
+		lseek			(rlseek(fd, offset, whence))
+		close			(rclose(fd))

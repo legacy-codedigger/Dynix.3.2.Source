@@ -1,0 +1,263 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: ps.1 1.16 1991/08/27 23:08:31 $
+.TH PS 1 "\*(V)" "4BSD/DYNIX"
+.SH NAME
+ps \- process status
+.SH SYNOPSIS
+.B ps
+[
+.B acegklstuvwx#
+]
+.SH DESCRIPTION
+.I Ps
+prints information about processes.
+Normally, only your processes are candidates to be printed by
+.I ps;
+specifying
+.B a
+causes other users processes to be candidates to be printed;
+specifying
+.B x
+includes processes without control terminals in the candidate pool.
+.PP
+All output formats include, for each process, the process id PID,
+control terminal of the process TT, cpu time used by the process TIME
+(this includes both user and system time), the state STAT of the process,
+and an indication of the COMMAND which is running.
+The state is given by a sequence of three letters, e.g. ``RWN''.
+The first letter indicates the runnability of the process:
+R for runnable processes,
+T for stopped processes,
+D for those in disk (or other short term) waits,
+S for those sleeping for less than about 20 seconds,
+and I for idle (sleeping longer than about 20 seconds)
+processes.
+The second letter indicates whether a process is swapped out,
+showing W if it is, or a blank if it is loaded (in-core);
+a process which has specified a soft limit on memory requirements
+and which is exceeding that limit shows >; such a process is (necessarily)
+not swapped.
+The third letter indicates whether a process is running with altered
+CPU scheduling priority (nice); if the process priority is reduced,
+an N is shown, if the process priority has been artificially raised then
+a `<' is shown; processes running without special treatment have just a
+blank.
+.PP
+Here are the options:
+.TP 5
+.B a
+asks for information about all processes with controlling terminals
+(ordinarily only one's own processes are displayed).
+.TP 5
+.B c
+prints the command name, as stored internally in the system for purposes
+of accounting, rather than the command arguments, which are kept
+in the process' address space.  This is more reliable, if less informative,
+since the process is free to destroy the latter information.
+.TP 5
+.B e
+Asks for the environment to be printed as well as the arguments to the command.
+Ignored when selected for
+.B c
+or
+.B v
+formats.
+.TP 5
+.B g
+Asks for all processes.
+Without this option,
+.I ps
+only prints ``interesting'' processes.
+Processes are deemed to be uninteresting if they are process group leaders.
+This normally eliminates top-level command interpreters and processes
+waiting for users to login on free terminals.
+.TP 5
+.B k
+causes the file
+.I /vmcore
+is used in place of
+.IR /dev/kmem " and " /dev/mem.
+This is used for
+postmortem system debugging.
+.TP 5
+.B l
+asks for a long listing, with fields PPID, CP, PRI, NI, ADDR, SIZE, RSS and
+WCHAN as described below.
+.TP 5
+.B s
+Adds the size SSIZ of the kernel stack of each process (for use by system
+maintainers) to the basic output format.
+.TP 5
+\f3t\f2x\f1
+restricts output to processes whose controlling tty is \f2x\f1
+(which should be specified as printed by
+.I ps,
+e.g.
+.I t3
+for tty3,
+.I tco
+for console,
+.I td0
+for ttyd0,
+.I t?
+for processes with no tty,
+.I t
+for processes at the current tty,
+etc).
+This option must be the last one given.
+.TP 5
+.B u
+A user oriented output is produced.
+This includes fields USER, %CPU, %MEM, NICE, SIZE, RSS, and ENG as described below.
+.TP 5
+.B v
+A version of the output containing virtual memory statistics is output.
+This includes fields SL, RE, PAGEIN, SIZE, RSS, LIM, TSIZ, %CPU, %MEM,
+and ENG described below.
+.TP 5
+.B w
+Use a wide output format (132 columns if current width is less than that); if repeated,
+e.g. ww, use arbitrarily wide output.
+This information is used to decide how much of long commands to print.
+.TP 5
+.B x
+asks even about processes with no controlling terminal.
+.TP 5
+.B #
+A process number may be given,
+(indicated here by #),
+in which case the output
+is restricted to that process.
+This option must also be last.
+.PP
+A second argument is taken 
+to be the file containing the system's
+namelist.  Otherwise, /dynix is used.
+A third argument tells
+.I ps
+where to look for
+.I core
+if the
+.B k
+option is given, instead of /vmcore.
+If a fourth argument is given, it
+is taken to be the name of a swap file to use instead of
+the default /dev/drum.
+.PP
+Fields which are not common to all output formats:
+.PD 0
+.PP
+.IP ENG 10
+the processor number on which a runnable process is running
+(blank if the process is not running)
+.IP USER 10
+name of the owner of the process
+.IP %CPU 10
+cpu utilization of the process; this is a decaying average over up to
+a minute of previous (real) time.  Since the time base over which this
+is computed varies (since processes may be very young) it is possible
+for the sum of all %CPU fields to exceed 100% times the number of active
+processors in the system.
+.IP NICE 10
+(or NI) process scheduling increment (see
+.IR setpriority (2))
+.IP SIZE 10
+virtual size of the process (in 1024 byte units)
+.IP RSS 10
+real memory (current resident set) size of the process (in 1024 byte units) or,
+if the process is swapped,
+the resident set size when the process was swapped out. 
+.IP LIM 10
+soft limit on memory used, specified via a call to
+.IR setrlimit (2);
+if no limit has been specified then shown as \f2xx\f1
+.IP TSIZ 10
+size of text (shared program) image
+.IP %MEM 10
+percentage of real memory used by this process.
+.IP RE 10
+residency time of the process (seconds in core)
+.IP SL 10
+sleep time of the process (seconds blocked)
+.IP PAGEIN 10
+number of disk i/o's resulting from references by the process
+to pages not loaded in core.
+.IP UID 10
+numerical user-id of process owner
+.IP PPID 10
+numerical id of parent of process
+.IP CP 10
+short-term cpu utilization factor (used in scheduling)
+.IP PRI 10
+process priority (non-positive when in non-interruptible wait)
+.IP ADDR 10
+swap address of the process
+.IP WCHAN 10
+event on which process is waiting (an address in the system).
+.sp
+.IP F 10
+flags associated with process as in
+.RI < sys/proc.h >:
+.br
+.PP
+.sp
+.nf
+.ta 6n 18n 26n
+	SLOAD	00001	in core
+	SSYS	00002	swapper or pager (system) process
+	STRC	00010	process is being traced
+	SWTED	00020	another tracing flag
+	SWTOK	00040	writing on text ok during trace
+	SOMASK	00080	restore old mask after taking signal
+	SVFORK	00100	process resulted from vfork()
+	SNOVM	00200	no vm, parent in a vfork()
+	STIMO	00400	timing out during sleep
+	SOUSIG	00800	using old signal mechanism
+	SSEL	01000	selecting; wakeup/waiting danger
+	SIGWOKE	02000	signal woke process up, not v_sema()
+	SWPSYNC	04000	synch with swapper during swapout
+	SFSWAP	08000	force swap self, swapper couldn't
+	SSHMEM	10000	connected to one or more shared memories
+.fi
+.PD
+.PP
+A process that has exited and has a parent, but has not
+yet been waited for by the parent is marked <defunct>; a process
+which is blocked trying to exit is marked <exiting>;
+.I Ps
+makes an educated guess as to the file name
+and arguments given when the process was created
+by examining memory or the swap area.
+The method is inherently somewhat unreliable and in any event
+a process is entitled to destroy this information,
+so the names cannot be counted on too much.
+.SH FILES
+.ta \w'/tmp/.ps_data  'u
+/dynix	system namelist
+.br
+/dev/kmem	kernel memory
+.br
+/dev/drum	swap device
+.br
+/vmcore	core file
+.br
+/dev	searched to find swap device and tty names
+.br
+/tmp/.ps_data	system namelist, device, and uid cache
+.SH "SEE ALSO"
+kill(1), w(1)
+.SH BUGS
+Things can change while
+.I ps
+is running; the picture it gives is only a close
+approximation to reality.

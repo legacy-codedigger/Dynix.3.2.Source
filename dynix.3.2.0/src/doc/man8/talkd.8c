@@ -1,0 +1,39 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1989 Sequent Computer Systems, Inc.
+.\" All rights reserved
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: talkd.8c 1.2 89/09/15 $
+.TH TALKD 8C "\*(V)" "4BSD"
+.SH NAME
+talkd \- remote user communication server
+.SH SYNOPSIS
+.B /usr/etc/talkd
+.SH DESCRIPTION
+.I Talkd
+is the server that notifies a user that somebody else wants to
+initiate a conversation.
+It acts a repository of invitations, responding to requests
+by clients wishing to rendezvous to hold a conversation.
+In normal operation, a client, the caller,
+initiates a rendezvous by sending a CTL_MSG to the server of
+type LOOK_UP (see
+.RI < protocols/talkd.h >).
+This causes the server to search its invitation
+tables to check if an invitation currently exists for the caller
+(to speak to the callee specified in the message).
+If the lookup fails,
+the caller then sends an ANNOUNCE message causing the server to
+broadcast an announcement on the callee's login ports requesting contact.
+When the callee responds, the local server uses the
+recorded invitation to respond with the appropriate rendezvous
+address and the caller and callee client programs establish a
+stream connection through which the conversation takes place.
+.SH SEE ALSO
+talk(1), write(1)

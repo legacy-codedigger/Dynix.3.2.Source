@@ -1,0 +1,45 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: rrestore.8c 1.4 86/05/13 $
+.TH RRESTORE 8C "\*(V)" "4BSD"
+.SH NAME
+rrestore \- restore a file system dump across the network
+.SH SYNOPSIS
+.B /etc/rrestore
+[ key [
+name ... ]
+.SH DESCRIPTION
+.I Rrestore
+obtains from magnetic tape files
+saved by a previous
+.IR dump (8).
+The command is identical in operation to
+.IR restore (8)
+except the 
+.I f
+key should be specified and the file
+supplied should be of the form
+.IR machine:device .
+.PP
+.I Rrestore
+creates a remote server,
+.IR /etc/rmt ,
+on the client machine to access the tape
+device.
+.SH "SEE ALSO"
+restore(8),
+rmt(8C)
+.SH DIAGNOSTICS
+Same as 
+.IR restore (8)
+with a few extra related to the network.
+.SH BUGS

@@ -1,0 +1,206 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: vmtune.8 1.10 1991/05/22 21:02:22 $
+.TH VMTUNE 8 "\*(V)" "DYNIX"
+.SH NAME
+vmtune \- tune system-wide virtual-memory parameters
+.SH SYNOPSIS
+.B /etc/vmtune
+[
+.B \-f
+] [
+.I options
+]
+.SH DESCRIPTION
+.I Vmtune
+provides a programmatic interface to the
+.IR vm_ctl (2)
+system call, allowing
+display and tuning of system-wide virtual-memory parameters.
+With no arguments,
+.I vmtune
+prints the current contents of the
+.I vmtune
+structure in the kernel, which holds the tuning parameters.
+The decimal value of each field is printed next to the name of the field.
+All memory sizes are displayed and entered in Kbytes.
+.PP
+.I Options
+allow the modification of the parameters, either individually or as
+a group.
+Only the super-user may alter the setting of the parameters.
+Options come in both a short form (easy to type) and long form (easy to
+remember).
+Available options are:
+.TP
+.BI "-r " minRS
+.ns
+.TP
+.BI "-minRS " minRS
+minimum allowable size of a process resident-set, in Kbytes.
+This value is silently enforced to be at least two, and limited by maxRS.
+.TP
+.BI "-R " maxRS
+.ns
+.TP
+.BI "-maxRS " maxRS
+maximum allowable size of a process resident-set, in Kbytes.
+This value is silently enforced to be at least two, and limited by a
+boot-time determined value that insures the resident-set can fit in
+physical memory.
+The current resident-set size of a process will be adjusted to be greater than
+"minRS" but less than "maxRS" or equal to those values.
+.TP
+.BI "-e " RSexecslop
+.ns
+.TP
+.BI "-RSexecslop " RSexecslop
+See
+.I RSexecdiv
+below.
+.TP
+.BI "-m " RSexecmult
+.ns
+.TP
+.BI "-RSexecmult " RSexecmult
+.TP
+See
+.I RSexecdiv
+below.
+.BI "-d " RSexecdiv
+.ns
+.TP
+.BI "-RSexecdiv " RSexecdiv
+The
+.IR exec (2)
+system-call determines the initial allowable resident-set size of a process via 
+.br
+.sp
+.nf
+((text + data + bss) * RSexecmult) / RSexecdiv + RSexecslop
+.fi
+.sp
+.br
+where RSexecmult / RSexecdiv provides a rational fraction and
+all other values are in Kbytes.
+.TP
+.BI "-L " dirtylow
+.ns
+.TP
+.BI "-dirtylow " dirtylow
+minimum size of the dirty-memory list, in Kbytes.
+.TP
+.BI "-H " dirtyhigh
+.ns
+.TP
+.BI "-dirtyhigh " dirtyhigh
+maximum size of the dirty-memory list, in Kbytes.
+When the size of the dirty-list exceeds this, a system process begins
+writing pages to swap-space.
+Once this process starts, it won't stop until the size of the
+dirty-list is within the maximum pageout-size of
+.I dirtylow.
+The maximum pageout size is currently 16 Kbytes.
+.TP
+.BI "-K " klout_look
+.ns
+.TP
+.BI "-klout_look " klout_look
+When the pageout process runs, it attempts to locate
+dirty pages that live in adjacent blocks on the swap device(s)
+to write with one operation
+(to minimize the number of I/O requests).
+.I Klout_look
+specifies how deep into the dirty-list it will look
+(in kernel pages).
+A value of zero disables clustered pageouts.
+.TP
+.BI "-v " PFFvtime
+.ns
+.TP
+.BI "-PFFvtime " PFFvtime
+the number of clock ticks (10ms) of process virtual time between
+calls to the page-fault frequency algorithm.
+If zero, page-fault frequency adjustment of all processes is disabled.
+If non-zero, when the interval elapses the system normalizes the number
+of page-faults the process has taken to number of faults per second,
+and may adjust the resident-set size of the process up or down depending
+on the rate.
+This adjustment takes place on a per-process basis.
+.TP
+.BI "-D " PFFdecr
+.ns
+.TP
+.BI "-PFFdecr " PFFdecr
+the number of Kbytes to reduce the resident-set
+of the process if its page-fault rate is below
+.I PFFlow.
+.TP
+.BI "-l " PFFlow
+.ns
+.TP
+.BI "-PFFlow " PFFlow
+page-fault frequency lower-limit (page-faults per second).
+.TP
+.BI "-I " PFFincr
+.ns
+.TP
+.BI "-PFFincr " PFFincr
+the number of Kbytes to increase the resident-set
+of the process if its page-fault rate is above
+.I PFFhigh.
+.TP
+.BI "-h " PFFhigh
+.ns
+.TP
+.BI "-PFFhigh " PFFhigh
+page-fault frequency upper-limit (page-faults per second).
+.TP
+.BI "-s " minfree
+.ns
+.TP
+.BI "-minfree " minfree
+the lower-bound on average free memory (in Kbytes)
+before the swapper gets more aggressive about swapping out processes.
+.TP
+.BI "-S " desfree
+.ns
+.TP
+.BI "-desfree " desfree
+the swapper wants this much memory (in Kbytes) to be free on
+the average.
+.TP
+.BI "-M " maxdirty
+.ns
+.TP
+.BI "-maxdirty " maxdirty
+if the average size of the dirty-list (in Kbytes), the swapper
+becomes equally as aggressive as in the minfree case.
+.PP
+The DYNIX kernel does some sanity checking on the altered values,
+but improper or naive settings can adversely affect the performance
+and other behavior of the system.
+Because of this,
+.I vmtune
+normally dumps the values and asks for verification of the change.
+The
+.B \-f
+flag
+.I forces
+the change with no verification query.
+.SH "SEE ALSO"
+getpagesize(2), vm_ctl(2)
+.SH BUGS
+.PP
+There should be guidelines on why, when, and how to alter these parameters.
+.PP
+Naive setting of the parameters can adversely affect system performance.

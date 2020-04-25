@@ -1,0 +1,41 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: chsh.1 1.6 1991/06/05 18:29:31 $
+.TH CHSH 1 "\*(V)" "4BSD"
+.SH NAME
+chsh \- change default login shell
+.SH SYNOPSIS
+.B chsh
+name
+[
+shell
+]
+.SH DESCRIPTION
+.I Chsh
+is a command similar to
+.IR  passwd (1)
+except that it is used to change the login shell field of the password
+file rather than the password entry. 
+If no
+.I shell
+is specified
+then the shell reverts to the default login shell
+.I /bin/sh.
+There are no restrictions on what
+program may be specified as the new shell.
+.PP
+An example use of this command would be
+.PP
+.DT
+	chsh bill /bin/csh
+.SH "SEE ALSO"
+csh(1), passwd(1), passwd(5)

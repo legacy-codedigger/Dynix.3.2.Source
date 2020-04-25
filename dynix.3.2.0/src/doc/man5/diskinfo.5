@@ -1,0 +1,291 @@
+.\" $Copyright:	$
+.\"Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989 
+.\"Sequent Computer Systems, Inc.   All rights reserved.
+.\" 
+.\"This software is furnished under a license and may be used
+.\"only in accordance with the terms of that license and with the
+.\"inclusion of the above copyright notice.   This software may not
+.\"be provided or otherwise made available to, or used by, any
+.\"other person.  No title to or ownership of the software is
+.\"hereby transferred.
+...
+.V= $Header: diskinfo.5 1.5 91/02/28 $
+.TH DISKINFO 5 "\*(V)" "4BSD"
+.tr ||
+.SH NAME
+diskinfo \- disk device characteristic database 
+.SH SYNOPSIS
+.B /etc/diskinfo/*
+.SH DESCRIPTION
+.B diskinfo
+is a database which describes characteristics of
+disk devices; that is, those devices which need to
+be formatted.
+The directory
+.I /etc/diskinfo
+is populated with text files that describe different
+classes of disk characteristics.  
+.PP
+Each type of disk is assigned a symbolic name which
+is usually the model number of the particular disk \-
+for example, \f2m2333k\f1 for the Fujitsu Swallow 3.
+Each file in
+.I /etc/diskinfo
+has a prefix
+which is the name of a disk type.
+The suffix of the
+filename defines the class of disk information present on
+this particular disk model.  For example,
+.I m2333k.geom
+contains the geometry information
+for all model M2333K disks.
+.PP
+Lines in \f2diskinfo\f1 files are patterned after the
+.BR terminfo (4)
+database.  Below is a general description of lines in
+these files.
+.PP
+\f2diskinfo\f1 files consist of usually one
+device description entry.
+Each entry consists of a header
+(beginning in column 1) and one or more lines
+that list the features for that particular device.
+Each line in a \f3diskinfo\f1 file,
+except the header, must be 
+indented with one or more white spaces (either spaces or tabs).
+.PP
+Entries consist of a number of fields separated by colons.
+The following example shows the format of a \f3diskinfo\f1 source file:
+.RS
+.nf
+
+	alias1 | alias2 | ... | aliasN | \f2longname\f1:
+		name1#value1:name2#value2: ...
+.fi
+.RE
+.PP
+The first line, commonly referred to as the header line,
+must begin in column one and must contain one or more aliases,
+separated by vertical bars.
+The last field in the header line
+may be the long name of the device
+and may contain any string except |: . 
+Alias names must be unique within files of a given suffix
+in the \f2diskinfo\f1 database,
+and must conform to
+operating system file-naming conventions;
+for example
+they cannot contain white space or slashes.
+.SH GEOMETRY INFORMATION
+Files in
+.I /etc/diskinfo
+with the suffix
+.I ".geom"
+contain disk geometry information, such as the sizes of tracks,
+cylinders, and the disks themselves.  This information 
+is usually common to all disks, and is used by the system to
+optimize access to data by grouping related disk blocks relatively close
+together.  The information is also used by system maintenance utilities
+(such as formatters) so that they can agree on reserved disk areas.
+.PP
+The following list indicates the normal values
+stored for each disk entry.
+.sp
+.bP
+.TS
+tab(~);
+l l l.
+\f3Name~Type~Description\f1
+cy~num~Number of sectors per cylinder
+dc~num~Capacity of disk in sectors
+ns~num~Number of sectors per track
+nt~num~Number of tracks per cylinder
+nc~num~Total number of cylinders on the disk
+rm~num~Number of revolutions per minute
+se~num~Sector size in bytes (512 by default)
+xc~num~Minimum disk capacity in sectors
+.TE
+.PP
+Note that even though the number of sectors per track
+and tracks per cylinder are given, the number of sectors
+per cylinder is not necessarily equal to the \f3ns\f1 and \f3nt\f1 values
+multiplied together.  Also, the capacity of the whole disk
+may not be derivable from the other parameters.  This
+is due to the construction of disks that have a variable
+number of sectors per track depending on the cylinder number,
+and disks that have extra sectors on each cylinder.
+.PP
+The \f3xc\f1 parameter describes the guaranteed minimum number
+of sectors on the disk.  This is needed for disk devices which
+vary their reported size based on the number of bad blocks 
+revectored on the disk.  The \f3xc\f1 parameter is used
+by programs that need to verify the disk type by seeking to the
+last known sector of the disk.
+The \f3xc\f1 parameter is normally not present for most disk
+types.
+.PP
+The information in the
+.I ".geom"
+files can be retrieved in a program using the
+.BR getgeombyname (3)
+interface.
+.SH SCSI INFORMATION
+Files in
+.I /etc/diskinfo
+with the suffix
+.I ".scsi"
+contain information specific to CCS (common command set) SCSI
+disks, which is used by the online format program.  This
+data should correspond to fields in the
+.I drive_table
+entries in
+.I /sys/stand/conf_scsi.c.
+.PP
+The following list defines the two character keys
+used to identify each field within the file.  Each
+of these fields is required by the online formatter
+to be in the file.
+.PP
+.TS
+tab(~);
+l l l.
+\f3Name~Type~Description\f1
+vn~string~Vendor (this must be padded to 8 chars)
+pr~string~Product number (this must be padded to 16 chars) 
+iq~num~Inquiry command format
+re~num~Size in bytes of REASSIGN_BLOCK data
+fm~num~Format code for the FORMAT command
+.TE
+.PP
+Note that the vendor and product number must match the strings
+returned by the SCSI INQUIRY command.
+.PP
+The information in the
+.I ".scsi"
+files can be retrieved in a program using the
+.BR getscsimatch (3)
+interface, which requires the vendor and products strings to
+be passed in as arguments, and then finds the matching
+.I ".scsi"
+file.
+.SH ZD INFORMATION
+Files in
+.I /etc/diskinfo
+with the suffix
+.I ".zd"
+contain information specific to ZDC 
+disks, which is used by the online format program.
+This data should correspond to fields in the
+.I zdinfo
+table entries in
+.I /sys/stand/conf_zd.c
+and should not be changed, because it used to construct
+channel configuration information used by the ZDC controller
+board.
+.PP
+The following list defines the two character keys
+used to identify each field within the file.  Each
+of these fields is required to be in the file. 
+Compare with the
+.I zdcdd
+structure defined in
+.I <sys/zdc.h>.
+.PP
+.TS
+tab(~);
+l l l.
+\f3Name~Type~Description\f1
+mg~num~magic number for sanity
+ec~num~number of bytes of ECC
+sp~num~spares per track
+se~num~sectors per track (formatted)
+tr~num~tracks per cylinder
+cy~num~number of cylinders
+dt~num~soft drive type (type it was formatted as).
+xf~num~drive transfer rate in MHz
+ru~num~number of bytes in runt sector
+ch~num~channel delay
+hs~num~head switch delay
+hr~num~header postamble byte cnt (read)
+hf~num~header postamble byte cnt (fmt)
+ck~num~format skew between cylinders
+tk~num~format skew between tracks
+hb~num~header byte cnt (inc head scatter)
+sb~num~sector byte cnt (inc header & gap)
+si~num~bytes at sector start where defects can be ignored
+ei~num~bytes at sector end where defects can be ignored
+ds~num~RO  status register
+de~num~RO  error register
+p0~num~polynomial preset byte 0
+p1~num~polynomial preset byte 1
+p2~num~polynomial preset byte 2
+p3~num~polynomial preset byte 3
+p4~num~polynomial preset byte 4
+p5~num~polynomial preset byte 5
+t0~num~polynomial tap byte 0
+t1~num~polynomial tap byte 1
+t2~num~polynomial tap byte 2
+t3~num~polynomial tap byte 3
+t4~num~polynomial tap byte 4
+t5~num~polynomial tap byte 5
+er~num~ECC/CRC control
+hc~num~header byte count
+dc~num~drive command register
+oc~num~operation command register 
+sc~num~sector count
+ns~num~number of sector operations
+h0~num~header byte 0 pattern
+h1~num~header byte 1 pattern
+h2~num~header byte 2 pattern
+h3~num~header byte 3 pattern
+h4~num~header byte 4 pattern
+h5~num~header byte 5 pattern
+rd~num~remote data byte count
+dm~num~DMA address
+do~num~data postamble byte count
+rh~num~header preamble byte count
+s1~num~header synch #1 byte count
+s2~num~header synch #2 byte count
+c0~num~header byte 0 control
+c1~num~header byte 1 control
+c2~num~header byte 2 control
+c3~num~header byte 3 control
+c4~num~header byte 4 control
+c5~num~header byte 5 control
+xd~num~external data ECC byte count
+xh~num~external header ECC byte count
+po~num~header postamble byte count (write)
+pr~num~data preamble byte count (write)
+d1~num~data synch #1 byte count
+d2~num~data synch #2 byte count
+op~num~data postamble pattern
+or~num~header preamble pattern
+a1~num~header synch #1 pattern
+a2~num~header synch #2 pattern
+gp~num~gap byte count
+df~num~disk format register
+lt~num~local transfer register
+rt~num~remote transfer register
+et~num~sector byte count
+gt~num~gap pattern
+fd~num~data format pattern
+ah~num~header postamble pattern
+ad~num~data preamble pattern
+r1~num~data synch #1 pattern
+r2~num~data synch #2 pattern
+.TE
+.PP
+The information in the
+.I ".zd"
+files can be retrieved in a program using the
+.BR getzdinfobyname (3)
+interface.
+.SH FILES
+/etc/diskinfo/*
+/sys/stand/conf_scsi.c
+/sys/stand/conf_zd.c
+.SH SEE ALSO
+getgeombyname (3),
+getscsimatch (3),
+getzdinfobyname (3),
+format (8)

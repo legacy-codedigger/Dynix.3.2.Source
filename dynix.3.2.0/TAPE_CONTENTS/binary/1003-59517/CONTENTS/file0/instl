@@ -1,0 +1,210 @@
+#! /bin/sh
+#
+# /etc/instl.svae (aka instl on the distribution tape )
+#
+# Install script for System V Release 2 Version 2 for DYNIX.  Should be run
+# from root, single user with all file systems mounted. This script is the
+# first tape file on the SVAE distribution tape.
+#
+
+TAPE=/dev/ctape8
+PATH=:/bin:/usr/bin:/usr/ucb:/etc; export PATH
+
+##
+# Default ROOT for entire System V file structure.
+# This can be changed although I do not recommend it.
+##
+R="/usr/att"
+
+if /etc/mount | /bin/awk '$3=="/usr" {exit 1}'; then
+	echo "Usr filesystem appears not to be mounted."
+	echo "Please mount /usr and try again."
+	exit 1
+fi
+
+if [ `whoami` != root ]; then
+	echo "Sorry this script must be run as super-user to work properly."
+	exit 1
+fi
+
+if [ "`universe`" != "ucb" ] ; then
+	exec ucb $0 $@
+fi
+
+# in case the above gets munged
+if [ -z "$R" ]; then
+	R="/usr/att"
+	echo "*** WARNING!: Assuming ROOT = ($R)"
+fi
+
+##
+# Create ROOT directory for System V (if necessary)
+##
+if [ ! -d "$R" ]; then
+	echo "*** Making root directory for System V ($R)"
+	mkdir "$R"
+	chmod 755 "$R"
+	chown root "$R"
+	chgrp daemon "$R"
+else
+	echo "*** ERROR!!: ($R) already exists, you should 'rm -rf' it first and try again"
+	exit 1
+fi
+echo ""
+
+##
+# Extract from tape
+##
+echo "rewinding tape..."
+mt -f $TAPE rew
+mt -f $TAPE fsf 1		# move to second tape file
+echo "*** Extracting System V from tape (into $R)"
+cd "$R"
+rm -f /tmp/done$$
+(/bin/tar xpf $TAPE; echo $? > /tmp/done$$)&
+cnt=0
+while [ ! -f /tmp/done$$ ]
+do
+	echo -n .
+	sleep 6
+	cnt=`expr $cnt + 1`
+	if [ $cnt -gt 79 ] ;then 
+		echo ""
+		cnt=0
+	fi
+done
+stat=`cat /tmp/done$$`
+rm /tmp/done$$
+echo ""
+case $stat in
+0)	;;
+*)	echo "Problems in un-taring tape file"
+	exit 1 ;;
+esac
+/bin/mt -f $TAPE rew
+echo ""
+
+##
+# Create conditional symbolic links (if necessary).  DYNIX directory 
+# gets renamed by adding dot ('.') prefix.
+# BTW: We need a private copy of mv and ln since /bin gets moved in the process.
+##
+cd /
+cp /bin/mv /mv; MV=/mv
+cp /bin/ln /ln; LN=/ln
+D="bin lib CD-TO-USR bin include lib pub"
+P=
+/bin/cat << 'EOF'
+
+*** Creating directory symbolic links
+EOF
+
+for I in $D; do
+	if [ "$I" = "CD-TO-USR" ]; then
+		cd /usr
+		P=usr/
+		continue
+	fi
+	if [ -d .$I -a -d $I -a -d $R/$P$I ]; then
+		echo "	/$P$I: skipped"
+	else
+		echo	"	/$P$I"
+		${MV} $I .$I
+		${LN} -c ucb=.$I att=$R/$P$I /$P$I
+	fi
+done
+cd /
+rm -f ${MV} ${LN}
+
+##
+# Create symbolic links in System V for shared programs that
+# really live in ucb directory tree.
+##
+/bin/cat << 'EOF'
+
+*** Creating file symbolic links
+EOF
+P=
+while read F; do
+	if [ "$F" = "CD-TO-USR" ]; then
+		cd /usr
+		P=usr/
+		continue
+	fi
+	rm -f $R/$P$F
+	ln -s /$P.$F $R/$P$F
+	echo "	/$P$F"
+done << 'EOF'
+bin/ar
+bin/as
+bin/cc
+bin/csh
+bin/ksh
+bin/rksh
+bin/df
+bin/ld
+bin/login
+bin/nm
+bin/passwd
+bin/size
+bin/strip
+bin/wall
+bin/who
+bin/write
+bin/universe
+bin/att
+bin/ucb
+lib/ccom
+lib/c2
+lib/wccom
+CD-TO-USR
+bin/ranlib
+bin/lorder
+bin/prof
+EOF
+
+##
+# Create symbolic links in DYNIX for shared programs that
+# really live in att directory tree.
+##
+/bin/cat << 'EOF'
+
+*** Creating DYNIX symbolic links
+EOF
+while read F; do
+	rm -f /$F
+	ln -s $R/$F /$F
+	echo "	/$F"
+done << 'EOF'
+etc/chroot
+etc/magic
+etc/profile
+etc/rc.sys5
+usr/catman
+EOF
+
+##
+# Misc
+##
+rm -rf /usr/mail; ln -s /usr/spool/mail /usr/mail
+rm -f $R/usr/lib/libg.a; ln -s /usr/.lib/libg.a $R/usr/lib/libg.a
+rm -f /usr/news; ln -s $R/usr/news /usr/news
+rm -rf /usr/spool/lp; ln -s $R/usr/spool/lp /usr/spool/lp
+if [ ! -f /etc/.mknod ] ;then
+	mv /etc/mknod /etc/.mknod
+	ln -c att=$R/etc/mknod ucb=/etc/.mknod /etc/mknod
+fi
+rm -f $R/usr/lib/tabset; ln -s /usr/.lib/tabset $R/usr/lib/tabset
+if [ -f /.bin/ddt ]; then
+	ln -s /.bin/ddt $R/bin/ddt
+fi
+ln -s $R/usr/lib/terminfo /usr/.lib/terminfo
+
+# This solves name collision problems
+rm -f /etc/install; ln -c ucb=/usr/bin/install att=$R/etc/install /etc/install
+echo "`/bin/date`  - DYNIX V3.2.0 SVAE PN: 1003-59517" >> /etc/versionlog
+if [ -f /usr/.bin/crypt ]; then
+	echo "Encryption software must be re-installed to affect SVAE."
+fi
+echo "All done."
+exit 0

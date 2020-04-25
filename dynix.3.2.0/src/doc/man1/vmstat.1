@@ -1,0 +1,134 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+.\"
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.  This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: vmstat.1 1.7 86/08/18 $
+.TH VMSTAT 1 "\*(V)" "4BSD/DYNIX"
+.de s1
+.if n .sp
+.if t .sp .1i
+..
+.de t1
+.if n .ta 5n
+.if t .ta 1i
+..
+.SH NAME
+vmstat \- report virtual memory statistics
+.SH SYNOPSIS
+.B vmstat
+[
+.B \-fs
+]
+[ interval [ count ] ]
+.SH DESCRIPTION
+.I Vmstat
+delves into the system and normally reports certain statistics kept about
+process, virtual memory, disk, trap and CPU activity.
+If given a
+.B \-f
+argument, it instead reports on the number of
+.I forks
+and
+.I vforks
+since system startup and the number of pages of virtual memory involved in each
+kind of fork.
+If given a
+.B \-s
+argument, it instead prints the
+total number of several kinds of paging related
+events which have occurred since boot.
+.PP
+If none of these options are given,
+.I vmstat
+will report in the first line a summary of the virtual memory activity
+since the system has been booted.
+If
+.I interval
+is specified, then successive lines are summaries over the last
+.I interval
+seconds.
+``vmstat 5'' will print what the system is doing every five seconds;
+this is a good choice of printing interval since this is how often
+some of the statistics are sampled in the system; others vary every
+second, running the output for a while will make it apparent which
+are recomputed every second.
+If a
+.I count
+is given, the statistics are repeated
+.I count
+times.
+The format fields are:
+.PP
+Procs: information about numbers of processes in various states.
+.s1
+.t1
+.nf
+r	in run queue
+b	blocked for resources (i/o, paging, etc.)
+w	runnable or short sleeper (< 20 secs) but swapped
+.fi
+.s1
+Memory: information about the usage of virtual and real memory.
+Virtual pages are considered active if they belong to processes which
+are running or have run in the last 20 seconds.
+A ``page'' here is 1024 bytes.
+.s1
+.t1
+.nf
+avm	active virtual pages
+fre	size of the free list
+di	dirty pages
+.fi
+.s1
+Page: information about page faults and paging activity.
+These are averaged each five seconds, and given in units per second.
+.s1
+.t1
+.nf
+re	page reclaims
+rd	page reclaims from the dirty list
+pi	pages paged in
+po	pages paged out
+de	anticipated short term memory shortfall
+.fi
+.s1
+Disk: operations per second (this field is system dependent).
+Typically paging will be split across several of the available drives.
+The labels under this column are the disk drive names
+(truncated to two characters).
+.s1
+Faults: trap/interrupt rate averages per second over last 5 seconds.
+.s1
+.t1
+.nf
+in	(non clock) device interrupts per second
+sy	system calls per second
+cs	CPU context switch rate (switches/sec)
+.fi
+.s1
+CPU: breakdown of percentage usage of CPU time (across all CPUs).
+.s1
+.nf
+us	user time for normal and low priority processes
+sy	system time
+id	CPU idle
+.SH FILES
+/dev/kmem, /dynix
+.SH SEE ALSO
+monitor(8)
+.SH AUTHORS
+William Joy and Ozalp Babaoglu

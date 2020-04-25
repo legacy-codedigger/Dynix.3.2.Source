@@ -1,0 +1,122 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: fortune.6 1.5 90/05/07 $
+.TH FORTUNE 6 "\*(V)" "4BSD"
+.SH NAME
+fortune \- print a random, hopefully interesting, adage
+.SH SYNOPSIS
+.B /usr/games/fortune
+[
+.B \-
+] [
+.B \-wslao
+]
+..[ file ]
+.SH DESCRIPTION
+.I Fortune
+with no arguments prints out a random adage. The flags mean:
+.PP
+.TP 5
+.B \-w
+Waits before termination
+for an amount of time calculated from the number of characters in the message.
+This is useful if it is executed as part of the logout procedure
+to guarantee that the message can be read before the screen is cleared.
+.TP 5
+.B \-s
+Short messages only.
+.TP 5
+.B \-l
+Long messages only.
+.TP
+.B \-o
+Choose from an alternate list of adages,
+often used for potentially offensive ones.
+.TP
+.B \-a
+Choose from either list of adages.
+.SH MESSAGE FILE
+.I Fortune 
+gets messages from the file
+.I /usr/games/lib/fortunes.dat.
+This file contains only example messages.  To create
+your own 
+.I fortunes.dat
+file, do the following:
+.IP (1)
+Create a file of messages in
+.I /usr/games/lib
+that follows this general format:
+.nf
+
+fortune message #1
+%%
+fortune message #2
+%%
+fortune message #3
+
+.fi
+If you choose to support the 
+.B \-o
+option of 
+.I fortune,
+create a separate message file with the same format but containing the
+alternate messages.
+.IP (2)
+In 
+.I /usr/games/lib
+execute the following commands to create a new 
+.I fortunes.dat
+message file:
+.nf
+
+	% cat file1 > fortunes
+	% echo "%-" >> fortunes
+	% cat file2 >> fortunes
+	% echo "%%" >> fortunes
+
+.fi
+where 
+.I file1
+is the file of general 
+.I fortune
+messages and
+.I file2
+is the optional file of alternate messages.
+If you do not wish to include alternate messages in
+.I fortunes.dat,
+simply skip the command:
+.nf
+
+	% cat file2 >> fortunes
+
+.fi	
+when creating the message file.
+.IP (3)
+Either rename the existing
+.I fortunes.dat
+to another name or remove it completely.
+Finally, execute the following commands in 
+.I /usr/games/lib:
+.nf
+
+	% ./strfile fortunes
+	% chown daemon fortunes.dat
+	% chmod 0600 fortunes.dat
+
+.fi
+.SH FILES
+/usr/games/lib/fortunes.dat - messages data file
+.br
+/usr/games/lib/strfile - tool to build messages data file
+.SH AUTHOR
+Ken Arnold

@@ -1,0 +1,377 @@
+.\" $Copyright: $
+."Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989 
+."Sequent Computer Systems, Inc.   All rights reserved.
+." 
+."This software is furnished under a license and may be used
+."only in accordance with the terms of that license and with the
+."inclusion of the above copyright notice.   This software may not
+."be provided or otherwise made available to, or used by, any
+."other person.  No title to or ownership of the software is
+."hereby transferred.
+.\"
+...
+.V= $Header: format.8 1.14 1991/07/17 16:57:50 $
+.de us
+\\$1\l'|0\(ul'
+..
+.TH FORMAT 8 "\*(V)" "4BSD" 
+.SH NAME
+format \- format disks or perform other defect management functions
+.SH SYNOPSIS
+\f3/etc/format \-f|a \f2bad_blocks \f3[ \-wv ] \f2scsi_diskname\f1
+.br
+\f3/etc/format \-f|r|m|y|l|a|F|M|S|Y|A \f2bad_blocks\f3[ \-wvnc ] \-b \f2file \f3\-s \f2n
+\f3\-e \f2n \f3\-h \f2n \f3\-p \f2n \f3\-d \f2n \f3\-t \f2type zdc_diskname\f1
+.br
+\f3/etc/format \-i|u \f2diskname\f1
+.SH DESCRIPTION
+The
+.B format
+program is used to format disks and also to perform various other
+defect management functions.
+Because formatting and some of the other functions of the
+.B format
+program are potentially dangerous in that they destroy the
+data on the disk, this program should be used with care.
+To be safe,
+.B format
+has some built-in protections.
+First,
+.B format
+opens the device exclusively.  If filesystems are mounted or
+for any other reason the device is already open,
+.B format
+will fail.
+It is possible that if the disk has fatal errors, the entire disk channel
+will be disabled, so caution should be exercised.
+For zdc disk types the
+.IR sweepd (8)
+daemon process may be accessing the disk when an attempt to format is made.
+The format should be tried again. (It may be advisable to disable the
+daemon).
+.PP
+The functions and options available 
+vary according to the disk subsystem being operated on.  Currently,
+.B format
+supports the
+.I zdc
+disk subsystem and the embedded SCSI disks on the
+.I sd
+and
+.I wd
+subsystems.
+.B format
+determines the subsystem based on the diskname.  Therefore, the
+diskname must use the standard Sequent prefixes (e.g., \f2rzd0c\f1, 
+\f2rsd0c\f1, \f2rwd0c\f1).
+One of the arguments listed in the first section of the
+usage line above is required and indicates the function to be performed.
+The function, along with the subsystem, then determines which of the 
+remaining arguments are necessary (or legal).
+.PP
+If the function will overwrite the disk, the user is prompted for 
+confirmation.
+.PP
+All supported functions and options are listed below.  Note that each 
+subsystem does not necessarily support each function.  Since some functions
+and options have different requirements or expect arguments in different
+formats depending on the subsystem, they are described in greater
+detail under the subsystem description sections.  Following is a
+simple description of each argument.
+.SH FUNCTIONS 
+.TP
+.B \-f
+Format the disk.
+.TP
+.B \-r
+Reformat the disk using the current bad-block list from the disk.
+.TP
+.B \-m
+Reformat the disk using the manufacturer's defect list from the disk.
+.TP
+.B \-M
+Recreate the bad block list from the manufactures defect list but do not
+format the disk. (Reserved for sequent use).
+.TP
+.BI \-S\0 "\f2cylinder head\fP"
+Display the specified tracks headers. 
+.TP
+.BI \-a\0 \f2bad_blocks\fP
+Add a bad block to the bad-block list.  Data on the bad block is
+recovered when possible.
+.TP
+.BI \-A\0 \f2bad_blocks\fP
+Replace the entire bad-block list (Reserved for sequent use).
+.TP
+.BI \-F
+Format a pre-wilson formatted disk (Reserved for sequent use).
+.TP
+.B \-Y
+Do not prompt user for confirmation.
+.TP
+.B \-y
+Run verify passes on the disk.  During verify, data patterns
+are written on the disk and read back.  If an error occurs, the
+block with the error is added to the bad-block list.
+.TP
+.B \-l
+List bad blocks.  This displays the disk's bad-block list.
+(This list can be used as input for the manufacture's defect list).
+.TP
+.B \-i
+Print the type of the disk if it can be found.
+.TP
+.B \-u
+Usage will give a usage line based on the diskname provided.
+.bP
+.PP
+.SH OPTIONS
+.TP
+.B \-v
+Enable verbose output.
+.TP
+.B \-w
+Disable writing the diagnostic data at the end of the disk
+at the completion of the formatter function.  By default, diagnostics
+are written after any operation that may destroy them, such
+as format or verify.
+.TP
+.B \-n
+Disable doing the verify passes at the completion of the formatter
+function.  By default, those subsystems which support the verify 
+function will do a default number of passes after a format or
+reformat operation.
+.TP
+.BI \-b\0 filename
+Specify the file containing the defect list.
+.TP
+.BI \-s\0 n
+Specify the starting address for the verify passes.  By default,
+verify passes start at the beginning of the disk.  
+Note that when \f3\-n\fP is set, this is ignored.
+.TP
+.BI \-e\0 n
+Specify the ending address for the verify passes.  By default,
+verify passes write the full disk.
+Note that when \f3\-n\fP is set, this is ignored.
+.TP
+.B \-h
+Specify the number of sector header verify passes to perform.
+A sector header verify pass does not cause data patterns to 
+be written on the disk, but does test the header area of all
+sectors on a track which have either known header defects or
+more than 3 defects. This determination is based upon the
+current bad block list.  Sector header verify passes always test 
+suspected tracks on the entire disk; the specified starting 
+and ending addresses have no effect.  The default number of 
+sector header passes is 10, at least 1 is manditory following 
+format and reformat, and as part of verify.  
+Note that when \f3\-n\fP is set, this is not ignored.
+.TP
+.B \-p
+Specify the number of full verify passes to perform.
+A full verify pass causes the data patterns to be written
+from the specified starting address to the specified ending
+address.  The default number of full passes is 3.
+Note that when \f3\-n\fP is set, this is ignored.
+.TP
+.B \-d
+Specify the number of defect verify passes to perform.
+A defect verify pass causes the data patterns to be written
+only on those cylinders with known defects.  The default
+number of defect passes is 45.
+Note that when \f3\-n\fP is set, this is ignored.
+.TP
+.B \-c
+Check the data on the verify passes.  Normally, during verify
+the data read back isn't actually compared to what was written.
+With this option, it is.
+Note that when \f3\-n\fP is set, this is ignored.
+.TP
+.BI \-o
+Override a sanity check. This option should only be used when a
+previous error condition indicates that \f3\-o\fP could be used.
+.TP
+.BI \-t\0 disktype
+Specify the type of the disk being operated on.  This should
+correspond to one of the types specified in \f2/etc/diskinfo\f1.
+.SS ZDC Support
+This section describes items specific to the
+.I zdc
+subsystem.  This includes descriptions of the arguments
+which differ in format or meaning from the generic description.
+.PP
+.B format
+expects to find channel configuration for each supported
+ZDC disk type in
+.I /etc/diskinfo/*.zd,
+where the base filename corresponds to a Sequent alias
+for the disk type.  This is the name that would be entered
+for the \f3\-t\fP type option.  For example, the file
+.I m2344k.zd
+contains the channel configuration for the Fujitsu M2344K
+disk drive.  To specify this disk type, you would use
+\f3\-t\fP
+.I m2344k.
+.PP
+The 
+.I zdc
+subsystem of 
+.B format
+will defer termination of its
+current operation in an effort to prevent critical format information
+on the drive from accidentally being left in an inconsistent, unusable 
+state. 
+More specifically, it will catch SIGINT and SIGHUP signals during
+format and reformat operations, then terminate once the critical 
+information has been written to the drive.  
+Note that the deferred response time may be instantaneous
+or take over 20 minutes, depending on how near to completion the
+operation is and the type of drive being formatted.
+Likewise, during verify operations 
+.B format
+will complete its current verification pass prior to terminating.
+However, this does not preclude desired, more immediate termination 
+by the user; it is still possible to suspend 
+.B format
+and explicitly send it another signal using the KILL(1)
+command, SIGKILL for example.
+.PP
+.B format
+requires that the drive being formatted is the ONLY drive in use on that
+channel. In order to repair "sector zero" drive defects, the controller chip
+configuration of the channel must be changed temporarily changed during
+the repair. Since each DCC channel uses a single controller chip 
+configuration for all drives on that channel, the only safe way to perform
+this operation is to require that this be the only drive in use on the
+channel during this repair. 
+.PP
+This does not necessarily mean that the system must be in single user mode
+to format the drive, but it does mean that they can use no other drive
+on that channel during the format. Disks sharing a channel with the root drive
+cannot be formatted using 
+.B format.
+.PP
+The
+.I zdc
+subsystem of the formatter supports the format function, as well
+as two types of reformat (\f3\-r\fP and \f3\-m\fP).  Be cautious in
+using the \f3\-m\fP function, as any defects 
+added to the bad-block list after the original manufacturer's list
+was put there will be lost.
+With any of the formatting functions (\f3\-f|r|m\fP), verify passes
+will be done by default.  This can be disabled with the \f3\-n\fP
+option.
+When formatting (\f3\-f\fP) a 
+.I zdc
+disk, the following arguments are required.  For example:
+.PP
+.RS
+\f3format \-f \-b \f2defect_list \f3\-t \f2m2382k rzd1\f1
+
+.RE
+.PP
+The following arguments require description. 
+.TP
+.BI \-a\0 \f2bad_blocks\f3
+The addbad function requires an argument, which can be in
+one of two forms.  The argument can be a filename, or it can
+be the actual defect data; if data, it should be enclosed in parentheses.
+.B format
+takes the first word following the \f3\-a\fP and attempts to open
+a file corresponding to that word.  If the open fails, it assumes
+the actual defect is specified.  Defects for the addbad function
+on the
+.I zdc
+disks contain the following four fields separated by white space: 
+.IP
+\f2\0\0\0\0cylinder head sector type\f1
+.IP
+where 
+.I type
+is 0 for a bad header or 1 for bad data.  Multiple defects may
+be specified in a file, with one defect per line.
+.TP
+.BI \-b\0 defect_file
+The defect file contains the manufacturer's list of
+defects.  It should contain one defect per line, with each defect
+consisting of four fields separated by white space.  The
+four fields are:
+.RS 12 
+.I cylinder
+.br
+.I head
+.br
+.I number of bytes from index
+.br
+.I length of defect in bits
+.RE
+.TP
+.BI \-t\0 disktype
+The disk type must be one of the supported ZDC disk types.
+There must be a file in 
+.I /etc/diskinfo
+that corresponds to the specified type.
+.TP
+.BI \-s\0 n
+The argument indicates the starting cylinder for verify passes.
+.TP
+.BI \-e\0 n
+The argument indicates the last cylinder for verify passes.
+.SS SCSI Support
+The SCSI subsystem of the
+.B format
+program supports CCS (Common Command Set) SCSI disks.
+This section describes items specific to the
+.I scsi
+subsystem.  
+.B format
+expects a file
+.I /etc/diskinfo/*.scsi
+corresponding to each supported SCSI disk type.  These
+files contain information used by the 
+.B format
+program.  
+There are no specific differences or requirements for
+SCSI disks other than those described generically above.
+.PP
+The following arguments require description. 
+.TP
+.BI \-a\0 \f2bad_blocks\f1
+The addbad function requires an argument, which can be in
+one of two forms.  The argument can be a filename or 
+the actual defect data.
+.B format
+takes the first word following the \f3\-a\fP and attempts to open
+a file corresponding to that word.  If the open fails, it assumes
+the actual defect is specified.  Defects for the addbad function
+on the SCSI
+disks consist of the logical block address of the defect.
+More than one may be entered on the command line, separated
+by spaces.  In a file, they must be separated by newlines.
+.br
+.SH EXAMPLES
+.RS
+
+format \-i sd0
+
+format \-f \-b /usr/defects/m2382k.s400067.b \-t m2382k rzd1
+
+format \-r rzd1
+
+format \-l rzd1
+
+format \-a "10 1 25 0 10 1 26 1" zd_diskname
+
+format \-a /usr/defects/m2382k.s4000067.a zd_diskname
+
+.RE
+.SH FILES
+/etc/diskinfo/*.zd
+.br
+/etc/diskinfo/*.scsi
+.SH "SEE ALSO"
+scsiformat(8s),
+zdformat(8s),
+wdformat(8s),
+diskinfo(5).

@@ -1,0 +1,69 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: quot.8 1.7 1991/08/07 00:16:21 $
+.TH QUOT 8 "\*(V)" "4BSD"
+.SH NAME
+quot \- summarize file system ownership
+.SH SYNOPSIS
+.B /usr/etc/quot
+[ option ] ...
+[ filesystem ]
+.SH DESCRIPTION
+.I Quot
+prints the number of blocks in the named
+.I filesystem
+currently owned by each user.
+If no 
+.I filesystem
+is named, a default name is assumed.
+The following options are available:
+.TP
+.B \-n
+Cause the pipeline
+.B "ncheck filesystem | sort +0n | quot \-n filesystem
+to produce a list of all files and their owners.
+.TP
+.B \-c
+Print three columns giving file size in blocks, number of
+files of that size, and cumulative total of blocks
+in that size or smaller file.
+.TP
+.B \-f
+Print count of number of files as well as space owned by each user.
+.TP
+.B \-h
+Print the number of blocks needed to represent the files
+assuming that none of the files have holes
+(are not sparse files).
+The calculation is based on the inode's
+.I size
+field,
+and will differ from the inode's
+.I blocks
+field,
+if the filesystem contains sparse files.
+.TP
+.B \-v
+Print three columns for each user
+giving the number of blocks not accessed in the last
+30,
+60,
+and 90 days.
+.TP
+.B \-a
+Print information for all mounted filesystems.
+.SH FILES
+Default file system varies with system.
+.br
+/etc/passwd	to get user names
+.SH "SEE ALSO"
+ls(1), du(1)

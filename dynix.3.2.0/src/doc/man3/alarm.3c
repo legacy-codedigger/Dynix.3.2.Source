@@ -1,0 +1,47 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: alarm.3c 1.6 86/05/13 $
+.TH ALARM 3C "\*(V)" "7th Edition"
+.SH NAME
+alarm \- schedule signal after specified time
+.SH SYNOPSIS
+.nf
+.B alarm(seconds)
+.B unsigned seconds;
+.fi
+.SH DESCRIPTION
+.ft 3
+This interface is obsoleted by setitimer(2).
+.ft 1
+.PP
+.I Alarm
+causes signal SIGALRM, see
+.IR signal (3C),
+to be sent to the invoking process
+in a number of seconds given by the argument.
+Unless caught or ignored, the signal terminates the process.
+.PP
+Alarm requests are not stacked; successive calls reset the alarm clock.
+If the argument is 0, any alarm request is canceled.
+Because of scheduling delays,
+resumption of execution of when the signal is
+caught may be delayed an arbitrary amount.
+The longest specifiable delay time is 2147483647 seconds.
+.PP
+The return value is the amount of time previously remaining in the alarm clock.
+.PP
+Alarm values are not inherited by the child process during the
+.IR fork (2)
+operation;
+the alarm is reset to the system default (inactive).
+.SH "SEE ALSO"
+sigpause(2), sigvec(2), signal(3C), sleep(3)

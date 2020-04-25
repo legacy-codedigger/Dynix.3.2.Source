@@ -1,0 +1,62 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: rmtab.5 1.4 87/06/18 $
+.\" @(#)rmtab.5 1.1 85/12/28 SMI;
+.TH RMTAB 5 "\*(V)" "4BSD"
+.SH NAME
+rmtab \- remotely mounted file system table
+.SH SYNOPSIS
+.B /etc/rmtab
+.SH DESCRIPTION
+.IX  "rmtab file"  ""  "\fLrmtab\fP \(em remote mounted file system table"
+.I Rmtab
+contains a record of all clients
+that have done remote mounts of file systems from this machine.
+Whenever a remote
+.I mount
+is done, an entry is made in the
+.I rmtab
+file of the machine serving up that file system.
+.I Umount
+removes remotely mounted file system entries.
+.I "Umount \-a"
+broadcasts to all servers, and informs them that they should remove
+all entries from
+.I rmtab
+created by the sender of the broadcast message.
+The table is a series of lines of the form
+.Ps
+\f2hostname\f1:\f2directory\f1
+.Pe
+This table is used only to preserve information between crashes,
+and is read only by
+.IR mountd (8)
+when it starts up.
+.I Mountd
+keeps an in-core table,
+which it uses to handle requests from programs like
+.IR showmount (1)
+and
+.IR shutdown (8).
+.SH FILES
+/etc/rmtab
+.SH "SEE ALSO"
+mount(8),
+mountd(8),
+showmount(8),
+shutdown(8),
+umount(8)
+.SH BUGS
+Although the
+.I rmtab
+table is close to the truth,
+it is not always 100% accurate.

@@ -1,0 +1,121 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: flock.2 1.9 91/03/22 $
+.TH FLOCK 2 "\*(V)" "4BSD"
+.SH NAME
+flock \- apply or remove an advisory lock on an open file
+.SH SYNOPSIS
+.nf
+.ft 3
+#include <sys/file.h>
+.PP
+.ft 3
+.DT
+#define	LOCK_SH	1	/* shared lock */
+#define	LOCK_EX	2	/* exclusive lock */
+#define	LOCK_NB	4	/* don't block when locking */
+#define	LOCK_UN	8	/* unlock */
+.PP
+.ft 3
+flock(fd, operation)
+int fd, operation;
+.fi
+.SH DESCRIPTION
+.I Flock
+applies or removes an
+.I advisory
+lock on the file associated with the file descriptor
+.IR fd .
+A lock is applied by specifying an
+.I operation
+parameter which is the inclusive or of
+LOCK_SH or LOCK_EX and, possibly, LOCK_NB.  To unlock
+an existing lock
+.I operation
+should be LOCK_UN.
+.PP
+Advisory locks allow cooperating processes to perform
+consistent operations on files, but do not guarantee
+consistency (i.e. processes may still access files
+without using advisory locks possibly resulting in
+inconsistencies).
+.PP
+The locking mechanism allows two types of locks:
+.I shared
+locks and
+.I exclusive
+locks.
+At any time multiple shared locks may be applied to a file,
+but at no time are multiple exclusive, or both shared and exclusive,
+locks allowed simultaneously on a file.  
+.PP
+A shared lock may be
+.I upgraded
+to an exclusive lock, and vice versa, simply by specifying
+the appropriate lock type; this results in the previous
+lock being released and the new lock applied (possibly
+after other processes have gained and released the lock).
+.PP
+Requesting a lock on an object which is already locked
+normally causes the caller to blocked until the lock may be
+acquired.  If LOCK_NB is included in
+.IR operation ,
+then this will not happen; instead the call will fail and
+the error EWOULDBLOCK will be returned.
+.SH NOTES
+Locks are on files (inodes), but the lock information is mantained in the file
+table. When file descriptors are duplicated through
+.IR dup (2)
+or
+.IR fork (2),
+they point to a common file table entry and thus share the lock state on
+the file. Thus, if an unlock operation is performed on one of these
+file descriptors, the other file descriptors, pointing to the same file
+table entry, also lose the lock. If a lock is done on one of these
+file descriptors, then  an attempts to lock exclusively on a "related"
+fd does not block or fail, since the file table entry shows this process
+to already have that lock.
+.PP
+If a process holding a lock on a file forks and the child explicitly
+unlocks the file, the parent will lose its lock.
+If a parent opens a file,
+then forks,
+then flocks the file for LOCK_EX,
+the child will not be blocked if it also flocks the file for LOCK_EX.
+If the parent forks,
+then both the child and parent open the same file,
+and the parent flocks it,
+the child will be blocked if it later flocks the file.
+.PP
+Processes blocked awaiting a lock may be awakened by signals.
+.SH "RETURN VALUE
+Zero is returned if the operation was successful;
+on an error a \-1 is returned and an error code is left in
+the global location \f2errno\fP.
+.SH "ERRORS
+The \f2flock\fP call fails if:
+.TP 20
+[EWOULDBLOCK]
+The file is locked and the LOCK_NB option was specified.
+.TP 20
+[EBADF]
+The argument \f2fd\fP is an invalid descriptor.
+.TP 20
+[EOPNOTSUPP]
+The argument \f2fd\fP refers to an object other than a file.
+.TP 20
+[EINVAL]
+The argument
+.I operation
+does not specify one of LOCK_UN, LOCK_EX, or LOCK_SH.
+.SH "SEE ALSO"
+open(2), close(2), dup(2), execve(2), fork(2)

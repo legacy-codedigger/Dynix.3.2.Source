@@ -1,0 +1,168 @@
+# $Copyright: $
+# Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+# Sequent Computer Systems, Inc.   All rights reserved.
+#  
+# This software is furnished under a license and may be used
+# only in accordance with the terms of that license and with the
+# inclusion of the above copyright notice.   This software may not
+# be provided or otherwise made available to, or used by, any
+# other person.  No title to or ownership of the software is
+# hereby transferred.
+
+# $Header: DYNIX 2.67 1992/02/13 00:30:10 $
+#
+# DYNIX SYMMETRY SERIES
+#
+# The maxusers parameter and the TIMESHARE, PARALLEL, or COMMERCIAL option
+# determine the size of some of the data structures in the kernel.  The
+# tables are sized to be appropriate for `maxusers' users in a timesharing,
+# parallel/research, or commercial environment.  maxusers does not limit the
+# maximum possible number of users; it only affects the size of system
+# tables.  For example, a TIMESHARE system with maxusers set to 64 supports
+# 64 heavy timesharing users, or 100-200 light users.  See the article
+# "Building DYNIX Systems with Config" and /sys/conf/param.c for more details.
+#
+machine		balance		# sb8000 (balance,symmtery) architecture
+ident		DYNIX
+cpu		"i386"
+timezone	8 dst
+maxusers	64
+options		TIMESHARE	# one of TIMESHARE, PARALLEL, COMMERCIAL
+#
+# DO NOT REMOVE INET option
+#	It is necessary for proper functioning of the kernel.
+# DO NOT REMOVE QUOTA option
+#	It is necessary for proper functioning of the kernel.
+#
+# Removable options are:
+#	SVSEMA	system V semaphore facility
+#	SVMESG	system V message facility
+#	SVCHOWN system V chown semantics
+#	SVACCT	system V accounting
+#       COBUG   486 floating bug work around code
+#	FPU_SIGNAL_BUG	Saves floating point context across signal handlers
+options		INET
+options		SVMESG,SVSEMA
+options		QUOTA	# do not remove
+options		COBUG	# do not remove
+options		FPU_SIGNAL_BUG	# do not remove
+
+# permanent options (can't be changed in a binary configuration).
+options		CACHESIZE=32	# cache block transfer size for gate spacing.
+
+## kernels to configure ##
+config		dynix_zd	root on zd0a swap on zd0
+config		dynix_sd	root on sd0a swap on sd0 and sd1
+config          dynix_wd        root on wd0a swap on wd0
+config		gendynix	swap generic
+
+## Multibus Adapters ##
+controller	mbad0	at slot ?
+controller	mbad1	at slot ?
+
+## SCSI/Ether Controllers ##
+# sec0 must be present in this configuration. Do not remove #
+controller	sec0	at slot ?
+controller	sec1	at slot ?
+
+## SSM Controllers ##
+# ssm0 must be present in this configuration. Do not remove #
+controller      ssm0    at slot ?
+
+## ZDC Controllers ##
+controller	zdc0	at slot ?
+controller	zdc1	at slot ?
+controller	zdc2	at slot ?
+controller	zdc3	at slot ?
+
+## Systech multibus terminal boards ##
+device		st0	at mbad? csr 0x200 maps  0 bin 4 intr 3
+device		st1	at mbad? csr 0x210 maps  0 bin 4 intr 4
+device		st2	at mbad? csr 0x220 maps  0 bin 4 intr 5
+device		st3	at mbad? csr 0x230 maps  0 bin 4 intr 6
+device		st4	at mbad? csr 0x240 maps  0 bin 4 intr 3
+device		st5	at mbad? csr 0x250 maps  0 bin 4 intr 4
+
+## Multibus Xylogics 472 Tape Controllers ##
+device		zt0	at mbad? csr 0x300 maps 34 bin 5 intr 7
+
+## Systech multibus line printer boards ##
+device		lp0	at mbad? csr 0x400 maps  8 bin 5 intr 2
+
+## Console devices on SEC ##
+device		co0	at sec0 req 4 doneq 4 bin 4 unit 0	# input
+device		co0	at sec0 req 4 doneq 4 bin 4 unit 1	# output
+device		co1	at sec0 req 4 doneq 4 bin 4 unit 2	# input
+device		co1	at sec0 req 4 doneq 4 bin 4 unit 3	# output
+device		co2	at sec1 req 4 doneq 4 bin 4 unit 0	# input
+device		co2	at sec1 req 4 doneq 4 bin 4 unit 1	# output
+device		co3	at sec1 req 4 doneq 4 bin 4 unit 2	# input
+device		co3	at sec1 req 4 doneq 4 bin 4 unit 3	# output
+
+## Ether devices on SEC ##
+device		se0	at sec0 req 25 doneq 25 bin 6 unit 0	# input
+device		se0	at sec0 req 10 doneq 10 bin 6 unit 1	# output
+device		se1	at sec1 req 25 doneq 25 bin 6 unit 0	# input
+device		se1	at sec1 req 10 doneq 10 bin 6 unit 1	# output
+
+## SCSI disk on SEC ##
+device		sd0	at sec? req 4 doneq 4 bin 5 unit ? target ?
+device		sd1	at sec? req 4 doneq 4 bin 5 unit ? target ?
+device		sd2	at sec? req 4 doneq 4 bin 5 unit ? target ?
+
+## SCSI streamer tape on SEC ##
+device		ts0	at sec? req 4 doneq 4 bin 5 unit ? target 4
+
+## SCSI memory driver on SEC ##
+device		sm0	at sec0 req 3 doneq 3 bin 4 unit 0
+device		sm1	at sec1 req 3 doneq 3 bin 4 unit 0
+
+## SCSI disk on SSM ##
+device          wd0     at ssm0 bin 5 maps 200 target ? unit 0
+device          wd1     at ssm0 bin 5 maps 200 target ? unit 0
+
+## SCSI streamer tape on SSM ##
+device          tm0     at ssm0 bin 5 maps 512 target 7 unit 0
+
+## SCSI 1/2" tape on SSM ##
+device          tg0     at ssm0 bin 5 maps 512 target 5 unit 0
+
+## Terminal ports on SSM ##
+device          sc0     at ssm0 bin 4 unit 0
+device          sc1     at ssm0 bin 4 unit 1
+
+## Printer port on SSM ##
+#device          sp0     at ssm0 bin 5 unit 0
+
+## Memory driver on SSM ##
+device          ss0     at ssm0
+
+## ZDC Drives ##
+device		zd0	at zdc? drive ? drive_type ?
+device		zd1	at zdc? drive ? drive_type ?
+device		zd2	at zdc? drive ? drive_type ?
+device		zd3	at zdc? drive ? drive_type ?
+device		zd4	at zdc? drive ? drive_type ?
+device		zd5	at zdc? drive ? drive_type ?
+device		zd6	at zdc? drive ? drive_type ?
+device		zd7	at zdc? drive ? drive_type ?
+device		zd8	at zdc? drive ? drive_type ?
+device		zd9	at zdc? drive ? drive_type ?
+device		zd10	at zdc? drive ? drive_type ?
+device		zd11	at zdc? drive ? drive_type ?
+device		zd12	at zdc? drive ? drive_type ?
+device		zd13	at zdc? drive ? drive_type ?
+device		zd14	at zdc? drive ? drive_type ?
+device		zd15	at zdc? drive ? drive_type ?
+
+## Pseudo devices ##
+pseudo-device	pty	62
+## pseudo-device	pci	8			# 8 PCI devices
+pseudo-device	pmap				# phys-map driver
+pseudo-device	promisc
+pseudo-device	usclk
+pseudo-device	mirror	8
+pseudo-device	stripe	256
+pseudo-device	vlsi
+pseudo-device   cons                            # Logical console
+pseudo-device   smem                            # Logical controller memory

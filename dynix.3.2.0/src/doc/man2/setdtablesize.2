@@ -1,0 +1,85 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987 Sequent Computer Systems, Inc.
+.\" All rights reserved
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: setdtablesize.2 1.6 87/09/25 $
+.TH SETDTABLESIZE 2 "\*(V)" ""
+.SH NAME
+setdtablesize \- set descriptor table size
+.SH SYNOPSIS
+.nf
+.ft 3
+setdtablesize(size)
+	int  size;
+.fi
+.SH DESCRIPTION
+This sets the descriptor table size in the calling process to at
+least the minimum of the
+.I size
+argument and a system-defined maximum number of file descriptors
+(binary-configurable).
+The implementation can grant more file descriptors than the number requested.
+.I Setdtablesize
+returns the number of file descriptors the process can now use.
+A request to decrease the number of file descriptors in a process is honored
+by closing all open file descriptors with indices equal to or greater than
+.IR size .
+.PP
+The maximum number of file descriptors is guaranteed to be at least 20,
+for compatibility with other UNIX systems.
+.PP
+Before 
+.I setdtablesize
+can be used to increase the number of file descriptors,
+.B MAXNOFILE
+and
+.B NOFILEEXT
+must be set as options in the binary configuration file.
+For further information on these and other binary-configurable options,
+refer to
+.IR "Building DYNIX Systems With Config" .
+.PP
+The new descriptor table size is inherited across
+.IR fork (2)
+and kept across
+.IR exec (2)
+system calls.
+.SH "CAVEATS"
+Since standard I/O does not support more than 20 open files,
+all stdio must be done with file descriptor numbers less than 20.
+.SH "RETURN VALUES"
+If successful,
+the number of usable file descriptors in the calling process is returned.
+Otherwise, a -1 is returned,
+and the global variable
+.B errno
+is set to indicate the error.
+.SH ERRORS
+.TP 15
+[ENOMEM]
+The system was temporarily unable to allocate sufficient memory resources
+to satisfy the request.
+.TP 15
+[EINVAL]
+The
+.I size
+argument was invalid
+.RI ( size
+is less than zero).
+.TP 15
+[ENFILE]
+The system had no free open-file table extension objects.
+.SH "SEE ALSO"
+close(2),
+dup(2),
+getdtablesize(2),
+getdtablemax(2),
+open(2),
+.I "Building DYNIX Systems With Config"

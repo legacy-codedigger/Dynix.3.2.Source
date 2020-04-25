@@ -1,0 +1,123 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: intro.3p 1.11 87/04/17 $
+.TH INTRO 3P "\*(V)" "DYNIX"
+.SH NAME
+intro \- introduction to Parallel Programming Library
+.SH DESCRIPTION
+These routines constitute the Parallel Programming Library,
+which supports microtasking and multitasking in C, Pascal,
+and FORTRAN
+programs. (For information on microtasking and multitasking
+programming models, refer to the 
+.IR "Guide to Parallel Programming" .)
+The Parallel Programming Library is not supported under System V
+(\f2att\fP universe).
+.PP
+The routines are contained in the file
+.IR /usr/lib/libpps.a .
+These routines are linked into
+a program by including the
+.B \-lpps
+option in the
+.B cc 
+or
+.BR ld
+command line,
+or by including the
+.B \-lpps
+or
+.B \-mp
+option in the
+.B fortran 
+or
+.B pascal
+command line.
+.PP
+For an overview of how the Parallel Programming Library routines are used,
+and for sample programs and related information,
+refer to the
+.IR "Guide to Parallel Programming" .
+.SH "LIST OF FUNCTIONS"
+.sp 2
+The following routines support microtasking:
+.sp
+.nf
+.ds uL S_INIT_BARRIER
+.ta \w'\*(uL'u+2n +\w'\*(uL.3p'u+10n
+\f2Name\fP	\f2Appears on Page\fP	\f2Description\fP
+.ta \w'\*(uL'u+4n +\w'\*(uL.3p'u+4n
+.sp 5p
+m_fork	m_fork.3p	execute a subprogram in parallel
+m_get_myid	m_get_myid.3p	return process identification
+m_get_numprocs	m_get_numprocs.3p	get number of child processes
+m_kill_procs	m_kill_procs.3p	kill child processes	
+m_lock	m_lock.3p	initialize and lock a lock
+m_multi	m_single.3p	end single-process section
+m_next	m_next.3p	increment global counter
+m_park_procs	m_park_procs.3p	suspend child process execution
+m_rele_procs	m_park_procs.3p	resume child process execution
+m_set_procs	m_set_procs.3p	set number of child processes
+m_single	m_single.3p	start single-process section
+m_sync	m_sync.3p	check in at barrier
+m_unlock	m_lock.3p	unlock a lock
+.fi
+.PP
+The following routines support multitasking:
+.sp
+.nf
+.ds uL S_INIT_BARRIER
+.ta \w'\*(uL'u+2n +\w'\*(uL.3p'u+10n
+\f2Name\fP	\f2Appears on Page\fP	\f2Description\fP
+.ta \w'\*(uL'u+4n +\w'\*(uL.3p'u+4n
+.sp 5p
+cpus_online	cpus_online.3p	return number of CPUs on-line
+s_clock	s_lock.3p	lock a lock, return if unsuccessful
+S_CLOCK	s_lock.3p	lock a lock, return if unsuccessful (C macro)
+s_init_barrier	s_wait_barrier.3p	initialize a barrier
+S_INIT_BARRIER	s_wait_barrier.3p	initialize a barrier (C macro)
+s_init_lock	s_lock.3p	initialize a lock
+S_INIT_LOCK	s_lock.3p	initialize a lock (C macro)
+s_lock	s_lock.3p	lock a lock
+S_LOCK	s_lock.3p	lock a lock (C macro)
+s_unlock	s_lock.3p	unlock a lock
+S_UNLOCK	s_lock.3p	unlock a lock (C macro)
+s_wait_barrier	s_wait_barrier.3p	wait at a barrier
+S_WAIT_BARRIER	s_wait_barrier.3p	wait at a barrier (C macro)
+.fi
+.PP
+The following routines support memory allocation for parallel
+programming. The 
+.I brk 
+and
+.I sbrk
+routines are available without
+loading the Parallel Programming library (see
+.IR brk (2)),
+but the versions in
+the Parallel Programming library are necessary for
+compatibility with the rest of the library.
+.bp
+.nf
+.ds uL S_WAIT_BARRIER
+.ta \w'\*(uL'u+2n +\w'\*(uL.3p'u+10n
+\f2Name\fP	\f2Appears on Page\fP	\f2Description\fP
+.ta \w'\*(uL'u+4n +\w'\*(uL.3p'u+4n
+.sp 5p
+brk	brk.3p	change private data segment size
+sbrk	brk.3p	change private data segment size	
+shbrk	shbrk.3p	change shared data segment size
+shfree	shmalloc.3p	deallocate shared data memory
+shmalloc	shmalloc.3p	allocate shared data memory
+shrealloc	shmalloc.3p	reallocate shared data memory
+shsbrk	shbrk.3p	change shared data segment size
+.fi

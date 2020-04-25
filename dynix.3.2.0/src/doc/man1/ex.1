@@ -1,0 +1,227 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: ex.1 1.13 90/05/30 $
+.TH EX 1 "\*(V)" "4BSD/DYNIX"
+.SH NAME
+e, ex, edit \- text editor
+.SH SYNOPSIS
+.B ex
+[
+.B \-
+] [
+.B \-v
+] [
+.B \-t
+.I tag
+] [
+.B \-r
+] [
+.B \-l
+] [
+\f3-w\f2n\f1
+] [
+.B \-x
+] [
+.B \-R
+] [
+\f3\+\f2command\f1
+]
+.I name ...
+.br
+.B edit
+[
+ex options
+]
+.SH DESCRIPTION
+.B Ex
+is the root of a family of editors:
+.B edit,
+.B ex,
+.B e
+and
+.B vi.
+.B Ex
+and
+.B e
+are synonyms, so all further references to
+.B Ex
+also apply to
+.B e.
+.B Ex
+is a superset of
+.B ed,
+with the most notable extension being a display-editing facility.
+Display-based editing is the focus of
+.B vi.
+.PP
+If you are a casual user only, or have not used
+.B ed,
+you will find the editor
+.B edit
+convenient;
+it avoids some of the complexities of
+.BR ex ,
+which is used mostly by system programmers and people who are familiar with
+.B ed.
+.PP
+If you have a \s-2CRT\s0 terminal, you may wish to use a display-
+based editor; in this case
+see
+.BR vi (1),
+which is a command that focuses on the display-editing portion of
+.B ex.
+.SH OPTIONS
+.IP \f3\-\f1
+Suppress all interactive-user feedback;
+useful in processing editor scripts in command files.
+.IP \f3\-v\f1
+Equivalent to using
+.B vi
+rather than
+.B ex.
+.IP \f3\-t\f1
+Equivalent to an initial
+.B tag
+command, editing the file containing the
+.B tag
+and positioning the editor at its definition.
+.IP \f3\-r\f1
+Recover after an editor or system crash,
+retrieving the last saved version of the named file or,
+if no file is specified,
+type a list of saved files.
+.IP \f3\-l\f1
+Set up for editing \s-2LISP\s0, setting the
+.B showmatch
+and
+.B lisp
+options.
+.IP \f3\-w\f1
+Set the default window size to
+.IR n ;
+useful on dialups to start in small windows.
+.IP \f3\-x\f1
+Cause
+.B ex
+to prompt for a
+.I key ,
+which is used to encrypt and decrypt the contents of the file.
+(The contents of the file should already be encrypted using the same key;
+see
+.B crypt (1).
+.IP \f3\-R\f1
+Set the
+.B readonly
+option at the start.
+The
+.I name ...
+arguments indicate files to be edited.
+An argument of the form
+\f3+command\f1
+indicates that the editor should begin by executing the specified command.
+If
+.B command
+is omitted, then it defaults to $ , positioning the editor at the last
+line of the first file initially.  Other useful commands here are scanning
+patterns of the form /pat or line numbers, e.g. +100, starting
+at line 100.
+.SH DOCUMENTATION
+The document
+.I "Edit: A tutorial"
+provides a comprehensive introduction to
+.B edit 
+and does not assume knowledge of computers or the \s-2UNIX\s0 system.
+.PP
+The
+.I "Ex Reference Manual \- Version 3.5"
+is a complete manual for the command-mode features
+of
+.B ex,
+but it does not teach you how to use the editor.
+For an introduction to
+more advanced forms of editing using the command mode of
+.BR ex ,
+see the editing documents written by Brian Kernighan for the editor
+.BR ed ;
+the material in the introductory and advanced documents works also with
+.B ex.
+.PP
+.I "An Introduction to Display Editing with Vi"
+introduces the display editor
+.B vi
+and provides reference material on
+it.
+All these documents are found in volume 2c of the Programmer's Manual.
+In addition, the
+.I "Vi Quick Reference"
+card summarizes the commands
+of
+.B vi
+and has a helpful
+introduction.
+.SH FILES
+.DT
+/usr/lib/ex?.?strings		error messages
+.br
+/usr/lib/ex?.?recover		recover command
+.br
+/usr/lib/ex?.?preserve		preserve command
+.br
+/etc/termcap			describes capabilities of terminals
+.br
+~/.exrc				editor startup file
+.br
+/tmp/Vi\f2nnnnnn\f1			editor temporary
+.br
+/tmp/Ri\f2nnnnnn\f1			named buffer temporary
+.br
+/usr/preserve			preservation directory
+.SH SEE ALSO
+awk(1), ed(1), grep(1), sed(1), grep(1), vi(1), termcap(5), environ(7)
+.SH AUTHOR
+Originally written by William Joy.
+.br
+Mark Horton has maintained the editor since version 2.7, adding macros,
+support for many terminals,
+and other features such as word abbreviation mode.
+.SH BUGS
+The
+.B x
+command
+and
+.B \-x
+command line option are available only when
+the DYNIX Cryptographic Software option has been installed.
+.PP
+The
+.B undo
+command causes all marks to be lost on lines changed and then restored
+if the marked lines were changed.
+.PP
+.B Undo
+never clears the buffer modified condition.
+.PP
+The
+.B z
+command prints a number of logical rather than physical lines.
+More than a screen full of output may result if long lines are present.
+.PP
+File input/output errors don't print a name if the command line \f3`\-'\f1
+option is used.
+.PP
+There is no easy way to do a single scan ignoring case.
+.PP
+The editor does not warn if text is placed in named buffers and not used
+before you exit the editor.
+.PP
+Null characters are discarded in input files and cannot appear in resultant
+files.

@@ -1,0 +1,182 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: savecore.8 1.18 1991/11/07 23:51:22 $
+.TH SAVECORE 8 "\*(V)" "4BSD/DYNIX"
+.SH NAME
+savecore \- save a core dump of the operating system
+.SH SYNOPSIS
+.B /usr/etc/savecore 
+[
+.B \-d 
+.I dumpstring
+] [
+.B \-C 
+] [
+.B \-P
+.I processes
+] [
+.B \-s
+.I seg_size
+]
+.I dirname
+[
+.I system
+]
+.PP
+.B /usr/etc/savecore 
+[
+.B \-d 
+.I dumpstring
+] 
+.B \-c
+.PP
+.B /usr/etc/savecore 
+[
+.B \-d 
+.I dumpstring
+] 
+.B \-q
+.SH DESCRIPTION
+.I Savecore
+is meant to be called near the end of the /etc/rc file.  Its function
+is to save the core dump of the system (assuming one was made) and to
+write a reboot message in the shutdown log.
+.PP
+Savecore saves the core image in the file
+.IR dirname /vmcore.n
+or
+.IR dirname/vmcore.n.ZZ
+if either the
+.I -C
+flag is specified, or cdump(8s) was used for taking the memory dump.
+If the core dump corresponds with the current running dynix, or the
+dynix specified in
+.IR system ,
+it is saved in
+.IR dirname /dynix.n.
+Savecore does not verify if the core dump corresponds with the current 
+running dynix, when restoring or creating compressed dumps.
+The trailing ".n" in the pathnames is replaced by a number which grows
+every time
+.I savecore
+is run in that directory.
+Savecore also saves the output from
+.IR /etc/dmesg (8)
+into
+.IR dirname /dmesg.n.
+.PP
+Before savecore writes out a core image, it reads a number from the file
+.IR dirname /minfree.
+If there are fewer free blocks on the filesystem
+which contains
+.I dirname
+than the number obtained from the minfree file, the core dump is not done.
+If the minfree file does not exist, savecore always writes out the core
+file (assuming that a core dump was taken).
+.PP
+.I Savecore
+also writes a reboot message in the shut down log.  If the system crashed
+as a result of a panic,
+.I savecore
+records the panic string in the shut down log too.
+.PP
+If the core dump was from a system other than /dynix, the name
+of that system must be supplied as
+.IR sysname .
+.PP
+If savecore is invoked with
+.BR \-c ,
+the dump, if one exists, is cleared (that is, discarded).
+.PP
+If savecore is invoked with
+.BR \-q ,
+savecore checks to see if a dump exists.
+If a dump exists, ``Dump exists.'' is printed.
+Otherwise, ``No dump.'' is printed.
+.PP
+If savecore is invoked with
+.BR \-C
+, it writes the
+.I vmcore
+in a compressed format and adds ".ZZ" to the end of the 
+.I vmcore
+filename.  With 
+.BR \-C 
+specified, the option
+.BR -P
+specifies how many parallel processes should be used for compressing the 
+input. The default is one for each engine on-line, which is the optimum
+amount of parallelism. Finally, with 
+.BR \-C 
+specified, 
+.BR -s
+may be specified to fine-tune compression performance; the default value(8k)
+was selected to optimize 
+.I crash(8) 
+performance. 
+.PP
+If cdump was used for taking the memory dump, savecore writes the 
+.I vmcore
+in a compressed format, and adds ".ZZ" to the 
+.I vmcore
+filename. When savecore saves such a compressed dump (produced by cdump),  
+it prints out both the real size of memory, and the size of the compressed
+image it is restoring. The 
+.BR \-C 
+option is ignored when saving a dump
+produced by cdump, because it is already in a compressed form.
+.PP
+If savecore is invoked with
+.BR \-d
+followed by a \fIdumpstring of\fP the form "offset device", it will use this
+\fIdumpstring\fP instead of the system default \fIdumpstring\fP.  A
+\fIdumpstring\fP of
+the form "-f dumplist" will tell savecore to use the named \fIdumplist\fP
+file.
+.PP
+An example of specifying an alternative \fIdumpstring\fP looks like:
+.sp 1
+.RS
+savecore -d "1000 /dev/zd0b"
+.RE
+.sp 1
+The command to have savecore look in /etc/DUMPLIST for \fIdumpstrings\fP
+would look like:
+.sp 1
+.RS
+savecore -d "-f /etc/DUMPLIST"
+.RE
+.sp 1
+.SH FILES
+.ta \w'/usr/adm/shutdownlog\0\0\0'u
+.nf
+/usr/adm/shutdownlog	shut down log
+/dynix	current DYNIX
+.fi
+.SH "SEE ALSO"
+dump(8S)
+cdump(8s)
+crash(8)
+ccompress(8)
+unccompress(8)
+.SH "BUGS"
+The
+.BR \-c
+option of savecore clears a dump by zeroing the magic number
+(if it exists) held on the swap partition.  If this location is being
+used for swapping, it can become corrupted.  The chance of this happening
+is very small.
+.PP
+The
+.BR \-C
+option of savecore will not work if the dump was written to tape.  Use
+cdump(8s) if tapes must be used and compression is desired.

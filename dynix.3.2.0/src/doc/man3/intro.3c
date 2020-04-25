@@ -1,0 +1,49 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: intro.3c 1.6 86/05/13 $
+.TH INTRO 3C "\*(V)" "4BSD"
+.SH NAME
+intro \- introduction to compatibility library functions
+.SH DESCRIPTION
+These functions constitute the compatibility library portion
+of
+.IR libc .
+They are automatically loaded as needed by the C compiler
+.IR cc (1).
+The link editor searches this library under the \*(lq\-lc\*(rq option.
+Use of these routines should, for the most part, be avoided.
+Manual entries for the functions in this library describe
+the proper routine to use.
+.SH "LIST OF FUNCTIONS"
+.sp 2
+.nf
+.ta \w'vtimes'u+2n +\w'vtimes.3c'u+10n
+\f2Name\fP	\f2Appears on Page\fP	\f2Description\fP
+.ta \w'vtimes'u+4n +\w'vtimes.3c'u+4n
+.sp 5p
+alarm	alarm.3c	schedule signal after specified time
+ftime	time.3c	get date and time
+getpw	getpw.3c	get name from uid
+gtty	stty.3c	set and get terminal state (defunct)
+nargs	nargs.3c	get argument count
+nice	nice.3c	set program priority
+pause	pause.3c	stop until signal
+rand	rand.3c	random number generator
+signal	signal.3c	simplified software signal facilities
+srand	rand.3c	random number generator
+stty	stty.3c	set and get terminal state (defunct)
+time	time.3c	get date and time
+times	times.3c	get process times
+utime	utime.3c	set file times
+vlimit	vlimit.3c	control maximum system resource consumption
+vtimes	vtimes.3c	get information about resource utilization
+.fi

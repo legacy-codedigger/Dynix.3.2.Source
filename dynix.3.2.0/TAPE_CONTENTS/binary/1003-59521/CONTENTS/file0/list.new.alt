@@ -1,0 +1,45 @@
+00000 0        0/10  l--777 bin -> ucb=.bin att=/usr/att/bin
+26353 28672    0/10  ---755-2 bin/e
+26353 28672    0/10  ---755-2 bin/ed
+52567 1743     0/10  ---744 etc/instl.encrypt
+00000 0        0/10  l--777 etc/mknod -> ucb=/etc/.mknod att=/usr/att/etc/mknod
+00000 0        0/10  l--777 lib -> ucb=.lib att=/usr/att/lib
+16259 300304   0/10  ---644 lib/libc.a
+24007 302330   0/10  ---644 lib/libfpac.a
+08158 20480    0/10  ---755 usr/att/bin/crypt
+04931 45056    0/10  ---755-2 usr/att/bin/ed
+04931 45056    0/10  ---755-2 usr/att/bin/red
+32387 140408   0/10  ---644 usr/att/lib/libc.a
+31378 143458   0/10  ---644 usr/att/lib/libfpac.a
+01223 139264   0/10  ---755-5 usr/att/usr/bin/edit
+01223 139264   0/10  ---755-5 usr/att/usr/bin/ex
+01223 139264   0/10  ---755-5 usr/att/usr/bin/vedit
+01223 139264   0/10  ---755-5 usr/att/usr/bin/vi
+01223 139264   0/10  ---755-5 usr/att/usr/bin/view
+64749 3222     0/10  ---644 usr/att/usr/lib/libcrypt.a
+58562 116038   0/10  ---644 usr/att/usr/lib/libcurses.a
+00000 0        0/10  l--777 usr/bin -> ucb=.bin att=/usr/att/usr/bin
+52168 16384    0/10  ---755 usr/bin/crypt
+53755 53248    0/10  ---755 usr/bin/enroll
+37922 155648   0/10  t--755-7 usr/bin/ex
+05113 65536    0/10  ---755 usr/bin/xget
+46220 65536    0/10  ---755 usr/bin/xsend
+00000 0        0/10  l--777 usr/include -> ucb=.include att=/usr/att/usr/include
+00000 0        0/10  l--777 usr/lib -> ucb=.lib att=/usr/att/usr/lib
+37012 467166   0/10  ---644 usr/lib/libc_p.a
+13139 469216   0/10  ---644 usr/lib/libfpac_p.a
+15271 4582     0/10  ---644-2 usr/lib/libtermcap.a
+15271 4582     0/10  ---644-2 usr/lib/libtermlib.a
+01270 1723     0/10  ---666 usr/man/cat1/crypt.1.Z
+06136 795      0/10  ---666 usr/man/cat1/xsend.1.Z
+33719 1325     0/10  ---666 usr/man/cat3/crypt.3.Z
+24783 2994     0/10  ---444 usr/man/man1/crypt.1
+03495 1562     0/10  ---444 usr/man/man1/xsend.1
+50411 2431     0/10  ---444 usr/man/man3/crypt.3
+00000 0        0/10  l--777 usr/pub -> ucb=.pub att=/usr/att/usr/pub
+37922 155648   0/10  t--755-7 usr/ucb/a.vi
+37922 155648   0/10  t--755-7 usr/ucb/e
+37922 155648   0/10  t--755-7 usr/ucb/edit
+37922 155648   0/10  t--755-7 usr/ucb/ex
+37922 155648   0/10  t--755-7 usr/ucb/vi
+37922 155648   0/10  t--755-7 usr/ucb/view

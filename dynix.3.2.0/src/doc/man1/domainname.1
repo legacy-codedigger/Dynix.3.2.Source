@@ -1,0 +1,35 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: domainname.1 1.2 87/02/25 $
+.\" @(#)domainname.1 1.1 85/12/28 SMI;
+.TH DOMAINNAME 1 "\*(V)" "4BSD"
+.SH NAME
+domainname \- set or display name of current domain system
+.SH SYNOPSIS
+.B domainname
+[ \fInameofdomain\fR ]
+.SH DESCRIPTION
+.\".IX "domainname command"  ""  "\f2domainname\fP \(em set/display domain name"
+.\".IX domain  "set or display current"
+.\".IX "current domain"  "set or display"
+.\".IX display  "current domain"
+.\".IX set  "current domain"
+Without an argument,
+.I domainname
+displays the name of the current domain.
+Only the super-user can set the domainname by giving an argument;
+this is usually done in the startup script
+.IR /etc/rc.local .
+Currently, domains are only used by the yellow pages, to refer
+collectively to a group of hosts.
+.SH SEE ALSO
+ypinit(8)

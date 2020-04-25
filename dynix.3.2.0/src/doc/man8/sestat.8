@@ -1,0 +1,87 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: sestat.8 1.6 1991/08/06 23:02:48 $
+.TH SESTAT 8 "\*(V)" "DYNIX"
+.SH NAME
+sestat \- print Ethernet statistics
+.SH SYNOPSIS
+.B /usr/etc/sestat
+[
+.B \-z
+] [
+.B system
+[
+.B corefile
+] ]
+.SH DESCRIPTION
+.I Sestat
+prints summary statistics about the Ethernet interface
+.IR se .
+If
+.I corefile
+is given, the statistics are sought there, otherwise
+in
+.IR /dev/kmem .
+The required namelist is taken from
+.I /dynix
+unless
+.I system
+is specified.
+Options are
+.TP 0.4i
+.B \-z
+After printing the statistics, zero them in
+.IR corefile .
+This is useful for monitoring the health of the network
+over short periods of time.
+You must be the super-user to do this.
+.PP
+Statistics printed by
+.I sestat
+are summaries since the last boot (or the last sestat -z),
+and are printed for all se interfaces.
+The statistics printed are:
+.in +0.5i
+.RS
+.IP - 2n
+The number of times the receiver couldn't keep up with
+the network (receiver overflows).
+.IP -
+The number of packets received with CRC errors.
+.IP -
+The number of packets received with dribble errors
+(the hardware compensates for these errors).
+.IP -
+The number of short packets received.
+.IP -
+The number of good packets received (includes the dribble errors).
+.IP -
+The number of times the transmitter didn't keep up with
+the transmit DMA (transmit underflows).
+.IP -
+The number of transmit collisions (usually in the same
+range as transmit underflows).
+.IP -
+The number of excessive transmit collisions (16 collisions in a row).
+.IP -
+The number of good packets transmitted.
+.RE
+.in -0.5i
+.SH FILES
+.ta \w'/dev/kmem  'u
+/dynix	namelist
+.br
+/dev/kmem	default source of tables
+.SH SEE ALSO
+se(4)
+.SH BUGS
+There is no way to zero the statistics for a single Ethernet interface.

@@ -1,0 +1,124 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986 Sequent Computer Systems, Inc.
+.\" All rights reserved
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: m_set_procs.3p 1.8 1991/06/26 16:30:40 $
+.TH M_SET_PROCS 3P "\*(V)" "DYNIX"
+.SH NAME
+m_set_procs \- set number of child processes
+.SH SYNOPSIS
+.nf
+\f2C syntax:\fP
+.PP
+\f3#include <parallel/microtask.h>
+int m_set_procs(nprocs);
+int nprocs;\fP
+.PP
+\f2Pascal syntax\fP
+.PP
+\f3function m_set_procs (numprocs : longint) : longint;\fP
+\f3cexternal;\fP
+.PP
+\f2FORTRAN syntax\fP
+.PP
+\f3integer*4 function m_set_procs(nprocs)
+integer*4 nprocs\fP
+.fi
+.SH DESCRIPTION
+The 
+.I m_set_procs 
+routine declares the number of processes to execute
+subprograms in parallel on
+subsequent calls to
+.IR m_fork .
+The argument
+.I nprocs
+declares the total number of processes that will run in
+parallel, including the parent process and the child
+processes.
+If 
+.I nprocs
+is zero, the program creates no child processes, but all
+barriers and locks are initialized as if the program were
+going to create child processes.
+.PP
+The 
+.I m_set_procs
+routine initializes a shared variable called
+.IR m_numprocs ,
+which controls the number of processes created by subsequent
+calls to
+.IR m_fork .
+The C header file
+.I /usr/include/parallel/microtask.h
+contains an external declaration of 
+.IR m_numprocs ,
+as well as the constant
+.I MAXPROCS
+which determines the
+maximum number of processes that the system will allow the program 
+to create.
+The number of processes the program can create is not limited by the number 
+of CPUs in the system,
+it is only limited by
+.I MAXPROCS.
+.PP
+The
+.I m_set_procs 
+routine is optional: if the program does not call this routine
+before calling
+.IR m_fork ,
+the number of processes defaults to
+.IR "(number of CPUs on-line)" /2.
+The program must not call
+.I m_set_procs
+while the child processes from an
+.I m_fork
+call are still alive
+(that is, before an
+.I m_kill_procs
+call to kill the child processes).
+.SH ERRORS
+If an
+.I m_set_procs
+call is successful, the return value is zero.
+If the call fails, the return value is -1 and the variable
+.I errno
+holds the error code.
+.PP
+The
+.I m_set_procs
+call fails if one of the
+following error conditions occurs:
+.TP 15
+[EINVAL]
+The argument
+.I nprocs
+is greater than MAXPROCS or it is greater than or equal to the number
+of on-line CPUs.
+.TP 15
+[EINVAL]
+Children from an
+.I m_fork
+call are already running.
+In this case, call
+.I m_kill_procs
+to kill the existing child processes before calling
+.IR m_set_procs .
+.PP 
+.SH "NOTES"
+The number of processes that can be assigned is no longer restricted by the
+number of CPUs on-line minus 1.  In order to retain that limit, a call to
+.I cpus_online()
+should be made, and that number minus one should then be sent to 
+.I m_set_procs.
+.SH "SEE ALSO"
+m_fork(3P), m_kill_procs(3P), \f2Guide to Parallel
+Programming\fP

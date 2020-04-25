@@ -1,0 +1,91 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986 Sequent Computer Systems, Inc.
+.\" All rights reserved
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V=$Header: ping.8 1.4 87/04/30 $
+.\" @(#)ping.8 1.1 85/12/28 SMI; from UCB 4.2
+.TH PING 8 "\*(V)" "4BSD"
+.SH NAME
+ping \- send ICMP ECHO_REQUEST packets to network hosts
+.SH SYNOPSIS
+.B /usr/etc/ping
+[
+.B \-r
+] [
+.B \-v
+]
+.I host
+[
+.I count
+] [
+.I packetsize
+]
+.SH DESCRIPTION
+.I Ping
+utilizes the
+ICMP protocol's mandatory ECHO_REQUEST datagram to elicit an
+ICMP ECHO_RESPONSE from a host or gateway.
+ECHO_REQUEST datagrams (``pings'') have an IP and ICMP header,
+followed by a
+.BR "struct timeval ,
+and then an arbitrary number of
+.I pad
+bytes used to fill out the packet.
+The default datagram length is 64 bytes, but this may be changed
+using the command-line option.
+Other options are:
+.TP
+.B \-r
+Bypass the normal routing tables and send directly to a host on an attached
+network.
+If the host is not on a directly-attached network,
+an error is returned.
+This option can be used to ping a local host through an interface
+that has no route through it (e.g., after the interface was dropped by
+.IR routed (8C)).
+.TP
+.B \-v
+Verbose output.  ICMP packets other than ECHO RESPONSE that are received
+are listed.
+.PP
+When using \fIping\fR for fault isolation,
+it should first be run on the local
+host, to verify that the local network interface is up and
+running.
+Then, hosts and gateways further and further away
+should be ``pinged''.
+.I Ping
+sends one datagram and
+prints one line of output.
+If an optional
+.I count
+is given, that number of requests is sent, and
+and one line for every ECHO_RESPONSE returned is printed.
+No output is produced if there is no response.
+Round-trip times and packet loss statistics are computed.
+When all responses have been received or the program times out (
+.I count
+packets sent),
+or if the program is terminated with a SIGINT, a brief
+summary is displayed.
+.PP
+This program is intended for use in network testing, measurement
+and management.
+It should be used primarily for manual fault isolation.
+Because of the load it could impose on the network,
+it is unwise to use
+.I ping
+during normal operations or from automated scripts.
+.SH AUTHOR
+Mike Muuss
+.SH SEE ALSO
+netstat(1),
+icmp(4P),
+ifconfig(8C)

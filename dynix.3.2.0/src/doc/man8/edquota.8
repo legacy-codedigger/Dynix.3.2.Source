@@ -1,0 +1,85 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: edquota.8 1.6 88/08/16 $
+.\" Copyright (c) 1983 Regents of the University of California.
+.\" All rights reserved.  The Berkeley software License Agreement
+.\" specifies the terms and conditions for redistribution.
+.\"
+.\"	@(#)edquota.8	6.2 (Berkeley) 5/19/86
+.\"
+.\" .TH EDQUOTA 8 "May 19, 1986"
+.\" .UC 5
+.TH EDQUOTA 8  "\*(V)" "5BSD"
+.SH NAME
+edquota \- edit user quotas
+.SH SYNOPSIS
+.B /usr/etc/edquota
+[
+.B \-p
+.I proto-user
+]
+.IR users ...
+.LP
+.B /usr/etc/edquota
+.B \-t
+.SH DESCRIPTION
+.I Edquota
+is a quota editor.  One or more user login names or IDs
+may be specified on the command line.
+A temporary file
+with an ASCII representation of current
+disk quotas is created for each user and an editor is
+invoked on the file.  New quotas can be added and
+existing quotas can be changed.
+Upon
+leaving the editor,
+.I edquota
+reads the temporary file and modifies the binary
+quota files to reflect the changes.
+.PP
+The editor invoked is 
+.IR vi (1)
+unless the environment variable EDITOR specifies otherwise.
+.PP
+Only the super-user may edit quotas.
+.SH OPTIONS
+.PP
+.TP 10
+.B \-p
+Duplicate the quotas of the prototypical user
+specified for each user specified.  This is the normal
+mechanism used to initialize quotas for groups
+of users.
+.TP 10
+.B \-t
+Edit the soft time limits for each filesystem.
+If the time limits are zero, the default time limits
+are used.
+The default time limits are specified in the file
+.I /usr/sys/conf/param.c.
+These default limits may be changed by reconfiguring the kernel.  A time
+unit of either sec(onds), min(utes), hour(s), day(s), week(s), or
+month(s) must be supplied for each of the time limits.  Time limits are
+printed in the greatest possible time unit such that the value is greater
+than or equal to one.
+.SH FILES
+.DT
+quotas		at the root of each filesystem with quotas
+.br
+/etc/fstab	has filesystem names and locations
+.SH SEE ALSO
+quota(1), quotactl(2), quotacheck(8), quotaon(8), repquota(8)
+.SH DIAGNOSTICS
+Various self-explanatory
+messages about inaccessible files
+.SH BUGS
+The format of the temporary file is inscrutable.

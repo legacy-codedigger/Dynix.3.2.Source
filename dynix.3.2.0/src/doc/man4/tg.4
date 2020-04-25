@@ -1,0 +1,151 @@
+.\" $Copyright:	$
+.\"Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989 
+.\"Sequent Computer Systems, Inc.   All rights reserved.
+.\" 
+.\"This software is furnished under a license and may be used
+.\"only in accordance with the terms of that license and with the
+.\"inclusion of the above copyright notice.   This software may not
+.\"be provided or otherwise made available to, or used by, any
+.\"other person.  No title to or ownership of the software is
+.\"hereby transferred.
+...
+.V= $Header: tg.4 1.1 90/10/08 $
+.TH TG 4 "\*(V)" "DYNIX"
+.SH NAME
+tg \- SCSI 1/2-inch magnetic tape interface
+.SH SYNOPSIS
+.B "device tg0 at ssm? bin 5 maps 512 target 5 unit 0"
+.SH DESCRIPTION
+This device driver supports SCSI target adapters
+for 1/2-inch magnetic tape drives.  All functionality
+as described in
+.B mtio(4)
+is supported, except where noted.
+Up to eight tape drive units
+spread across the SSM boards in the system are supported.
+The SCSI interface for the SSM board supports the target adapter on
+the SSM board plus seven additional target adapters.
+.PP
+The minor device number encodes the density, flags and unit number 
+of the device. The bits in the minor device number are as follows: The low
+order four bits encode the density, the next four bits are the flags, and
+the next byte contains the logical unit number. 
+.PP
+A density code of zero in the minor number results in the front panel density
+value being used. A density code of one selects the density 1600
+and density code three selects the value 6250 b.p.i.
+.PP
+If a write is performed as the last operation before a
+.B tg
+device
+is closed, two tapemarks will be written to the tape immediately
+after the last written data.  If the tape drive is not to be rewound
+after closing, the tape head will be positioned between the tape marks.
+.PP
+The standard device names begin with \f3tg\f1 followed by a number
+representing the tape unit and device type. The corresponding raw devices 
+have names that begin with \f3rtg\f1 instead of \f3tg\f1.
+.PP
+The standard rewind-on-close devices are as follows:
+.TS
+l l.
+\f3tg0\f1 - \f3tg7\f1	units 0-7, front panel density unchanged.
+\f3tg16\f1 - \f3tg23\f1	units 0-7, density 1600 bpi.
+\f3tg32\f1 - \f3tg39\f1	units 0-7, density 6250 bpi.
+.TE
+.PP
+The standard no-rewind devices are as follows:
+.TS
+l l.
+\f3tg8\f1 - \f3tg15\f1	units 0-7, front panel density unchanged.
+\f3tg24\f1 - \f3tg31\f1	units 0-7, density 1600 bpi.
+\f3tg40\f1 - \f3tg47\f1	units 0-7, density 6250 bpi.
+.TE
+.SH BINARY CONFIGURATION
+The \f2tg_bconf\f1 array in the device driver binary configuration file
+.RI ( /sys/conf/conf_tg.c )
+must contain an entry for each drive that may be configured; the
+entries must be in the same order as the ``device'' entries in the
+kernel configuration file.  As
+installed, \f2tg_bconf\f1 has entries for 7 drives.  Unused entries
+are ignored.
+.SS "Tuning Parameters"
+The following tuning parameters are defined for each drive in the
+\f2tg_bconf\f1 array of the binary configuration file:
+.IP (1)
+The name of the vendor for the drive. 
+.IP (2)
+The product i.d of the drive. 
+.IP (3)
+This field should be 1 if the target adapter type is embedded.
+.IP (4)
+The buf_size field is the size of the address space reserved for DMA 
+transfers.
+.IP (5)
+Flags for configurable features.  The flags available are:
+.RS
+.IP TGC_PRSENSE
+When this flag is set, all SCSI request sense buffers
+will be printed out, along with the command that caused the sense
+condition.  Otherwise, only sense buffers that are in some way
+unusual will be printed out, such as media and hardware errors.
+.IP TGC_RSENSE
+When this flag is set, all SCSI request sense buffers associated with
+SCSI READ operations that caused a sense condition will be printed out.
+.IP TGC_WSENSE
+When this flag is set all SCSI request sense buffers associated with
+SCSI write and write filemark operations that caused a sense condition
+will be printed out.
+.IP TGC_SSENSE
+When this flag is set all SCSI request sense buffers associated with
+SCSI space operations which caused a sense condition will be printed 
+out.
+.SH FILES
+.TS
+l l.
+/dev/tg*	Block magtape devices 
+/dev/rtg*	Raw magtape devices
+/sys/conf/conf_tg.c	Binary configuration file
+.TE
+.SH "SEE ALSO"
+mt(1), mtio(4)
+.SH DIAGNOSTICS
+In the descriptions that follow, \fIn\fR is the drive number.
+.PP
+.BI "tg" "n":
+.B "not enough maps available."
+The tg driver doesn't have enough DMA maps for this drive. Recheck your system
+configuration to verify that it has been configured properly.
+.PP
+.BI "tg" "n":
+.B "no write ring."
+The requested tape drive is loaded with a tape that has no write ring.  
+Corrective action:  Unload the tape and attach a write ring to the reel.
+.PP
+.BI "tg" "n":
+.B "buffer allocation failed."
+Memory allocation of the request-sense mode select buffer for this tg driver
+unit failed.  Something else in system initialization is out of control or
+your system lacks sufficient physical memory.
+.PP
+.BI "tg" "n":
+.B "Illegal or unsupported density requested."
+This device was opened with a density-select code that is not supported
+by this tape drive.
+.PP
+.BI "tg" "n":
+.B "error writing file mark on close."
+The tg driver's SCSI write file mark command failed.  This probably occurred, 
+along with an error, while the system was attempting to write to the medium.
+The medium might have been protected against writes or against an attempt to 
+write while not at the beginning of tape or logical end of data.
+.PP
+.BI "tg" "n":
+.IB "error" " on command"
+.IB "command" "; FILEMARK; EOM; ILI."
+The tg driver is displaying detailed information pertaining to a problem that
+occurred when the indicated SCSI command was executed. 
+``FILEMARK'', ``EOM'', and ``ILI'' are displayed only if the corresponding 
+bits for filemark, end of media, and invalid length indicator are set
+in the request sense data.
+

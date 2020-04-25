@@ -1,0 +1,120 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: vtimes.3c 1.6 90/02/07 $
+.TH VTIMES 3C "\*(V)" "4BSD"
+.SH NAME
+vtimes \- get information about resource utilization
+.SH SYNOPSIS
+.nf
+.B "vtimes(par_vm, ch_vm)"
+.B "struct vtimes *par_vm, *ch_vm;"
+.fi
+.SH DESCRIPTION
+.ft 3
+This facility is superseded by getrusage(2).
+.ft 1
+.PP
+.I Vtimes
+returns accounting information for the current process and for
+the terminated child processes of the current
+process.  Either
+.I par_vm
+or 
+.I ch_vm
+or both may be 0, in which case only the information for the pointers
+which are non-zero is returned.
+.PP
+After the call, each buffer contains information as defined by the
+contents of the include file
+.I /usr/include/sys/vtimes.h:
+.LP
+.nf
+struct vtimes {
+	int	vm_utime;		/* user time (*HZ) */
+	int	vm_stime;		/* system time (*HZ) */
+	/* divide next two by utime+stime to get averages */
+	unsigned vm_idsrss;		/* integral of d+s rss */
+	unsigned vm_ixrss;		/* integral of text rss */
+	int	vm_maxrss;		/* maximum rss */
+	int	vm_majflt;		/* major page faults */
+	int	vm_minflt;		/* minor page faults */
+	int	vm_nswap;		/* number of swaps */
+	int	vm_inblk;		/* block reads */
+	int	vm_oublk;		/* block writes */
+};
+.fi
+.PP
+The
+.I vm_utime
+and
+.I vm_stime
+fields give the user and system
+time respectively in 60ths of a second (or 50ths if that
+is the frequency of wall current in your locality.) The
+.I vm_idrss
+and
+.I vm_ixrss
+measure memory usage.  They are computed by integrating the number of
+memory pages in use each
+over cpu time.  They are reported as though computed
+discretely, adding the current memory usage (in 512 byte
+pages) each time the clock ticks.  If a process used 5 core
+pages over 1 cpu-second for its data and stack, then
+.I vm_idsrss
+would have the value 5*60, where
+.I vm_utime+vm_stime
+would be the 60.  
+.I Vm_idsrss
+integrates data and stack segment
+usage, while
+.I vm_ixrss
+integrates text segment usage.
+.I Vm_maxrss
+reports the maximum instantaneous sum of the
+text+data+stack core-resident page count.
+.PP
+The 
+.I vm_majflt
+field gives the number of page faults which
+resulted in disk activity; the
+.I vm_minflt
+field gives the
+number of page faults incurred in simulation of reference
+bits;
+.I vm_nswap
+is the number of swaps which occurred.  The
+number of file system input/output events are reported in
+.I vm_inblk
+and
+.I vm_oublk
+These numbers account only for real
+i/o; data supplied by the caching mechanism is charged only
+to the first process to read or write the data.
+.SH RETURN VALUE
+Upon successful completion, a value of 0 is returned.
+Otherwise, a value of \-1 is returned and
+.I errno
+is set to indicate the error.
+.SH ERRORS
+.I vtimes
+is a compatibility interface built on top of
+.I getrusage;
+refer to the
+.I getrusage
+manual entry for a list of possible errors.
+.SH SEE ALSO
+getrusage(2), time(2), wait3(2)
+.SH BUGS
+This call is peculiar to this version of UNIX.
+The options and specifications of this system call are subject to change.
+It may be extended to include additional information
+in future versions of the system.

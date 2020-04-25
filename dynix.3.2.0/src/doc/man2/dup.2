@@ -1,0 +1,83 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: dup.2 1.6 86/05/13 $
+.TH DUP 2 "\*(V)" "4BSD"
+.SH NAME
+dup, dup2 \- duplicate a descriptor
+.SH SYNOPSIS
+.nf
+.ft 3
+newd = dup(oldd)
+int newd, oldd;
+.PP
+.ft 3
+dup2(oldd, newd)
+int oldd, newd;
+.fi
+.SH DESCRIPTION
+.I Dup
+duplicates an existing object descriptor.
+The argument \f2oldd\fP is a small non-negative integer index in
+the per-process descriptor table.  The value must be less
+than the size of the table, which is returned by
+.IR getdtablesize (2).
+The new descriptor
+.I newd
+returned by the call is the lowest numbered descriptor which is
+not currently in use by the process.
+.PP
+The object referenced by the descriptor does not distinguish
+between references using \f2oldd\fP and \f2newd\fP in any way.
+Thus if \f2newd\fP and \f2oldd\fP are duplicate references to an open
+file,
+.IR read (2),
+.IR write (2)
+and
+.IR lseek (2)
+calls all move a single pointer into the file.
+If a separate pointer into the file is desired, a different
+object reference to the file must be obtained by issuing an
+additional
+.IR open (2)
+call.
+.PP
+In the second form of the call, the value of
+.IR newd
+desired is specified.  If this descriptor is already
+in use, the descriptor is first deallocated as if a
+.IR close (2)
+call had been done first.
+.SH "RETURN VALUE
+The value \-1 is returned if an error occurs in either call.
+The external variable
+.I errno
+indicates the cause of the error.
+.SH "ERRORS
+.I Dup
+and
+.I dup2
+fail if:
+.TP 15
+[EBADF]
+\f2Oldd\fP or
+\f2newd\fP is not a valid active descriptor
+.TP 15
+[EMFILE]
+Too many descriptors are active.
+.SH "SEE ALSO"
+accept(2),
+open(2),
+close(2),
+pipe(2),
+socket(2),
+socketpair(2),
+getdtablesize(2)

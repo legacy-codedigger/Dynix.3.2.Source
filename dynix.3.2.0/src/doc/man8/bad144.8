@@ -1,0 +1,94 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: bad144.8 1.8 86/05/13 $
+.TH BAD144 8 "\*(V)" "4BSD"
+.SH NAME
+bad144 \- read/write dec standard 144 bad sector information
+.SH SYNOPSIS
+.B /etc/bad144
+[
+.B \-f
+]
+disktype disk
+[ sno [
+bad ...
+] ]
+.SH DESCRIPTION
+.I Bad144
+can be used to inspect the information stored on a disk that is used by
+the disk drivers to implement bad sector forwarding.  The format of
+the information is specified by DEC standard 144 (as extended by Sequent),
+as follows.
+.PP
+The bad sector data is located in the last track of the disk.
+There are five identical copies of each block of the data.
+The first block, relative block 0,
+is located in the first 5 even-numbered sectors of the track.
+The second block (if any) is located in the first five odd-numbered sectors
+of the track.
+The third block (if any) is located in sectors 10-14 of the track.
+Subsequent blocks (if any) are located in
+subsequent five-block contiguous groups.
+.PP
+Replacement sectors are allocated starting with the first sector before
+the bad sector information and working backwards towards the beginning
+of the disk.
+The position
+of the bad sector in the bad sector table determines which replacement
+sector it corresponds to.
+The bad sectors must be listed in ascending order.
+.PP
+The bad sector information and replacement sectors are conventionally
+only accessible through the ``c'' file system partition of the disk.  If
+that partition is used for a file system, the user is responsible for
+making sure that it does not overlap the bad sector information or any
+replacement sectors.
+.PP
+The bad sector structure is described in /usr/sys/mbad/dkbad.h.
+.PP
+.I Bad144
+is invoked by giving a device type (e.g. eagle), and a device
+name (e.g. xp0, xp1, etc.).
+It reads the first sector of the last track
+of the corresponding disk and prints out the bad sector information.
+It may also be invoked giving a serial number for the pack and a list
+of bad sectors, and will then write the supplied information onto the
+same location.  Note, however, that 
+.I bad144
+does not arrange for the specified sectors to be marked bad in this case.
+This option should only be used to restore known bad sector information which
+was destroyed.
+It is necessary to reboot before the change will take effect.
+.PP
+If the disk is a Fujitsu Eagle, the
+.B \-f
+option may be used to mark the bad sectors as ``bad''.
+\f3NOTE:  this can only be done safely when there is no other disk activity\fP,
+preferably while running single-user.
+Otherwise,
+new bad sectors can be added only
+by running a formatter.
+Note that the order in which the sectors are listed determines which sectors
+used for replacements; if new sectors are being inserted into the list on a
+drive that is in use, care should be taken that replacements for
+existing bad sectors have the correct contents.
+.SH SEE ALSO
+addbad(8),
+badsect(8).
+.SH BUGS
+It should be possible to format disks on-line under UNIX.
+.PP
+It should be possible to mark bad sectors on drives of all types.
+.PP
+The drivers which write a system core image on disk after a crash do not
+handle errors; thus the crash dump area must be free of errors and bad
+sectors.

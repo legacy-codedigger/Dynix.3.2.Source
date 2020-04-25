@@ -1,0 +1,59 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: fclose.3s 1.4 86/05/13 $
+.TH FCLOSE 3S "\*(V)" "7th Edition"
+.SH NAME
+fclose, fflush \- close or flush a stream
+.SH SYNOPSIS
+.B #include <stdio.h>
+.PP
+.B fclose(stream)
+.br
+.SM
+.B FILE
+.B *stream;
+.PP
+.B fflush(stream)
+.br
+.SM
+.B FILE
+.B *stream;
+.SH DESCRIPTION
+.I Fclose
+causes any buffers for the named
+.I stream
+to be emptied, and the file to be closed.
+Buffers allocated by the standard input/output system
+are freed.
+.PP
+.I Fclose
+is performed automatically upon
+calling
+.IR  exit (3).
+.PP
+.I Fflush
+causes any buffered data for the named output
+.I stream
+to be written to that file.
+The stream remains open.
+.SH "SEE ALSO"
+close(2),
+fopen(3S),
+setbuf(3S)
+.SH DIAGNOSTICS
+These routines return
+.SM
+.B EOF
+if
+.I stream
+is not associated with an output file, or
+if buffered data cannot be transferred to that file.

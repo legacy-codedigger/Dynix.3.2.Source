@@ -1,0 +1,206 @@
+'-F
+.ds =F 
+.ds =M Dec 31 16:00 1969
+\*(+K#\*(-K \*(+Kinclude\*(-K\h'|21n'<curses\&.h>
+\*(+K#\*(-K \*(+Kinclude\*(-K\h'|21n'<signal\&.h>
+
+\f2\h'\w' 'u-\w'/'u'/\fP\f2*\fP\c\c
+'+C
+
+ \f2*\fP the idea for this program was a product of the imagination of
+ \f2*\fP Kurt Schoens\&.  Not responsible for minds lost or stolen\&.
+ \f2*\fP\f2\h'\w' 'u-\w'/'u'/\fP\c
+'-C
+
+
+\*(+K#\*(-K \*(+Kdefine\*(-K\h'|21n'NCOLS\h'|31n'80
+\*(+K#\*(-K \*(+Kdefine\*(-K\h'|21n'NLINES\h'|31n'24
+\*(+K#\*(-K \*(+Kdefine\*(-K\h'|21n'MAXPATTERNS\h'|41n'4
+
+\*(+Kstruct\*(-K locs \*(+K{\*(-K
+\h'|11n'\*(+Kchar\*(-K\h'|21n'y, x;
+\*(+K}\*(-K;
+
+\*(+Ktypedef\*(-K \*(+Kstruct\*(-K locs\h'|31n'LOCS;
+
+LOCS\h'|11n'Layout[NCOLS \f2*\fP NLINES];\h'|41n'\f2\h'\w' 'u-\w'/'u'/\fP\f2*\fP\c\c
+'+C
+ current board layout \f2*\fP\f2\h'\w' 'u-\w'/'u'/\fP\c
+'-C
+
+
+\*(+Kint\*(-K\h'|11n'Pattern,\h'|41n'\f2\h'\w' 'u-\w'/'u'/\fP\f2*\fP\c\c
+'+C
+ current pattern number \f2*\fP\f2\h'\w' 'u-\w'/'u'/\fP\c
+'-C
+
+\h'|11n'Numstars;\h'|41n'\f2\h'\w' 'u-\w'/'u'/\fP\f2*\fP\c\c
+'+C
+ number of stars in pattern \f2*\fP\f2\h'\w' 'u-\w'/'u'/\fP\c
+'-C
+
+
+'FN main
+main() \*(+K{\*(-K
+
+\h'|11n'\*(+Kchar\*(-K\h'|31n'\f2*\fPgetenv();
+\h'|11n'\*(+Kint\*(-K\h'|31n'die();
+
+\h'|11n'srand(getpid());\h'|51n'\f2\h'\w' 'u-\w'/'u'/\fP\f2*\fP\c\c
+'+C
+ initialize random sequence \f2*\fP\f2\h'\w' 'u-\w'/'u'/\fP\c
+'-C
+
+
+\h'|11n'initscr();
+\h'|11n'signal(SIGINT, die);
+\h'|11n'noecho();
+\h'|11n'nonl();
+\h'|11n'leaveok(stdscr, TRUE);
+\h'|11n'scrollok(stdscr, FALSE);
+
+\h'|11n'\*(+Kfor\*(-K (;;) \*(+K{\*(-K
+\h'|21n'makeboard();\h'|51n'\f2\h'\w' 'u-\w'/'u'/\fP\f2*\fP\c\c
+'+C
+ make the board setup \f2*\fP\f2\h'\w' 'u-\w'/'u'/\fP\c
+'-C
+
+\h'|21n'puton(\'\f2*\fP\');\h'|51n'\f2\h'\w' 'u-\w'/'u'/\fP\f2*\fP\c\c
+'+C
+ put on \'\f2*\fP\'s \f2*\fP\f2\h'\w' 'u-\w'/'u'/\fP\c
+'-C
+
+\h'|21n'puton(\' \');\h'|51n'\f2\h'\w' 'u-\w'/'u'/\fP\f2*\fP\c\c
+'+C
+ cover up with \' \'s \f2*\fP\f2\h'\w' 'u-\w'/'u'/\fP\c
+'-C
+
+\h'|11n'\*(+K}\*(-K
+\*(+K}\*(-K\c\c
+'-F
+
+
+\f2\h'\w' 'u-\w'/'u'/\fP\f2*\fP\c\c
+'+C
+
+ \f2*\fP On program exit, move the cursor to the lower left corner by
+ \f2*\fP direct addressing, since current location is not guaranteed\&.
+ \f2*\fP We lie and say we used to be at the upper right corner to guarantee
+ \f2*\fP absolute addressing\&.
+ \f2*\fP\f2\h'\w' 'u-\w'/'u'/\fP\c
+'-C
+
+'FN die
+die() \*(+K{\*(-K
+
+\h'|11n'signal(SIGINT, SIG\*_IGN);
+\h'|11n'mvcur(0, COLS\*-1, LINES\*-1, 0);
+\h'|11n'endwin();
+\h'|11n'exit(0);
+\*(+K}\*(-K\c\c
+'-F
+
+
+
+\f2\h'\w' 'u-\w'/'u'/\fP\f2*\fP\c\c
+'+C
+
+ \f2*\fP Make the current board setup\&.  It picks a random pattern and
+ \f2*\fP calls ison() to determine if the character is on that pattern
+ \f2*\fP or not\&.
+ \f2*\fP\f2\h'\w' 'u-\w'/'u'/\fP\c
+'-C
+
+'FN makeboard
+makeboard() \*(+K{\*(-K
+
+\h'|11n'reg \*(+Kint\*(-K\h'|31n'y, x;
+\h'|11n'reg LOCS\h'|31n'\f2*\fPlp;
+
+\h'|11n'Pattern = rand() % MAXPATTERNS;
+\h'|11n'lp = Layout;
+\h'|11n'\*(+Kfor\*(-K (y = 0; y < NLINES; y++)
+\h'|21n'\*(+Kfor\*(-K (x = 0; x < NCOLS; x++)
+\h'|31n'\*(+Kif\*(-K (ison(y, x)) \*(+K{\*(-K
+\h'|41n'lp\*->y = y;
+\h'|41n'lp++\*->x = x;
+\h'|31n'\*(+K}\*(-K
+\h'|11n'Numstars = lp \*- Layout;
+\*(+K}\*(-K\c\c
+'-F
+
+
+\f2\h'\w' 'u-\w'/'u'/\fP\f2*\fP\c\c
+'+C
+
+ \f2*\fP Return TRUE if (y, x) is on the current pattern\&.
+ \f2*\fP\f2\h'\w' 'u-\w'/'u'/\fP\c
+'-C
+
+'FN ison
+ison(y, x)
+reg \*(+Kint\*(-K\h'|11n'y, x; \*(+K{\*(-K
+
+\h'|11n'\*(+Kswitch\*(-K (Pattern) \*(+K{\*(-K
+\h'|11n'  \*(+Kcase\*(-K 0:\h'|31n'\f2\h'\w' 'u-\w'/'u'/\fP\f2*\fP\c\c
+'+C
+ alternating lines \f2*\fP\f2\h'\w' 'u-\w'/'u'/\fP\c
+'-C
+
+\h'|21n'\*(+Kreturn\*(-K !(y & 01);
+\h'|11n'  \*(+Kcase\*(-K 1:\h'|31n'\f2\h'\w' 'u-\w'/'u'/\fP\f2*\fP\c\c
+'+C
+ box \f2*\fP\f2\h'\w' 'u-\w'/'u'/\fP\c
+'-C
+
+\h'|21n'\*(+Kif\*(-K (x >= LINES && y >= NCOLS)
+\h'|31n'\*(+Kreturn\*(-K FALSE;
+\h'|21n'\*(+Kif\*(-K (y < 3 || y >= NLINES \*- 3)
+\h'|31n'\*(+Kreturn\*(-K TRUE;
+\h'|21n'\*(+Kreturn\*(-K (x < 3 || x >= NCOLS \*- 3);
+\h'|11n'  \*(+Kcase\*(-K 2:\h'|31n'\f2\h'\w' 'u-\w'/'u'/\fP\f2*\fP\c\c
+'+C
+ holy pattern! \f2*\fP\f2\h'\w' 'u-\w'/'u'/\fP\c
+'-C
+
+\h'|21n'\*(+Kreturn\*(-K ((x + y) & 01);
+\h'|11n'  \*(+Kcase\*(-K 3:\h'|31n'\f2\h'\w' 'u-\w'/'u'/\fP\f2*\fP\c\c
+'+C
+ bar across center \f2*\fP\f2\h'\w' 'u-\w'/'u'/\fP\c
+'-C
+
+\h'|21n'\*(+Kreturn\*(-K (y >= 9 && y <= 15);
+\h'|11n'\*(+K}\*(-K
+\h'|11n'\f2\h'\w' 'u-\w'/'u'/\fP\f2*\fP\c\c
+'+C
+ NOTREACHED \f2*\fP\f2\h'\w' 'u-\w'/'u'/\fP\c
+'-C
+
+\*(+K}\*(-K\c\c
+'-F
+
+
+'FN puton
+puton(ch)
+reg \*(+Kchar\*(-K\h'|21n'ch; \*(+K{\*(-K
+
+\h'|11n'reg LOCS\h'|31n'\f2*\fPlp;
+\h'|11n'reg \*(+Kint\*(-K\h'|31n'r;
+\h'|11n'reg LOCS\h'|31n'\f2*\fPend;
+\h'|11n'LOCS\h'|31n'temp;
+
+\h'|11n'end = &Layout[Numstars];
+\h'|11n'\*(+Kfor\*(-K (lp = Layout; lp < end; lp++) \*(+K{\*(-K
+\h'|21n'r = rand() % Numstars;
+\h'|21n'temp = \f2*\fPlp;
+\h'|21n'\f2*\fPlp = Layout[r];
+\h'|21n'Layout[r] = temp;
+\h'|11n'\*(+K}\*(-K
+
+\h'|11n'\*(+Kfor\*(-K (lp = Layout; lp < end; lp++) \*(+K{\*(-K
+\h'|21n'mvaddch(lp\*->y, lp\*->x, ch);
+\h'|21n'refresh();
+\h'|11n'\*(+K}\*(-K
+\*(+K}\*(-K\c\c
+'-F
+

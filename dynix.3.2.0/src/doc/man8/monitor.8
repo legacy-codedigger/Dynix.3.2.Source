@@ -1,0 +1,322 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: monitor.8 1.9 1991/08/06 23:01:53 $
+.TH MONITOR 8 "\*(V)" "DYNIX"
+.SH NAME
+monitor \- monitor system activity
+.SH SYNOPSIS
+.B /usr/etc/monitor
+[
+.BI \-c \ n
+] [
+.BI \-i \ n
+] [
+.BI \-p \ n
+] [
+.B \-t
+] [
+.B \-f
+]
+.SH DESCRIPTION
+.I Monitor
+displays various measures of system activity.
+The first portion of the display is a set of bar graphs of processor activity,
+one for each processor plus a graph for the system labeled ``Total''.
+Each bar indicates the percentage of time the respective processor was busy and
+is composed of two symbols, `=' for system time and `-' for user time.
+The rest of the display contains a number of user selectable groups of
+system activity monitors.
+To exit
+.IR monitor ,
+a return, linefeed, or the letter
+.B q
+may be typed.
+A
+.B ^L
+(control-L) will cause the screen to be redrawn.
+.PP
+.IR Monitor 's
+command-line options are as follows:
+.TP
+.BI \-c \ n
+specifies of the number of columns to use for displaying
+the processor bar graphs.
+Valid choices for
+.I n
+are 1, 2, and 3.
+.TP
+.BI \-i \ n
+specifies the length of the interval (in seconds) to sleep between updates
+of the screen.  The default is 1.
+.TP
+.BI \-p \ n
+If the
+.I monitor
+process is running with sufficient privileges,
+it will ``affinity'' itself to processor
+.IR n .
+The default is processor 0.
+(See
+.IR tmp_affinity (2)).
+.TP
+.B \-t
+specifies that terse activity monitor descriptions should be used.
+This allows more information to fit on the screen.
+.TP
+.B \-f
+indicates that two screens are to be used;
+one for the processor graphs and one for the activity monitors.
+While
+.I monitor
+is running, typing an
+.B f
+will flip between the two screens.
+.PP
+Activity monitors are as follows (labels in
+.B \-t
+format are given in parentheses):
+.TP
+.B
+Total User Time (usr %)
+Time the system spent in user mode
+expressed as percent of one processor.
+.TP
+.B
+Total System Time (sys %)
+Time the system spent in system mode
+expressed as percent of one processor.
+.TP
+.B
+Total Time (tot %)
+Sum of user and system time
+expressed as percent of one processor.
+.TP
+.B
+Number of Procs (procs)
+Number of processes in the system
+(occupied process table entries).
+.TP
+.B
+Running Procs (on p)
+Number of processes currently running on
+a processor.
+.TP
+.B
+Runnable Procs (runq)
+Number of processes that are runnable and
+waiting on the run queue to be dispatched
+to a processor.
+.TP
+.B
+Fast Wait (wait)
+Number of processes that are waiting on
+disk I/O, page I/O, or a kernel resource.
+.TP
+.B
+Sleeping Procs (sleep)
+Number of processes that are sleeping.
+.TP
+.B
+Swapped Procs (swapped)
+Number of processes that are swapped to disk.
+.TP
+.B
+System Calls (sysc)
+Number of system calls per second.
+.TP
+.B
+Context Switches (csw)
+Number of context switches per second.
+.TP
+.B
+Interrupts (intr)
+Number of interrupts per second.
+.TP
+.B
+Traps (traps)
+Number of traps per second.
+.TP
+.B
+Forks (fork)
+Number of forks per second.
+.TP
+.B
+Vforks (vfork)
+Number of vforks per second.
+.TP
+.B
+Execs (exec)
+Number of execs per second.
+.TP
+.B
+Packets In (pkt in)
+Number of packets received per second.
+.TP
+.B
+Packets Out (pkt out)
+Number of packets transmitted per second.
+.TP
+.B
+Disk Transfers (dk xf)
+Number of disk transfers per second.
+.TP
+.B
+Disk KBytes (dk KB)
+Number of kilobytes transferred per second.
+.TP
+.B
+TTY Chars In (ttyin)
+Number of characters received on TTY
+lines per second.
+.TP
+.B
+TTY Chars Out (ttyout)
+Number of characters transmitted on TTY
+lines per second.
+.TP
+.B
+Page Faults (pf)
+Number of page faults per second.
+.TP
+.B
+Page Reclaims (pg rec)
+Number of page reclaims from any free list
+(minor faults) per second.
+.TP
+.B
+Dirty Pg Recs (pgdrec)
+Number of page reclaims from the dirty list
+per second.
+.TP
+.B
+Page Ins (pgin)
+Number of page ins (major faults) per second.
+.TP
+.B
+Pages Paged In (ppgin)
+Number of pages paged in per second.
+.TP
+.B
+Page Outs (pgout)
+Number of page outs per second.
+.TP
+.B
+Pages Paged Out (ppgout)
+Number of pages paged out per second.
+.TP
+.B
+Swap Ins (sw in)
+Number of processes swapped in per second.
+.TP
+.B
+Pages Swapped In (pswin)
+Number of pages swapped in per second.
+.TP
+.B
+Swap Outs (sw out)
+Number of processes swapped out per second.
+.TP
+.B
+Pages Swapped Out (pswout)
+Number of pages swapped out per second.
+.TP
+.B
+Deficit (deficit)
+Virtual memory deficit in Kbytes
+.TP
+.B
+Free Memory (free)
+Free memory in Kbytes.
+.TP
+.B
+Total Virtual Mem (tot vm)
+Sum of virtual sizes of all processes.
+.TP
+.B
+Active Virtual Mem (act vm)
+Sum of virtual sizes of all processes that
+have executed in the last 20 seconds.
+.TP
+.B
+Total Real Mem (tot rm)
+Sum of resident sizes of all processes.
+.TP
+.B
+Active Real Mem (act rm)
+Sum of resident sizes of all processes that
+have executed in the last 20 seconds.
+.TP
+.B
+FS Blk Reads (fs brd)
+Number of actual disk reads initiated by the
+file system.
+.TP
+.B
+FS Blk Writes (fs bwt)
+Number of actual disk writes initiated by the
+file system.
+.TP
+.B
+FS Read Hit (fs rdh)
+Percentage of file system read requests that were
+satisfied from the buffer cache.
+.TP
+.B
+FS Write Hit (fs wth)
+Percentage of file system write requests that
+did not result in an actual disk write.
+.TP
+.B
+Raw Reads (raw rd)
+Number of raw device reads from all devices.
+.TP
+.B
+Raw Writes (raw wt)
+Number of raw device writes from all devices.
+.TP
+.B
+Raw Read KB (raw rKB)
+Number of kilobytes (KB) transferred via raw
+device reads.
+.TP
+.B
+Raw Write KB (raw wKB)
+Number of kilobytes (KB) transferred via raw
+device writes.
+.TP
+.B
+Locks Used (lckcnt)
+Number of record/file locks (see lockf(3C) or fcntl(2)) currently in use.
+.TP
+.B
+Percent Locks Used (%locks)
+The percentage of available record/file locks (see lockf(3C) or fcntl(2))
+currently in use.
+.TP
+.B
+Files Locked (filcnt)
+Number of file headers currently in use (see lockf(3C) or fcntl(2)).
+This may also be considered the number of locked files.
+.TP
+.B
+Percent Files Used (%files)
+The percentage of files headers currently in use
+(see lockf(3C) or fcntl(2)).
+.SH "SEE ALSO"
+vmstat(1)
+.SH BUGS
+.I Monitor
+samples dynamically changing data.
+From time to time, some slight anomalies may appear.
+The most obvious one is that occasionally,
+the number of processes on processor will be greater than the
+number of processors in the system.

@@ -1,0 +1,49 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: assert.3x 1.4 86/05/13 $
+.TH ASSERT 3X "\*(V)" "7th Edition"
+.SH NAME
+assert \- program verification
+.SH SYNOPSIS
+.B #include <assert.h>
+.PP
+.B assert(expression)
+.SH DESCRIPTION
+.PP
+.I Assert
+is a macro that indicates
+.I expression
+is expected to be true at this point in the program.
+It causes an
+.IR exit (2)
+with a diagnostic comment on the standard output when
+.I expression
+is false (0).
+Compiling with the 
+.IR cc (1)
+option
+.SM
+.B \-DNDEBUG
+effectively deletes
+.I assert
+from the program.
+.SH DIAGNOSTICS
+`Assertion failed: file
+.I f
+line
+.I n.'
+.I F
+is the source file and
+.I n
+the source line number of the
+.I assert
+statement.

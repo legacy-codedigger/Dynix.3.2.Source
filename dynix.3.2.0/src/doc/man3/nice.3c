@@ -1,0 +1,49 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: nice.3c 1.5 86/05/13 $
+.TH NICE 3C "\*(V)" "4BSD"
+.SH NAME
+nice \- set program priority
+.SH SYNOPSIS
+.B nice(incr)
+.SH DESCRIPTION
+.ft 3
+This interface is obsoleted by setpriority(2).
+.ft 1
+.PP
+The scheduling
+priority of the process is augmented by
+.IR incr .
+Positive priorities get less
+service than normal.
+Priority 10 is recommended to users
+who wish to execute long-running programs
+without flak from the administration.
+.PP
+Negative increments are ignored except on behalf of 
+the super-user.
+The priority is limited to the range
+\-20 (most urgent) to 20 (least).
+.PP
+The priority of a process is
+passed to a child process by
+.IR fork (2).
+For a privileged process to return to normal priority
+from an unknown state,
+.I nice
+should be called successively with arguments
+\-40 (goes to priority \-20 because of truncation),
+20 (to get to 0),
+then 0 (to maintain compatibility with previous versions
+of this call).
+.SH "SEE ALSO"
+nice(1), setpriority(2), fork(2), renice(8)

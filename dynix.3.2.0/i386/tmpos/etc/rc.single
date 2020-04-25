@@ -1,0 +1,2 @@
+eval `/bin/grep "/bin/domainname" /etc/rc.local`
+eval `/bin/grep "/bin/hostname" /etc/rc.local`

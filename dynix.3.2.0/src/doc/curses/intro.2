@@ -1,0 +1,69 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+. \" $Header: intro.2 1.3 86/03/17 $
+.sh 1 Variables
+.pp
+Many variables which are used to describe the terminal environment
+are available to the programmer. They are:
+.TS
+expand;
+lw(6m) lw(8n) lw(50n).
+type	name	description
+_
+WINDOW *	curscr	T{
+.fi
+current version of the screen (terminal screen).
+T}
+WINDOW *	stdscr	T{
+standard screen.  Most updates are usually done here.
+T}
+char *	Def\*_term	T{
+default terminal type if type cannot be determined
+T}
+bool	My\*_term	T{
+use the terminal specification in \f2Def\*_term\f1 as terminal,
+irrelevant of real terminal type
+T}
+char *	ttytype	T{
+full name of the current terminal.
+T}
+int	LINES	T{
+number of lines on the terminal
+T}
+int	COLS	T{
+number of columns on the terminal
+T}
+int	ERR	T{
+error flag returned by routines on a fail.
+T}
+int	OK	T{
+error flag returned by routines when things go right.
+T}
+.TE
+.pp
+There are also several
+.q #define
+constants and types
+which are of general usefulness:
+.sp
+.ev 1
+.ta 11n
+.(b L
+.nf
+reg	storage class ``register'' (e.g., \f2reg int i;\f1\|)
+bool	boolean type, actually a ``char'' (e.g., \f2bool doneit;\f1\|)
+TRUE	boolean ``true'' flag (1).
+FALSE	boolean ``false'' flag (0).
+.fi
+.ev
+.)b
+.lp

@@ -1,0 +1,111 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: truncate.2 1.12 90/06/06 $
+.TH TRUNCATE 2 "\*(V)" "4BSD"
+.SH NAME
+truncate, ftruncate \- truncate a file to a specified length
+.SH SYNOPSIS
+.nf
+.ft 3
+#include <sys/types.h>
+truncate(path, length)
+char *path;
+off_t length;
+.PP
+.ft 3
+ftruncate(fd, length)
+int fd;
+off_t length;
+.fi
+.SH DESCRIPTION
+.I Truncate
+causes the file named by
+.I path
+or referenced by
+.I fd
+to have a size equal to 
+.I length
+bytes.  If the file previously
+was larger than this size, the extra data
+is lost.  If it was shorter, bytes between the old and new
+lengths are read as zeroes.
+With
+.IR truncate ,
+the file must be writable by user and with
+.IR ftruncate ,
+the file must be open for writing.
+.SH "RETURN VALUES
+A value of 0 is returned if the call succeeds.  If the call
+fails a \-1 is returned, and the global variable \f2errno\fP
+specifies the error.
+.SH "ERRORS
+.I Truncate
+succeeds unless:
+.TP 15
+[EPERM]
+The pathname contains a character with the high-order bit set.
+.TP 15
+[ENOENT]
+The pathname was too long.
+.TP 15
+[ENOTDIR]
+A component of the path prefix of \f2path\fP is not a directory.
+.TP 15
+[ENOENT]
+The named file does not exist.
+.TP 15
+[EACCES]
+A component of the \f2path\fP prefix denies search permission.
+.TP 15
+[EISDIR]
+The named file is a directory.
+.TP 15
+[EROFS]
+The named file resides on a read-only file system.
+.TP 15
+[ETXTBSY]
+The file is a pure procedure (shared text) file that is being executed.
+.TP 15
+[EFAULT]
+.I Path
+points outside the process's allocated address space.
+.TP 15
+[EINVAL]
+The
+.I length
+is negative.
+.PP
+.I Ftruncate
+succeeds unless:
+.TP 15
+[EBADF]
+The
+.I fd
+is not a valid descriptor.
+.TP 15
+[EINVAL]
+The
+.I fd
+references a socket, not a file.
+.TP 15
+[EINVAL]
+The
+.I length
+is negative.
+.TP 15
+[EIO]
+An I/O error occurred while reading from or writing to the file system.
+.SH "SEE ALSO"
+open(2)
+.SH BUGS
+These calls should be generalized to allow ranges
+of bytes in a file to be discarded.

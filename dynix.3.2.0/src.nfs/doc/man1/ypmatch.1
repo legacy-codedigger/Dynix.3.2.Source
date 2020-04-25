@@ -1,0 +1,78 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: ypmatch.1 1.2 87/04/06 $
+.\" @(#)ypmatch.1 1.1 85/12/28 SMI; 
+.TH YPMATCH 1 "\*(V)" "4BSD"
+.SH NAME
+ypmatch - print the value of one or more keys from a yp map
+.SH SYNOPSIS
+.B ypmatch 
+[ \f3-d \f2domain\fR ]
+[ \f3-k\fR ]
+[ \f3-t\fR ]
+.I key 
+\&.\|.\|.
+.I mname 
+.br
+.B "ypmatch \-x"
+.SH DESCRIPTION
+.LP
+.I Ypmatch
+prints the values associated with one or more keys from the 
+yellow pages (YP) map (database) specified by a
+.IR mname ,
+which may be either a
+.I mapname
+or a map 
+.IR nickname .
+.LP
+Multiple keys can be specified; the same map is searched for all keys.
+The keys must be exact values insofar as capitalization and length
+are concerned.
+No pattern matching is available.  
+If a key is not matched, a diagnostic message is produced.
+.SH OPTIONS
+.TP 10
+.B \-d
+Specify a domain other that the default domain.
+.TP 10
+.B \-k
+Before printing the value of a key, print the key itself, followed by a
+colon (':').  This is useful only if the keys are not duplicated in the
+values, or you've specified so many keys that the output could
+be confusing.
+.TP 10
+.B \-t
+Inhibit translation of nickname to mapname.
+For example,
+.Ps
+ypmatch \-t zippy passwd
+.Pe
+fails because there is no map named
+.IR passwd ,
+while
+.Ps
+ypmatch zippy passwd
+.Pe
+is translated to
+.IR "ypmatch zippy passwd.byname" .
+.TP 10
+.B \-x
+Display the map nickname table.
+This lists the nicknames
+the command knows of (\f2mnames\fP), and indicates the
+.I mapname
+associated with each
+nickname.
+.SH "SEE ALSO"
+ypcat(1),
+ypfiles(5)

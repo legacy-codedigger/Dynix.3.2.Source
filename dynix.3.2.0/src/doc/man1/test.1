@@ -1,0 +1,143 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: /usr/src/dynix.3.2.0/src/doc/man1/RCS/test.1,v 1.2 1993/03/16 10:24:32 bruce Exp $
+.TH TEST 1 "\*(V)" "7th Edition"
+.SH NAME
+test \- condition command
+.SH SYNOPSIS
+.B test
+expr
+.SH DESCRIPTION
+.B Test
+evaluates the expression
+.IR expr ,
+and, if its value is true, returns zero exit status; otherwise, it returns a
+nonzero exit status.
+.B Test
+returns a nonzero exit if there are no arguments.
+.PP
+The following primitives are used to construct
+.IR expr .
+.TP 9n
+.BR \-r " file"
+true if the file exists and is readable.
+.TP
+.BR \-w " file"
+true if the file exists and is writable.
+.TP
+.BR \-x " file"
+true if the file exists and is executable.
+.TP
+.BR \-f " file"
+true if the file exists and is not a directory.
+.TP
+.BR \-d " file"
+true if the file exists and is a directory.
+.TP
+.BR \-s " file"
+true if the file exists and is greater than zero.
+.TP
+.BR \-t " [ fildes ]"
+true if the open file whose file descriptor number is
+.I fildes
+(1 by default)
+is associated with a terminal device.
+.TP
+.BR \-z " s1"
+true if the length of string
+.I s1
+is zero.
+.TP
+.BR \-n " s1"
+true if the length of the string
+.I s1
+is nonzero.
+.TP
+.RB s1 " = " s2
+true
+if the strings
+.I s1
+and
+.I s2
+are equal.
+.TP
+.RB s1 " != " s2
+true
+if the strings
+.I s1
+and
+.I s2
+are not equal.
+.TP
+s1
+true if
+.I s1
+is not the null string.
+This will only work if no other primitives are
+used in
+.IR expr .
+.TP
+.RB n1 " \-eq " n2
+true if the integers
+.I n1
+and
+.I n2
+are algebraically equal.
+Any of the comparisons
+.BR \-ne ,
+.BR \-gt ,
+.BR \-ge ,
+.BR \-lt ,
+or
+.BR \-le
+may be used in place of
+.BR \-eq .
+.PP
+These primaries may be combined with the
+following operators:
+.TP
+.B  !
+unary negation operator
+.TP
+.B  \-a
+binary
+.I and
+operator
+.TP
+.B  \-o
+binary
+.I or
+operator
+.TP
+.BR "( " "expr" " )"
+parentheses for grouping.
+.PP
+.B \-a
+has higher precedence than
+.B \-o.
+Notice that all the operators and flags are separate
+arguments to
+.BR test .
+Notice also that parentheses are meaningful
+to the shell and must be escaped.
+.PP
+The left bracket
+(\ [\ )
+is a shell alias for 
+.B test.
+This lets you create shell scripts using the following construct:
+.PP
+.DT
+if [ <conditional expr> ] ; then ...
+.PP
+.SH "SEE ALSO"
+sh(1), find(1)

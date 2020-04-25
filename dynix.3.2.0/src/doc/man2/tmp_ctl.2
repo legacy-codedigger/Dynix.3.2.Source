@@ -1,0 +1,84 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: tmp_ctl.2 1.12 86/05/13 $
+.TH TMP_CTL 2 "\*(V)" "DYNIX"
+.SH NAME
+tmp_ctl \- multi-processor control
+.SH SYNOPSIS
+.ft 3
+.nf
+#include <sys/tmp_ctl.h>
+.PP
+.ft 3
+ret = tmp_ctl(command, processor);
+int ret, command, processor;
+.fi
+.SH DESCRIPTION
+.I Tmp_ctl
+allows processes to query the status of the processor pool resource.
+Superuser processes can also change the configuration.
+The defined commands (from
+.IR tmp_ctl.h )
+have the following meanings:
+.TP
+TMP_NENG
+returns the number of processors configured in the processor pool.
+The processors may be online or offline.
+However, deconfigured processors will not be included.
+The
+.I processor
+argument is ignored.
+.TP
+TMP_OFFLINE
+shuts down a processor.
+The processor stops dispatching processes and is paused.
+Only the superuser is allowed to offline a processor.
+.TP
+TMP_ONLINE
+starts up a processor.
+The processor initializes and begins scheduling user processes.
+Only the superuser is allowed to online a processor.
+.TP
+TMP_QUERY
+returns the state
+(TMP_ENG_ONLINE or TMP_ENG_OFFLINE)
+of the selected processor.
+.SH "RETURN VALUE
+The call returns \-1 on error (as well as setting errno).
+The call returns 0 on successful completion, or the desired information
+in the case of the query operations.
+.SH ERRORS
+The
+.I tmp_ctl
+will fail if:
+.TP 15
+[EPERM]
+Process does not have superuser capability and an attempt to change the
+processor pool configuration was attempted.
+.TP 15
+[ENXIO]
+.I processor
+is out of range.
+.TP 15
+[ENODEV]
+.I processor
+is bad.
+.TP 15
+[EINVAL]
+.I processor
+is already offline or online.
+.TP 15
+[EBUSY]
+Attempting to offline a processor that has bound drivers or bound processes,
+or attempting to offline the last processor.
+.SH SEE ALSO
+tmp_affinity(2), online(8).

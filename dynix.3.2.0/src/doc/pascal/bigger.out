@@ -1,0 +1,17 @@
+Thu Mar 19 09:42 1987  bigger.p:
+     9  	h = 34;       (* Character position of x-axis *)
+w -----------------------------^--- (* in a (* ... *) comment
+    16  	for i := 0 to lim begin
+e --------------------------------^--- Inserted keyword do
+    18  		y := exp(-x9 * sin(i * x);
+E --------------------------------^--- Undefined variable
+e -----------------------------------------------^--- Inserted ')'
+    19  		n := Round(s * y) + h;
+E ---------------------------^--- Undefined function
+E ------------------------------------------^--- Undefined variable
+    23  		writeln('*')
+e ----------------------^--- Inserted ';'
+    24  end.
+E ------^--- Expected keyword until
+E ----------^--- Malformed declaration
+E ----------^--- Unexpected end-of-file - QUIT

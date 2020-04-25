@@ -1,0 +1,375 @@
+#!nawk -f
+# $Copyright:	$
+# Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+# Sequent Computer Systems, Inc.   All rights reserved.
+#  
+# This software is furnished under a license and may be used
+# only in accordance with the terms of that license and with the
+# inclusion of the above copyright notice.   This software may not
+# be provided or otherwise made available to, or used by, any
+# other person.  No title to or ownership of the software is
+# hereby transferred.
+#
+#	Can be invoked as:
+#	1)	nawk -f klint FILE
+#	2)	klint FILE
+#
+#	Variables:
+#
+#	current - The current filename.
+#	line -the line number in the current file.
+#	parans - A count of the number of levels deep in ()
+#	Tassert  - Total number of ASSERT problems
+#	Tgassert  - Total number of good ASSERT
+#	Tpanic  - Total number of panic problems
+#	Tgpanic  - Total number of good panics
+#	Tprintf - Total number of printf problems
+#	Tgprintf - Total number of good printfs
+#
+#	Flags:
+#	comment - Check to see if we're in a comment flag
+#	debug - Check to see if we're in side #ifdef DEBUG code.
+#	
+#
+
+BEGIN {
+	current = FILENAME;
+	line = 1;
+	parans = 0;
+	comment = 0;
+	debug = 0;
+
+	Tcmn_err = 0;
+	Tassert = 0;
+	Tgassert = 0;
+	Tpanic = 0;
+	Tgpanic = 0;
+	Tprintf = 0;
+	Tgprintf = 0;
+}
+
+# A new file - reset the variables.
+{
+	if (current != FILENAME) {
+		parans = 0;
+		line = 1;
+		comment = 0;
+		current = FILENAME;
+		debug = 0;
+	}
+}
+	
+# filter blank lines
+/^[ 	]*$/		{ ++line; next;		}
+
+#  No parsing is needed during some #ifdef 's
+/^#if/ {
+	if (index($1, "#if") && debug) {
+		debug++;
+	}
+	if (! debug && (index($0, "DEBUG") || index($0, "MFG") || index($0, "CHECKSLIC") || index($0, "WATCHPOINT") || index($0, "ns32000") || index($0, "MAX_PROC_ADDR_MEM") || index($0, "KLINT"))) {
+		debug++;
+	}
+}
+
+/^#endif/ {
+	if (index($1, "#endif") && debug) {
+		debug--;
+	}
+}
+
+#If we're in a comment, don't check the input.
+/\/\*/  {
+	comment = 1;
+}
+
+# check to see if we're in a comment, and get out of it.
+{
+	if (index($0, "*/")) {
+		comment = 0;
+		$0 = substr($0, index($0, "*/")+1, length($0) - index($0, "*/"));
+	}
+}
+
+# parse cmn_err function calls
+/cmn_err\(/	{ 
+	if (! comment && ! debug && ! index($0, "CE_CONT")) {
+		parans = 0;
+		while (getparans($0) != 0) {
+			nextline();
+			if (index($1, "cmn_err("))
+				parans = 0;
+		}
+		if ( ! iscorrect($0, 1)) {
+			Tcmn_err++;
+		}
+	}
+}
+
+# parse CALL cmn_err in assembly code
+/CALL[ 	]*cmn_err/	{ 
+	if (! comment && ! debug )
+		if ( ! iscorrect($0, 1)) 
+			Tcmn_err++;
+}
+
+
+# parse ASSERT function calls
+/ASSERT\(/	{ 
+	if (! comment && ! debug) {
+		parans = 0;
+		while (getparans($0) != 0) {
+			nextline();
+			if (index($1, "ASSERT("))
+				parans = 0;
+		}
+		if ( ! iscorrect($0, 1)) {
+			Tassert++;
+		} else {
+			Tgassert++;
+		}
+	}
+}
+
+# parse panic function calls
+/panic\(/  {
+	if (! comment && ! debug) {
+		oarg=$0
+		oline=line
+		parans = 0;
+		while (getparans($0) != 0) {
+			nextline();
+			if (index($1, "panic("))
+				parans = 0;
+		}
+		if ( ! iscorrect($0, 1)) {
+			Tpanic++;
+		} else {
+			Tgpanic++;
+		}
+	}
+}
+
+# parse panic function calls in assembly
+/CALL[ 	]*panic/  {
+	if (! comment && ! debug) {
+		if ( ! iscorrect($0, 1)) {
+			perror($0, "Panic called");
+			Tpanic++;
+		} else {
+			Tgpanic++;
+		}
+	}
+}
+
+# parse printf function calls
+#
+# allow printf to be followed by a panic or a comment.
+#
+/printf\(/  {
+	if (! comment && ! debug) {
+		oline=line
+		oarg=$0
+		parans = 0;
+		while (getparans($0) != 0) {
+			nextline();
+			if (index($1, "panic("))
+				parans = 0;
+			if (index($1, "printf("))
+				parans = 0;
+		}
+		nextline();
+		if ( index($1, "panic(") ) {
+			parans = 0;
+			while (getparans($0) != 0) {
+				nextline();
+				if (index($1, "panic("))
+					parans = 0;
+			}
+			if ( ! iscorrect("" $0 "", 1)) {
+				Tpanic++;
+			} else {
+				Tgpanic++;
+			}
+		} else {
+			if ( index($1, "printf(") ) {
+				parans = 0;
+				while (getparans($0) != 0) {
+					nextline();
+					if (index($1, "panic("))
+						parans = 0;
+					if (index($1, "printf("))
+						parans = 0;
+				}
+				if ( ! iscorrect($0, 1)) {
+					Tprintf++;
+				} else {
+					Tgprintf++;
+				}
+			} else {
+				if ( ! iscorrect($0, 0)) {
+					tline=line
+					line=oline
+					perror(oarg, "Printf called");
+					Tprintf++;
+					line=tline
+				} else {
+					Tgprintf++;
+				}
+			}
+		}
+	}
+}
+
+# parse printf function calls in assembly
+/CALL[ 	]*printf/  {
+	if (! comment && ! debug) {
+		perror($0, "Printf called");
+		Tprintf++;
+	} else {
+		Tgprintf++;
+	}
+}
+
+# Update the line count, and go to the next.
+{ ++line; next;		}
+
+END {
+	if (Tcmn_err || Tassert || Tpanic || Tprintf) {
+		printf("End Totals \n");
+		printf("Cmn_Err calls		%d\n", Tcmn_err);
+		printf("Bad ASSERT calls	%d\n", Tassert);
+		printf("Good ASSERT calls	%d\n", Tgassert);
+		printf("Bad Panic calls		%d\n", Tpanic);
+		printf("Good Panic calls	%d\n", Tgpanic);
+		printf("Bad Printf calls	%d\n", Tprintf);
+		printf("Good Printf calls	%d\n", Tgprintf);
+	}
+}
+
+# iscorrect(str)
+#  Checks a comment block after a cmn_err panic or ASSERT call to make sure it
+#	is properly formated.
+#
+function iscorrect(str, bitch)
+{
+	if (nextline()) {
+		if (index($1,"/*") && length($2)  == 0)  {
+			nextline();
+		} else {
+			if ( ! index($1,"*+") ) {
+				if ( bitch ) {
+					perror(str, "Bad Comment");
+				}
+				return 0;
+			}
+		}
+		if (index($1,"*+")) {
+			nextline();
+		} else {
+			if ( bitch ) {
+				perror(str, "Bad Comment");
+			}
+			return 0;
+		}
+		while (index($1,"*+")) {
+			nextline();
+		}
+		if (index($1,"*/") && length($2)  == 0)  {
+		} else {
+			if ( bitch ) {
+				perror(str, "Bad Comment");
+			}
+			return 0;
+		}
+		return 1;
+	} else return 0;
+}
+
+# nextline()
+#  Gets the next line of input, and updates the line number.
+#
+function nextline()
+{
+	if (getline) {
+		line++;
+		if ($0 == "") {
+			return( nextline() )
+		} else {
+			return 1;
+		}
+	} else {
+		return 0;
+	}
+}
+
+# getparans()
+# recursively descends the paran structure within the cmn_err or ASSERT call.
+#
+function getparans(str)
+{
+
+	quote = index(str, "\"");
+	open = index(str, "(");
+	clse = index(str, ")");
+
+	if (! open && ! clse )
+		return parans;
+
+	if (open && clse) {
+		if (open <= clse) {
+#			/* The open paran is first. */
+			if (quote && (quote <= open)) {
+				str = skip(str, quote);
+				ind = index(str,"\"");
+			} else {
+				parans++;
+				ind = open;
+			}
+		} else {
+#			/* The clse paran is first */
+			if (quote && (quote <= clse)) {
+				str = skip(str, quote);
+				ind = index(str,"\"");
+			} else {
+				parans--;
+				ind = clse;
+			}
+		}
+	} else if (open && ! clse) {
+#		/* The open paran is first. */
+		if (quote && (quote <= open)) {
+			str = skip(str, quote);
+			ind = index(str,"\"");
+		} else {
+			parans++;
+			ind = open;
+		}
+	} else {
+#		/* The clse paran is first */
+		if (quote && (quote <= clse)) {
+			str = skip(str, quote);
+			ind = index(str,"\"");
+		} else {
+			parans--;
+			ind = clse;
+		}
+	}
+
+	getparans(skip(str,ind)); 
+	return parans;
+}
+
+function skip(str, ind)
+{
+	return substr(str, ind + 1, length(str) - ind ); 
+}
+
+# perror()
+# A simple nawk replacement for the perror(3) function.
+#
+function perror(str, error)
+{
+	sub( "[ 	][	 ]*", "", str);
+	printf("%s: line %d: %s\n %s\n", FILENAME, line, error, str);
+}

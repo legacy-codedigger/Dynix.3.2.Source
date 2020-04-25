@@ -1,0 +1,26 @@
+/* $Copyright:	$
+ * Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+ * Sequent Computer Systems, Inc.   All rights reserved.
+ *  
+ * This software is furnished under a license and may be used
+ * only in accordance with the terms of that license and with the
+ * inclusion of the above copyright notice.   This software may not
+ * be provided or otherwise made available to, or used by, any
+ * other person.  No title to or ownership of the software is
+ * hereby transferred.
+ */
+
+/* $Header: files 2.0 86/01/28 $ */
+
+	/* this file has the location of the parser, and the size of the progam desired */
+	/* It may also contain definitions to override various defaults: for example,
+	/* WORD32 tells yacc that there are at least 32 bits per int */
+	/* on some systems, notably IBM, the names for the output files and tempfiles must
+	/* also be changed  */
+
+#ifndef WORD32
+#define WORD32
+#endif
+
+	/* basic size of the Yacc implementation */
+# define HUGE

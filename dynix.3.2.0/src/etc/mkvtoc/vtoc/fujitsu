@@ -1,0 +1,24 @@
+*
+*#ident	"$Header: fujitsu 1.1 90/01/30 $"
+* Fujitsu model 2243AS with interleave 1-1
+*
+* Dimensions:
+*   512 bytes/sector
+*    17 sectors/track
+*    11 tracks/cylinder
+*   754 cylinders
+*   751 user accessible cylinders
+*
+* Types:
+*	00	No Partition
+*	01	Regular Partition
+*	02	Boot Block
+*	03	Reserved Disk Area
+*
+* Partition	Type	Start Sector	Size in Sectors	   Block Sz    Frag Sz
+   00		1	32		49149		   8192        1024
+   01		1	49181		35156		   8192        1024
+   02		1	84337		56100		   8192        1024
+   13		3	140437		561		   0           0
+   14		2	0		16		   0           0
+   15		3	16		16		   0           0

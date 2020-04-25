@@ -1,0 +1,139 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+.\"Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\"Sequent Computer Systems, Inc.   All rights reserved.
+.\" 
+.\"This software is furnished under a license and may be used
+.\"only in accordance with the terms of that license and with the
+.\"inclusion of the above copyright notice.   This software may not
+.\"be provided or otherwise made available to, or used by, any
+.\"other person.  No title to or ownership of the software is
+.\"hereby transferred.
+...
+.V= $Header: boot.8s 1.9 91/01/21 $
+.TH BOOT 8S "\*(V)" "DYNIX"
+.SH NAME
+boot \- run a standalone program or bring up DYNIX
+.SH SYNOPSIS
+.BR "From the powerup monitor" :
+.br
+.sp
+.in +1
+.IR "on SCED-based systems" :
+.br
+*
+.B b 
+[
+.I flag
+] [
+.I program
+[
+.I arg
+] ... ]
+.br
+.sp
+.IR "on SSM-based systems" :
+.br
+--->
+\f3bh \f1[ '[\f2flag\f1]\f2program\f1 [
+.I arg
+] ...' ]
+.SH DESCRIPTION
+.B boot
+brings up the DYNIX operating system,
+or loads other standalone programs into memory.
+.PP
+.I flag
+is the value of the configuration flag.
+Standalone programs (including
+.B boot
+and the DYNIX  kernel) interpret various bits of the configuration 
+flag.  On SCED systems, if
+.I flag
+is not specified, a default value is taken from the most recent
+.B wf
+powerup monitor command.  On SSM systems, if
+.I flag
+is not specified as part of the bootstring it defaults to zero.
+On SSM systems, there must not be any space characters between
+.I flag
+and
+.I program.
+Additionally the single quotes are required only if
+the optional
+.I arg
+field is provided.
+.PP
+If the lowest bit of the configuration flag is one (that is, if the
+configuration flag is odd),
+.B boot
+will ask for the name of the program to be loaded into memory.
+Otherwise, the name is taken from the command line, or (if not present)
+the value specified the last time the bootstring was set from the
+powerup monitor. For SCED systems, the command for setting the
+bootstring is
+.I wn0=bootstring
+and for SSM systems, the command is
+.I bh os='bootstring'.
+.PP
+The name of the program is given in standalone file notation.
+Standalone file notation is represented as:
+.RS
+.sp
+.IR dv ( un , su )\c
+.I file
+.sp
+.RE
+where
+.I dv
+is the name of the device driver, 
+.I un
+and
+.I su
+are the unit and subunit parameters (interpreted by the device driver),
+and
+.I file
+is the name of the file to be run.
+Supported device drivers for SCED systems are
+\f3sd\f1, \f3ts\f1, \f3xt\f1 and \f3zd\f1.  Supported device
+drivers for SSM systems are
+\f3wd\f1 and \f3tm\f1.
+In general, for disk drivers,
+.I un
+selects among the various drives,
+.I su
+selects a particular disk partition, and
+.I file
+is a DYNIX file name relative to the top level directory
+of the DYNIX file system located in the selected partition.
+For tape drivers,
+.I un
+selects among the various drives,
+.I su
+selects a particular file on the tape (bounded by EOF tape marks), and
+.I file
+is unused.
+.PP
+.B boot
+loads the program into memory, displays the allocation of 
+\f3text\f1, \f3data\f1, and
+\f3bss\f1 (uninitialized data), and then begins execution of the program.
+When the program exits, the powerup monitor resumes.
+.PP
+Arguments for the program may follow the program name, as long as they
+are separated from the program name by at least one space.
+.B boot
+makes the entire (uninterpreted) command line available to the invoked program.
+The invoked program must then parse the command line to determine the arguments.
+.SH "SEE ALSO"
+.IR "DYNIX System Administration Guide" ,
+.IR "DYNIX Diagnostics User's Guide"
+

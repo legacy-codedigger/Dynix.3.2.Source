@@ -1,0 +1,101 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+.\"
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.  This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: diskpart.8 1.8 86/08/18 $
+.TH DISKPART 8 "\*(V)" "4BSD/DYNIX"
+.SH NAME
+diskpart \- calculate default disk partition sizes
+.SH SYNOPSIS
+.B /etc/diskpart
+[
+.B \-p
+] [
+.B \-d
+]
+disk-type
+.SH DESCRIPTION
+.I Diskpart
+is used to calculate the disk partition sizes based on the
+default rules used at the University of California at Berkeley.
+These values are to be used on an advisory basis only;
+your actual needs may dictate different values.
+If the
+.B \-p
+option is supplied, tables suitable for inclusion in a device driver
+are produced.
+If the
+.B \-d
+option is supplied, an entry suitable for inclusion in the disk
+description file
+.I /etc/disktab
+is generated; see
+.IR disktab (5).
+.I Diskpart
+assumes that the disk is formatted with the DEC standard 144 format.
+Space is always left in the last partition on the disk
+for a bad sector forwarding table.  The space reserved
+is one track for the replicated copies of the table and
+sufficient tracks to hold a pool of 126 sectors to which bad sectors
+are mapped.  For more information, see
+.IR bad144 (8).
+.PP
+The disk partition sizes are based on the total amount of
+space on the disk as give in the table below (all values
+are supplied in units of 512 byte sectors).  The `c' partition
+is, by convention, used to access the entire physical disk, including
+the space reserved for the bad sector forwarding table.
+In normal operation, either the `g' partition is used, or the
+`d', `e', and `f' partitions are used.  The `g' and `f' partitions
+are variable sized, occupying whatever space remains after allocation
+of the fixed sized partitions.
+If the disk is smaller than 20 Megabytes, then
+.I diskpart
+aborts with the message ``disk too small, calculate by hand''.
+.in +0.5i
+.nf
+
+.ta \w'Partition  'u +\w'20-60 MB  'u +\w'61-205 MB  'u +\w'206-355 MB  'u +\w'356+ MB'u
+Partition	20-60 MB	61-205 MB	206-355 MB	356+ MB
+a	15884	15884	15884	15884
+b	10032	33440	33440	66880
+d	15884	15884	15884	15884
+e	unused	55936	55936	307200
+h	unused	unused	291346	291346
+
+.fi
+.in -0.5i
+.PP
+If an unknown disk type is specified,
+.I diskpart
+will prompt for the required disk geometry information.
+.SH SEE ALSO
+disktab(5),
+bad144(8)
+.SH BUGS
+Certain default partition sizes are based on historical artifacts,
+and may result in unsatisfactory layouts.
+.PP
+When using the \-d flag, alternate disk names are not included
+in the output.
+.PP
+.I Diskpart
+only understands how to handle drives formatted via the DEC standard 144
+format.
+For other formats, use
+.I /etc/disktab
+for partition information.

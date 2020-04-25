@@ -1,0 +1,61 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: showcfg.8 1.8 1991/05/23 17:49:59 $
+.TH SHOWCFG 8 "\*(V)" "DYNIX"
+.SH NAME
+showcfg \- show the configuration of the machine
+.SH SYNOPSIS
+.B /etc/showcfg
+[
+.B \-s
+|
+.B \-d
+]
+.SH DESCRIPTION
+.I Showcfg
+displays the configuration of the system in a manner similar to
+the
+.B rc
+command of the power-up monitor.
+.PP
+The
+.B \-s
+flag selects an alternate one-line format that gives the quantity of
+each type of board.
+.PP
+The
+.B \-d
+flag produces a dump of relevant parts of the system's configuration description
+table.  The data displayed includes information about the memory
+available, the boot flags, the boot device, console tty control characters,
+and the current system bus mode. Note that proccessor boards are numbered
+for each proccessor type, and so \f3showprocs\fP should be used to determine
+the engine number.
+.PP
+The 
+.B "maxmem, bottom"
+and
+.B mmap_size
+values displayed with the
+.B \-d
+flag represent the system's
+maximum configured memory, the highest memory location used by SCED f/w, and
+the number of bits in the memory bitmap, respectively.
+.SH FILES
+.DT
+/dev/kmem
+.SH SEE ALSO
+dmesg(8), showproc(8)
+.br
+/usr/adm/messages
+.SH BUGS
+Boards on the MULTIBUS are not currently displayed.

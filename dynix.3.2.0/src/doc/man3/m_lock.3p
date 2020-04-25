@@ -1,0 +1,72 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986 Sequent Computer Systems, Inc.
+.\" All rights reserved
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: m_lock.3p 1.6 90/02/07 $
+.TH M_LOCK 3P "\*(V)" "DYNIX"
+.SH NAME
+m_lock, m_unlock \- lock, unlock locks
+.SH SYNOPSIS
+.PP
+.nf
+\f2C syntax:\fP
+.PP
+\f3#include <parallel/microtask.h>
+m_lock ();
+m_unlock ();\fP
+.PP
+\f2Pascal syntax\fP
+.PP
+\f3procedure m_lock ;
+cexternal ;
+procedure m_unlock ;
+cexternal ;\fP
+.PP
+\f2FORTRAN syntax\fP
+.PP
+\f3subroutine m_lock()
+subroutine m_unlock()\fP
+.fi
+.SH DESCRIPTION
+The
+.I m_lock 
+and
+.I m_unlock 
+routines are microtasking interfaces to a single 
+.IR slock_t -type
+lock.
+For a single lock, they are easier to use than the
+.IR s_init_lock ,
+.IR s_lock ,
+and
+.I s_unlock
+routines because they don't require you to declare or
+initialize the lock before using it. They are also faster than
+the other routines because they do not pass the lock address
+as an argument.
+.PP
+.PP
+.I m_lock
+locks the lock.
+.I m_lock
+is always successful;
+it spins as long as is necessary to acquire the lock.
+.PP
+.I m_unlock
+unlocks the lock.
+.SH "SEE ALSO"
+intro(3P), s_lock(3P), shmalloc(3P), \f2Guide to
+Parallel Programming\fP
+.SH BUGS
+.I m_lock
+and
+.I m_unlock
+are declared as integer functions, but do
+not in fact return a value.

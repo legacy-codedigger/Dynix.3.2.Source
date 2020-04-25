@@ -1,0 +1,41 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: basename.1 1.4 86/05/13 $
+.TH BASENAME 1 "\*(V)" "7th Edition"
+.SH NAME
+basename \- strip filename affixes
+.SH SYNOPSIS
+.B basename
+string [ suffix ]
+.SH DESCRIPTION
+.I Basename
+deletes any prefix ending in `/' and the
+.I suffix,
+if present in
+.I string,
+from
+.I string,
+and prints the result on the standard output.
+It is normally used inside substitution marks \`\ \`
+in shell procedures.
+.PP
+This shell procedure invoked with the argument
+.I /usr/src/bin/cat.c
+compiles the named file and moves the output to
+.I cat
+in the current directory:
+.IP "" 15n
+cc $1
+.br
+mv a.out \`basename $1 .c\`
+.SH "SEE ALSO"
+sh(1)

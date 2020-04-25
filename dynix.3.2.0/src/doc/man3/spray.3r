@@ -1,0 +1,76 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: spray.3r 1.1 91/01/12 $
+.\" @(#)spray.3r	1.1 88/05/08 4.0NFSSRC SMI
+.\" @(#) from SUN 1.9
+.TH SPRAY 3R "\*(V)" "4BSD"
+.SH NAME
+spray \- scatter data in order to check the network
+.SH DESCRIPTION
+.IX "spray function" "" "\fLspray()\fP function"
+.LP
+The spray protocol sends packets to a given
+machine to test the machine's speed and reliability.
+.SH RPC INFO
+.nf
+program number:
+	SPRAYPROG
+
+.sp .5
+xdr routines:
+	xdr_sprayarr(xdrsp, arrp);
+		XDR *xdrsp;
+		struct sprayarr *arrp;
+	xdr_spraycumul(xdrsp, cumulp);
+		XDR *xdrsp;
+		struct spraycumul *cumulp;
+
+.sp .5
+procs:
+	SPRAYPROC_SPRAY
+	SPRAYPROC_GET
+	SPRAYPROC_CLEAR
+
+.sp .5
+versions:
+	SPRAYVERS_ORIG
+
+.sp .5
+structures:
+	struct spraycumul {
+		unsigned counter;
+		timeval_t clock;
+	};
+
+	struct sprayarr {
+		int *data;
+		int lnth;
+	};
+
+.fi
+.SH PROGRAMMING
+.LP
+.nf
+.B #include <rpcsvc/spray.h>
+.fi
+.LP
+The following
+.SM XDR
+routines are available in
+.BR librpcsvc :
+.nf
+.B	xdr_sprayarr
+.B	xdr_spraycumul
+.fi
+.SH SEE ALSO
+\f3spray\f1\^(8),
+\f3sprayd\f1\^(8C)

@@ -1,0 +1,57 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: swapon.8 1.8 87/05/27 $
+.TH SWAPON 8 "\*(V)" "4BSD"
+.SH NAME
+swapon \- specify additional device for paging and swapping
+.SH SYNOPSIS
+.B "/usr/etc/swapon"
+.B \-a
+.br
+.B "/usr/etc/swapon"
+name ...
+.SH DESCRIPTION
+.I Swapon
+is used to specify additional devices on which paging and swapping
+are to take place.
+The system begins by swapping and paging on only a single device
+so that only one disk is required at bootstrap time.
+Calls to
+.I swapon
+normally occur in the system multi-user initialization file
+.I /etc/rc
+making all swap devices available, so that the paging and swapping
+activity is interleaved across several devices.
+.PP
+Normally, the
+.B \-a
+argument is given, causing all devices marked as ``swap''
+swap devices in
+.B /etc/fstab
+to be made available.
+.PP
+The second form gives individual block devices as given
+in the system swap configuration table.  The call makes only this space
+available to the system for swap allocation.
+.SH SEE ALSO
+swapon(2),
+mntent(5),
+init(8)
+.SH FILES
+.DT
+/dev/xp?b,
+/dev/sd?b,
+/dev/zd?b	normal paging devices
+.SH BUGS
+There is no way to stop paging and swapping on a device.
+It is therefore not possible to make use of devices which may be
+dismounted during system operation.

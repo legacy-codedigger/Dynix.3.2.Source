@@ -1,0 +1,55 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: yppasswd.1 1.3 87/04/06 $
+.\" @(#)yppasswd.1 1.1 85/12/28 SMI;
+.TH YPPASSWD 1 "\*(V)" "4BSD"
+.SH NAME
+yppasswd \- change login password in yellow pages
+.SH SYNOPSIS
+.B yppasswd
+\ [ name ]
+.SH DESCRIPTION
+.\".IX  "yppasswd command"  ""  "\f2yppasswd\fP \(em change login password in yellow pages"
+.\".IX  "change login password in yellow pages"  ""  "change login password in yellow pages \(em \f2yppasswd\fP"
+.\".IX  "yellow pages"  "change login password in"  ""  "change login password in \(em \f2yppasswd\fP"
+.\".IX  "password"  "change in yellow pages"  ""  "change in yellow pages \(em \f2yppasswd\fP"
+.\".IX  "login password"  "change in yellow pages"  ""  "change in yellow pages \(em \f2yppasswd\fP"
+.I Yppasswd
+changes (or installs) a password associated with the user
+.IR name
+(your own name by default)
+in the yellow pages.  The yellow pages password may be different
+from the one on your own machine.
+.LP
+.I Yppasswd
+prompts for the old yellow pages password and then for the new one.
+The caller must supply both.
+The new password must be typed twice, to forestall mistakes.
+.LP
+New passwords must be at least four characters long,
+if they use a sufficiently rich alphabet,
+and at least six characters long if monocase.
+These rules are relaxed if you are insistent enough.
+.LP
+Only the owner of the name or the super-user may change a password;
+in either case,
+you must prove you know the old password.
+.SH "SEE ALSO"
+passwd(1),
+ypfiles(5),
+yppasswdd(8C)
+.SH BUGS
+The update protocol passes all the information to the server in
+one rpc call, without ever looking at it.
+Thus,
+if you enter your old password incorrectly,
+you will not be notified until after you have entered your new password.

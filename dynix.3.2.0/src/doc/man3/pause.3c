@@ -1,0 +1,38 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: pause.3c 1.5 1991/05/23 18:33:10 $
+.TH PAUSE 3C "\*(V)" "4BSD"
+.SH NAME
+pause \- stop until signal
+.SH SYNOPSIS
+.B pause()
+.SH DESCRIPTION
+.I Pause
+never returns normally.
+It is used to give up control while waiting for
+a signal from
+.IR kill (2)
+or an interval timer, see
+.IR setitimer (2).
+Upon termination of a signal handler started during a
+.I pause,
+the
+.I pause
+call will return.
+.SH ERRORS
+.I Pause
+always returns:
+.TP 15
+[EINTR]
+The call was interrupted.
+.SH "SEE ALSO
+kill(2), select(2), sigpause(2)

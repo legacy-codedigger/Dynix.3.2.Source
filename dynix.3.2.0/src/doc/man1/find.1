@@ -1,0 +1,251 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: find.1 1.23 1991/06/12 21:17:40 $
+.\" @(#)find.1 1.1 85/12/28 SMI;
+.TH FIND 1  "\*(V)" "4BSD"
+.SH NAME
+find \- find files
+.SH SYNOPSIS
+.B find
+.I pathname-list  
+.I expression
+.SH DESCRIPTION
+.\".IX "find command"  ""  "\f2find\fP \(em find files"
+.\".IX files  find
+.\".IX "search for files"
+\f3Find\f1 recursively descends the directory hierarchy for each 
+pathname in the
+.I pathname-list
+(that is, one or more pathnames) 
+seeking files that match a Boolean
+expression
+written in the primaries given below.
+Expressions are evaluated from left to right.
+In the descriptions, the argument
+.I n
+is used as a decimal integer 
+where +n means more than n, -n, means less than 
+n, and n means exactly n.
+.IP "\f3\-fstype \f2type\f1" 1i
+True if the filesystem to which the
+the file belongs is of type
+.IR type ,
+where
+.I type
+is typically
+.B 4.2
+or
+.B nfs
+.IP "\f3\-name \f2filename\f1" 
+True if the
+.I filename
+argument matches the current filename.
+Normal shell argument syntax may be used if escaped (watch out for
+[, ? and *).
+.IP "\f3\-perm \f2onum\f1"
+True if the file permission flags exactly match the octal number
+.I onum
+(see \f3chmod\f1(1)).
+If
+.I onum
+is prefixed by a minus sign, more flag bits (017777, see
+\f3chmod\f1(1))
+become significant and the flags are compared:
+.IR (flags&onum)==onum .
+.IP \f3\-prune
+Always returns true.
+Also prunes the search
+tree at the file.
+That is, if the current pathname is a directory,
+.B find
+does not descend into that directory.
+.IP "\f3\-type \f2c\f1"
+True 
+where
+.I c
+has one of the following meanings:
+.RS
+.IP \f3b\f1 1.5i
+block special file
+.IP \f3c\f1
+character special file
+.IP \f3d\f1
+directory
+.IP \f3f\f1
+plain file
+.IP  \f3l\f1
+symbolic link
+.RE
+.IP "\f3\-links \f2n\f1"
+True if the file has
+.I n
+links
+.IP "\f3\-user \f2uname\f1"
+True if the file belongs to the user
+.I uname
+(login name or numeric user ID)
+.IP "\f3\-group \f2gname\f1"
+True if the file belongs to group
+.I gname
+(group name or numeric group ID)
+.IP "\f3\-size \f2n\f1"
+True if the file is
+.I n
+blocks long (512 bytes per block)
+.IP "\f3\-inum \f2n\f1"
+True if the file has inode number
+.IR n 
+.IP "\f3\-atime \f2n\f1"
+True if the file has been accessed in
+.I n
+days
+.IP "\f3\-mtime \f2n\f1"
+True if the file has been modified in
+.I n
+days.  (
+.I n
+starts at zero.  See examples below for more details of this
+switch.)
+.IP "\f3\-exec \f2command\f1"
+True if the executed command returns a zero value as exit status.
+The end of the command must be punctuated by an escaped semicolon.
+A command argument
+.B {}
+is replaced by the current pathname.
+.IP "\f3\-ok \f2command\f1"
+Like
+.B \-exec
+except that the generated command is written on
+the standard output. The standard input is read
+and the command is executed only upon response
+.BR y .
+.IP \f3\-print\f1
+Always true; the current pathname is printed.
+.IP "\f3\-newer \f2file\f1"
+True if the current file has been modified more recently than the 
+argument
+.IP "\f3\-cpio  \f2file\f1"
+Write the current file on the argument
+.I file
+in
+.I cpio
+format.
+.IR file 
+.LP
+The primaries may be combined using the following operators
+(in order of decreasing precedence):
+.IP "\f3( \f1\|.\|.\|.\f3 )\f1"
+A group of primaries and operators enclosed in parentheses.
+Parentheses are special to the shell and must be escaped.
+You must leave at least one space between the parentheses and
+the group of primaries and operators.
+.IP \f3!\f2primary\f1
+The negation of a primary (! is the unary
+.I not
+operator)
+.IP "\f2primary\f1 [\f3\-a\f1] \f2primary\f1"
+Concatenation of primaries.
+The
+.I and
+operation is implied by the juxtaposition of two primaries,
+but can be explicitly specified with the
+.I \-a
+operator.
+.IP "\f2primary \f3\-o \f2primary\f1"
+Alternation of primaries
+(\f3\-o\f1 is the
+.I or
+operator)
+.SH EXAMPLES
+To recursively find all the filenames, starting from \f2/usr/man/man2\f1,
+that have been updated
+since the creation of the file \f2TIMESTAMP\f1, 
+enter this command:
+.Ps
+find /usr/man/man2 \-newer /usr/man/man2/TIMESTAMP \-print
+.Pe
+To recursively print all filenames starting from the current directory,
+but skipping the directory
+.IR SCCS ,
+enter this command:
+.Ps
+find . -name SCCS -prune -o -print
+.Pe
+To recursively remove all files named
+.B a.out
+or
+.B *.o
+that have not been accessed for a week starting from the current directory,
+enter this command:
+.Ps
+find . \\( \-name a.out \-o \-name '*.o' \\) \-atime +7 \-exec rm {} \\;
+.Pe
+To recursively display the names of all files named
+.B a.out
+and with permissions 640 starting from the current directory,
+enter this command:
+.Ps
+find . \\( \-name a.out \-a \-perm 640 \\) \-print
+.Pe
+or enter this command:
+.Ps
+find . \-name a.out \-a \-perm 640 \-print
+.Pe
+Note that \f3\-a\f1 is not necessary in either case.
+.sp
+To display the names of all files modified greater than 24 hours ago, enter
+this command:
+.Ps
+find . -mtime +0 -print
+.Pe
+To display the names of all files modified between 0 and 24 hours ago, enter
+this command:
+.Ps
+find . -mtime 0 -print
+.Pe
+To display the names of all files modified greater than 48 hours ago, enter
+this command:
+.Ps
+find . -mtime +1 -print
+.Pe
+To display the names of all files modified between 24 and 48 hours ago, enter
+this command:
+.Ps
+find . -mtime 1 -print
+.Pe
+.SH FILES
+\f2/etc/passwd\f1
+.br
+\f2/etc/group\f1
+.SH "CAVEATS"
+The concept of universes is implemented (in part) by using conditional symbolic
+links, which are resolved as pointing one of two places,
+depending on the current
+universe of the user.  Since conditional symbolic links are a special type of
+symbolic link,
+.B find
+treats conditional symbolic links as symbolic links and does not follow the
+link.  This can cause confusion when you are using a command 
+like this one, because \f2/bin\f1 is a conditional symbolic link:
+.Ps
+find /bin \-print
+.Pe
+Use this command to force the conditional symbolic link to be followed:
+.Ps
+find /bin/ \-print
+.Pe
+In addition, any
+conditional symbolic links found within a directory heirarchy won't be
+followed.
+.SH "SEE ALSO"
+sh(1),
+test(1)

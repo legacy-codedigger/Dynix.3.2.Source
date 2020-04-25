@@ -1,0 +1,94 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: cat.1 1.6 1991/08/07 00:30:25 $
+.TH CAT 1 "\*(V)" "4BSD"
+.SH NAME
+cat \- catenate and print
+.SH SYNOPSIS
+.B cat
+[
+.B \-u
+] [
+.B \-n
+] [
+.B \-s
+] [
+.B \-v
+] [
+.B \-e
+] [
+.B \-b
+] [
+.B \-t
+]
+file ...
+.br
+.SH DESCRIPTION
+.I Cat
+reads each
+.I file
+in sequence and displays it on the standard output.  Thus
+.PP
+.ti+15n
+cat file
+.PP
+displays the file on the standard output, and
+.PP
+.ti+15n
+cat file1 file2 >file3
+.PP
+concatenates the first two files and places the result on the third.
+.PP
+If no input file is given, or if the argument `\-' is encountered,
+.I cat
+reads from the standard input file.
+Output is buffered in 1024-byte blocks.
+The
+.B \-u
+option makes the output completely unbuffered.
+.PP
+The
+.B \-n
+option displays the output lines preceded by lines numbers, numbered
+sequentially from 1.  Specifying the 
+.B \-b
+option with the
+.B \-n
+option omits the line numbers from blank lines.
+.PP
+The
+.B \-s
+option crushes out multiple adjacent empty lines so that the
+output is displayed single spaced.
+.PP
+The
+.B \-v
+option displays non-printing characters so that they are visible.
+Control characters print like ^X for control-x; the delete character
+(octal 0177) prints as ^?.
+Non-ascii characters (with the high bit set) are printed as M-
+(for meta) followed by the character of the low 7 bits.  A
+.B \-e
+option may be given with the
+.B \-v
+option, which displays a `$' character at the end of each line.
+Specifying the 
+.B \-t
+option with the
+.B \-v
+option displays tab characters as ^I.
+.PP
+.SH "SEE ALSO"
+cp(1), ex(1), more(1), pr(1), tail(1)
+.SH BUGS
+Beware of `cat a b >a' and `cat a b >b', which destroy
+the input files before reading them.

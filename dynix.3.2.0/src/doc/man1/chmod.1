@@ -1,0 +1,100 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: chmod.1 1.5 86/05/13 $
+.TH CHMOD 1 "\*(V)" "7th Edition"
+.SH NAME
+chmod \- change mode
+.SH SYNOPSIS
+\f3chmod\fP mode file ...
+.SH DESCRIPTION
+The mode of each named file is changed according to \f2mode\fP,
+which may be absolute or symbolic.  An absolute \f2mode\fP
+is an octal number constructed from the OR of the following modes:
+.TP 10
+4000
+set user ID on execution
+.br
+.ns
+.TP 10
+2000
+set group ID on execution
+.br
+.ns
+.TP 10
+1000
+sticky bit, see
+.IR  chmod (2)
+.br
+.ns
+.TP 10
+0400
+read by owner
+.br
+.ns
+.TP 10
+0200
+write by owner
+.br
+.ns
+.TP 10
+0100
+execute (search in directory) by owner
+.br
+.ns
+.TP 10
+0070
+read, write, execute (search) by group
+.br
+.ns
+.TP 10
+0007
+read, write, execute (search) by others
+.LP
+A symbolic \f2mode\fP has the form:
+.IP
+.RI [ who ]
+\f2op permission\fP
+.RI [ "op permission" "] ..."
+.LP
+The \f2who\fP part is a combination of the letters \f3u\fP
+(for user's permissions), \f3g\fP (group) and \f3o\fP (other).
+The letter \f3a\fP stands for all, or \f3ugo.\fP
+If \f2who\fP is omitted, the default is \f2a\fP
+but the setting of the file creation mask (see umask(2)) is taken into account.
+.LP
+\f2Op\fP can be \f3+\fP to add \f2permission\fP to the file's mode,
+\f3\-\fP to take away \f2permission\fP and \f3=\fP to assign
+\f2permission\fP absolutely (all other bits will be reset).
+.LP
+\f2Permission\fP is any combination of the letters \f3r\fP (read),
+\f3w\fP (write), \f3x\fP (execute), \f3s\fP (set owner or group id)
+and \f3t\fP (save text \- sticky).  Letters
+.BR u,
+\f3g\fP or \f3o\fP indicate that \f2permission\fP
+is to be taken from the current mode.  Omitting \f2permission\fP
+is only useful with \f3=\fP to take away all permissions.
+.SH EXAMPLES
+.LP
+The first example denies write permission to others,
+the second makes a file executable:
+.IP
+chmod o\-w file
+.br
+chmod +x file
+.LP
+Multiple symbolic modes separated by commas may be given.
+Operations are performed in the order specified.  The letter
+\f3s\fP is only useful with \f3u\fP or \f3g.\fP
+.LP
+Only the owner of a file (or the super-user) may change its mode.
+.SH "SEE ALSO"
+ls(1), chmod(2), stat(2), umask(2), chown(8)

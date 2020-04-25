@@ -1,0 +1,46 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: mesg.1 1.4 86/05/13 $
+.TH MESG 1 "\*(V)" "7th Edition"
+.SH NAME
+mesg \- permit or deny messages
+.SH SYNOPSIS
+.B mesg
+[
+.B n
+] [
+.B y
+]
+.SH DESCRIPTION
+.I Mesg
+with argument
+.B n
+forbids messages via
+.I  write
+and
+.IR talk (1)
+by revoking non-user
+write permission on the user's terminal.
+.I Mesg
+with argument
+.B y
+reinstates permission.
+All by itself,
+.I mesg
+reports the current state without changing it.
+.SH FILES
+/dev/tty*
+.SH "SEE ALSO"
+write(1), talk(1)
+.SH DIAGNOSTICS
+Exit status is 0 if messages are receivable,
+1 if not, 2 on error.

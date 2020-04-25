@@ -1,0 +1,242 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+."Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989 
+."Sequent Computer Systems, Inc.   All rights reserved.
+." 
+."This software is furnished under a license and may be used
+."only in accordance with the terms of that license and with the
+."inclusion of the above copyright notice.   This software may not
+."be provided or otherwise made available to, or used by, any
+."other person.  No title to or ownership of the software is
+."hereby transferred.
+...
+.V= $Header: newfs.8 1.14 90/10/12 $
+.\" Copyright (c) 1983, 1987 Regents of the University of California.
+.\" All rights reserved.  The Berkeley software License Agreement
+.\" specifies the terms and conditions for redistribution.
+.\"
+.\"	@(#)newfs.8	6.6 (Berkeley) 10/1/87
+.\"
+.TH NEWFS 8 "\*(V)" "7th Edition"
+.SH NAME
+newfs \- construct a new file system
+.SH SYNOPSIS
+.B /etc/newfs
+[
+.B \-N
+] [
+.B \-C
+] [
+[
+.B \-v
+] [
+options
+]
+.B special
+.B [ disktype ]
+.SH DESCRIPTION
+The operating system programs
+.B newfs
+and
+.BR mkfs (8)
+are the same program binary.
+.B newfs
+provides a friendly interface to create file systems on disks.
+.I special
+is the device special file on which the new filesystem is to be created.
+.B newfs
+consults the
+.SM VTOC
+residing on the disk to determine the characteristics of the disk.
+A set of parameters for the disk are then calculated from these
+characteristics; if no
+.SM VTOC
+is present on the disk, the
+.B disktype
+parameter must be specified;
+.B newfs
+will then look up the disk characteristics in
+.I /etc/diskinfo.
+.PP
+If the
+.B \-v
+option is specified,
+.B newfs
+prints out parameters which could be supplied to the 
+.BR mkfs
+interface for making file systems.
+.PP
+The
+.B \-N
+option causes the file system parameters to be printed out
+without really creating the file system.
+.PP
+The
+.B \-C
+option will cause
+.B newfs
+to calculate the inodes per cylinder group in a manner which
+matches previous (pre-3.1) versions of
+.B newfs.
+This option would primarily be used when compatibility with previous
+versions of the filesystem is needed.  Keep in mind that the
+calculations will take into account any changes to the default
+bytes per inode density (see \f3\-i\f1 and \f3\-I\f1 below).
+.PP
+Note that \f3newfs\fP will not install any system bootstraps
+on the disk.  To install a bootstrap, use the
+\f3installboot\f1(8) command.
+.PP
+.B newfs
+uses
+.BR fsirand (8)
+as a security precaution for file systems which are mounted over NFS.
+.PP
+.PP
+The following options define the general layout policies.
+.TP 10
+\f3\-b \f2blocksize\f1
+The block size of the file system in bytes.
+The default is taken from the VTOC or default disk parameters.  
+.TP 10
+\f3\-f \f2frag_size\f1
+The fragment size of the file system in bytes.
+The default is taken from the VTOC or default disk parameters.  
+.TP 10
+\f3\-m \f2free_space %\f1
+The percentage of space reserved from normal users; the minimum
+free space threshold.  The default is 10%.
+See
+.BR tunefs (8)
+for more information on setting this option.
+.TP 10
+\f3\-a \f2maxcontig\f1
+The maximum number of contiguous blocks that will
+be laid out before forcing a rotational delay (see \f3\-d\f1 below).
+The default is 1.
+See
+.BR tunefs (8)
+for more information on setting this option.
+.TP 10
+\f3\-d \f2rotdelay\f1
+The expected time (in milliseconds)
+to service a transfer completion
+interrupt and initiate a new transfer on the same disk.
+The default is 4 milliseconds.
+See
+.BR tunefs (8)
+for more information on setting this option.
+.TP 10
+\f3\-e \f2maxbpg\f1
+Indicates the maximum number of blocks any single file can
+allocate from one cylinder group before it is forced to begin
+allocating blocks from another cylinder group.
+The default is about one quarter of the total blocks in a cylinder group.
+See
+.BR tunefs (8)
+for more information on setting this option.
+.TP 10
+\f3\-i \f2number_of_bytes_per_inode\f1
+This specifies the density of inodes in the file system.
+The default is to create an inode for each 2048 bytes of data space.
+If fewer inodes are desired, a larger number should be used;
+to create more inodes a smaller number should be given.
+Be sure to specify this option for small filesystems
+(less than one cylinder group) or the number of inodes created will
+be too large.  Note that this option will override any alterations
+made by the \f3\-I\f1 option (below) if it had previously been
+given.
+.TP 10
+\f3\-I \f2percentage_of_bytes_per_inode\f1
+This specifies a percentage modifier for the inode density of
+the filesystem.  The modification will be applied to the
+default density unless the \f3\-i\f1 flag has previously been given, in
+which case the new density will be modified.  The modification is
+a simple multiplier based on the percentage given.  1000 would multiply
+the density by 10 (1000%), while 50 will divide by 2 (50%).
+.TP 10
+\f3\-c \f2#cylinders_per_group\f1
+The number of cylinders per cylinder group in a file system.
+The default is 16.
+.TP 10
+\f3\-s \f2size\f1
+The size of the file system in sectors.
+The default is taken from the VTOC or default disk parameters.  
+.PP
+The following options override the standard sizes for the disk geometry. 
+Their default values are taken from the VTOC, or are coded internally
+to
+.BR newfs .
+Changing these defaults is useful when using
+.B newfs
+to build a file system whose raw image will eventually be used
+on a different type of disk than the one on which it is initially
+created (for example on a write-once disk).
+.TP 10
+\f3\-r \f2revolutions_per_minute\f1
+The speed of the disk in revolutions per minute.
+.TP 10
+\f3\-S \f2sector-size\f1
+The size of a sector in bytes (almost never anything but 512).
+.TP 10
+\f3\-u \f2sectors_per_track\f1
+The number of sectors/track available for data
+allocation by the file system.
+This does not include sectors reserved at the end of each track for
+bad block replacement (see \f3\-p\f1 below).
+.TP 10
+\f3\-t \f2#tracks_per_cylinder\f1
+The number of tracks/cylinder available for data
+allocation by the file system.
+.TP 10
+\f3\-p \f2spare_sectors_per_track\f1
+Spare sectors (bad sector replacements) are physical sectors
+that occupy space at the end of each track.
+They are not counted as part of the sectors/track (\fB\-u\fP)
+since they are not available to the file system for data allocation.
+.TP 10
+\f3\-x \f2spare_sectors_per_cylinder\f1
+Spare sectors (bad sector replacements) are physical sectors
+that occupy space at the end of the last track in the cylinder.
+They are deducted from the sectors/track (\fB\-u\fP)
+of the last track of each cylinder
+since they are not available to the file system for data allocation.
+.TP 10
+\f3\-l \f2hardware_sector_interleave\f1
+Used to describe the media format to
+compensate for a slow controller.
+Interleave is physical sector interleave on each track,
+specified as the denominator of the ratio:
+.nf
+
+	sectors read / sectors passed over
+
+.fi
+Thus an interleave of 1/1 implies contiguous layout, while 1/2
+implies logical sector 0 is separated by one sector from logical
+sector 1.
+.TP 10
+\f3\-k \f2skew\f1
+.\" \f2sector 0 skew, per track\f1
+Used to describe the media format to
+compensate for a slow controller.
+Track skew is the offset of sector 0 on track N
+relative to sector 0 on track N-1 on the same cylinder.
+.SH "SEE ALSO"
+fsck(8),
+fsirand(8),
+installboot(8),
+mkfs(8),
+mkvtoc(8),
+prtvtoc(8),
+tunefs(8),
+fs(5),
+diskinfo(5)

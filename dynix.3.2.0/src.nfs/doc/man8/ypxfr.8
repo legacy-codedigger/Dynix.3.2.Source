@@ -1,0 +1,163 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: ypxfr.8 1.4 87/07/24 $
+.\" @(#)ypxfr.8 1.1 85/12/28 SMI; 
+.TH YPXFR 8 "\*(V)" "4BSD"
+.SH NAME
+ypxfr - transfer a YP map from some YP server to here
+.SH SYNOPSIS
+.B ypxfr
+[
+.B \-f
+] 
+[ \fB-h \fIhost\fR ]
+[ \fB-d \fIdomain\fR ]
+[
+.B \-c
+] 
+[ \fB-C\fR
+.I "tid prog ipadd port"
+]
+.I mapname
+.SH DESCRIPTION
+.I Ypxfr 
+moves a YP map to the local host by making use of normal YP services.
+It creates a temporary map in the directory 
+.I /etc/yp/domain
+(which must already exist),
+fills it by enumerating the map's entries, fetches the
+map parameters (master and order number) and loads them.
+It then deletes any old versions of the map and moves the 
+temporary map to the real mapname.
+.LP
+If 
+.I ypxfr 
+is run interactively, it writes its output to the terminal.
+However, if it's invoked without a controlling terminal and the
+log file 
+.I /etc/yp/ypxfr.log
+exists, it appends all of its output to that file.  Since 
+.I ypxfr 
+is most often run from 
+.I /usr/lib/crontab
+or by
+.IR ypserv ,
+you can use the log file to retain a record of what was attempted
+and the results.
+.LP
+For consistency between servers,
+.I ypxfr 
+should be run periodically for every map in the YP data base. 
+Different maps change at different
+rates.
+For example, the
+.I services.byname
+map might not change for months at a time, and therefore might
+need checking only once a day in the wee hours.
+However,
+.I hosts.byname
+could change several times per day.
+In such a case, you might want to check hourly for updates.
+A
+.IR crontab (5)
+entry can be used to perform periodic updates automatically.  
+Rather than having a separate
+.I crontab
+entry for each map,
+you can group commands to update several maps 
+in a shell script.
+Examples (mnemonically named) are in 
+.IR /etc/yp :
+.IR ypxfr_1perday.sh , 
+.IR ypxfr_2perday.sh , 
+and
+.I ypxfr_1perhour.sh .
+They can serve as reasonable first cuts.
+.LP
+Refer to
+.IR ypfiles (5)
+and
+.IR ypserv (8)
+for an overview of the yellow pages.
+.SH OPTIONS
+.TP 15
+.B\-f
+Force the transfer to occur even if the version at the master is not 
+more recent than the local version.
+.TP 15
+.B\-c
+Don't send a
+.I "Clear current map"
+request to the local 
+.I ypserv 
+process.
+Use this flag if 
+.I ypserv 
+is not running locally at the time you are running
+.IR ypxfr .  
+Otherwise,
+.I ypxfr 
+complains that it can't talk to the local
+.IR ypserv , 
+and the transfer fails.
+.TP 15
+\f3\-h \f2host\fR
+Get the map from
+.IR host ,
+regardless of what the map says the master is.  If 
+.I host 
+is not specified,
+.I ypxfr 
+asks the YP service for the name of the master, and tries to get the 
+map from there.
+.I Host
+can be a name or an internet address in the form 
+.IR "a.b.c.d" .
+.TP 15
+\f3\-d \f2domain\fR
+Specify a domain other than the default domain.
+.TP 15
+\f3\-C \f2tid prog ipadd port\fR
+This option is for use by
+.I ypserv
+only.
+When  
+.I ypserv
+invokes 
+.IR ypxfr , 
+it specifies that 
+.I ypxfr
+should call back a
+.I yppush
+process at the host with IP address
+.IR ipaddr ,
+registered as program number
+.IR prog ,
+listening on port
+.IR port ,
+and waiting for a response to transaction
+.IR tid .
+.SH FILES
+/etc/yp/ypxfr.log
+.br
+/etc/yp/ypxfr_1perday.sh
+.br
+/etc/yp/ypxfr_2perday.sh
+.br
+/etc/yp/ypxfr_1perhour.sh
+.br
+/usr/lib/crontab
+.SH "SEE ALSO"
+ypfiles(5),
+yppush(8),
+ypserv(8),
+YP protocol spec

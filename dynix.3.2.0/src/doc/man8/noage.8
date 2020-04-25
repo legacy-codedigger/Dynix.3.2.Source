@@ -1,0 +1,80 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: noage.8 1.6 87/06/17 $
+.TH NOAGE 8 "\*(V)" "DYNIX"
+.SH NAME
+noage, nopff, noswap, on \- run a command with priority aging, PFF, swapping, or processor migration disabled
+.SH SYNOPSIS
+.B /usr/etc/noage
+command [ arguments ]
+.PP
+.B /usr/etc/nopff
+command [ arguments ]
+.PP
+.B /usr/etc/noswap
+command [ arguments ]
+.PP
+.B /etc/on
+proc command [ arguments ]
+.SH DESCRIPTION
+.I Noage
+executes
+.I command
+(and its children) with priority aging disabled.
+Ordinarily, process priority is an
+inverse function of the process's CPU usage in the recent past.
+(See
+.IR proc_ctl (2)).
+.PP
+.I Nopff
+executes
+.I command
+without the command (or its children) being subjected to PFF adjustments.
+PFF (Page Fault Frequency) adjustments are changes in the resident-set size
+based on the frequency of page faults.
+(See
+.IR vm_ctl (2)).
+.PP
+.I Noswap
+executes
+.I command
+with swapping for the command (and its children) disabled.
+(See
+.IR vm_ctl (2)).
+.PP
+.I On
+executes
+.I command
+on processor number
+.IR proc ,
+with processor migration disabled for the command (and its children).
+(See
+.IR tmp_affinity (2)).
+.PP
+These commands may be nested; for example:
+.Ps
+/usr/etc/nopff /usr/etc/noswap /etc/on 0 mycommand arg1 arg2
+.Pe
+executes
+.I mycommand
+with swapping, PFF-ing, and processor migration disabled.
+.PP
+These commands are effective only when invoked by the superuser,
+unless the underlying system call option has been configured for
+non-superuser processes.
+See the
+.IR proc_ctl (2)
+and
+.IR vm_ctl (2)
+manual entries for configuration options.
+.SH "SEE ALSO"
+proc_ctl(2), tmp_affinity(2), vm_ctl(2)

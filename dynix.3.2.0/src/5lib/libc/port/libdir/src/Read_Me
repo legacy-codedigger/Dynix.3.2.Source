@@ -1,0 +1,8 @@
+These routines implement the portable directory access interface
+introduced in 4.2BSD.  They are in the public domain.
+
+Programs that need to read directories must be changed to use these
+directory access routines (see also /usr/5include/dir.h), which should
+be bundled into the standard system C library for convenience.
+
+/usr/5include/sys/dir.h has been removed to encourage conversion.

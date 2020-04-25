@@ -1,0 +1,58 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: zcmp.1 1.4 86/05/13 $
+.TH ZCMP 1 "\*(V)" "PUBLIC"
+.SH NAME
+zcmp, zdiff \- compare compressed files
+.SH SYNOPSIS
+.B zcmp
+[ cmp_options ] file1
+[ file2 ]
+.br
+.B zdiff
+[ diff_options ] file1
+[ file2 ]
+.SH DESCRIPTION
+.I Zcmp
+and
+.I zdiff
+are used to invoke
+.IR cmp (1)
+or the
+.IR diff (1)
+on compressed files.
+All options specified are passed directly to
+.I cmp
+or
+.IR diff .
+If only one file is specified, then the files compared are
+.I file1
+and an uncompressed
+.IR file1 .Z.
+If two files are specified, then they are uncompressed (if ending with ``.Z'')
+and fed to
+.I cmp
+or
+.IR diff "."
+The exit status from
+.I cmp
+or
+.I diff
+is preserved.
+.SH "SEE ALSO"
+cmp(1), diff(1), zmore(1), zcat(1), compress(1), uncompress(1)
+.SH BUGS
+Messages from the
+.I cmp
+or
+.I diff
+programs refer to temporary filenames instead of those specified.

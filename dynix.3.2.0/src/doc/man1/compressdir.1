@@ -1,0 +1,44 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: compressdir.1 1.6 1991/08/06 18:44:32 $
+.TH COMPRESSDIR 1 "\*(V)" "PUBLIC"
+.SH NAME
+compressdir, uncompressdir \-  compress and uncompress directories of files
+.SH SYNOPSIS
+.B compressdir
+[ flags ] [
+.IR directory ...
+]
+.br
+.B uncompressdir
+[ flags ] [
+.IR directory ...
+]
+.SH DESCRIPTION
+.I Compressdir
+recursively descends each specified directory and compresses each file.
+Each file is replaced by a file with the extension
+.BR .Z ,
+but only if the file got smaller.
+If no directories are specified,
+the compression is applied to all files starting with the current directory.
+Compressed files can be restored to their original form by running
+.I uncompressdir
+on the directories.
+.PP
+The
+.I flags
+specified are passed to the
+.IR compress (1)
+program.
+.SH "SEE ALSO"
+compress(1)

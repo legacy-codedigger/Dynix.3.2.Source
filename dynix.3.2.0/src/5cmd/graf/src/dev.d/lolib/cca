@@ -1,0 +1,10 @@
+# @(#)cca	1.2
+for i
+do prog=`echo $i | sed "s/\.c//"`
+   ${CC} -c ${prog}.c
+   ${AR} r lolib.a ${prog}.o
+   ${RANLIB} lolib.a
+   rm ${prog}.o
+   chmod 644 lolib.a
+   echo "${prog} done"
+done

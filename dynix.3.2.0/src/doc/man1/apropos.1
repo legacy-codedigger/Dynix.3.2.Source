@@ -1,0 +1,52 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: apropos.1 1.4 86/05/13 $
+.TH APROPOS 1 "\*(V)" "7th Edition"
+.SH NAME
+apropos \- locate commands by keyword lookup
+.SH SYNOPSIS
+.B apropos
+keyword ...
+.SH DESCRIPTION
+.I Apropos
+shows which manual sections contain instances of any of the given
+keywords in their title.
+Each word is considered separately and case of letters is ignored.
+Words which are part of other words are considered thus looking for
+compile will hit all instances of `compiler' also.
+Try
+.IP
+apropos password
+.PP
+and
+.IP
+apropos editor
+.PP
+If the line starts `name(section) ...' you can do
+`man section name' to get the documentation for it.
+Try `apropos format' and then `man 3s printf' to get the manual
+on the subroutine
+.I printf.
+.PP
+.I Apropos
+is actually just the
+.B \-k
+option to the
+.IR man (1)
+command.
+.SH FILES
+.DT
+/usr/lib/whatis		data base
+.SH "SEE ALSO"
+man(1), whatis(1), catman(8)
+.SH AUTHOR
+William Joy

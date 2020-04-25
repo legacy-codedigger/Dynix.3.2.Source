@@ -1,0 +1,120 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: getservent.3n 1.6 87/06/21 $
+.TH GETSERVENT 3N "\*(V)" "4BSD"
+.SH NAME
+getservent, getservbyport, getservbyname, setservent, endservent \- get service entry
+.SH SYNOPSIS
+.nf
+.ft 3
+#include <netdb.h>
+.PP
+.ft 3
+struct servent *getservent()
+.PP
+.ft 3
+struct servent *getservbyname(name, proto)
+char *name, *proto;
+.PP
+.ft 3
+struct servent *getservbyport(port, proto)
+int port; char *proto;
+.PP
+.ft 3
+setservent(stayopen)
+int stayopen
+.PP
+.ft 3
+endservent()
+.fi
+.SH DESCRIPTION
+.IR Getservent ,
+.IR getservbyname ,
+and
+.I getservbyport
+each return a pointer to an object with the
+following structure
+containing the broken-out
+fields of a line in the network services data base,
+.IR /etc/services .
+.RS
+.PP
+.nf
+struct	servent {
+	char	*s_name;	/* official name of service */
+	char	**s_aliases;	/* alias list */
+	long	s_port;		/* port service resides at */
+	char	*s_proto;	/* protocol to use */
+};
+.ft 1
+.ad
+.fi
+.RE
+.PP
+The members of this structure are:
+.TP \w's_aliases'u+2n
+s_name
+The official name of the service.
+.TP \w's_aliases'u+2n
+s_aliases
+A zero terminated list of alternate names for the service.
+.TP \w's_aliases'u+2n
+s_port
+The port number at which the service resides.
+Port numbers are returned in network byte order.
+.TP \w's_aliases'u+2n
+s_proto
+The name of the protocol to use when contacting the
+service.
+.PP
+.I Getservent
+reads the next line of the file, opening the file if necessary.
+.PP
+.I Setservent
+opens and rewinds the file.  If the
+.I stayopen
+flag is non-zero,
+the net data base will not be closed after each call to 
+.I getservent
+(either directly, or indirectly through one of
+the other \*(lqgetserv\*(rq calls).
+.PP
+.I Endservent
+closes the file.
+.PP
+.I Getservbyname
+and
+.I getservbyport
+sequentially search from the beginning
+of the file until a matching
+protocol name or
+port number is found,
+or until EOF is encountered.
+If a protocol name is also supplied (non-NULL),
+searches must also match the protocol.
+.SH FILES
+.nf
+/etc/services
+/etc/yp/\f2domainname\f1/services.byname
+.fi
+.SH "SEE ALSO"
+getprotoent(3N), services(5), ypserv(8)
+.SH DIAGNOSTICS
+Null pointer
+(0) returned on EOF or error.
+.SH BUGS
+All information
+is contained in a static area
+so it must be copied if it is
+to be saved.  Expecting port
+numbers to fit in a 32 bit
+quantity is probably naive.

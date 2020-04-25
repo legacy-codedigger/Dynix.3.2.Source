@@ -1,0 +1,48 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: nlist.3 1.6 86/05/13 $
+.TH NLIST 3 "\*(V)" "4BSD/DYNIX"
+.SH NAME
+nlist \- get entries from name list
+.SH SYNOPSIS
+.nf
+.B #include <nlist.h>
+.PP
+.B nlist(filename, nl)
+.B char *filename;
+.B struct nlist nl[];
+.fi
+.SH DESCRIPTION
+.I Nlist
+examines the name list in the given executable output file
+and selectively extracts a list of values.
+The name list consists of an array of structures containing names,
+types and values.
+The list is terminated with a null name.
+Each name is looked up in the name list of the file.
+If the name is found, the type and value of the
+name are inserted in the next two fields.
+If the name is not found, both entries are set to 0.
+See
+.IR a.out (5)
+for the structure declaration.
+.PP
+This subroutine is useful for examining the system name list kept in the file
+.BR /dynix .
+In this way programs can obtain system addresses that are up to date.
+.SH "SEE ALSO"
+a.out(5)
+.SH DIAGNOSTICS
+If the file cannot be found or if it is not a valid namelist \-1 is returned;
+otherwise, the number of unfound namelist entries is returned.
+.PP
+The type entry is set to 0 if the symbol is not found.

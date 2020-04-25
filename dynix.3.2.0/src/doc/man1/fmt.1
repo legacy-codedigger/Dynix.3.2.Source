@@ -1,0 +1,57 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: fmt.1 1.5 87/02/20 $
+.TH FMT 1 "\*(V)" "3BSD"
+.SH NAME
+fmt \- simple text formatter
+.SH SYNOPSIS
+.B fmt
+[
+\f3-\f2width\f1
+] [
+.I name ...
+]
+.SH DESCRIPTION
+.I Fmt
+is a simple text formatter which reads the concatenation of input
+files (or standard input if none are given) and produces on
+standard output a version of its input with lines as close to
+.I width
+characters long as possible.
+If
+.I width
+is omitted,
+it defaults to 72 characters.
+The spacing at the beginning of the input lines is preserved in the output,
+as are blank lines and inter-word spacing.
+.PP
+.I Fmt
+is meant to format mail messages prior to sending, but may also be useful
+for other simple tasks.
+For instance,
+within visual mode of the
+.I ex
+editor (e.g.
+.IR vi )
+the command
+.br
+	!}fmt
+.br
+will reformat a paragraph,
+evening the lines.
+.SH "SEE ALSO"
+nroff(1), mail(1)
+.SH AUTHOR
+Kurt Shoens
+.SH BUGS
+The program was designed to be simple and fast \- for more complex
+operations, the standard text processors are likely to be more appropriate.

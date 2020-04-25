@@ -1,0 +1,83 @@
+.\" $Copyright:	$
+."Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+."Sequent Computer Systems, Inc.   All rights reserved.
+." 
+."This software is furnished under a license and may be used
+."only in accordance with the terms of that license and with the
+."inclusion of the above copyright notice.   This software may not
+."be provided or otherwise made available to, or used by, any
+."other person.  No title to or ownership of the software is
+."hereby transferred.
+.\" Copyright (c) 1984, 1985, 1986 Sequent Computer Systems, Inc.
+.\" All rights reserved
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: time.3c 1.2 90/10/09 $
+.TH TIME 3C "\*(V)" "4BSD"
+.SH NAME
+time, ftime \- get date and time
+.SH SYNOPSIS
+.nf
+.ft 3
+#include <sys/types.h>
+#include <sys/timeb.h>
+
+time_t time(0)
+
+time_t time(tloc)
+time_t *tloc;
+
+ftime(tp)
+struct timeb *tp;
+.fi
+.ft 1
+.SH DESCRIPTION
+.ft 3
+These interfaces are obsoleted by gettimeofday(2).
+.ft 1
+.PP
+.I Time
+returns the time since 00:00:00 GMT, Jan. 1, 1970, measured
+in seconds.
+.PP
+If
+.I tloc
+is nonnull,
+the return value is also stored in the
+place to which
+.I tloc
+points.
+.PP
+The
+.I ftime
+entry fills in a structure pointed to by its argument,
+as defined by
+.RI < sys/timeb.h >:
+.PP
+.ta .5i +\w'unsigned 'u
+.nf
+/*
+* Structure returned by old ftime system call
+*/
+struct timeb
+{
+	time_t   time;
+	unsigned short millitm;
+	short    timezone;
+	short    dstflag;
+};
+.fi
+.PP
+The structure contains the time since the epoch in seconds,
+up to 1000 milliseconds of more-precise interval,
+the local time zone (measured in minutes of time westward from Greenwich),
+and a flag that, if nonzero, indicates that
+Daylight Saving time applies locally during the appropriate part of the year.
+.SH "SEE ALSO"
+date(1), gettimeofday(2), settimeofday(2), ctime(3)

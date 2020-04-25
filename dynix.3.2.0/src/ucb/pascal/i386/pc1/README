@@ -1,0 +1,19 @@
+This directory contains the source code for pc1, the second pass (or code 
+generator) of the Berkeley Pascal compiler.
+
+Debugging flags may be given directly to pc1 as arguments.  These flags
+are a substantial aid for development and modification of the code
+generator.  They are described in the file "DEBUG".
+
+Perhaps the core of the code generator for purposes of modification and
+development is the template file, table.c.  It specifies a sequence of 
+templates to be matched in the tree-reduction scheme.  Templates specify
+a node type, goal (i.e., the product of a template usage), the left and 
+right children of the node, the resource needs, the result of the match/
+reduction, and the assembler code to produce when the template is matched.
+
+The values of the fields of a template are described in detail in the 
+file "TEMPLATE".
+
+Much of this code generator was built from the source code for the common 
+compiler back-end, /lib/f1, of UNIX 4.2BSD.

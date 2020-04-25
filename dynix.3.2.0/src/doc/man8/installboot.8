@@ -1,0 +1,105 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: installboot.8 1.1 90/02/14 $
+.\" @(#)shutdown.8 1.1 85/12/28 SMI; from UCB 4.2
+.TH INSTALLBOOT 8 "\*(V)" "4BSD"
+.SH NAME
+installboot \- installs a boot program on a disk
+.SH SYNOPSIS
+.B /etc/installboot
+disk
+.SH DESCRIPTION
+.B installboot
+.\" either 
+determines the type of bootstrap that should be installed on
+.I disk
+and then installs the proper bootstrap in the bootstrap area
+of the disk.
+.\"or installs the system controller firmware in the firmware area of the disk.
+.PP
+The
+.I disk
+argument does not need to be a special file in
+.IR /dev ,
+but can simply be the controller type concatenated with
+the disk number (e.g.,
+.BR sd0 ).
+\f3installboot\fP uses the \f2disk\fP argument to determine the disk type. 
+.PP
+For disks booting from the
+.SM SCED,
+\f3installboot\fP reads the
+.SM VTOC
+from the disk and searches for a boot partition.
+(This is a partition of type
+.SM
+.B V_BOOT,
+as defined in
+.IR /usr/include/sys/vtoc.h .)
+\f3installboot\fP then opens the first boot partition and writes the
+proper bootstrap to it.
+The bootstrap is taken from \f2/stand/boot\f3\s-1XX\s0\f1_v, where
+.SM
+.B XX
+corresponds to the disk controller name.
+If no
+.SM VTOC
+is present on the disk, \f3installboot\fP will use the `c' partition and
+takes the bootstrap from \f2/stand/boot\f3\s-1XX\s0\f1, where
+.SM
+.B XX
+corresponds to the disk controller name.
+.PP
+.\"For disks booting from the
+.\".SM SSM,
+.\"\f3installboot\fP reads the
+.\".SM VTOC
+.\"from the disk and searches for a firmware partition.
+.\"(This is a partition of type
+.\".SM
+.\".B V_FW,
+.\"as defined in
+.\".IR /usr/include/sys/vtoc.h .)
+.\"\f3installboot\fP then opens the first firmware partition and writes the
+.\"firmware to it.
+.\"The firmware is taken from \f2/ssm/fw/lvl2\f1.
+.PP
+If the disk on which the bootstrap 
+.\" or firmware 
+is installed does not have a 
+.SM VTOC
+present, one can be added by using \f3mkvtoc\f1(1M).
+There should be only one partition of type
+.SM
+.B V_BOOT
+and it should cover the bootstrap area for this particular disk.
+.\"Also, there should be at most one partition of type
+.\".SM
+.\".B V_FW
+.\"and it should be large enough to hold the system controller firmware.
+.SH EXAMPLES
+The following line will install a SCED bootstrap on
+.B zd0.
+.PP
+.RS
+\f3installboot  zd0\fP
+.RE
+.SH FILES
+/stand/boot??		SCED compatibility boot programs
+.br
+/stand/boot??_v		SCED VTOC boot programs
+.\".br
+.\"/ssm/fw/lvl2		SSM Level 2 Firmware
+.SH SEE ALSO
+mkvtoc(8),
+prtvtoc(8),
+vtoc(4)

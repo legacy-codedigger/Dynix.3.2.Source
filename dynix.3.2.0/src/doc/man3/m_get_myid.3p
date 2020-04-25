@@ -1,0 +1,49 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986 Sequent Computer Systems, Inc.
+.\" All rights reserved
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: m_get_myid.3p 1.6 1991/08/06 22:43:03 $
+.TH M_GET_MYID 3P "\*(V)" "DYNIX"
+.SH NAME
+m_get_myid \- return process identification
+.SH SYNOPSIS
+.nf
+\f2C syntax:\fP
+.PP
+\f3#include <parallel/microtask.h>
+int m_get_myid();
+int i;
+i=m_get_myid();\fP
+.PP
+\f2Pascal syntax\fP
+.PP
+\f3function m_get_myid : integer ;\fP
+\f3cexternal ;\fP
+.PP
+\f2FORTRAN syntax\fP
+.PP
+\f3integer*4 function m_get_myid\fP
+.fi
+.SH DESCRIPTION
+The 
+.I m_get_myid
+routine returns the value of the variable 
+.IR m_myid ,
+the process's identification number.
+For the parent process, this variable has the value zero.
+Child processes are assigned identification numbers in the
+order of their creation: the first child process has
+identification number 1, the second has 2, and so on.
+The C header file
+.I /usr/include/parallel/microtask.h
+contains an external declaration of the variable.
+.SH "SEE ALSO"
+fortran(1), m_fork(3P), \f2Guide to Parallel
+Programming\fP

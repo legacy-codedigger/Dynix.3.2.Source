@@ -1,0 +1,15 @@
+Thu Mar 19 09:42 1987  synerr2.p:
+     2  integer a(10)
+E ------^--- Malformed declaration
+     4  	read(b);
+E -------------------^--- Undefined variable
+     5  	for c := 1 to 10 do
+E ------------------^--- Undefined variable
+     6  		a(c) := b * c;
+E ----------------------^--- Undefined procedure
+E ---------------------------^--- Malformed statement
+E 1 - File outpu listed in program statement but not declared
+In program synerr2:
+  E - a undefined on lines 6
+  E - b undefined on line 4
+  E - c undefined on line 5 6

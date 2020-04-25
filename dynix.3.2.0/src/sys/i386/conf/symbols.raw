@@ -1,0 +1,75 @@
+/*
+ * $Copyright:	$
+ * Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+ * Sequent Computer Systems, Inc.   All rights reserved.
+ *  
+ * This software is furnished under a license and may be used
+ * only in accordance with the terms of that license and with the
+ * inclusion of the above copyright notice.   This software may not
+ * be provided or otherwise made available to, or used by, any
+ * other person.  No title to or ownership of the software is
+ * hereby transferred.
+ */
+
+/* $Header: symbols.raw 1.5 91/01/03 $ */
+
+#ifdef NFS
+_clstat
+_rcstat
+_rsstat
+_svstat
+#endif
+_MBIOmap
+_Nengine
+_Sysmap
+_Usrptmap
+_avedirty
+_avenrun
+_boottime
+_ccpu
+_deficit
+_dk
+_dk_ndrives
+_dk_nxdrive
+_dmmax
+_dmmin
+_ecmx
+_engine
+_file
+_hz
+_icmpstat
+_ifnet
+_inode
+_ipstat
+_maxslp
+_mbstat
+_nfile
+_ninode
+_nonline
+_nproc
+_nst
+_nswap
+_nswapmap
+_nswdev
+_panicstr
+_proc
+_procmax
+_pt_tty
+_rawcb
+_rthost
+_rtnet
+_rtstat
+_se_max_unit
+_se_state
+_stinfo
+_swapmap
+_tcb
+_tcp_debug
+_tcp_debx
+_tcpstat
+_time
+_total
+_udb
+_udpstat
+_usrpt
+_version

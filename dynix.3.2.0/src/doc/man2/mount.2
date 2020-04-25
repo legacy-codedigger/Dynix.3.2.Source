@@ -1,0 +1,209 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: mount.2 1.18 1991/08/06 22:37:30 $
+.\" @(#)mount.2 1.1 85/12/28 SMI; from UCB 4.2
+.TH MOUNT 2 "\*(V)" "4BSD"
+.SH NAME
+mount \- mount file system
+.SH SYNOPSIS
+.nf
+\f3#include <sys/mount.h>
+.sp
+mount(type, dir, flags, data)
+int type;
+char *dir;
+int flags;
+caddr_t data;\fP
+.fi
+.\".IX  mount  ""  \f2mount\fP
+.\".IX  "file system"  mount  ""  \f2mount\fP
+.\".IX  "system operation support"  mount  ""  \f2mount\fP
+.SH DESCRIPTION
+.I Mount
+attaches a file system to a directory.
+After a successful return, references to directory
+.I dir
+refer to the root directory on the newly mounted file system.
+.I Dir
+is a pointer to a null-terminated string
+containing a path name.
+.I Dir
+must exist already, and must be a directory.  Its old contents
+are inaccessible while the file system is mounted.
+.LP
+The
+.I flags
+argument determines whether the file system can be written on, and if
+set-uid execution is allowed.  Physically
+write-protected and magnetic tape file systems must be mounted
+read-only or errors will occur when access times are updated, whether
+or not any explicit write is attempted.
+.LP
+.I Type
+indicates the type of the filesystem.  It must be one of the
+types defined in 
+.IR mount.h .
+.I Data
+is a pointer to a structure which contains the type specific
+arguments to mount.
+The following is a list of the filesystem types supported
+and the type specific arguments to each:
+.sp
+.B MOUNT_UFS
+.if t .ta \w'struct\0\0\0'u +\w'struct sockaddr_in\0\0\0\0\0\0'u +\w'retrans;\0\0\0\0'u
+.if n .ta \w'struct\0'u +\w'struct sockaddr_in\0\0\0'u +\w'retrans;\0\0'u
+.Ps
+struct ufs_args {
+	char *fspec;	/* Block special file to mount */
+};
+.Pe
+.B MOUNT_NFS
+.Ps
+#include <nfs/nfs.h>
+#include <netinet/in.h>
+struct nfs_args {
+	struct sockaddr_in	*addr;	/* file server address */
+	fhandle_t	*fh;	/* File handle to be mounted */
+	int	flags;	/* flags */
+	int	wsize;	/* write size in bytes */
+	int	rsize;	/* read size in bytes */
+	int	timeo;	/* initial timeout in .1 secs */
+	int	retrans;	/* times to retry send */
+};
+.Pe
+.SH "RETURN VALUE"
+.I Mount
+returns 0 if the action occurred;
+otherwise,
+it returns an error.
+.SH ERRORS
+.I Mount
+fails when one of the following occurs:
+.TP 15
+[EACCES]
+Search permission is denied for a component of the path prefix of
+.I fspec
+or
+.IR dir .
+.TP 15
+[EBUSY]
+.I Dir
+is not a directory, or another process currently
+holds a reference to it.
+.TP 15
+[EBUSY]
+No space remains in the mount table, or the device is already mounted
+in the mount table.
+.TP 15
+[EFAULT]
+Either
+.IR addr ,
+.IR data ,
+.IR dir ,
+.IR fh ,
+or
+.I fspec
+points outside the process's allocated address space.
+.TP 15
+[EINVAL]
+The super block for the file system had a bad magic
+number or an out of range block size.
+.TP 15
+[EINVAL]
+Either
+.IR timeo ,
+.IR rsize ,
+or
+.I wsize
+is less than or equal to zero,
+or
+.I retrans
+is less than zero.
+.TP 15
+[EIO]
+An I/O error occurred while reading the super block
+or cylinder group information.
+.TP 15
+[EIO]
+An I/O error occurred while reading from or writing to the file system.
+.TP 15
+[ELOOP]
+Too many symbolic links were encountered in
+translating the pathname of
+.I fspec
+or
+.IR dir .
+.TP 15
+[ENAMETOOLONG]
+The pathname of
+.I fspec
+or
+.I dir
+was too long.
+.TP 15
+[ENODEV]
+.I Type
+is not a valid filesystem type.
+.TP 15
+[ENOENT]
+Either
+.I fspec
+or
+.I dir
+does not exist.
+.TP 15
+[ENOSPC]
+The filesystem is not marked as clean and 
+.I flags
+specifies that the filesystem is to be mounted as writable.
+.TP 15
+[ENOTBLK]
+.I Fspec
+is not a block device.
+.TP 15
+[ENOTDIR]
+A component of the path prefix in
+.I fspec
+is not a directory.
+.TP 15
+[ENOTDIR]
+.I Dir
+is not a directory.
+.TP 15
+[ENXIO]
+The major device number of 
+.I fspec
+is out of range (this indicates no device driver exists
+for the associated hardware).
+.TP 15
+[ENXIO]
+The attempt to open
+.I fspec
+failed.
+.TP 15
+[EPERM]
+The caller is not the super-user.
+.TP 15
+[EPERM]
+The pathname of either
+.I fspec
+or
+.I dir
+contains a character with the high-order bit set.
+.TP 15
+[EPFNOSUPPORT]
+The protocol family specified by
+.I addr->sin_family
+is not AF_INET.
+.SH "SEE ALSO"
+unmount(2),
+mount(8)

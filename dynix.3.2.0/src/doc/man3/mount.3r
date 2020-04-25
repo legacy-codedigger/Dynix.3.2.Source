@@ -1,0 +1,121 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: mount.3r 1.4 87/05/26 $
+.\" @(#)mount.3r 1.1 85/12/28 SMI; new on release 3.0
+.TH MOUNT 3R "\*(V)" "4BSD"
+.SH NAME
+mount \- keep track of remotely mounted filesystems
+.SH SYNOPSIS
+\f3#include <rpcsvc/mount.h>\fP
+.\"	.SH "DESCRIPTION" \" Sun did not provide a description!
+.SH "RPC INFO"
+.nf
+program number:
+	MOUNTPROG
+.sp 1
+xdr routines:
+	xdr_exportbody(xdrs, ex)
+		XDR *xdrs;
+		struct exports *ex;
+	xdr_exports(xdrs, ex);
+		XDR *xdrs;
+		struct exports **ex;
+	xdr_fhandle(xdrs, fh);
+		XDR *xdrs;
+		fhandle_t *fp;
+	xdr_fhstatus(xdrs, fhs);
+		XDR *xdrs;
+		struct fhstatus *fhs;
+	xdr_groups(xdrs, gr);
+		XDR *xdrs;
+		struct groups *gr;
+	xdr_mountbody(xdrs, ml)
+		XDR *xdrs;
+		struct mountlist *ml;
+	xdr_mountlist(xdrs, ml);
+		XDR *xdrs;
+		struct mountlist **ml;
+	xdr_path(xdrs, path);
+		XDR *xdrs;
+		char **path;
+.sp 1
+procs:
+	MOUNTPROC_MNT
+		argument of xdr_path, returns fhstatus.
+		Requires unix authentication.
+	MOUNTPROC_DUMP
+		no args, returns struct mountlist
+	MOUNTPROC_UMNT
+		argument of xdr_path, no results.
+		requires unix authentication.
+	MOUNTPROC_UMNTALL
+		no arguments, no results.
+		requires unix authentication.
+		umounts all remote mounts of sender.
+	MOUNTPROC_EXPORT
+	MOUNTPROC_EXPORTALL
+		no args, returns struct exports
+.sp
+versions:
+	MOUNTVERS_ORIG
+.sp
+.if t .ta \w'struct mountlist {\0\0\0\0'u +\w'struct mountlist\0\0\0\0\0'u
+.if n .ta \w'struct mountlist {'u +\w'struct mountlist\0\0'u
+.KS
+structures:
+.Ps
+struct mountlist {	/* what is mounted */
+	char	*ml_name;
+	char	*ml_path;
+	struct mountlist	*ml_nxt;
+	};
+.KE
+.sp
+.if t .ta \w'struct fhstatus {'u +\w'fhandle_t\0\0'u
+.if n .ta \w'struct fhstatus {'u +\w'fhandle_t\0\0'u
+.KS
+struct fhstatus {
+	int	fhs_status;
+	fhandle_t	fhs_fh;
+	};
+.KE
+.sp
+.if t .ta \w'struct exports {'u +\w'struct exports\0\0\0'u +\w'*ex_groups\0\0\0'u
+.if n .ta \w'struct exports {'u +\w'struct exports\0'u +\w'*ex_groups\0\0'u
+.KS
+/*
+ * List of exported directories
+ * An export entry with ex_groups
+ * NULL indicates an entry which is exported to the world.
+ */
+struct exports {
+	dev_t	ex_dev;	/* dev of directory */
+	char	*ex_name;	/* name of directory */
+	struct groups	*ex_groups;	/* groups allowed to mount this entry */
+	struct exports	*ex_next;
+	};
+.KE
+.sp
+.if t .ta \w'struct groups {'u +\w'struct groups\0\0\0'u
+.if n .ta \w'struct groups {'u +\w'struct groups\0\0'u
+.KS
+struct groups {
+	char	*g_name;
+	struct groups	*g_next;
+	};
+.KE
+.Pe
+.SH "SEE ALSO"
+mount(8),
+mountd(8C),
+showmount(8),
+.I "NFS Protocol Spec"

@@ -1,0 +1,62 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: vfontinfo.1 1.5 86/05/13 $
+.TH VFONTINFO 1 "\*(V)" "4BSD"
+.SH NAME
+vfontinfo \- inspect and print out information about UNIX fonts
+.SH SYNOPSIS
+.br
+.B /usr/lib/vfontinfo
+[
+.B \-v
+]
+fontname
+[
+characters
+]
+.SH DESCRIPTION
+.I Vfontinfo
+allows you to examine a font in the UNIX format.
+It prints out
+all the information in the font header and information about every
+non-null (width > 0) glyph.
+This can be used to make sure the font
+is consistent with the format.
+.PP
+The
+.I fontname
+argument is the name of the font you wish to inspect.
+It writes to standard output.
+If it can't find the file in your working directory, it looks in
+.I /usr/lib/vfont
+(the place most of the fonts are kept).
+.PP
+The
+.IR characters ,
+if given, specify certain characters to show.
+If omitted, the entire font is shown.
+.PP
+If the
+.B \-v
+(verbose)
+flag is used,
+the bits of the glyph itself are shown
+as an array of X's and spaces,
+in addition to the header information.
+.SH "SEE ALSO"
+vpr(1), vfont(5)
+.br
+The Berkeley Font Catalog
+.SH AUTHORS
+Mark Horton
+.br
+Andy Hertzfeld

@@ -1,0 +1,54 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: fsck.8s 1.6 91/01/21 $
+.TH FSCK 8S "\*(V)" "DYNIX"
+.SH NAME
+fsck \- standalone file system consistency check and interactive repair
+.SH SYNOPSIS
+.BR "From the powerup monitor" :
+.br
+.sp
+.in +1
+.IR "on SCED-based systems" :
+.br
+*
+.B b 0
+.IR dv ( un , su )\c
+.B stand/fsck
+.br
+.sp
+.IR "on SSM-based systems" :
+.br
+--->
+.B bh 
+.IR dv ( un , su )\c
+.B stand/fsck
+.SH DESCRIPTION
+Standalone
+.I fsck
+operates like the online
+.IR fsck (8)
+with the following exceptions:
+.IP 1.
+Command line arguments are not allowed.
+.IP 2.
+Standalone
+.I fsck
+prompts for the filesystem to check.
+The filesystem is specified in standalone file notation (for example,
+.BR sd(48,6) ).
+.IP 3.
+When filenames are displayed, the numerical user ID is not translated
+into a user name, nor are modification times displayed.
+.SH "SEE ALSO"
+boot(8S), fsck(8),
+.I "DYNIX System Administration Guide"

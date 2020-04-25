@@ -1,0 +1,1363 @@
+!<arch>
+L0              445768584   100   205   100640  13        `
+#next
+1.1a 5
+
+L1.1a           445768585   100   205   100640  767       `
+#print
+This script deals with the use of the "-ms" macro
+package to produce Bell Laboratories style documents.
+Before trying it, you should be familiar with the
+editor.  To test that, please enter the file
+typed below, _______exactly __as __is, into file "decl".  Then
+type "ready".
+
+#create Ref
+.PP
+When in the course of human events, it becomes
+necessary for one people to dissolve the political bands which have
+connected them with another, and to assume among the
+powers of the earth the separate and equal station to which
+the laws of Nature and of Nature's God entitle them, a decent
+respect to the opinions of mankind requires that they should
+declare the causes which impel them to the separation.
+#print Ref
+#user
+#cmp decl Ref
+#log
+#next
+2.1a 10
+
+L10.1a          445768587   100   205   100640  1836      `
+#print
+What if you don't want the cover sheet?  Nroff has
+an option to print only special pages.  In particular,
+  nroff -ms -o1- files ...
+will begin printing at page 1, and skip page 0, the cover sheet.
+If you only want the cover sheet, you need the command
+  nroff -ms -o0 files ...
+which prints only page zero.  Try printing
+only the cover sheet of the file "decl".
+Then type "ready" as usual.
+#once nroff -ms -o0 decl >X1 &
+#create decl
+.RP
+.TL
+Declaration of Independence
+.AU
+Thomas Jefferson
+.AI
+The Continental Congress
+Philadelphia, Pa. 19104
+.AB
+This paper describes advances in scattering theory
+of colonies from mother countries.
+.AE
+.PP
+When in the course of human events, it becomes
+necessary for one people to dissolve the political bands which have
+connected them with another, and to assume among the 
+powers of the earth the separate and equal station to which
+the laws of Nature and of Nature's God entitle them, a decent
+respect to the opinions of mankind requires that they should
+declare the causes which impel them to the separation.
+.PP
+We hold these truths to be self-evident, that all men
+are created equal, that they are endowed by their creator
+with certain unalienable rights, that among these are life, liberty,
+and the pursuit of happiness.  That to secure these rights,
+governments are instituted among men, deriving their just
+powers from the consent of the governed.  That whenever
+any form of government becomes destructive of these ends,
+it is the right of the people to alter or to abolish it, and
+to institute new government, laying its foundation on such
+principles and organizing its powers in such form, as to them
+shall seem most likely to effect their safety and happiness.
+#copyout
+#user
+#uncopyout
+if (-z X1)  echo Zero X1
+tail -66 .ocopy >X2
+cat X1 >/dev/tty
+#cmp X1 X2
+#log
+#next
+11.1a 10
+L11.1a          445768589   100   205   100640  3405      `
+#print
+The most complex format is the TM (technical memorandum)
+format.  If you use that, instead of the IM format,
+you get the usual "MEMORANDUM FOR FILE" message.  In addition,
+you usually want to specify the TM number, case numbers, and
+so forth.  The command line for TM format (which should also
+be the first line given) should read:
+
+  .TM memo-no. case-no. filing-no.
+
+so that, for example, the command line
+
+   .TM 75-1274-1 39199 39199-11
+
+indicates a TM number of 75-1274-1, a charging case number
+of 39199, and a filing case number of 39199-11.  Suppose the
+number for this memo is
+ 75-1776-1
+and the charging and filing cases are both
+ 12345
+Edit the file "decl" for TM format and run it off.
+#create Ref
+.TM 75-1776-1 12345 12345
+.TL
+Declaration of Independence
+.AU
+Thomas Jefferson
+.AI
+The Continental Congress
+Philadelphia, Pa. 19104
+.AB
+This paper describes advances in scattering theory
+of colonies from mother countries.
+.AE
+.PP
+When in the course of human events, it becomes
+necessary for one people to dissolve the political bands which have
+connected them with another, and to assume among the 
+powers of the earth the separate and equal station to which
+the laws of Nature and of Nature's God entitle them, a decent
+respect to the opinions of mankind requires that they should
+declare the causes which impel them to the separation.
+.PP
+We hold these truths to be self-evident, that all men
+are created equal, that they are endowed by their creator
+with certain unalienable rights, that among these are life, liberty,
+and the pursuit of happiness.  That to secure these rights,
+governments are instituted among men, deriving their just
+powers from the consent of the governed.  That whenever
+any form of government becomes destructive of these ends,
+it is the right of the people to alter or to abolish it, and
+to institute new government, laying its foundation on such
+principles and organizing its powers in such form, as to them
+shall seem most likely to effect their safety and happiness.
+#once nroff -ms Ref >X1 &
+#create decl
+.IM
+.TL
+Declaration of Independence
+.AU
+Thomas Jefferson
+.AI
+The Continental Congress
+Philadelphia, Pa. 19104
+.AB
+This paper describes advances in scattering theory
+of colonies from mother countries.
+.AE
+.PP
+When in the course of human events, it becomes
+necessary for one people to dissolve the political bands which have
+connected them with another, and to assume among the 
+powers of the earth the separate and equal station to which
+the laws of Nature and of Nature's God entitle them, a decent
+respect to the opinions of mankind requires that they should
+declare the causes which impel them to the separation.
+.PP
+We hold these truths to be self-evident, that all men
+are created equal, that they are endowed by their creator
+with certain unalienable rights, that among these are life, liberty,
+and the pursuit of happiness.  That to secure these rights,
+governments are instituted among men, deriving their just
+powers from the consent of the governed.  That whenever
+any form of government becomes destructive of these ends,
+it is the right of the people to alter or to abolish it, and
+to institute new government, laying its foundation on such
+principles and organizing its powers in such form, as to them
+shall seem most likely to effect their safety and happiness.
+#copyout
+#user
+#uncopyout
+tail -66 .ocopy >X2
+#cmp X1 X2
+#log
+#next
+12.1a 10
+
+L12.1a          445768591   100   205   100640  3981      `
+#print
+With a TM you want a cover sheet.  The cover sheet doesn't look too
+nice when printed on a computer terminal, but you should
+know how to set it up so that you can put it on the typesetter,
+which does an attractive job of imitating the official  printed
+form.  Basically you must make two changes to get a cover sheet
+with normal formatting.  First, you should add to each .AU line
+the author's room number and extension.  For example,
+  .AU "MH 2C-569" "6377"
+  M. E. Lesk
+indicates that Lesk's room is MH 2C-569 and his extension is 6377.
+The room number is enclosed in quotes to indicate that it is one unit,
+even though it contains a blank.  The quotes around the extension are
+harmless but unnecessary.  Also, you must add the command
+  .CS 1 2 3 4 5 6
+after the ".AE" line.  The six numbers are (from left to right) the
+number of pages of text, number of pages of "other", the total number of
+pages, the number of references, the number of figures and the number of
+tables.  Try editing the usual file "decl" to indicate that Mr. Jefferson's
+room number is MH 2A-111 and his extension is 1776.  Request a cover sheet
+with the above meaningless numbers, just to see where they go.
+Then run off the document again.
+#create Ref
+.TM 75-1776-1 12345 12345
+.TL
+Declaration of Independence
+.AU "MH 2A-111" 1776
+Thomas Jefferson
+.AI
+The Continental Congress
+Philadelphia, Pa. 19104
+.AB
+This paper describes advances in scattering theory
+of colonies from mother countries.
+.AE
+.CS 1 2 3 4 5 6
+.PP
+When in the course of human events, it becomes
+necessary for one people to dissolve the political bands which have
+connected them with another, and to assume among the 
+powers of the earth the separate and equal station to which
+the laws of Nature and of Nature's God entitle them, a decent
+respect to the opinions of mankind requires that they should
+declare the causes which impel them to the separation.
+.PP
+We hold these truths to be self-evident, that all men
+are created equal, that they are endowed by their creator
+with certain unalienable rights, that among these are life, liberty,
+and the pursuit of happiness.  That to secure these rights,
+governments are instituted among men, deriving their just
+powers from the consent of the governed.  That whenever
+any form of government becomes destructive of these ends,
+it is the right of the people to alter or to abolish it, and
+to institute new government, laying its foundation on such
+principles and organizing its powers in such form, as to them
+shall seem most likely to effect their safety and happiness.
+#once nroff -ms Ref >X1 &
+#create decl
+.TM 75-1776-1 12345 12345
+.TL
+Declaration of Independence
+.AU
+Thomas Jefferson
+.AI
+The Continental Congress
+Philadelphia, Pa. 19104
+.AB
+This paper describes advances in scattering theory
+of colonies from mother countries.
+.AE
+.PP
+When in the course of human events, it becomes
+necessary for one people to dissolve the political bands which have
+connected them with another, and to assume among the 
+powers of the earth the separate and equal station to which
+the laws of Nature and of Nature's God entitle them, a decent
+respect to the opinions of mankind requires that they should
+declare the causes which impel them to the separation.
+.PP
+We hold these truths to be self-evident, that all men
+are created equal, that they are endowed by their creator
+with certain unalienable rights, that among these are life, liberty,
+and the pursuit of happiness.  That to secure these rights,
+governments are instituted among men, deriving their just
+powers from the consent of the governed.  That whenever
+any form of government becomes destructive of these ends,
+it is the right of the people to alter or to abolish it, and
+to institute new government, laying its foundation on such
+principles and organizing its powers in such form, as to them
+shall seem most likely to effect their safety and happiness.
+#copyout
+#user
+#uncopyout
+tail -132 .ocopy >X2
+#cmp X1 X2
+#log
+#next
+13.1a 10
+
+L13.1a          445768593   100   205   100640  3745      `
+#print
+A couple of details about TM formats.
+(1) The computer has this habit of putting the real date on things.
+Typically BTL authors wish to lie about the date.  There is a command
+for this:
+  .DA July 4, 1776
+will replace the current date everywhere by the specified date.
+(2) Also about the date: most people don't like it on each page.
+The normal date command is thus:
+  .ND July 4, 1776
+which says "no date on each page; in the TM heading area where
+the date is needed, use July 4, 1776".
+Either date command should be placed just after the .TM line.
+(3) There may be other keywords.  These are indicated by the sequence
+  .OK
+  word 1
+  word 2
+inserted before the .AB line.
+All right.  Change "decl" to show a date of July 4, 1776,
+using the ".ND" date command; and add as "other keywords"
+"Democracy" and "Tyranny".  Then run off ONLY the cover
+sheet (remember nroff -ms -o0 file ...?).  End with "ready".
+#create Ref
+.TM 75-1776-1 12345 12345
+.ND July 4, 1776
+.TL
+Declaration of Independence
+.AU "MH 2A-111" 1776
+Thomas Jefferson
+.AI
+The Continental Congress
+Philadelphia, Pa. 19104
+.OK
+Democracy
+Tyranny
+.AB
+This paper describes advances in scattering theory
+of colonies from mother countries.
+.AE
+.CS 1 2 3 4 5 6
+.PP
+When in the course of human events, it becomes
+necessary for one people to dissolve the political bands which have
+connected them with another, and to assume among the 
+powers of the earth the separate and equal station to which
+the laws of Nature and of Nature's God entitle them, a decent
+respect to the opinions of mankind requires that they should
+declare the causes which impel them to the separation.
+.PP
+We hold these truths to be self-evident, that all men
+are created equal, that they are endowed by their creator
+with certain unalienable rights, that among these are life, liberty,
+and the pursuit of happiness.  That to secure these rights,
+governments are instituted among men, deriving their just
+powers from the consent of the governed.  That whenever
+any form of government becomes destructive of these ends,
+it is the right of the people to alter or to abolish it, and
+to institute new government, laying its foundation on such
+principles and organizing its powers in such form, as to them
+shall seem most likely to effect their safety and happiness.
+#once nroff -ms -o0 Ref >X1 &
+#create decl
+.TM 75-1776-1 12345 12345
+.TL
+Declaration of Independence
+.AU "MH 2A-111" 1776
+Thomas Jefferson
+.AI
+The Continental Congress
+Philadelphia, Pa. 19104
+.AB
+This paper describes advances in scattering theory
+of colonies from mother countries.
+.AE
+.CS 1 2 3 4 5 6
+.PP
+When in the course of human events, it becomes
+necessary for one people to dissolve the political bands which have
+connected them with another, and to assume among the 
+powers of the earth the separate and equal station to which
+the laws of Nature and of Nature's God entitle them, a decent
+respect to the opinions of mankind requires that they should
+declare the causes which impel them to the separation.
+.PP
+We hold these truths to be self-evident, that all men
+are created equal, that they are endowed by their creator
+with certain unalienable rights, that among these are life, liberty,
+and the pursuit of happiness.  That to secure these rights,
+governments are instituted among men, deriving their just
+powers from the consent of the governed.  That whenever
+any form of government becomes destructive of these ends,
+it is the right of the people to alter or to abolish it, and
+to institute new government, laying its foundation on such
+principles and organizing its powers in such form, as to them
+shall seem most likely to effect their safety and happiness.
+#copyout
+#user
+#uncopyout
+tail -66 .ocopy >X2
+#cmp X1 X2
+#log
+#next
+14.1a 10
+
+L14.1a          445768594   100   205   100640  3428      `
+#print
+What if there are several authors?  Well, you use several .AU
+commands.  Suppose we promote Richard Henry Lee to co-author
+of our file "decl".  Then we could have
+  .TM memo and case numbers
+  .ND fake date
+  .TL
+  Declaration of Independence
+  .AU room and phone for Jefferson
+  Thomas Jefferson
+  .AU room and phone for Lee
+  Richard Henry Lee
+  .AI
+  as before ...
+as the top of the file.     Rearrange "decl" this way
+and run it off.  Then type "ready".
+Make Lee's room number MH 2B-222 and his extension 1824.
+#create Ref
+.TM 75-1776-1 12345 12345
+.ND July 4, 1776
+.TL
+Declaration of Independence
+.AU "MH 2A-111" 1776
+Thomas Jefferson
+.AU "MH 2B-222" 1824
+Richard Henry Lee
+.AI
+The Continental Congress
+Philadelphia, Pa. 19104
+.OK
+tyranny
+democracy
+.AB
+This paper describes advances in scattering theory
+of colonies from mother countries.
+.AE
+.CS 1 2 3 4 5 6
+.PP
+When in the course of human events, it becomes
+necessary for one people to dissolve the political bands which have
+connected them with another, and to assume among the 
+powers of the earth the separate and equal station to which
+the laws of Nature and of Nature's God entitle them, a decent
+respect to the opinions of mankind requires that they should
+declare the causes which impel them to the separation.
+.PP
+We hold these truths to be self-evident, that all men
+are created equal, that they are endowed by their creator
+with certain unalienable rights, that among these are life, liberty,
+and the pursuit of happiness.  That to secure these rights,
+governments are instituted among men, deriving their just
+powers from the consent of the governed.  That whenever
+any form of government becomes destructive of these ends,
+it is the right of the people to alter or to abolish it, and
+to institute new government, laying its foundation on such
+principles and organizing its powers in such form, as to them
+shall seem most likely to effect their safety and happiness.
+#once nroff -ms Ref >X1 &
+#create decl
+.TM 75-1776-1 12345 12345
+.ND July 4, 1776
+.TL
+Declaration of Independence
+.AU "MH 2A-111" 1776
+Thomas Jefferson
+.AI
+The Continental Congress
+Philadelphia, Pa. 19104
+.OK
+tyranny
+democracy
+.AB
+This paper describes advances in scattering theory
+of colonies from mother countries.
+.AE
+.CS 1 2 3 4 5 6
+.PP
+When in the course of human events, it becomes
+necessary for one people to dissolve the political bands which have
+connected them with another, and to assume among the 
+powers of the earth the separate and equal station to which
+the laws of Nature and of Nature's God entitle them, a decent
+respect to the opinions of mankind requires that they should
+declare the causes which impel them to the separation.
+.PP
+We hold these truths to be self-evident, that all men
+are created equal, that they are endowed by their creator
+with certain unalienable rights, that among these are life, liberty,
+and the pursuit of happiness.  That to secure these rights,
+governments are instituted among men, deriving their just
+powers from the consent of the governed.  That whenever
+any form of government becomes destructive of these ends,
+it is the right of the people to alter or to abolish it, and
+to institute new government, laying its foundation on such
+principles and organizing its powers in such form, as to them
+shall seem most likely to effect their safety and happiness.
+#copyout
+#user
+#uncopyout
+tail -132 .ocopy >X2
+#cmp X1 X2
+#log
+#next
+15.1a 10
+L15.1a          445768597   100   205   100640  13221     `
+#print
+Here's a new document.  In the file "Ascent" is a supposed memo.
+It begins immediately with the text, but the paragraphs are
+marked with ".PP" commands.  Add the initial material
+as follows and run it of as a TM:
+  Title: Ascending the Riffelberg
+  Author: Mark Twain
+  Author's address:  Hannibal, Mo.
+  TM number: 75-1868-1
+  Case number 39199
+  File number: 39425-2
+  Author's room number:  MH 2C-520
+  Author's extension:  9876
+  Abstract:
+    Why climb Everest?
+    Because it is there, said Mallory.
+  Other keywords: Mountaineering
+  Cover sheet numbers: just use 1 2 3 4 5 6 
+OK?  You can still look at "decl" to see the format.
+#create Ref
+.TM 75-1868-1 39199 39425-2
+.TL
+Ascending the Riffelberg
+.AU "MH 2C-520" 9876
+Mark Twain
+.AI
+Hannibal, Mo.
+.OK
+Mountaineering
+.AB
+Why climb Everest?
+Because it is there, said Mallory.
+.AE
+.CS 1 2 3 4 5 6
+.PP
+I sat silent some time, then turned to Harris and said:
+``My mind is made up.''
+Something in my tone struck him; and when he glanced
+at my eye and read what was written there, his face paled
+perceptibly.  He hesitated a moment, then said:
+``Speak.''
+I answered, with perfect calmness:
+``I WILL ASCEND THE RIFFELBERG.''
+If I had shot my poor friend he could not have fallen from
+his chair more suddenly.  If I had been his father he
+could not have pleaded harder to get me to give up my
+purpose.  But I turned a deaf ear to all he said.  When he
+perceived at last that nothing could alter my determination,
+he ceased to urge, and for a while the deep silence was broken only
+by his sobs.  I sat in marble resolution, with my
+eyes fixed upon vacancy, for in spirit I was already
+wrestling with the perils of the mountains, and my friend sat
+gazing at me in adoring admiration through his tears.  At
+last he threw himself upon me in a loving embrace and
+exclaimed in broken tones:
+``Your Harris will never desert you.  We will die together!''
+I cheered the noble fellow with praises, and soon his fears
+were forgotten and he was eager for the adventure.  He
+wanted to summon the guides at once and leave at two in
+the morning, as he supposed the custom was; but I explained that nobody
+was looking at that hour; and that the start in the dark
+was not usually made from the village but
+from the first night's resting-place on the mountainside.  I
+said we would leave the village at 3 or 4 p.m. on the morrow;
+meantime he could notify the guides, and also let the public
+know of the attempt which we proposed to make.
+.PP
+I went to bed, but not to sleep.  No man can sleep when
+he is about to undertake one of these Alpine exploits.  I
+tossed feverishly all night long, and was glad enough when
+I heard the clock strike half past eleven and knew it was
+time to get up for dinner.  I rose, jaded and rusty, and went
+to the noon meal, where I found myself the center of interest and
+curiosity; for the news was already abroad.  It is not
+easy to eat calmly when you are a lion, but it is very
+pleasant, nevertheless.
+.PP
+As usual, at Zermatt, when a great ascent is about to be
+undertaken, everybody, native and foreign, laid aside his
+own projects and took up a good position to observe the
+start.  The expedition consisted of 198 persons, including
+the mules; or 205, including the cows.
+.PP
+It was full four o'clock in the afternoon before my cavalcade
+was entirely ready.  At that hour it began to move.  In
+point of numbers and spectacular effect, it was the most
+imposing expedition that had ever marched from Zermatt.
+.PP
+I commanded the chief guide to arrange the men and
+animals in single file, twelve feet apart, and lash them all
+together on a strong rope.  He objected that the first two
+miles was a dead level, with plenty of room, and that the
+rope was never used except in very dangerous places.  But I
+would not listen to that.  My reading had taught me that
+many serious accidents had happened in the Alps simply
+from not having the people tied up soon enough; I was not
+going to add one to the list.  The guide then obeyed my
+order.
+.PP
+When the procession stood at ease, roped together, and
+ready to move, I never saw a finer sight.  It was 3,122 feet
+long - over half a mile; every man but Harris and me was
+on foot, and had on his green veil and his blue goggles, and
+his white rag around his hat, and his coil of rope over one
+shoulder and under the other, and his ice-ax in his belt,
+and carried his Alpenstock in his left hand, his umbrella
+(closed) in his right, and his crutches slung at his back.
+.PP
+The burdens of the pack-mules and the horns of the cows
+were decked with the Edelweiss and the Alpine rose.
+.PP
+I and my agent were the only persons mounted.  We
+were in the post of danger in the extreme rear, and tied
+securely to five guides apiece.  Our armor-bearers carried our
+ice-axes, Alpenstocks, and other implements for us.  We
+were mounted upon very small donkeys, as a measure of
+safety; in time of peril we could straighten our legs and
+stand up, and let the donkey walk from under.  Still, I cannot
+recommend this sort of animal - at least for excursions
+of mere pleasure - because his ears interrupt the view.  I
+and my agent possessed the regulation mountaineering costumes,
+but concluded to leave them behind.  Out of respect
+for the great numbers of tourists of both sexes who would
+be assembled in front of the hotels to see us pass, and also
+out of respect for the many tourists whom we expected to
+encounter on our expedition, we decided to make the
+ascent in evening dress.
+.PP
+At fifteen minutes past four I gave the command to
+move, and my subordinates passed it along the line.  The
+great crowd in front of the Monte Rosa hotel parted in
+twain, with a cheer, as the procession approached; and as
+the head of it was filing by I gave the order - unlimber -
+make ready - hoist - and with one impulse up went my
+half-mile of umbrellas.  It was a beautiful sight, and a total
+surprise to the spectators.  Nothing like that had ever been
+seen in the Alps before.  The applause it brought forth was
+deeply gratifying to me, and I rode by with my plug hat in
+my hand to testify my appreciation of it.  It was the only
+testimony I could offer, for I was too full to speak.
+#once #create Ascent
+.PP
+I sat silent some time, then turned to Harris and said:
+``My mind is made up.''
+Something in my tone struck him; and when he glanced
+at my eye and read what was written there, his face paled
+perceptibly.  He hesitated a moment, then said:
+``Speak.''
+I answered, with perfect calmness:
+``I WILL ASCEND THE RIFFELBERG.''
+If I had shot my poor friend he could not have fallen from
+his chair more suddenly.  If I had been his father he
+could not have pleaded harder to get me to give up my
+purpose.  But I turned a deaf ear to all he said.  When he
+perceived at last that nothing could alter my determination,
+he ceased to urge, and for a while the deep silence was broken only
+by his sobs.  I sat in marble resolution, with my
+eyes fixed upon vacancy, for in spirit I was already
+wrestling with the perils of the mountains, and my friend sat
+gazing at me in adoring admiration through his tears.  At
+last he threw himself upon me in a loving embrace and
+exclaimed in broken tones:
+``Your Harris will never desert you.  We will die together!''
+I cheered the noble fellow with praises, and soon his fears
+were forgotten and he was eager for the adventure.  He
+wanted to summon the guides at once and leave at two in
+the morning, as he supposed the custom was; but I explained that nobody
+was looking at that hour; and that the start in the dark
+was not usually made from the village but
+from the first night's resting-place on the mountainside.  I
+said we would leave the village at 3 or 4 p.m. on the morrow;
+meantime he could notify the guides, and also let the public
+know of the attempt which we proposed to make.
+.PP
+I went to bed, but not to sleep.  No man can sleep when
+he is about to undertake one of these Alpine exploits.  I
+tossed feverishly all night long, and was glad enough when
+I heard the clock strike half past eleven and knew it was
+time to get up for dinner.  I rose, jaded and rusty, and went
+to the noon meal, where I found myself the center of interest and
+curiosity; for the news was already abroad.  It is not
+easy to eat calmly when you are a lion, but it is very
+pleasant, nevertheless.
+.PP
+As usual, at Zermatt, when a great ascent is about to be
+undertaken, everybody, native and foreign, laid aside his
+own projects and took up a good position to observe the
+start.  The expedition consisted of 198 persons, including
+the mules; or 205, including the cows.
+.PP
+It was full four o'clock in the afternoon before my cavalcade
+was entirely ready.  At that hour it began to move.  In
+point of numbers and spectacular effect, it was the most
+imposing expedition that had ever marched from Zermatt.
+.PP
+I commanded the chief guide to arrange the men and
+animals in single file, twelve feet apart, and lash them all
+together on a strong rope.  He objected that the first two
+miles was a dead level, with plenty of room, and that the
+rope was never used except in very dangerous places.  But I
+would not listen to that.  My reading had taught me that
+many serious accidents had happened in the Alps simply
+from not having the people tied up soon enough; I was not
+going to add one to the list.  The guide then obeyed my
+order.
+.PP
+When the procession stood at ease, roped together, and
+ready to move, I never saw a finer sight.  It was 3,122 feet
+long - over half a mile; every man but Harris and me was
+on foot, and had on his green veil and his blue goggles, and
+his white rag around his hat, and his coil of rope over one
+shoulder and under the other, and his ice-ax in his belt,
+and carried his Alpenstock in his left hand, his umbrella
+(closed) in his right, and his crutches slung at his back.
+.PP
+The burdens of the pack-mules and the horns of the cows
+were decked with the Edelweiss and the Alpine rose.
+.PP
+I and my agent were the only persons mounted.  We
+were in the post of danger in the extreme rear, and tied
+securely to five guides apiece.  Our armor-bearers carried our
+ice-axes, Alpenstocks, and other implements for us.  We
+were mounted upon very small donkeys, as a measure of
+safety; in time of peril we could straighten our legs and
+stand up, and let the donkey walk from under.  Still, I cannot
+recommend this sort of animal - at least for excursions
+of mere pleasure - because his ears interrupt the view.  I
+and my agent possessed the regulation mountaineering costumes,
+but concluded to leave them behind.  Out of respect
+for the great numbers of tourists of both sexes who would
+be assembled in front of the hotels to see us pass, and also
+out of respect for the many tourists whom we expected to
+encounter on our expedition, we decided to make the
+ascent in evening dress.
+.PP
+At fifteen minutes past four I gave the command to
+move, and my subordinates passed it along the line.  The
+great crowd in front of the Monte Rosa hotel parted in
+twain, with a cheer, as the procession approached; and as
+the head of it was filing by I gave the order - unlimber -
+make ready - hoist - and with one impulse up went my
+half-mile of umbrellas.  It was a beautiful sight, and a total
+surprise to the spectators.  Nothing like that had ever been
+seen in the Alps before.  The applause it brought forth was
+deeply gratifying to me, and I rode by with my plug hat in
+my hand to testify my appreciation of it.  It was the only
+testimony I could offer, for I was too full to speak.
+#once nroff -ms Ref >X1 &
+#create decl
+.TM 75-1776-1 12345 12345
+.ND July 4, 1776
+.TL
+Declaration of Independence
+.AU "MH 2A-111" 1776
+Thomas Jefferson
+.AU "MH 2B-222" 1824
+James Madison
+.AI
+The Continental Congress
+Philadelphia, Pa. 19104
+.OK
+tyranny
+democracy
+.AB
+This paper describes advances in scattering theory
+of colonies from mother countries.
+.AE
+.PP
+When in the course of human events, it becomes
+necessary for one people to dissolve the political bands which have
+connected them with another, and to assume among the 
+powers of the earth the separate and equal station to which
+the laws of Nature and of Nature's God entitle them, a decent
+respect to the opinions of mankind requires that they should
+declare the causes which impel them to the separation.
+.PP
+We hold these truths to be self-evident, that all men
+are created equal, that they are endowed by their creator
+with certain unalienable rights, that among these are life, liberty,
+and the pursuit of happiness.  That to secure these rights,
+governments are instituted among men, deriving their just
+powers from the consent of the governed.  That whenever
+any form of government becomes destructive of these ends,
+it is the right of the people to alter or to abolish it, and
+to institute new government, laying its foundation on such
+principles and organizing its powers in such form, as to them
+shall seem most likely to effect their safety and happiness.
+#create script
+1,$-264d
+w
+q
+#copyout
+#user
+#uncopyout
+e - .ocopy <script
+#cmp X1 .ocopy
+#fail
+Sorry, that wasn't right.
+
+To see exactly what you are doing, after
+making your insertions, compare the file
+with file "Ref" using "diff".
+
+OK, maybe you'll get a chance to do it over:
+
+#log
+
+L2.1a           445768599   100   205   100640  781       `
+#print
+When you have some document typed in "-ms" style,
+you run it off on your terminal by saying:
+
+  nroff -ms file
+
+where "file" is the name of the file it is on.  For example,
+the file "decl" in this directory is in a suitable format
+for running off this way.  Do so.  Then type "ready".
+#create decl
+.PP
+When in the course of human events, it becomes
+necessary for one people to dissolve the political bands which have
+connected them with another, and to assume among the 
+powers of the earth the separate and equal station to which
+the laws of Nature and of Nature's God entitle them, a decent
+respect to the opinions of mankind requires that they should
+declare the causes which impel them to the separation.
+#copyin
+#user
+#uncopyin
+#match nroff -ms decl
+#log
+#next
+3.1a 10
+
+L3.1a           445768601   100   205   100640  3073      `
+#print
+The file "decl" began with ".PP".  All files sent
+to -ms MUST begin with a "-ms" command line.  You can
+tell these command lines, in general, because they
+begin with a period and have only capital letters on them.
+The ".PP" command indicates a new paragraph.
+So to add another paragraph to a file, you put a ".PP"
+in front and then type in the new text.  Here is the
+next paragraph of the declaration of independence.  Add
+it to the end of the file "decl" that you've been working
+with.  You can do that most easily by picking up the text
+from file "para2", or you can type it in again.  It is
+not necessary to keep every word on exactly
+the line it was, since the program will rearrange them.
+But the ".PP" must be on a line by itself.  Then
+run off the the new version.
+
+
+#create Ref
+.PP
+When in the course of human events, it becomes
+necessary for one people to dissolve the political bands which have
+connected them with another, and to assume among the 
+powers of the earth the separate and equal station to which
+the laws of Nature and of Nature's God entitle them, a decent
+respect to the opinions of mankind requires that they should
+declare the causes which impel them to the separation.
+.PP
+We hold these truths to be self-evident, that all men
+are created equal, that they are endowed by their creator
+with certain unalienable rights, that among these are life, liberty,
+and the pursuit of happiness.  That to secure these rights,
+governments are instituted among men, deriving their just
+powers from the consent of the governed.  That whenever
+any form of government becomes destructive of these ends,
+it is the right of the people to alter or to abolish it, and
+to institute new government, laying its foundation on such
+principles and organizing its powers in such form, as to them
+shall seem most likely to effect their safety and happiness.
+#once nroff -ms Ref >X2 &
+#create decl
+.PP
+When in the course of human events, it becomes
+necessary for one people to dissolve the political bands which have
+connected them with another, and to assume among the 
+powers of the earth the separate and equal station to which
+the laws of Nature and of Nature's God entitle them, a decent
+respect to the opinions of mankind requires that they should
+declare the causes which impel them to the separation.
+#create para2
+We hold these truths to be self-evident, that all men
+are created equal, that they are endowed by their creator
+with certain unalienable rights, that among these are life, liberty,
+and the pursuit of happiness.  That to secure these rights,
+governments are instituted among men, deriving their just
+powers from the consent of the governed.  That whenever
+any form of government becomes destructive of these ends,
+it is the right of the people to alter or to abolish it, and
+to institute new government, laying its foundation on such
+principles and organizing its powers in such form, as to them
+shall seem most likely to effect their safety and happiness.
+#print para2
+#copyout
+#user
+#uncopyout
+tail -66 .ocopy >X1
+#cmp X1 X2
+#log
+#next
+4.1a 10
+
+L4.1a           445768602   100   205   100640  2617      `
+#print
+Usually, of course, a document contains more than
+just paragraphs.  In particular, most
+documents have titles, which are entered with "-ms"
+by saying
+  .TL
+  title goes here
+  .PP
+  paragraphs of documents...
+There is the same "decl" file here: add a title
+"Declaration of Independence" and
+run it off again.
+#create Ref
+.TL
+Declaration of Independence
+.PP
+When in the course of human events, it becomes
+necessary for one people to dissolve the political bands which have
+connected them with another, and to assume among the 
+powers of the earth the separate and equal station to which
+the laws of Nature and of Nature's God entitle them, a decent
+respect to the opinions of mankind requires that they should
+declare the causes which impel them to the separation.
+.PP
+We hold these truths to be self-evident, that all men
+are created equal, that they are endowed by their creator
+with certain unalienable rights, that among these are life, liberty,
+and the pursuit of happiness.  That to secure these rights,
+governments are instituted among men, deriving their just
+powers from the consent of the governed.  That whenever
+any form of government becomes destructive of these ends,
+it is the right of the people to alter or to abolish it, and
+to institute new government, laying its foundation on such
+principles and organizing its powers in such form, as to them
+shall seem most likely to effect their safety and happiness.
+#once nroff -ms Ref >X2 &
+#create decl
+.PP
+When in the course of human events, it becomes
+necessary for one people to dissolve the political bands which have
+connected them with another, and to assume among the 
+powers of the earth the separate and equal station to which
+the laws of Nature and of Nature's God entitle them, a decent
+respect to the opinions of mankind requires that they should
+declare the causes which impel them to the separation.
+.PP
+We hold these truths to be self-evident, that all men
+are created equal, that they are endowed by their creator
+with certain unalienable rights, that among these are life, liberty,
+and the pursuit of happiness.  That to secure these rights,
+governments are instituted among men, deriving their just
+powers from the consent of the governed.  That whenever
+any form of government becomes destructive of these ends,
+it is the right of the people to alter or to abolish it, and
+to institute new government, laying its foundation on such
+principles and organizing its powers in such form, as to them
+shall seem most likely to effect their safety and happiness.
+#copyout
+#user
+#uncopyout
+tail -66 .ocopy >X1
+#cmp X1 X2
+#log
+#next
+5.1a 10
+
+L5.1a           445768604   100   205   100640  2611      `
+#print
+Also, most documents have one or more authors.
+Authors are indicated by a preceding line of ".AU".
+Thus you would say
+ .TL
+  title
+ .AU
+  author
+ .PP
+  text
+OK, edit "decl" again: the author is Thomas Jefferson.
+Insert this and run the document off.
+#create Ref
+.TL
+Declaration of Independence
+.AU
+Thomas Jefferson
+.PP
+When in the course of human events, it becomes
+necessary for one people to dissolve the political bands which have
+connected them with another, and to assume among the 
+powers of the earth the separate and equal station to which
+the laws of Nature and of Nature's God entitle them, a decent
+respect to the opinions of mankind requires that they should
+declare the causes which impel them to the separation.
+.PP
+We hold these truths to be self-evident, that all men
+are created equal, that they are endowed by their creator
+with certain unalienable rights, that among these are life, liberty,
+and the pursuit of happiness.  That to secure these rights,
+governments are instituted among men, deriving their just
+powers from the consent of the governed.  That whenever
+any form of government becomes destructive of these ends,
+it is the right of the people to alter or to abolish it, and
+to institute new government, laying its foundation on such
+principles and organizing its powers in such form, as to them
+shall seem most likely to effect their safety and happiness.
+#once nroff -ms Ref >X2 &
+#create decl
+.TL
+Declaration of Independence
+.PP
+When in the course of human events, it becomes
+necessary for one people to dissolve the political bands which have
+connected them with another, and to assume among the 
+powers of the earth the separate and equal station to which
+the laws of Nature and of Nature's God entitle them, a decent
+respect to the opinions of mankind requires that they should
+declare the causes which impel them to the separation.
+.PP
+We hold these truths to be self-evident, that all men
+are created equal, that they are endowed by their creator
+with certain unalienable rights, that among these are life, liberty,
+and the pursuit of happiness.  That to secure these rights,
+governments are instituted among men, deriving their just
+powers from the consent of the governed.  That whenever
+any form of government becomes destructive of these ends,
+it is the right of the people to alter or to abolish it, and
+to institute new government, laying its foundation on such
+principles and organizing its powers in such form, as to them
+shall seem most likely to effect their safety and happiness.
+#copyout
+#user
+#uncopyout
+tail -66 .ocopy >X1
+#cmp X1 X2
+#log
+#next
+6.1a 10
+
+L6.1a           445768605   100   205   100640  2766      `
+#print
+Usually, in addition to the author, you want
+to specify his address, 
+which is given after a command ".AI" (Author's institution).
+This should follow immediately after the author's name.
+In the usual file, "decl", put in Jefferson's
+address as
+
+The Continental Congress
+Philadelphia, Pa. 19104
+
+Then run it off and type "ready".
+#create Ref
+.TL
+Declaration of Independence
+.AU
+Thomas Jefferson
+.AI
+The Continental Congress
+Philadelphia, Pa. 19104
+.PP
+When in the course of human events, it becomes
+necessary for one people to dissolve the political bands which have
+connected them with another, and to assume among the 
+powers of the earth the separate and equal station to which
+the laws of Nature and of Nature's God entitle them, a decent
+respect to the opinions of mankind requires that they should
+declare the causes which impel them to the separation.
+.PP
+We hold these truths to be self-evident, that all men
+are created equal, that they are endowed by their creator
+with certain unalienable rights, that among these are life, liberty,
+and the pursuit of happiness.  That to secure these rights,
+governments are instituted among men, deriving their just
+powers from the consent of the governed.  That whenever
+any form of government becomes destructive of these ends,
+it is the right of the people to alter or to abolish it, and
+to institute new government, laying its foundation on such
+principles and organizing its powers in such form, as to them
+shall seem most likely to effect their safety and happiness.
+#once nroff -ms Ref >X1   &
+#create decl
+.TL
+Declaration of Independence
+.AU
+Thomas Jefferson
+.PP
+When in the course of human events, it becomes
+necessary for one people to dissolve the political bands which have
+connected them with another, and to assume among the 
+powers of the earth the separate and equal station to which
+the laws of Nature and of Nature's God entitle them, a decent
+respect to the opinions of mankind requires that they should
+declare the causes which impel them to the separation.
+.PP
+We hold these truths to be self-evident, that all men
+are created equal, that they are endowed by their creator
+with certain unalienable rights, that among these are life, liberty,
+and the pursuit of happiness.  That to secure these rights,
+governments are instituted among men, deriving their just
+powers from the consent of the governed.  That whenever
+any form of government becomes destructive of these ends,
+it is the right of the people to alter or to abolish it, and
+to institute new government, laying its foundation on such
+principles and organizing its powers in such form, as to them
+shall seem most likely to effect their safety and happiness.
+#copyout
+#user
+#uncopyout
+tail -66 .ocopy >X2
+#cmp X1 X2
+#log
+#next
+7.1a 10
+L7.1a           445768607   100   205   100640  2985      `
+#print
+Another standard feature of scientific papers, although
+not always present is an abstract.  It should be placed
+after the author's institution, but before the text,
+and surrounded by the commands ".AB" and ".AE".
+Let's make up an imaginary abstract - how about
+
+  This paper describes advances in scattering
+  theory of colonies from mother countries.
+
+Add this to the usual "decl" file and run it off.
+#create Ref
+.TL
+Declaration of Independence
+.AU
+Thomas Jefferson
+.AI
+The Continental Congress
+Philadelphia, Pa. 19104
+.AB
+This paper describes advances in scattering theory
+of colonies from mother countries.
+.AE
+.PP
+When in the course of human events, it becomes
+necessary for one people to dissolve the political bands which have
+connected them with another, and to assume among the 
+powers of the earth the separate and equal station to which
+the laws of Nature and of Nature's God entitle them, a decent
+respect to the opinions of mankind requires that they should
+declare the causes which impel them to the separation.
+.PP
+We hold these truths to be self-evident, that all men
+are created equal, that they are endowed by their creator
+with certain unalienable rights, that among these are life, liberty,
+and the pursuit of happiness.  That to secure these rights,
+governments are instituted among men, deriving their just
+powers from the consent of the governed.  That whenever
+any form of government becomes destructive of these ends,
+it is the right of the people to alter or to abolish it, and
+to institute new government, laying its foundation on such
+principles and organizing its powers in such form, as to them
+shall seem most likely to effect their safety and happiness.
+#once nroff -ms Ref >X1 &
+#create decl
+.TL
+Declaration of Independence
+.AU
+Thomas Jefferson
+.AI
+The Continental Congress
+Philadelphia, Pa. 19104
+.PP
+When in the course of human events, it becomes
+necessary for one people to dissolve the political bands which have
+connected them with another, and to assume among the 
+powers of the earth the separate and equal station to which
+the laws of Nature and of Nature's God entitle them, a decent
+respect to the opinions of mankind requires that they should
+declare the causes which impel them to the separation.
+.PP
+We hold these truths to be self-evident, that all men
+are created equal, that they are endowed by their creator
+with certain unalienable rights, that among these are life, liberty,
+and the pursuit of happiness.  That to secure these rights,
+governments are instituted among men, deriving their just
+powers from the consent of the governed.  That whenever
+any form of government becomes destructive of these ends,
+it is the right of the people to alter or to abolish it, and
+to institute new government, laying its foundation on such
+principles and organizing its powers in such form, as to them
+shall seem most likely to effect their safety and happiness.
+#copyout
+#user
+#uncopyout
+tail -66 .ocopy >X2
+#cmp X2 X1
+#log
+#next
+8.1a 10
+
+L8.1a           445768609   100   205   100640  3084      `
+#print
+So far we have run this off in a sort of proofreading format
+that includes all the data but doesn't really look like anything
+in the BTL style guide.  It is possible, preceding the
+title, to put one of three commands to indicate a particular
+Bell Laboratories format.  The simplest of these is .IM
+(internal memorandum).  Try putting .IM in front of the
+text; then run it off and see what it looks like.
+#create Ref
+.IM
+.TL
+Declaration of Independence
+.AU
+Thomas Jefferson
+.AI
+The Continental Congress
+Philadelphia, Pa. 19104
+.AB
+This paper describes advances in scattering theory
+of colonies from mother countries.
+.AE
+.PP
+When in the course of human events, it becomes
+necessary for one people to dissolve the political bands which have
+connected them with another, and to assume among the 
+powers of the earth the separate and equal station to which
+the laws of Nature and of Nature's God entitle them, a decent
+respect to the opinions of mankind requires that they should
+declare the causes which impel them to the separation.
+.PP
+We hold these truths to be self-evident, that all men
+are created equal, that they are endowed by their creator
+with certain unalienable rights, that among these are life, liberty,
+and the pursuit of happiness.  That to secure these rights,
+governments are instituted among men, deriving their just
+powers from the consent of the governed.  That whenever
+any form of government becomes destructive of these ends,
+it is the right of the people to alter or to abolish it, and
+to institute new government, laying its foundation on such
+principles and organizing its powers in such form, as to them
+shall seem most likely to effect their safety and happiness.
+#once nroff -ms Ref >X1 &
+#create decl
+.TL
+Declaration of Independence
+.AU
+Thomas Jefferson
+.AI
+The Continental Congress
+Philadelphia, Pa. 19104
+.AB
+This paper describes advances in scattering theory
+of colonies from mother countries.
+.AE
+.PP
+When in the course of human events, it becomes
+necessary for one people to dissolve the political bands which have
+connected them with another, and to assume among the 
+powers of the earth the separate and equal station to which
+the laws of Nature and of Nature's God entitle them, a decent
+respect to the opinions of mankind requires that they should
+declare the causes which impel them to the separation.
+.PP
+We hold these truths to be self-evident, that all men
+are created equal, that they are endowed by their creator
+with certain unalienable rights, that among these are life, liberty,
+and the pursuit of happiness.  That to secure these rights,
+governments are instituted among men, deriving their just
+powers from the consent of the governed.  That whenever
+any form of government becomes destructive of these ends,
+it is the right of the people to alter or to abolish it, and
+to institute new government, laying its foundation on such
+principles and organizing its powers in such form, as to them
+shall seem most likely to effect their safety and happiness.
+#copyout
+#user
+#uncopyout
+tail -66 .ocopy >X2
+#cmp X1 X2
+#log
+#next
+9.1a 10
+L9.1a           445768611   100   205   100640  2971      `
+#print
+The next format to mention is the RP (released paper)
+format.  If you use that, instead of the IM format,
+you get the standard Bell Labs released paper style.
+Change the first line of file "decl" to read
+  .RP
+and run it off.  Note that you get a cover page as well as the
+first page.
+#create Ref
+.RP
+.TL
+Declaration of Independence
+.AU
+Thomas Jefferson
+.AI
+The Continental Congress
+Philadelphia, Pa. 19104
+.AB
+This paper describes advances in scattering theory
+of colonies from mother countries.
+.AE
+.PP
+When in the course of human events, it becomes
+necessary for one people to dissolve the political bands which have
+connected them with another, and to assume among the 
+powers of the earth the separate and equal station to which
+the laws of Nature and of Nature's God entitle them, a decent
+respect to the opinions of mankind requires that they should
+declare the causes which impel them to the separation.
+.PP
+We hold these truths to be self-evident, that all men
+are created equal, that they are endowed by their creator
+with certain unalienable rights, that among these are life, liberty,
+and the pursuit of happiness.  That to secure these rights,
+governments are instituted among men, deriving their just
+powers from the consent of the governed.  That whenever
+any form of government becomes destructive of these ends,
+it is the right of the people to alter or to abolish it, and
+to institute new government, laying its foundation on such
+principles and organizing its powers in such form, as to them
+shall seem most likely to effect their safety and happiness.
+#once nroff -ms Ref >X1 &
+#create decl
+.IM
+.TL
+Declaration of Independence
+.AU
+Thomas Jefferson
+.AI
+The Continental Congress
+Philadelphia, Pa. 19104
+.AB
+This paper describes advances in scattering theory
+of colonies from mother countries.
+.AE
+.PP
+When in the course of human events, it becomes
+necessary for one people to dissolve the political bands which have
+connected them with another, and to assume among the 
+powers of the earth the separate and equal station to which
+the laws of Nature and of Nature's God entitle them, a decent
+respect to the opinions of mankind requires that they should
+declare the causes which impel them to the separation.
+.PP
+We hold these truths to be self-evident, that all men
+are created equal, that they are endowed by their creator
+with certain unalienable rights, that among these are life, liberty,
+and the pursuit of happiness.  That to secure these rights,
+governments are instituted among men, deriving their just
+powers from the consent of the governed.  That whenever
+any form of government becomes destructive of these ends,
+it is the right of the people to alter or to abolish it, and
+to institute new government, laying its foundation on such
+principles and organizing its powers in such form, as to them
+shall seem most likely to effect their safety and happiness.
+#copyout
+#user
+#uncopyout
+tail -132 .ocopy >X2
+#cmp X1 X2
+#log
+#next
+10.1a 10
+

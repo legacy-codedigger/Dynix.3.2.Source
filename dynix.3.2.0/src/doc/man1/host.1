@@ -1,0 +1,173 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: host.1 1.5 87/02/17 $
+.TH HOST 1 "\*(V)" "DYNIX"
+.SH NAME
+host \- remote virtual terminal/fileserver for standalone program development
+.SH SYNOPSIS
+.B host
+[ ttyname ] [ options ]
+.SH DESCRIPTION
+.I Host
+will act as a virtual terminal and remote file server for
+the standalone programs.
+It talks to the user at his terminal, and uses
+the environment variable HOSTPORT as the default terminal port to
+work with.
+If the user wishes to override the HOSTPORT variable,
+or does not have it set, he may specify the terminal port as
+.IR ttyname .
+Note: For backward compatibility, if the user does not have
+HOSTPORT set but does have a DDTPORT environment variable,
+.I host
+will use that.
+.PP
+Options:
+.TP \w'-f\0runfile\0\0'u
+.BR \-b " baud"
+Set the remote port baud rate.
+All other port characteristics are always set.
+.TP
+.BR \-e c
+Change escape character to `c'.
+The normal escape character is the '~'.
+.TP
+.BR \-f " runfile"
+Read input from file.
+This takes the stdin from the named file.
+When the file is exhausted, input switches back to the control terminal.
+The runfile has a special format.
+.TP
+.B \-m
+Remote has MMU.
+For use with DB16K boards with MMU installed.
+.I Host
+has the capability of interacting with DBMON, and this informs
+.I host
+to expect an MMU.
+(The SCED board has no MMU, so leave this off when talking to a DYNIX
+system.)
+.TP
+.B \-n
+No lock file.
+Normally,
+.I host
+cooperates with
+.IR tip (1C)
+and
+.IR uucp (1C)
+locking protocols.
+This option tells it not to create the lock file indicating the
+port is in use.
+.TP
+.B \-r
+No remote file server.
+The remote file server is started remotely by escape sequences.
+If these escape sequences occur in text then
+.I host
+will erroneously go into the remote file server mode.
+Using
+.B \-r
+entirely disables the remote file server, and requests will be ignored.
+.TP
+.BR \-s " script"
+Start script file.
+The default is no script file but
+.I host
+can be started with a script file.
+.PP
+There are also several escape commands while in virtual terminal mode:
+.TP
+~?
+List of all of the escape commands available.
+.TP
+~.
+Terminate
+.IR host .
+.TP
+~!
+Spawn off a subshell.
+.TP
+~|
+Script to pipe (not implemented).
+.TP
+~#
+Send break.
+.TP
+~>
+Send file to remote.
+.TP
+~b
+Toggle buffering of script.
+.TP
+~d
+Packet debug toggle.
+.TP
+~e
+Toggle local echo.
+.TP
+~f
+Read runfile (same as
+.B \-f
+option).
+.TP
+~l
+Load file: the file must be in
+.IR a.out (5)
+format.
+.TP
+~p
+Change maximum packet size.
+.TP
+~r
+Toggle remote server (toggles
+.B \-r
+option).
+.TP
+~s
+Toggle script (toggles
+.B \-s
+option).
+.TP
+~v
+Virtual escape:
+list of chars normally escaped in the remote file server mode.
+.PP
+.I Host
+can handle certain file server requests from a running program.
+These are similar to a normal DYNIX syscalls for
+open, read, write, close, and lseek.
+These are available to standalone programs in the form of the ``rs'' driver.
+The calls available are:
+.RS
+.nf
+int open(name, mode)
+int read(fd, buf, count)
+int write(fd, buf, count)
+int lseek(fd, offset, whence)
+int close(fd)
+.fi
+.RE
+.PP
+There are also two other calls available in the protocol which
+are not currently implemented in the ``rs'' driver.
+.RS
+.TP \w'scriptfile(name)\0\0'u
+scriptfile(name)
+turn on scripting
+.TP
+noscript()
+turn off scripting
+.RE
+.SH "SEE ALSO"
+tip(1C),
+remote(5)

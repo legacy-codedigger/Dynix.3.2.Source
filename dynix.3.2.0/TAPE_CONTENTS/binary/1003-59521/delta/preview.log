@@ -1,0 +1,79 @@
+preview: started Tue Mar 24 21:54:48 PST 1992 from /dev/console
+Generic delta distribution from V3.2.* to NFS-option, pass 1 (PREVIEW)
+The following actions will be taken in pass 2:
+** Run:"newfiles/pre-install.sh pass1, pre-install.sh, nfs, 2399 10 1966 73"
+   directory "usr/etc/yp" will be created
+   directory "usr/sys/NFS" will be created
+***"dynix_zd" will be updated.  See "newfiles/3" for new file.
+   "usr/sys/conf/OBJSlib.a" will be updated.
+   "usr/sys/conf/conf_nfs.c" has already been updated.  See "newfiles/5" for copy
+   "usr/sys/conf/conf_vfs.c" has already been updated.  See "newfiles/6" for copy
+   "etc/NFS.OPTIONS" will be added;
+   "etc/biod" will be added;
+   "etc/nfsd" will be added;
+   "etc/ypbind" will be added;
+   "usr/bin/ypcat" will be added;
+   "usr/bin/ypmatch" will be added;
+   "usr/bin/yppasswd" will be added;
+   "usr/bin/ypwhich" will be added;
+   "usr/etc/nfsstat" will be added;
+   "usr/etc/rpc.mountd" will be added;
+   "usr/etc/rpc.yppasswdd" will be added;
+   "usr/etc/showmount" will be added;
+   "usr/etc/yp/Makefile" will be added;
+   "usr/etc/yp/makedbm" will be added;
+   "usr/etc/yp/revnetgroup" will be added;
+   "usr/etc/yp/stdhosts" will be added;
+   "usr/etc/yp/ypinit" will be added;
+   "usr/etc/yp/yppoll" will be added;
+   "usr/etc/yp/yppush" will be added;
+   "usr/etc/yp/ypset" will be added;
+   "usr/etc/yp/ypxfr" will be added;
+   "usr/etc/yp/ypxfr_1perday" will be added;
+   "usr/etc/yp/ypxfr_1perhour" will be added;
+   "usr/etc/yp/ypxfr_2perday" will be added;
+   "usr/etc/ypserv" will be added;
+   "usr/man/cat1/ypcat.1.Z" will be added;
+   "usr/man/cat1/ypmatch.1.Z" will be added;
+   "usr/man/cat1/yppasswd.1.Z" will be added;
+   "usr/man/cat1/ypwhich.1.Z" will be added;
+   "usr/man/cat2/nfssvc.2.Z" will be added;
+   "usr/man/cat4/nfs.4p.Z" will be added;
+   "usr/man/cat5/exports.5.Z" will be added;
+   "usr/man/cat5/ypfiles.5.Z" will be added;
+   "usr/man/cat8/makedbm.8.Z" will be added;
+   "usr/man/cat8/mountd.8c.Z" will be added;
+   "usr/man/cat8/nfsd.8.Z" will be added;
+   "usr/man/cat8/nfsstat.8.Z" will be added;
+   "usr/man/cat8/showmount.8.Z" will be added;
+   "usr/man/cat8/ypinit.8.Z" will be added;
+   "usr/man/cat8/ypmake.8.Z" will be added;
+   "usr/man/cat8/yppasswdd.8c.Z" will be added;
+   "usr/man/cat8/yppoll.8.Z" will be added;
+   "usr/man/cat8/yppush.8.Z" will be added;
+   "usr/man/cat8/ypserv.8.Z" will be added;
+   "usr/man/cat8/ypset.8.Z" will be added;
+   "usr/man/cat8/ypxfr.8.Z" will be added;
+   "usr/man/man1/ypcat.1" will be added;
+   "usr/man/man1/ypmatch.1" will be added;
+   "usr/man/man1/yppasswd.1" will be added;
+   "usr/man/man1/ypwhich.1" will be added;
+   "usr/man/man2/nfssvc.2" will be added;
+   "usr/man/man5/exports.5" will be added;
+   "usr/man/man5/ypfiles.5" will be added;
+   "usr/man/man8/makedbm.8" will be added;
+   "usr/man/man8/mountd.8c" will be added;
+   "usr/man/man8/nfsd.8" will be added;
+   "usr/man/man8/nfsstat.8" will be added;
+   "usr/man/man8/showmount.8" will be added;
+   "usr/man/man8/ypinit.8" will be added;
+   "usr/man/man8/ypmake.8" will be added;
+   "usr/man/man8/yppasswdd.8c" will be added;
+   "usr/man/man8/yppoll.8" will be added;
+   "usr/man/man8/yppush.8" will be added;
+   "usr/man/man8/ypserv.8" will be added;
+   "usr/man/man8/ypset.8" will be added;
+   "usr/man/man8/ypxfr.8" will be added;
+   "usr/sys/conf/NFS" will be added;
+   a symbolic link will be made at "etc/yp"
+preview: complete Tue Mar 24 21:55:54 PST 1992 in  2 minutes

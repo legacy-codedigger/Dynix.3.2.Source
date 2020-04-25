@@ -1,0 +1,30 @@
+# $Copyright:	$
+# Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+# Sequent Computer Systems, Inc.   All rights reserved.
+#  
+# This software is furnished under a license and may be used
+# only in accordance with the terms of that license and with the
+# inclusion of the above copyright notice.   This software may not
+# be provided or otherwise made available to, or used by, any
+# other person.  No title to or ownership of the software is
+# hereby transferred.
+#
+#ident	"$Header: m2344k.zd 1.1 89/08/24 $"
+#
+# m2344k channel configuration data 
+#
+# This file is used by the online formatter to fill out
+# the zdcdd structure (defined in <sys/zdc.h>).
+# See the diskinfo(4) man page for the definitions of the
+# two character field identifiers
+#
+m2344k|M2344K|zdswallow4|Fujitsu M2344K (Swallow 4) with 66 sectors:\
+	mg#1801615214:ec#134:sp#1:se#66:tr#27:cy#624:dt#2:xf#20:\
+	ru#90:ch#28716:hs#0:hr#1:hf#4:ck#16:tk#1:hb#37:sb#610:\
+	si#11:ei#34:ds#0:de#0:p0#255:p1#255:p2#255:p3#255:p4#255:\
+	p5#255:t0#238:t1#207:t2#175:t3#235:t4#231:t5#231:er#155:\
+	hc#6:dc#0:oc#2:sc#0:ns#0:h0#201:h1#0:h2#0:h3#0:h4#0:h5#0:\
+	rd#0:dm#0:do#3:rh#21:s1#0:s2#1:c0#1:c1#1:c2#1:c3#1:c4#1:\
+	c5#5:xd#0:xh#0:po#1:pr#16:d1#0:d2#1:op#0:or#0:a1#0:a2#25:\
+	gp#34:df#220:lt#1:rt#4:et#512:gt#0:fd#90:ah#0:ad#0:r1#0:\
+	r2#25

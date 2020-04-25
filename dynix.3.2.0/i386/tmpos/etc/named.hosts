@@ -1,0 +1,16 @@
+; Authoritative data for SOMECOMPANY.COM (ORIGIN assumed SOMECOMPAY.COM)
+;
+@	IN	SOA	MACHINE.COMPANYNAME.com root.MACHINE.COMPANYNAME.com	(
+				1.1		; Serial
+				10800	; Refresh 3 hours
+				3600	; Retry   1 hour
+				3600000	; Expire  1000 hours
+				86400 )	; Minimum 24 hours
+				IN	NS		MACHINE.COMPANYNAME.COM
+localhost		IN	A		127.1
+HOST_A	        IN	A	    103.0.1.03
+				IN	HINFO	    s27
+HOST_B	       	IN	A	   	103.0.1.06
+			 	IN	HINFO	    s27
+HOST_C			IN	A		103.0.1.07
+				IN 	HINFO		s81

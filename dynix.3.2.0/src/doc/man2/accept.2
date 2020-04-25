@@ -1,0 +1,119 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: accept.2 1.8 89/11/15 $
+.TH ACCEPT 2 "\*(V)" "4BSD"
+.SH NAME
+accept \- accept a connection on a socket
+.SH SYNOPSIS
+.ft 3
+.nf
+#include <sys/types.h>
+#include <sys/socket.h>
+.PP
+.ft 3
+ns = accept(s, addr, addrlen)
+int ns, s;
+struct sockaddr *addr;
+int *addrlen;
+.fi
+.SH DESCRIPTION
+The argument
+.I s
+is a socket which has been created with
+.IR socket (2),
+bound to an address with
+.IR bind (2),
+and is listening for connections after a
+.IR listen (2).
+.I Accept
+extracts the first connection
+on the queue of pending connections, creates
+a new socket with the same properties of 
+.I s
+and allocates a new file descriptor,
+.IR ns ,
+for the socket.  If no pending connections are
+present on the queue, and the socket is not marked
+as non-blocking,
+.I accept
+blocks the caller until a connection is present.
+If the socket is marked non-blocking and no pending
+connections are present on the queue, 
+.I accept
+returns an error as described below.
+The accepted socket,
+.IR ns ,
+may not be used
+to accept more connections.  The original socket
+.I s
+remains open.
+.PP
+The argument
+.I addr
+is a result parameter which is filled in with
+the address of the connecting entity,
+as known to the communications layer.
+The exact format of the
+.I addr
+parameter is determined by the domain in which the communication
+is occurring.
+If it is not desired to have
+.I addr
+filled in with the connecting entity's address, 0 may be specified
+for
+.I addr.
+The 
+.I addrlen
+is a value-result parameter; it should initially contain the
+amount of space pointed to by
+.IR addr ;
+on return it will contain the actual length (in bytes) of the
+address returned.
+This call
+is used with connection-based socket types, currently with SOCK_STREAM.
+.PP
+It is possible to
+.IR select (2)
+a socket for the purposes of doing an
+.I accept
+by selecting it for read.
+.SH "RETURN VALUE
+The call returns \-1 on error.  If it succeeds it returns a non-negative
+integer which is a descriptor for the accepted socket.
+.SH ERRORS
+The \f2accept\fP will fail if:
+.TP 20
+[EBADF]
+The descriptor is invalid.
+.TP 20
+[ENOTSOCK]
+The descriptor references a file, not a socket.
+.TP 20
+[EOPNOTSUPP]
+The referenced socket is not of type SOCK_STREAM.
+.TP 20
+[EFAULT]
+The \f2addr\fP parameter is not in a writable part of the
+user address space (excepting \f2addr\fP == 0; this is valid
+as noted above).
+.TP 20
+[EWOULDBLOCK]
+The socket is marked non-blocking and no connections
+are present to be accepted.
+.TP 20
+[EMFILE]
+{OPEN_MAX} file descriptors are currently open.
+.TP 20
+[ENFILE]
+The system file table is full.
+.SH SEE ALSO
+bind(2), connect(2), listen(2), select(2), socket(2)

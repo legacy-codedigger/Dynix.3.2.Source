@@ -1,0 +1,76 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: a.tags.1 1.13 86/05/13 $
+.TH A.TAGS 1 "\*(V)" "DYNIX"
+.SH NAME
+a.tags \- create a tags file for Ada sources
+.SH SYNOPSIS
+.B a.tags
+[ options ]
+file ...
+.SH DESCRIPTION
+The
+.I a.tags
+command makes a tags file, similar to the files made by
+.IR ctags (1),
+for Ada source files.
+.PP
+To obtain a complete tags file,
+the
+.IR file s
+listed as arguments must be syntactically correct, 
+.PP
+Tags for bodies are named with the unmodified Ada name.
+Tags for Ada specifications are distinguished from tags
+for Ada bodies by prefacing the Ada name with \*(lqs#\*(rq.
+Tags for stubs for separates are named by
+prefacing the Ada name with \*(lqstub#\*(rq.
+.PP
+Nested packages, subprograms, types,
+generics, and task definitions are tagged with both their simple names
+and fully-qualified names.
+Thus, an identifier can be located either by its simple name or by
+specifying the fully-qualified name.
+Tags are generated for overloaded identifiers.
+.RI (  " A.vi" (1)
+provides a facility for choosing among them.)
+.PP
+The
+.I a.tags
+command supports the options defined for
+.IR ctags (1):
+.TP 4
+\-B
+backward-searching patterns
+.TP
+\-F
+forward-searching patterns (default)
+.TP
+\-a
+append to current tags file
+.TP
+\-t
+build tags for types, too
+.TP
+\-w
+suppress warning messages
+.TP
+\-x
+generate an indexed list of all tags
+.TP
+\-v
+generate an index that includes line numbers for
+.IR vgrind (1)
+.SH FILES
+atags		output tags file
+.SH "SEE ALSO"
+a.vi(1), ctags(1), vgrind(1)

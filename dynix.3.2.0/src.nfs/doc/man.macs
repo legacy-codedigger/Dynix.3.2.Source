@@ -1,0 +1,24 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987 Sequent Computer Systems, Inc.
+.\" All rights reserved
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.\" $Header: man.macs 1.12 87/07/28 $
+.\"	This file is designed for itpf and /ccs/techpubs/tools/tmac.an.
+.fp 1 R
+.fp 2 I
+.fp 3 B
+.fp 5 CW
+
+'	# all printed man-pages will have the string V)
+'	# centered in footer.
+
+.de V=
+.ds V) August 21, 1987 
+..

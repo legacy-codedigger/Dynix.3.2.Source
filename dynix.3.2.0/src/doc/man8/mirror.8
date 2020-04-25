@@ -1,0 +1,570 @@
+.\" $Copyright:	$
+.\"Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\"Sequent Computer Systems, Inc.   All rights reserved.
+.\" 
+.\"This software is furnished under a license and may be used
+.\"only in accordance with the terms of that license and with the
+.\"inclusion of the above copyright notice.   This software may not
+.\"be provided or otherwise made available to, or used by, any
+.\"other person.  No title to or ownership of the software is
+.\"hereby transferred.
+...
+.V= $Header: mirror.8 1.1 89/09/29 $
+.TH MIRROR 8 "\*(V)" "DYNIX"
+.SH NAME
+mirror, unmirror \- activate and deactivate disk mirrors
+.SH SYNOPSIS
+.\"
+.\" without formatting codes, first line would look like:
+.\"
+.\" /etc/mirror mirror_name [-l|-b] unit0 [-l|-b] unit1 [-s size] [-r] [-f]
+.\"
+.B /etc/mirror
+.I mirror_name
+.RB [ \-l " | " \-b ] 
+.I unit0
+.RB [ \-l " | " \-b ] 
+.I unit1
+.RB [ \-s
+.IR size ]
+.RB [ \-r ]
+.RB [ \-f ]
+.br
+.\"
+.\" without formatting codes, second line would look like:
+.\"
+.\" /etc/mirror mirror_name unit0 -d
+.\"
+.B /etc/mirror 
+.I "mirror_name unit0"
+.B \-d
+.br
+.\"
+.\" without formatting codes, third line would look like:
+.\"
+.\" /etc/mirror -a
+.\"
+.B "/etc/mirror \-a"
+.br
+.\"
+.\" without formatting codes, fourth line would look like:
+.\"
+.\" /etc/mirror
+.\"
+.B /etc/mirror
+.PP
+.\"
+.\" without formatting codes, fifth line would look like:
+.\"
+.\" /etc/unmirror mirror_name [mirror_name ...]
+.\"
+.BI /etc/unmirror
+.RI [ "mirror_name ..." ]
+.br
+.\"
+.\" without formatting codes, sixth line would look like:
+.\" /etc/unmirror -a
+.B "/etc/unmirror \-a"
+.\"
+.SH DESCRIPTION
+Disk mirroring (also known as shadowing) is the continuous, automatic
+maintenance of two separate copies of a given set of data.  The purpose
+of mirroring is to provide continued access to a copy of the data in the
+event that a disk or disk controller fails.  The full benefits of mirroring
+require that the two data copies be stored on separate disk drives
+connected to separate disk controllers.
+.PP
+A disk mirror is a logical disk device that appears just like a single disk
+partition to users and applications.  Like a disk partition, a disk mirror
+can be used to store either a filesystem or raw data.
+.PP
+.B "Activating Mirrors"
+.PP
+To activate an existing disk mirror, or to create a new one, you invoke the
+.B mirror
+command in the first form shown in the ``Synopsis'' section.
+This tells the system that the two disk partitions given as
+arguments are copies of the same set of data and are to be accessed
+together through the device name argument
+.I mirror_name .
+(Refer to the
+.BR mr (4)
+man page for details of the
+.B mr
+mirror device driver.)
+The command checks the named mirror to be sure that it is unused, that the
+partitions (``mirror units'') both have valid mirror labels, and that they
+are from the same mirror.  If so, and if the time stamps in the two labels
+do not agree,
+.B mirror
+considers the unit with the newer time the reference and copies its contents
+over the other unit. Then it starts mirroring data onto the units.
+.PP
+If a unit has a valid label, but the
+modification time on its raw device (from the inode) is more recent than the
+label time,
+.B mirror
+considers the unit to be out of date.
+If one unit is out of date,
+.B mirror
+uses the other as the reference.  If both units are out of date,
+.B mirror
+behaves as if neither label is valid.
+.PP
+Note that the units need to be from the same mirror as each other, but
+.I not
+necessarily from the same mirror that is specified in the current
+mirror command (for example, the units from ``mr0'' could be remirrored
+as ``mr5'').
+.PP
+If one or both of the units are unlabeled, such as when forming a new
+mirror or replacing one of the units of an old one, you must specify
+the 
+.B \-l
+(label) option in front of that unit, otherwise an error is printed
+and the operation is aborted.  Note that the
+.B \-l
+option allows
+.B mirror
+to label a unit, but does not require it to do so.  In order to force
+a unit to be relabeled, you must invalidate the existing label on the
+unit using the command
+.BR mrinval .
+.PP
+If both units are unlabeled, the first one specified is the reference and
+.B mirror
+copies it over the other.  This is the only case where the order
+of the mirror units is important;  in subsequent
+.B mirror
+commands, a unit that was
+created as
+.I unit0
+can be given as either
+.I unit0
+or
+.I unit1
+so long as the pair of units specified were last mirrored together.
+.PP
+If both units have valid mirror unit labels, but they do not match (in other
+words, they are from different mirrors), and you intend that they now be
+in the same mirror, you must specify 
+.B \-l
+in front of the unit to relabel.  The
+other becomes the reference and is copied over the relabeled one.
+.PP
+If you are making a new mirror, you can specify that it is to be a
+.I raw-type
+mirror by using the
+.B \-r
+option.  You can similarly specify a 
+.I filesystem-type
+mirror by using the
+.B \-f
+option.  If neither is specified, a filesystem-type mirror is created.
+Refer to the following
+``Restrictions''
+and
+``Special Considerations''
+sections for additional details of mirror types.
+.PP
+If you are making a new mirror, you can specify a smaller size than this
+utility would ordinarily use with the 
+.B \-s 
+.I size
+option.  The 
+.I size
+is
+specified in disk blocks. If the size you specify is larger than 
+.B mirror
+would normally use (which is the size of the smaller partition), an
+advisory message is printed and your size is ignored.
+.PP
+If you are making a new mirror and the two units do not have the same size,
+an advisory message is printed and the smaller size is used.
+.PP
+If you want to change the size or type of a mirror, you must first
+invalidate the labels on both mirror units (using the command
+.BR mrinval ).
+If you change the type of a mirror, the
+data stored on it will appear to move by one block;
+if your applications cannot be reconfigured to compensate for this,
+make a backup of the data prior to the change, and write it back on
+afterward.
+.PP
+The size of each partition is determined by attempting reads on the
+disk in a binary search pattern.
+.PP
+Before it does any copying, this utility verifies that the units involved in
+the copy are not involved in other mirrors and are not in the kernel mount
+table. 
+.PP
+If you attempt to label a partition that currently has a
+bootstrap program on it, 
+.B mirror 
+complains unless you use
+.B \-b
+instead of
+.BR \-l .
+This option enables
+.B mirror
+to overwrite the bootstrap.
+.B Mirror
+will not allow 
+.B \-b
+to be specified except where it is needed.
+.PP
+.B "Activating a Disabled (Single-Unit) Mirror"
+.PP
+The
+.B \-d
+option to
+.B mirror
+(the second form shown in the ``Synopsis'' section) tells the
+system that the single mirror unit specified is to be
+accessed through the mirror device specified, but not mirrored to any
+other unit.  This capability is provided to let you access data on one
+unit of a
+.I damaged
+mirror (while the mirror's other unit is out of service).
+Refer to the
+``Special Considerations''
+section of this man page for more information.
+A new mirror cannot be created with a single unit.
+.PP
+.B "Activating a Group of Mirrors"
+.PP
+When the 
+.B \-a
+option is used (the third form shown in the ``Synopsis'' section),
+.B mirror
+tries to activate all mirrors listed in the file
+.IR /etc/mrtab ,
+even if some of the mirrors cannot be activated.
+This mirror command is typically invoked by the command script
+.B /etc/rc
+at system boot time (refer to
+the ``Special Considerations''
+section of this man page for more information).
+The
+.B "mirror \-a"
+command
+.I never
+resynchronizes units; instead, the mirroring
+operation fails on the mirrors that require additional attention.
+.B Mirror
+has a zero exit status only if all mirrors listed in
+.I /etc/mrtab
+were activated without errors.
+.PP
+.B "Listing Mirrors' Status"
+.PP
+When
+.B mirror
+is invoked without an argument (the final
+form of
+.B mirror
+shown in the ``Synopsis'' section),
+it outputs status information for all mirrors
+configured into the system.
+To provide this listing, 
+.B mirror
+must be able to find at least one valid raw mirror device in
+.I /dev
+that is readable.  
+For each mirror, the mirror number, the name of
+the mirror in
+.I /dev
+(if the inode exists), and the mirror state is printed.  The state is one of 
+.IR active ,
+.IR inactive ,
+.IR shutdown ,
+or
+.IR changing .
+For active mirrors, the mirror type
+.RI ( fs
+for filesystem-type mirrors and
+.I raw
+for raw-type mirrors)
+and the units that comprise the mirror are printed,
+as well as whether each unit is
+.I OK 
+or
+.IR BAD .
+The number of outstanding opens, as the device
+driver sees them, is also printed for each mirror.  There is
+always one additional open of one mirror (usually
+.IR mr0 )
+caused by
+.B mirror
+itself.
+.PP
+.B "Deactivating Mirrors"
+.PP
+The
+.B unmirror
+command attempts to deactivate mirror(s) formed by a previous
+.B mirror
+command.  When deactivated, a mirror device can no longer be accessed
+by the 
+.B mr
+driver. If the mirror is in use, either because it is opened
+by a user process or because it is mounted,
+.B unmirror
+complains that the mirror is busy.  Multiple mirrors may be specified with
+a single command.  
+.B Unmirror
+also complains if one of the mirrors specified is not currently
+mirroring. 
+.PP
+.B "Deactivating All Mirrors"
+.PP
+When invoked with the
+.B \-a
+option,
+.B unmirror
+tries to deactivate all mirrors listed in
+.IR /etc/mrtab ,
+then tries to deactivate all mirrors still active in the system.
+(Note that it only checks the
+.I /dev
+directory for these.)  Used in this form,
+.B unmirror
+does not complain about inactive mirrors that it finds.
+.SH EXAMPLES
+/etc/mirror
+.br
+.I "reports status of all mirrors"
+.sp
+/etc/mirror  /dev/mr0  \-l  /dev/zd1g  \-l  /dev/zd4g  \-f
+.br
+.I "creates and activates a filesystem-type mirror using zd1g as the reference"
+.sp
+/etc/mirror  /dev/mr0  \-b  /dev/zd1h  \-l  /dev/zd4g  \-s  100000  \-r
+.br
+.I "creates and activates a raw-type (renumbered blocks) mirror, overwrites"
+.I "a bootstrap on unit0, and limits size to 100,000 disk blocks"
+.sp
+/etc/mirror  /dev/mr0  /dev/zd1g  /dev/zd4g
+.br
+.I "activates an existing mirror"
+.sp
+/etc/mirror \-a
+.br
+.I "attempts to activate all mirrors listed in /etc/mrtab"
+.sp
+/etc/unmirror  /dev/mr0  /dev/mr1  /dev/mr2
+.br
+.I "deactivates mirrors mr0, mr1, and mr2
+.sp
+/etc/unmirror  \-a
+.br
+.I "deactivates all mirrors in /etc/mrtab and /dev"
+.sp
+/etc/mount  /db1  /dev/mr0
+.br
+.I "mounts mirrored filesystem ``/db1''"
+.SH RESTRICTIONS
+The bootstrap program resides on the first few blocks on disks any disks
+that can boot the operating system (unneeded bootstrap programs may
+exist on other disks as well.)
+A mirror unit's label also needs to occupy the first block of its partition.
+For this reason, you cannot have a mirror unit on a partition that
+starts at the front of a disk from which you plan to boot the operating
+system.  This means that the standard partitions 
+.IR c ,
+.IR d ,
+.IR f ,
+and
+.I h
+on DCC (Dual Channel Disk Controller) disks that must be bootable
+cannot be used for disk mirrors.
+.PP
+Mirrors are supported only on Symmetry systems and DCC disks.
+.PP
+Mirrors are designed to protect against controller, drive, and media failure
+only.  They are not designed to protect against system crashes (although they
+may increase the odds of retrieving your data if one occurs).  Consequently,
+it is recommended that each mirror's units be located on
+different physical disks.  It is better if the disks are on
+separate DCC channels, and better still if they are on separate DCCs.
+.PP
+Mirroring uses the first disk block on each mirror unit for the
+mirror label.  User applications may not read or write this block
+through the mirror.  If the mirror is to be used for a filesystem,
+or by an application that does not read or write block 0,
+it can be a filesystem-type mirror (specified by default and with the
+.B \-f
+option).  On this type of mirror, the first accessible block is block 1,
+and the number of the last block is equal to the mirror size
+(specified explicitly or implicitly) minus 1.
+.PP
+Programs that read or write block 0 must use a raw-type mirror.
+This type of mirror provides a block 0 by shifting all I/O to its units
+by one block. The last block number on a raw-type mirror is equal to
+the mirror size (specified explicitly or implicitly) minus 2. 
+.PP
+Note that the units of a raw-type mirror, unlike units of a filesystem-type
+mirror, have each block offset by one.  Thus, if a filesystem is
+built on a filesystem-type mirror and one unit is lost, all the usual file
+system tools can be used directly on the disk partition containing
+the surviving unit. (Make sure you do this
+.I only
+when the mirror is deactivated.) If a filesystem is built on a raw-type
+mirror and one unit is lost, the tools must be used through
+the mirror device.  (The 
+.B "\-d"
+option to
+.B "mirror"
+lets you activate a mirror with only one unit.)
+.SH SPECIAL CONSIDERATIONS
+.B "Block 0 on filesystem-type mirrors not accessible."
+When performing direct (non-filesystem) I/O on a
+.I filesystem-type
+mirror (one not created with the
+.B \-r
+option
+to
+.BR mirror ),
+the user may neither read nor write the first block (block 0)
+of the mirror disk, which is the mirror label area.
+If your applications require access
+to block 0, create the mirror using the
+.B \-r
+option to create a 
+.I raw-type
+mirror.  The first block of the raw-type mirror still contains the
+label, but the accessible blocks following it are renumbered to start
+with block 0.
+.PP
+.B "Using newfs."
+This command expects to see a partition letter at the end of a device
+specification argument.  A mirror device name normally has no partition letter.
+There are two workarounds for this.
+.PP
+You can invoke
+.B newfs
+on one of the partitions
+that is to be a mirror unit before creating the mirror.  If you
+then make this partition the reference
+.RI ( unit0 ),
+.B mirror
+copies the filesystem to the other unit.  (If the partitions are of different
+sizes, be sure to make the filesystem on the smaller of the two.)
+.PP
+The alternative method is to create a mirror with units that do not yet have
+filesystems, and, using a name that
+.I does
+have a (otherwise meaningless) partition letter,
+create a link to the mirror device inode.
+Now you can run
+.B newfs
+using the link name as its device argument.  For example, you
+might enter the following commands:
+.PP
+.RS
+/etc/mirror  /dev/mr0  \-l  /dev/zd1c  \-l  /dev/zd5c  \-f
+.br
+ln  /dev/mr0  /dev/mr0c
+.br
+/etc/newfs  /dev/mr0c cm2344k
+.RE
+.PP
+This setup allows
+.B newfs
+(and any other programs that expect a partition letter) to operate on
+the mirror device rather than on the partitions containing the mirror's
+units.
+.PP
+.B "Both block and raw device inodes required in /dev."
+You must have both the raw- and
+block-device inodes for each mirror in
+.I /dev
+even if you will only use the mirror to store a filesystem.  This
+is because mirroring is started with an
+.BR ioctl ,
+(refer to the
+.BR ioctl (2)
+man page for details) which requires a raw device.
+.PP
+.B "Mirror activation during reboot."
+If you want mirrors to be automatically activated whenever the system
+is booted, put the mirror configuration in the file
+.I /etc/mrtab.  
+Note that if the system crashes, the 
+.B "mirror \-a" 
+command invoked by
+.B /etc/rc
+cannot activate the mirrors listed in
+.IR /etc/mrtab ,
+the system does
+.I not
+come up to multiuser operation, and you must either
+resynchronize the mirrors manually or delete them from
+.IR /etc/mrtab .
+Then make sure to run
+.B fsck
+on all filesystems (mirrored and nonmirrored) before booting to multiuser
+operation.
+.PP
+.B "Accessing damaged mirrors."
+When one unit of a mirror fails, the mirror continues to run on the
+good unit.  If the faulty mirror unit is to be out of service for an
+unacceptably long period of time and you do not have a spare partition
+to use as a new second unit, you can continue to use the remaining mirror
+unit alone.
+.PP
+.in +1i
+.ll -1i
+.ce 1
+CAUTION
+.I "When operating a disk mirror with a single mirror unit, you do "
+.B NOT
+.I "get the data protection benefits of mirroring."
+.I "Repair or replace the damaged mirror unit as soon as possible."
+.PP
+If the mirror is currently inactive, you can reactivate it with the
+single good unit using the
+.B \-d
+option to
+.BR mirror .
+In the case
+of a filesystem-type mirror, the remaining good unit may also be used directly
+as a standard disk partition.  You must relabel the unit (using the
+.B \-l
+option to
+.BR mirror )
+when it comes time to become part of a mirror again.
+In the case of a raw-type
+mirror, you must access the remaining unit as a disabled mirror device
+(using the
+.B \-d
+option to
+.BR mirror ),
+rather than accessing the disk partition directly.
+.PP
+You cannot activate a disabled-unit mirror using 
+.BR "mirror \-a" .
+This means that the system will not boot to multiuser operation
+with a disabled
+mirror present unless you first delete that mirror's entry in the file
+.I /etc/mrtab.
+.in -1i
+.ll +1i
+.SH FILES
+.if n .ta 1.5i
+.if t .ta 1.25i
+.IR /dev/ [ r ] "mr*	"
+mirrors
+.br
+.IR /dev/ [ r ] "zd*	"
+mirrorable disk partitions
+.br
+.IR "/etc/mrtab	"
+fixed mirror table
+.SH "SEE ALSO"
+.BR ioctl (2),
+.BR mr (4),
+.BR zd (4),
+.BR mrtab (5),
+.BR mrinval (8),
+.BR rc (8)

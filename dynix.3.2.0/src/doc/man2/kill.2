@@ -1,0 +1,72 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: kill.2 1.7 90/02/11 $
+.TH KILL 2 "\*(V)" "4BSD"
+.SH NAME
+kill \- send signal to a process
+.SH SYNOPSIS
+.ft 3
+kill(pid, sig)
+.br
+int pid, sig;
+.SH DESCRIPTION
+.I Kill
+sends the signal \f2sig\fP
+to a process, specified by the process number
+.IR pid .
+.I Sig
+may be one of the signals specified in
+.IR sigvec (2),
+or it may be 0, in which case
+error checking is performed but no
+signal is actually sent. 
+This can be used to check the validity of
+.IR pid .
+.PP
+The sending and receiving processes must
+have the same effective user ID, otherwise
+this call is restricted to the super-user.
+A single exception is the signal SIGCONT which may always be sent
+to the process group of any child or grandchild of the current process.
+.PP
+If the process number is 0,
+the signal is sent to all other processes in the
+sender's process group; this is a variant of
+.IR killpg (2).
+.PP
+If the process number is \-1, and the user is the super-user,
+the signal is broadcast universally
+except to system processes
+and the process sending the signal.
+.PP
+Processes may send signals to themselves.
+.SH "RETURN VALUE
+Upon successful completion, a value of 0 is returned.
+Otherwise, a value of \-1 is returned and
+.I errno
+is set to indicate the error.
+.SH "ERRORS
+.I Kill
+will fail and no signal will be sent if any of the following
+occur:
+.TP 15
+[EINVAL]
+\f2Sig\fP is not a valid signal number.
+.TP 15
+[ESRCH]
+No process can be found corresponding to that specified by \f2pid\fP.
+.TP 15
+[EPERM]
+The sending process is not the super-user and its effective
+user id does not match the effective user-id of the receiving process.
+.SH "SEE ALSO"
+getpid(2), getpgrp(2), killpg(2), sigvec(2)

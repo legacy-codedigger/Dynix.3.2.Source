@@ -1,0 +1,86 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: gate.4 1.7 87/08/04 $
+.TH GATE 4 "\*(V)" "DYNIX"
+.SH NAME
+gate \- SLIC gate usage
+.SH DESCRIPTION
+Drivers in DYNIX need to use gates, locks, and semaphores.
+Since the SLIC chip provides a finite number of gates to build
+these constructs, the gates must be allocated to the various
+functions in the operating system.
+.PP
+Of the 64 gates currently supported by the SLIC chip, the last
+10 are pre-allocated by the DYNIX kernel for the purpose of
+building device-drivers and related code.
+These gates are defined in
+.IR /sys/machine/gate.h ,
+via:
+.PP
+.RS
+.nf
+#define	G_DRIVERMIN	54
+#define	G_DRIVERMAX	63
+.fi
+.RE
+.PP
+The current usage of gates by the drivers supported by DYNIX
+is given below:
+.RS
+.nf
+.ta +\w'tty[hijk]*  'u +\w'MULTIBUS Systech MTI-800/1600  'u
+ttyc*	SEC Console Ports	54
+rts*	SEC Tape	57
+sd*	SEC Disk	58
+se*	SEC Ether	59
+tty[hijk]*	MULTIBUS Systech MTI-800/1600	61
+xp*	MULTIBUS Xylogics 450 Disk	62
+xt*	MULTIBUS Xylogics 472 Tape	62
+.fi
+.RE
+.PP
+The implementation of sleep()/wakeup()
+for mono-processor drivers uses gate 63.
+This gate is not used unless there are
+mono-processor drivers in the system.
+.PP
+The typical use of gates in a driver is to build locks and semaphores.
+Since these constructs hold the gate for brief periods,
+contention on the gate is low.
+Thus it is acceptable to use a given gate in multiple drivers.
+.PP
+Most drivers configure the gate(s) they're using in their binary
+configuration file
+(for example in
+.IR /sys/conf/conf_sd.c ),
+using a line like:
+.RS
+gate_t  sdgate = 58;
+.RE
+.PP
+This technique is recommended since it removes the dependency
+on an explicit gate from the driver source.
+This also better supports the ability to tune the usage of the gates
+for a given hardware/software configuration.
+.SH FILES
+.TP \w'/sys/machine/gate.h\0'u
+/sys/machine/gate.h
+defines SLIC gate usage
+.TP
+/sys/conf/conf_*.c
+driver binary-configuration files
+.SH CAVEAT
+This description is implementation specific and subject to change.
+There will always be at least 10 gates pre-allocated
+to driver purposes, however.
+.SH BUGS
+A more dynamic allocation strategy for gates might be better.

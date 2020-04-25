@@ -1,0 +1,77 @@
+# /etc/rc.shutdown.  Called from /etc/shutdown, /etc/halt and
+# /etc/reboot, each time with a single parameter.  From /etc/shutdown,
+# it is called twice, the first time with the parameter "warn" if
+# -h or -r or -k are not specified , then SIGTERM is sent to all processes,
+# and /etc/rc.shutdown is called a second time ,with the parameter "shutdown".
+# It is called from /etc/halt with the
+# parameter "halt", and from /etc/reboot with the parameter "reboot",
+# in both cases after all processes have been killed (or killed as
+# much as they can be).
+
+if [ $# -lt 1 ]
+then	echo $0 called with wrong number of parameters
+	exit 1
+fi
+
+nosync=0			# don't sync the disks
+type=$1
+shift
+while [ $# -gt 0 ]; do
+	case $1 in
+	-*n*)	nosync=1
+		;;
+	*)
+		;;
+	esac
+	shift
+done
+
+case $type in
+warn)
+	;;
+shutdown)
+	if [ -f /usr/adm/acct ]; then
+		/usr/etc/accton >/dev/console 2>&1	# turn off accounting
+	fi
+	if [ $nosync -eq 0 ]; then
+		/etc/umount -t 4.2
+	fi
+	if	[ -f /etc/mirror ]; then	
+		if [ $nosync -eq 1 ]; then
+			/etc/umount -t 4.2	# umount needed for unmirror
+		fi
+		/etc/unmirror -a
+	fi
+	;;
+halt)
+	if [ -f /usr/adm/acct ]; then
+		/usr/etc/accton >/dev/console 2>&1	# turn off accounting
+	fi
+	if [ $nosync -eq 0 ]; then
+		/etc/umount -t 4.2
+	fi
+	if	[ -f /etc/mirror ]; then	
+		if [ $nosync -eq 1 ]; then
+			/etc/umount -t 4.2	# umount needed for unmirror
+		fi
+		/etc/unmirror -a
+	fi
+	;;
+reboot)
+	if [ -f /usr/adm/acct ]; then
+		/usr/etc/accton >/dev/console 2>&1	# turn off accounting
+	fi
+	if [ $nosync -eq 0 ]; then
+		/etc/umount -t 4.2
+	fi
+	if	[ -f /etc/mirror ]; then
+		if [ $nosync -eq 1 ]; then
+			/etc/umount -t 4.2	# umount needed for unmirror
+		fi
+		/etc/unmirror -a
+	fi
+	;;
+*)	echo $0 called with non-standard parameter '"'$1'"'
+	exit 1
+	;;
+esac

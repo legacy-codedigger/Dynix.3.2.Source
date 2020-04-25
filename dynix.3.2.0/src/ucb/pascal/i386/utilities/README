@@ -1,0 +1,9 @@
+This directory contains two `help files' and source code for various
+Berkeley Pascal utilities. 
+
+	pc		-- The compiler interface program (or "front-end").
+	pmerge		-- Pascal source file merger.
+	pxref		-- Pascal cross-reference utility.
+	pcexterns.o	-- A `library' of external definitions used by pc3.
+	how_pc		-- A `help file' called by pc.
+	how_pxp		-- A `help file' called by pxp.

@@ -1,0 +1,98 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: tc.1 1.5 1991/08/06 19:06:51 $
+.TH TC 1 "\*(V)" "7th Edition"
+.SH NAME
+tc \- phototypesetter simulator
+.SH SYNOPSIS
+.B tc
+[
+.B \-t
+]
+[
+.B \-s\c
+N
+]
+[
+.B \-p\c
+L
+]
+[
+file
+]
+.SH DESCRIPTION
+.I Tc
+interprets its
+input (standard input default)
+as device codes for a Graphic Systems phototypesetter (cat).
+The standard output of
+.I tc
+is intended for a Tektronix 4015 (a 4014 terminal
+with ASCII and APL character sets).
+The sixteen typesetter sizes are mapped into the 4014's
+four sizes;
+the entire TROFF character set is drawn using the 4014's
+character generator,
+using overstruck combinations where necessary.
+Typical usage:
+.IP "" 15
+troff \-t file | tc
+.PP
+At the end of each page
+.I tc
+waits for a newline (empty line) from the keyboard before
+continuing on to the next page.
+In this wait state, the command
+.B e
+will suppress the screen erase before the next page;
+.B s\c
+N will cause the next N pages to be skipped;
+and
+.B !\c
+line will send line to the shell.
+.PP
+The command line options are:
+.TP
+.B  \-t
+Don't wait between pages; for directing output into a file.
+.TP 
+.BR \-s N
+Skip the first N pages.
+.TP 
+.BR \-p L
+Set page length to L.
+L may include the scale factors
+.B p
+(points),
+.B i
+(inches),
+.B c
+(centimeters),
+and
+.B P
+(picas);
+default is picas.
+.TP
+.BI \(fm\- l\ w \(fm
+Multiply the default aspect ratio, 1.5, of a displayed page
+by
+.I l/w.
+.SH "SEE ALSO"
+troff(1),
+plot(1G)
+.SH BUGS
+Font distinctions are lost.
+.br
+.IR tc 's
+character set is limited to ASCII in just one size.
+.br
+The aspect ratio option is unbelievable.

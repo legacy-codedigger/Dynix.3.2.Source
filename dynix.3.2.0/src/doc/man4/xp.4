@@ -1,0 +1,227 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: xp.4 1.11 1991/04/16 16:04:42 $
+.TH XP 4 "\*(V)" "DYNIX"
+.SH NAME
+xp \- Xylogics 450 MULTIBUS disk interface
+.SH SYNOPSIS
+.B "controller xy0 at mbad? csr 0x0100 maps 34 bin 5 intr 0"
+.SH DESCRIPTION
+Files with minor device numbers 0 through 7 refer to various portions
+of drive 0;
+minor devices 8 through 15 refer to drive 1, etc.
+The standard device names begin with ``xp'' followed by
+the drive number and then a letter a-h for partitions 0-7 respectively.
+The character ? stands here for a drive number in the range 0-7.
+The various controllers are referred to as ``xy''
+followed by the controller number.
+.PP
+The block file's access the disk via the system's normal
+buffering mechanism and may be read and written without regard to
+physical disk records.
+There is also a `raw' interface
+which provides for direct transmission between the disk
+and the user's read or write buffer.
+A single read or write call results in exactly one I/O operation
+and therefore raw I/O is considerably more efficient when
+many words are transmitted.
+The names of the raw files
+conventionally begin with an extra `r.'
+.PP
+In raw I/O counts should be a multiple of 512 bytes (a disk sector).
+Likewise
+.IR lseek (2)
+calls should specify a multiple of 512 bytes.
+.PP
+You should specify at least 12 maps in the
+.IR config (1)
+file for each MULTIBUS disk controller.
+The MULTIBUS disk controllers must be strapped for 24-bit operation.
+.PP
+The driver will recognise drives with and without 
+VTOC
+(Volume Table of Contents).
+If the disk does not contain a 
+VTOC
+the driver will use the compatibility information hard coded in the driver.
+.SH COMPATIBILITY BINARY CONFIGURATION
+When building a kernel with MULTIBUS disk, be sure that
+the binary configuration information in /sys/conf/conf_xp.c
+is up to date.
+The constants and variables defined in conf_xp.c include:
+.IP "XPCTLR" \w'xp_unitXXXXX'u
+The maximum number of controllers supported by the driver.
+.IP "MAXBUFSIZE"
+The maximum buffer size for ioctl system calls (probably shouldn't
+be changed).
+.IP "eagle_size"
+Partition tables for the Fujitsu Eagle disk drive.
+.IP "cdc9766_size"
+Partition tables for the CDC 9766 disk drive.
+.IP "cdc9762_size"
+Partition tables for the CDC 9762 disk drive.
+.IP "xpst"
+This is an array indexed by drive type.
+It probably should not be changed.
+.IP "xpunits"
+This array describes the controller and transport
+assignments that will be supported by the system.
+Typically this describes wildcarding across all drive
+and controller combinations (forcing the device driver
+to probe each controller to find which disk drives are
+physically present).
+It is indexed by the drive field of the minor device number.
+.sp .5
+As a common example, the following xpunits configuration declares
+that we hope to find four Fujitsu Eagles in our system,
+and that they may appear on any
+.I xy
+controller:
+.in +0.5i
+.RS
+.sp .5
+.nf
+struct	xp_unit	xpunits[] = {
+/*	 ctlr	drive	partn tables	ctlr info */
+	{ ANY,	ANY,	&xpst[XPST_EAGLE],	0 },	/* any ctlr, any drive */
+	{ ANY,	ANY,	&xpst[XPST_EAGLE],	0 },	/* any ctlr, any drive */
+	{ ANY,	ANY,	&xpst[XPST_EAGLE],	0 },	/* any ctlr, any drive */
+	{ ANY,	ANY,	&xpst[XPST_EAGLE],	0 },	/* any ctlr, any drive */
+};
+.sp .5
+.fi
+.RE
+.IP "xpmaxretry"
+The maximum number of times to retry errors.
+.SH "DISK SUPPORT"
+The driver supports the
+Fujitsu 2351A ``Eagle'' disk drive.
+Other drives may be added to the configuration tables.
+The origin and size (in sectors) of the partitions
+on each drive are as follows:
+.PP
+.nf
+.ta .5i +\w'000000    'u +\w'000000    'u +\w'000000    'u +\w'000000    'u
+.PP
+Fujitsu ``Eagle'' partitions
+	disk	start	length	cyls
+	xp?a	\0\0\0\0\00	\015884	\0\00 - \016
+	xp?b	\016560	\066880	\018 - \090
+	xp?c	\0\0\0\0\00	774640	\0\00 - 841
+	xp?d	375360	\015884	408 - 425
+	xp?e	408960	307200	426 - 759
+	xp?f	699200	\072680	760 - 838
+	xp?g	375360	396520	408 - 838
+	xp?h	\093720	291346	\091 - 407
+.DT
+.fi
+.PP
+It is unwise for all of these files to be present in one installation,
+since there is overlap in addresses and protection becomes
+a sticky matter.
+The xp?a partition is normally used for the root file system,
+the xp?b partition as a paging area,
+and the xp?c partition for pack-to-pack copying
+and manipulating the bad block information,
+as it maps the entire disk.
+Except for the xp?c partition,
+the last three cylinders are reserved for
+diagnostics and bad block information.
+.SH FILES
+.ta 2i
+/dev/xp[0-7][a-h]	block files
+.br
+/dev/rxp[0-7][a-h]	raw files
+.br
+/sys/conf/conf_xp.c	binary configuration file
+.br
+/etc/diskinfo/*	disk geometry files
+.br
+.SH "STAND-ALONE EQUIVALENCE"
+The convention for specifing a Multibus disk from stand-alone code is:
+.br
+		xp(\f3u\fP,\f3p\fP)
+.br
+where \f3u\fP refers to the unit number and \f3p\fP refers to the 
+partition number. Each Multiobus controller may have 8 unit numbers
+for each of 8 types (only one type is currently supported so the controller
+type is now alway zero), each Multibus adapter may have 8 controllers.
+The partition is a number 0-256, (partition 256 refers to the whole disk).
+.nf
+	\f3u\fP = Multibus adapter board number x 512
+		  + controller type x 64 (0)
+		  + controller number x 8
+	          + drive number.
+	\f3p\fP = partition number.
+.fi
+
+.SH DIAGNOSTICS
+.BR "xp\f2np\fP\ soft\ error,\ compcode=0x\f2nn\ error\ description" .
+The MULTIBUS disk device driver 
+encountered a soft error on the specified operation,
+and will try the operation again.
+This message is accompanied by the following lines:
+.PP
+.DT
+.nf
+.B "	filesystem blkno = \f2nnnn\fP"
+.B "	(for addbad) physical sector = \f2mmmm\fP"
+.B "	(for xpformat) cylinder = \f2cc\fP; head = \f2hh\fP; sector = \f2ss\fP"
+.fi
+.PP
+If you see several soft errors at the same disk sector,
+you should run diagnostics on the disk,
+and use the DYNIX
+.IR addbad (8)
+command to add the sector to the disk's bad-sector list.
+.PP
+.BR "xp\f2np\fP\ HARD\ ERROR,\ compcode=0x\f2nn\ error\ description" .
+The MULTIBUS disk device driver 
+gave up on the specified operation 
+after retrying it a predefined number of times 
+and receiving a soft error on each try.
+You will need to use the DYNIX
+.IR addbad (8)
+command to add the specified sector to the disk's bad-sector list.
+.PP
+During autoconfiguration, 
+a message will appear on the console 
+indicating the type of drive that was recognized.
+For example:
+.PP
+.DT
+.B "	xp%d at xy%d drive %d: Eagle"
+.SH SEE ALSO
+addbad(8), vtoc(5), newfs(8), xpformat(8s), prtvtoc(8), mkvtoc(8)
+.SH BUGS
+In raw I/O
+.I read
+and
+.IR write (2)
+truncate file offsets to 512-byte block boundaries,
+and
+.I write
+scribbles on the tail of incomplete blocks.
+Thus,
+in programs that are likely to access raw devices,
+.I read, write
+and
+.IR lseek (2)
+should always deal in 512-byte multiples.
+.PP
+The partition tables for the file systems should be read off of each
+pack, as they are never quite what any single installation would prefer,
+and this would make packs more portable.
+.PP
+Currently, DYNIX will not be able to boot if there is an unformatted
+disk drive on any configured disk controller.
+It is sufficient to power off the disk drive in order to boot.

@@ -1,0 +1,79 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986 Sequent Computer Systems, Inc.
+.\" All rights reserved
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: ddp.4p 1.1 87/04/20 $
+.TH DDP 4P "\*(V)" "DYNIX"
+.SH NAME
+ddp \- AppleTalk Datagram Delivery Protocol
+.SH SYNOPSIS
+.B #include <sys/socket.h>
+.br
+.B #include <netat/atalk.h>
+.PP
+.B s = socket(AF_APPLETALK, SOCK_DGRAM, 0);
+.SH DESCRIPTION
+DDP is a simple, unreliable datagram protocol which is used
+to support the SOCK_DGRAM abstraction for the AppleTalk
+protocol family.  DDP sockets are connectionless, and are
+normally used with the
+.I sendto 
+and
+.IR recvfrom 
+calls, though the
+.IR connect (2)
+call may also be used to fix the destination for future
+packets (in which case the 
+.IR recv (2)
+or
+.IR read (2)
+and 
+.IR send (2)
+or
+.IR write(2)
+system calls may be used).
+.SH DIAGNOSTICS
+A socket operation may fail with one of the following errors returned:
+.TP 22
+[EISCONN]
+when trying to establish a connection on a socket which
+already has one, or when trying to send a datagram with the destination
+address specified and the socket is already connected;
+.TP 22
+[ENOTCONN]
+when trying to send a datagram, but
+no destination address is specified, and the socket hasn't been
+connected;
+.TP 22
+[ENOBUFS]
+when the system runs out of memory for
+an internal data structure;
+.TP 22
+[EADDRINUSE]
+when an attempt
+is made to create a socket with a port which has already been
+allocated;
+.TP 22
+[EADDRNOTAVAIL]
+when an attempt is made to create a 
+socket with a network address for which no network interface
+exists;
+.TP 22
+[EINVAL]
+when an an invalid DDP request is made;
+.TP 22
+[EAFNOSUPPORT]
+when the address family is not equal to AF_APPLETALK for a \f2bind\fP
+operation.
+.SH SEE ALSO
+send(2),
+recv(2),
+intro(4N),
+appletalk(4F)

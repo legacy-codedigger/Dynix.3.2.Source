@@ -1,0 +1,35 @@
+# @(#)$Copyright:	$
+# Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+# Sequent Computer Systems, Inc.   All rights reserved.
+#  
+# This software is furnished under a license and may be used
+# only in accordance with the terms of that license and with the
+# inclusion of the above copyright notice.   This software may not
+# be provided or otherwise made available to, or used by, any
+# other person.  No title to or ownership of the software is
+# hereby transferred.
+
+# @(#)$Header: Readme 1.3 86/03/12 $
+
+3/12/86	gak	Version 10 SCED firmware changes
+
+	We removed all support for local RAM programs.  The host
+	command no longer needs the '~w', '~l' or '~z' commands,
+	so these were gutted.  As a consequence, the files
+	download.c and bootstrap.c no longer participate in the
+	build.  Look for '#ifdef DROPPED_IN_V10' for the pieces
+	of parse.c that were affected.
+
+	I also moved the header file for remote.h to this
+	directory, as the firmware 'rs' bootstrap is no longer
+	supported.
+
+	The note about INCLUDE below can be safely ignored now.
+
+
+
+BLAST FROM THE PAST:
+	Note: include files marked with INCLUDE have unusual
+	search path.  If this directory is moved, then you
+	should "grep INCLUDE *.c makefile" and think about what
+	you see.

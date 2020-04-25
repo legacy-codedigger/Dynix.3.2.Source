@@ -1,0 +1,5 @@
+# This file is a list of the permanent mirrors in the system.  The format is:
+#	<mirror_name>	<unit0_name>	<unit1_name>
+# Comments run from a '#' to the end of line.  All names are fully
+# qualified path names.
+

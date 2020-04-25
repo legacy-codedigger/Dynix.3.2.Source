@@ -1,0 +1,84 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: nfsstat.8 1.5 87/06/23 $
+.\" @(#)nfsstat.8 1.1 85/12/28 SMI;
+.TH NFSSTAT 8 "\*(V)" "4BSD"
+.SH NAME
+nfsstat \- Network File System statistics
+.SH SYNOPSIS
+.B nfsstat
+[
+.B \-csnrz
+]
+.SH DESCRIPTION
+.\".IX  "nfsstat command"  ""  "\f2nfsstat\fP \(em display network statistics"
+.\".IX  "NFS statistics"  "display"  ""  "display \(em \f2nfsstat\fP"
+.\".IX  "statistics of NFS"  display  ""  "display \(em \f2nfsstat\fP"
+.I Nfsstat
+displays statistical information about the
+Network File System (NFS) and
+Remote Procedure Call (RPC)
+interfaces to the kernel.
+It can also be used to reinitialize this information.
+If no options are given,
+the default is
+.Ps
+nfsstat \-csnr
+.Pe
+That is,
+print everything and reinitialize nothing.
+.SH OPTIONS
+.TP
+.B \-c
+Display client information.
+Only the client side NFS and RPC information is printed.
+Can be combined with the
+.B \-n
+and
+.B \-r
+options to print client NFS or client RPC information only.
+.TP
+.B \-s
+Display server information.
+Works like the
+.B \-c
+option above.
+.TP
+.B \-n
+Display NFS information.
+NFS information for both the client and server side is printed.
+Can be combined with the
+.B \-c
+and
+.B \-s
+options to print client or server NFS information only.
+.TP
+.B \-r
+Display RPC information.
+Works like the
+.B \-n
+option above.
+.TP
+.B \-z
+Zero (reinitialize) statistics.
+Can be combined with any of the above options to
+zero particular sets of statistics after printing them.
+The user must have write permission on
+.I /dev/kmem
+for this option to work.
+.SH FILES
+.ta \w'/dev/kmem\0\0\0'u
+/dynix 	system namelist
+.br
+/dev/kmem	kernel memory
+.SH "SEE ALSO"
+nfs(4)

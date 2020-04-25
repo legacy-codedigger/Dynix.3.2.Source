@@ -1,0 +1,20 @@
+
+(insert-file-contents "../lisp/version.el")
+
+(re-search-forward "emacs-version \"[^\"]*[0-9]+\"")
+
+(forward-char -1)
+
+(save-excursion (save-restriction (narrow-to-region (point) (progn (skip-chars-backward "0-9") (point))) (goto-char (point-min)) (let ((version (read (current-buffer)))) (delete-region (point-min) (point-max)) (prin1 (1+ version) (current-buffer)))))
+
+(skip-chars-backward "^\"")
+
+(message "New Emacs version will be %s" (buffer-substring (point) (progn (skip-chars-forward "^\"") (point))))
+
+(write-region (point-min) (point-max) "../lisp/version.el" nil (quote nomsg))
+
+(erase-buffer)
+
+(set-buffer-modified-p nil)
+
+(kill-emacs)

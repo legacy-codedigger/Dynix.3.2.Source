@@ -1,0 +1,34 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: arcv.8 1.5 1991/08/06 17:49:29 $
+.TH ARCV 8 "\*(V)" "4BSD"
+.SH NAME
+arcv \- convert archives to new format
+.SH SYNOPSIS
+.B /usr/ucb/arcv
+file ...
+.SH DESCRIPTION
+.I Arcv
+converts archive files
+(see
+.IR ar (1),
+.IR ar (5))
+from 32v and Third Berkeley editions to a new portable format.
+The conversion is done in place, and the command
+refuses to alter a file not in old archive format.
+.PP
+Old archives are marked with a magic number of 0177545 at the start;
+new archives have a first line ``!<arch>''.
+.SH FILES
+/tmp/v*, temporary copy
+.SH SEE ALSO
+ar(1), ar(5)

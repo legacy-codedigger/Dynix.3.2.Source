@@ -1,0 +1,2940 @@
+!<arch>
+Init            445768324   100   205   100640  644       `
+#
+if (`printenv term` != "")   exit 0
+cat << '%'
+To do the lessons on eqn you need to login at a
+hardcopy terminal capable of half-line motions.
+Then I need to know what kind of terminal you are using.
+I will put you out of learn. Type the command
+
+setenv term xxx			(that's term, not TERM)
+
+where xxx is one of the following:
+
+   300       382       450-12-8   a1        ipsi      xerox
+   300-12    382-12    832        aj832     ipsi-12   xerox12
+   300s      382cw     832-12     dtc       ipsi12
+   300s-12   450       833        dtc-12    odtc-12
+   tn300     450-12    833-12     ep40      x1700
+
+Then type "learn eqn" again.
+'%'
+exit 1
+L0              445768325   100   205   100640  11        `
+#next
+0.1a
+
+L0.1a           445768327   100   205   100640  1208      `
+#once #create message
+.EQ
+delim $$
+.EN
+.pl 1
+.ll 55
+This script is designed to teach you the "eqn" language
+for typing mathematics. 
+There are two versions of the program. "eqn" is for
+use on the phototypesetter; "neqn" is for use on a
+terminal like a DASI or GSI, or a Model 37 teletype.
+The lessons are mostly written under the assumption
+that you will be using neqn on a DASI or GSI or teletype;
+a few things that are specific to eqn on the typesetter are
+left to the end.
+
+The terminal MUST be a DASI or GSI or teletype,
+or you will get some rather startling results
+from this script.
+
+To verify that everything is working, this message
+should come out with subscripts, superscripts, Greek
+letters and so on.  If it doesn't, we're in
+trouble.
+.sp
+Summation sign: $ sum $
+.sp
+Letter pi: $ pi $
+.sp
+Subscript and superscript: $ x sub i ~=~ y sup j $
+.sp
+If this looks ok, type yes.  Otherwise, type no.
+.pl 1
+#
+#once neqn message | nroff -T$term
+#copyin
+#user
+#uncopyin
+#match yes
+#fail
+Do you have the right kind of terminal?
+If you are using a DASI or GSI, make
+sure the switch labeled "PLOT" inside the cover
+is set to ON.
+If these fail, call for help;
+otherwise type yes the next time.
+#log
+#next
+1.1a
+L1.1a           445768328   100   205   100640  830       `
+#print
+To properly print a file containing an equation,
+you have to type a longer-than-usual command line.
+If you are using a DASI or GSI, to print a file
+"math" that contains mathematics, you must say
+
+  neqn math | nroff -Txxx
+
+where "-Txxx" describes the terminal you are using.
+This is usually one of
+  -T300
+  -T300S
+  -T450
+It is very important that you get this line right.
+If you don't, you'll not be happy with your output.
+
+In this directory is a file called "Example"; print
+it properly, using whichever command line is 
+appropriate to your terminal.
+Then type "ready".
+#once #create Example
+This is a little file that contains an
+example of a subscript and superscript:
+.ce
+.EQ
+a sub i + b sub i ~=~ c sub i sup 2
+.EN
+.pl 1
+#copyin
+#user
+#uncopyin
+grep 'neqn Example *| *nroff -T' <.copy >/dev/null
+#log
+#next
+1.1b 10
+L1.1b           445768329   100   205   100640  1110      `
+#print
+Most technical papers and memos consist of normal text
+interspersed with occasional (or frequent) mathematical
+expressions, such as the ones in the last lesson.
+To tell neqn that something is mathematics, not normal
+text, you must surround it by two "commands":
+
+   A line that begins with
+   .EQ
+   marks the start of an expression.
+
+   A line that begins with
+   .EN
+   marks the end of the expression.
+
+Thus, the lines
+.EQ
+x=y+1
+.EN
+represent the equation
+
+x=y+1
+
+The file "Example" in this directory has a line that contains
++ and - signs.  Make that line into an equation
+by adding .EQ and .EN before and after.
+Print "Example" with neqn and nroff (and the appropriate -Txxx),
+then type "ready".
+#once #create Ref
+This is a tiny little text
+that includes one equation
+or at least it will when you find this line:
+.ce
+.EQ
+a = b + c - d
+.EN
+and convert it into an equation.
+.pl 1
+#once #create Example
+This is a tiny little text
+that includes one equation
+or at least it will when you find this line:
+.ce
+a = b + c - d
+and convert it into an equation.
+.pl 1
+#user
+#cmp Ref Example
+#log
+#next
+1.1c 10
+L1.1c           445768331   100   205   100640  1101      `
+#print
+It is usually wise to do your formatting with
+the "-ms" macro package developed by Mike Lesk, since
+it does a lot of dirty work for you without any effort
+on your part.
+One of the things "-ms" does is to arrange that equations
+are "displayed" - that is, that they are neatly centered
+and set off from the surrounding text.
+Most of the "-ms" package is described in another script
+called "macros", which you may have already learned.
+For now, we need only know this much: to use "-ms"
+with neqn, add "-ms" to your command line, right after
+the word "nroff", like this
+
+  neqn files... | nroff -ms -Txxx
+
+Notice where the "-ms" goes.
+
+In this directory is a file called "Example".
+To prove that you can type the "-ms" in the right place,
+print "Example" with "-ms", then type "ready".
+#once #create Example
+.PP
+This is a tiny little text
+that includes one equation
+or at least it will when you find this line:
+.EQ
+x sub i = y sub i
+.EN
+and convert it into an equation.
+(Naturally I changed it.)
+.pl 1
+#copyin
+#user
+#uncopyin
+grep 'neqn Example *| *nroff -ms' <.copy >/dev/null
+#log
+#next
+1.1d 10
+
+L1.1d           445768333   100   205   100640  805       `
+#print
+The "-ms" package lets you do some other nice things as
+well.  For example, you can arrange for a number to be
+placed on an equation, in the right margin:
+
+  a = b + c - d                               (1.23)
+
+by placing the number after the .EQ on the same line,
+like this:
+
+.EQ (1.23)
+
+You must leave a space between .EQ and the number.
+
+In the file "Example", number the equation "17.1a"
+and print it properly with neqn and nroff -ms.
+(Don't forget -Txxx for your terminal.)
+Then type "ready".
+#once #create Example
+.PP
+This is a tiny little text
+that includes one equation
+or at least it will when you find this line:
+.EQ
+x sub i = y sub i + z sub i
+.EN
+and convert it into an equation.
+(Naturally I changed it again.)
+.pl 1
+#user
+grep '\.EQ  *(17\.1a)$' <Example >/dev/null
+#log
+#next
+1.1e 10
+
+L1.1e           445768334   100   205   100640  811       `
+#print
+So far all the equations have been centered, which is what
+"-ms" does unless you tell it differently.
+You can also arrange for equations to be left-adjusted -
+that is, right up against the left margin - by saying
+  .EQ L
+If there is a number, place it _____after the L, separated by a
+space, like this:
+  .EQ L (3a)
+
+Make the equation in "Example" left-justified with
+the number (3.1a) in the right margin and print it
+to make sure everything works.  Then type "ready".
+#once #create Example
+.PP
+This is a tiny little text
+(which you're undoubtedly sick of by now)
+that includes one equation
+or at least it will when you find this line:
+.EQ
+x sup i = y sup i
+.EN
+and convert it into an equation.
+(Naturally I changed it.)
+.pl 1
+#user
+grep '\.EQ  *L  *(3.1a)$' <Example >/dev/null
+#log
+#next
+1.1f 10
+
+L1.1f           445768336   100   205   100640  2050      `
+#print
+You can also make equations that are ________indented a fixed amount from
+the left margin, with the command
+  .EQ I
+Again, if there is an equation number, it follows the I.
+
+Convert all the equations in "Example" to indented ones.
+(Naturally I've changed it.)
+You can do this with a single editor command.
+
+Print "Example" with neqn and nroff -ms,
+then type "ready".
+#once #create Ref
+.LP
+     EQUIVALENCES OF ONE SORT AND ANOTHER
+.LP
+.EQ I (2.01)
+bold x sup { n alpha } (t) ~->~ bold x sup alpha ( bold X ,t).
+.EN
+.sp
+.EQ I (2.02)
+sum from n F( bold x sup { n alpha } (t))
+~->~ 1 over OMEGA INT F( bold x sup alpha ( bold X ,t))d bold \|X
+.EN
+.EQ I (2.03)
+bold x ( bold X ,t) ~==~
+sum from  { alpha =1} to  N
+rho sup alpha  over rho sup 0 bold x sup alpha ( bold X ,t)
+.EN
+.EQ I (2.08)
+sum from  {alpha =1} to  N
+U sup { mu alpha } V sup { mu alpha } ~=~ delta sup { mu nu }
+.EN
+.EQ I (2.06)
+bold y sup { T mu } ( bold X ,t) 
+~==~ sum from  {alpha =1} to  N
+U sup { mu alpha }
+bold x sup alpha
+( bold X ,t)
+.EN
+.EQ I
+~ partial over {partial d} 
+ ( epsilon sub 0 bold E sup T times  bold B ) sub i  
+- m sub ij,\|j ~=~
+-q sup D E sub i sup T
+-( bold ~j sup D times bold B ) sub i
+.EN
+#once #create Example
+.LP
+     EQUIVALENCES OF ONE SORT AND ANOTHER
+.LP
+.EQ (2.01)
+bold x sup { n alpha } (t) ~->~ bold x sup alpha ( bold X ,t).
+.EN
+.sp
+.EQ (2.02)
+sum from n F( bold x sup { n alpha } (t))
+~->~ 1 over OMEGA INT F( bold x sup alpha ( bold X ,t))d bold \|X
+.EN
+.EQ (2.03)
+bold x ( bold X ,t) ~==~
+sum from  { alpha =1} to  N
+rho sup alpha  over rho sup 0 bold x sup alpha ( bold X ,t)
+.EN
+.EQ (2.08)
+sum from  {alpha =1} to  N
+U sup { mu alpha } V sup { mu alpha } ~=~ delta sup { mu nu }
+.EN
+.EQ (2.06)
+bold y sup { T mu } ( bold X ,t) 
+~==~ sum from  {alpha =1} to  N
+U sup { mu alpha }
+bold x sup alpha
+( bold X ,t)
+.EN
+.EQ
+~ partial over {partial d} 
+ ( epsilon sub 0 bold E sup T times  bold B ) sub i  
+- m sub ij,\|j ~=~
+-q sup D E sub i sup T
+-( bold ~j sup D times bold B ) sub i
+.EN
+#user
+#cmp Ref Example
+#log
+#next
+2.1a 10
+L10.1a          445768337   100   205   100640  1470      `
+#once #create message
+.ND
+.tr %$
+.EQ
+delim $$
+.EN
+.LP
+The next topic goes back to the problem of formatting
+equations on the page.  Sometimes it is desirable to
+line up one part of an equation with some part
+of a previous equation - for example, equals signs
+are often lined up like this:
+.EQ I
+x mark = y sub i
+.EN
+.EQ I
+lineup = z sub i
+.EN
+.EQ I
+x sub i + y sub i lineup = z sub i
+.EN
+
+To achieve this, you have to do several things.
+(1) tell neqn to remember the place where things are
+to be lined up, which is done by saying
+"mark" just before the thing you want remembered:
+  .EQ I
+  x mark = y sub i
+  .EN
+.br
+(2) Then, in successive equations, telling neqn
+to line up something on the previous mark, with
+"lineup":
+   .EQ I
+   lineup = z sub i
+   .EN
+.br
+(3) You ____have __to use either ".EQ I" or ".EQ L";
+you can't line things up in a centered equation.
+
+For practice, modify "Example" so the
+equations are lined up on the equals signs, then
+type "ready".
+.pl 1
+#once #create Ref
+.LP
+A test of mark and lineup:
+.EQ I
+x sub i ~ mark =~ 1
+.EN
+.EQ I
+x sub i + y sub i ~ lineup = ~2
+.EN
+.pl 1
+#once #create Example
+.LP
+A test of mark and lineup:
+.EQ I
+x sub i ~ =~ 1
+.EN
+.EQ I
+x sub i + y sub i ~ =~ 2
+.EN
+.pl 1
+#
+#once neqn Ref | nroff >X1 &
+#once neqn message Ref | nroff -T$term %s/tinyms -
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#fail
+Don't forget that tilde is a real character;
+put the mark and lineup after it.
+Remember .EQ I.
+#log
+#next
+10.1b 10
+L10.1b          445768339   100   205   100640  577       `
+#print
+More practice with mark and lineup.
+Modify "Example" so the + signs are lined up in
+all of the equations, then type "ready".
+#once #create Ref
+.LP
+.EQ I
+x ~==~ a sub i ~ mark + ~ b sub i ~-~ c sub i
+.EN
+.EQ I
+lineup + ~ d sub i - e sub i
+.EN
+.EQ I
+lineup + ~ f sub i - g sub i
+.EN
+.EQ I
+lineup + ~ ...
+.EN
+.pl 1
+#once #create Example
+.LP
+.EQ I
+x ~==~ a sub i ~ + ~ b sub i ~-~ c sub i
+.EN
+.EQ I
++ ~ d sub i - e sub i
+.EN
+.EQ I
++ ~ f sub i - g sub i
+.EN
+.EQ I
++ ~ ...
+.EN
+.pl 1
+#
+#once neqn Ref | nroff >X1 &
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#log
+#next
+10.1c 10
+
+L10.1c          445768340   100   205   100640  484       `
+#print
+There are several warnings in order about mark and lineup.
+First, remember that you must use ".EQ I" or ".EQ L".
+Second, there can only be one mark or one lineup in any given
+equation.
+Finally, what you are doing must make sense, or
+your results may be not what you wanted.
+
+Does this sequence produce output with the equals signs
+lined up?
+  .EQ L
+  x mark = y
+  .EN
+  .EQ L
+  x+y mark = z
+  .EN
+Answer yes or no.
+#copyin
+#user
+#uncopyin
+#match no
+#log
+#next
+11.1a 10
+10.2c 5
+L10.2c          445768342   100   205   100640  201       `
+#print
+Does this sequence produce output with the equals signs
+lined up?
+  .EQ I
+  x mark = y
+  .EN
+  .EQ I
+  x+y mark = z
+  .EN
+Answer yes or no.
+#copyin
+#user
+#uncopyin
+#match no
+#log
+#next
+11.1a 10
+
+L11.1a          445768344   100   205   100640  838       `
+#once #create message
+.ND
+.tr %$
+.EQ
+delim $$
+.EN
+.LP
+We have introduced a fair number of "magic" words like
+sub and sup and over and pi and sum.  What happens if
+you need to print an equation that contains one of these
+words __as ____text, like this:
+.EQ
+e sub "pi"
+.EN
+
+The way to turn off special meanings of magic words is
+to enclose them in the double quotes "...".  The $e sub "pi"$
+was printed with
+  .EQ
+  e sub "pi"
+  .EN
+
+Using this knowledge, modify file "Example" so it produces output
+that looks like the following, then type "ready".
+.pl 1
+#once #create Ref
+.LP
+.EQ
+lim "sup" f( "pi" ) = p cdot i
+.EN
+.pl 1
+#once #create Example
+.LP
+.EQ
+lim sup f( pi ) = p cdot i
+.EN
+.pl 1
+#
+#once neqn Ref | nroff >X1 &
+#once neqn message Ref | nroff -T$term %s/tinyms -
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#log
+#next
+11.1b 10
+L11.1b          445768346   100   205   100640  575       `
+#once #create message
+.ND
+.tr %$
+.EQ
+delim $$
+.EN
+.LP
+The quoting mechanism can also be used to turn off the special meaning
+of things like the dollar sign and braces.
+Modify "Example" so it prints the following output, then
+type "ready".
+.pl 1
+#
+#once #create Ref
+.EQ
+delim $$
+.EN
+.LP
+The cost of processing is proportional to
+$characters over "$"$.
+.pl 1
+#once #create Example
+.LP
+The cost of processing is proportional to
+.pl 1
+#
+#once neqn Ref | nroff >X1 &
+#once neqn message Ref | nroff -T$term %s/tinyms -
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#log
+#next
+11.1c 10
+
+L11.1c          445768347   100   205   100640  471       `
+#once #create message
+.ND
+.tr %$
+.EQ
+delim $$
+.EN
+.LP
+Modify "Example" so it prints the following output, then
+type "ready".
+.pl 1
+#once #create Ref
+.EQ
+delim $$
+.EN
+.LP
+The cost of processing is proportional to
+${ "{" characters "}" } over "$"$.
+.pl 1
+#once #create Example
+.LP
+The cost of processing is proportional to
+.pl 1
+#
+#once neqn Ref | nroff >X1 &
+#once neqn message Ref | nroff -T$term %s/tinyms -
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#log
+#next
+11.1d 10
+
+L11.1d          445768349   100   205   100640  387       `
+#print
+One thing to keep in mind, although it generally
+isn't going to affect you, is that the quote "
+is a delimiter just like blank or tilde -
+it turns off subscripts and superscripts, and so
+on. 
+Experiment a bit, and decide if
+  e sup "{t}"
+is the same as
+  e sup "{"t"}"
+Type yes if they are the same, no if they are different.
+#copyin
+#user
+#uncopyin
+#match no
+#log
+#next
+11.1e 10
+
+L11.1e          445768351   100   205   100640  459       `
+#once #create message
+.ND
+.tr %$
+.EQ
+delim $$
+.EN
+.LP
+Sometimes there will be a need for a subscript or superscript
+that has nothing to the left of it, as in references like
+  $"" sup 1$Smith, J. `A great paper...'
+
+Experiment and decide if you can get this effect
+by writing simply
+  %sup 1%Smith, J.....
+
+Type yes if this works, no if it does not.
+.pl 1
+#
+#once neqn message | nroff -T$term %s/tinyms -
+#copyin
+#user
+#uncopyin
+#match no
+#log
+#next
+11.1f 10
+
+L11.1f          445768353   100   205   100640  966       `
+#once #create message
+.ND
+.tr %$
+.EQ
+delim $$
+.EN
+.LP
+The way to handle the problem of a subscript or superscript
+on nothing is to provide something to hang the subscript
+or superscript on. 
+One possibility is to use a tilde, but that has a real width,
+and might spoil the appearance of the output.
+The best solution is this:
+
+  "" sup 1 ...
+
+The expression "" has no width, so everything works
+out properly.  The use of "" may seem a bit unnatural
+but it's an idiom that you get used to quite quickly.
+
+For practice, modify "Example" so it produces
+output that looks like this,
+then type "ready".
+.pl 1
+#once #create Ref
+.LP
+.EQ
+"" sup + H sub 2 ~ "<=>" ~ "" sup - H ~+~ "" sup + H
+.EN
+.pl 1
+#once #create Example
+.LP
+.EQ
+xxx
+.EN
+.pl 1
+#
+#once neqn Ref | nroff >X1 &
+#once neqn message Ref | nroff -T$term %s/tinyms -
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#fail
+Don't forget spaces; don't forget to quote
+things when needed (including <=>).
+#log
+#next
+11.1g 10
+L11.1g          445768355   100   205   100640  410       `
+#once #create message
+.ND
+.tr %$
+.EQ
+delim $$
+.EN
+.LP
+For practice, modify "Example" so it produces
+output that looks like this,
+then type "ready".
+.pl 1
+#once #create Ref
+.LP
+.EQ
+{ lim ~ "sup" } bar ~f(x) ~=~ x
+.EN
+.pl 1
+#once #create Example
+.LP
+.EQ
+xxx
+.EN
+.pl 1
+#
+#once neqn Ref | nroff >X1 &
+#once neqn message Ref | nroff -T$term %s/tinyms -
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#log
+#next
+12.1a 10
+L12.1a          445768356   100   205   100640  1052      `
+#once #create message
+.ND
+.tr %$
+.EQ
+delim $$
+.EN
+.LP
+The next step is to learn how to put big parentheses,
+brackets, braces or bars around equations, like this:
+.EQ
+left | a sup 2 over b sub i right |
+.EN
+
+This is done with two new words called "left" and "right".
+To put bars around something, you simply say, in the middle
+of an equation,
+  left |  something  right |
+and the job is done.
+"something" can indeed be anything, from a single letter
+up to some horribly complicated mess.
+The bars grow to the right height to cover the
+"something", automatically.
+To produce the example above, all that was needed was
+   .EQ
+   left | a sup 2 over b sub i right |
+   .EN
+
+For practice, modify file "Example" so it produces output
+that looks like this, then type "ready".
+.pl 1
+#once #create Ref
+.LP
+.EQ
+left |
+{a over b ~+~ c over d} over 2
+right |
+.EN
+.pl 1
+#once #create Example
+.LP
+.EQ
+replace me
+.EN
+.pl 1
+#
+#once neqn Ref | nroff >X1 &
+#once neqn message Ref | nroff -T$term %s/tinyms -
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#log
+#next
+12.1b 10
+L12.1b          445768358   100   205   100640  738       `
+#print
+Bars are not the only characters you can put 
+around an equation.
+If you say
+  left (  thing  right )
+you will get large parentheses around "thing".
+You can also use [ and ] for large square brackets
+and { and } for large braces.
+
+The main problem is that on your terminal there is
+no good way for neqn to draw large braces
+or brackets or parens.  So neqn replaces all of these
+with bars.
+Use the right character anyway, though - things do
+work properly on the typesetter.  And who knows, some day
+neqn may get improved as well.
+
+With the current version of neqn, does the input
+  left { a over b right }
+produce the same output as
+  left [ a over b right ]
+Answer yes or no.
+#copyin
+#user
+#uncopyin
+#match yes
+#log
+#next
+12.1c 10
+L12.1c          445768359   100   205   100640  699       `
+#once #create message
+.ND
+.tr %$
+.EQ
+delim $$
+.EN
+.LP
+Of course the thing with bars or braces around it can
+still be part of larger expressions: the input
+   .EQ
+   left | {a over b ~+~ c over d} over 2 right | over a+b+c+d
+   .EN
+produces
+.EQ
+left | {a over b ~+~ c over d} over 2 right | over a+b+c+d
+.EN
+
+For practice, modify file "Example" so it produces output
+that looks like this, then type "ready".
+.pl 1
+#once #create Ref
+.LP
+.EQ
+left |
+{a over b ~+~ c over d} over 2
+right |
+sup half
+.EN
+.pl 1
+#once #create Example
+.LP
+.EQ
+replace me
+.EN
+.pl 1
+#
+#once neqn Ref | nroff >X1 &
+#once neqn message Ref | nroff -T$term %s/tinyms -
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#log
+#next
+12.1d 10
+
+L12.1d          445768361   100   205   100640  522       `
+#print
+.LP
+The "right" part of a left-right construction can be
+omitted if it is not used; just leave that part out.
+The main thing to watch out for is that now you will
+need braces to enclose the entire construction, "left" and all -
+otherwise neqn will not know where to stop in
+figuring out how high the thing is.
+
+For example, will
+  left "{" a + b over c over d
+produce the same output as
+   { left "{" a } + b over c over d
+Answer yes or no after experimenting.
+#copyin
+#user
+#uncopyin
+#match no
+#log
+#next
+12.1e 10
+L12.1e          445768362   100   205   100640  865       `
+#once #create message
+.ND
+.tr %$
+.EQ
+delim $$
+.EN
+.PP
+There are also occasions when you want to omit
+the left part and keep the right part.
+This is a bit more complicated, since for obscure
+reasons neqn won't let you actually leave the
+left part out completely.
+But you can ask it to print no character,
+instead of using bars, by saying
+   left ""  thing  right |
+.LP
+This is similar to the way we used quotes before, to get
+a zero-width thing before a superscript.
+
+For practice, modify file "Example" so it produces output
+that looks like this, then type "ready".
+.pl 1
+#once #create Ref
+.LP
+.EQ
+left ""
+int from 0 to {2 pi} sin (x) dx ~=~
+cos (x) right | sub 0 sup {2 pi}
+.EN
+.pl 1
+#once #create Example
+.LP
+.EQ
+replace me
+.EN
+.pl 1
+#
+#once neqn Ref | nroff >X1 &
+#once neqn message Ref | nroff -T$term %s/tinyms -
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#log
+
+L2.1a           445768364   100   205   100640  687       `
+#print
+You may have noticed that neqn threw away the spaces
+in several of the examples we did.  For example, in
+.EQ
+a = b + c - d
+.EN
+the output equation looks like
+a=b+c-d
+regardless of spaces in the input.
+
+Spaces are always thrown away, and so are new lines - you
+can type an equation on as many lines as you like.
+This latitude is permitted mainly to make it easy to type equations -
+longer equations are easier to edit when they are typed
+as a series of short input lines instead of one giant
+one.
+
+Will the printed output of this equation
+.EQ
+a
++
+b
++
+c
+.EN
+be any different from this one?
+.EQ
+a+b+c
+.EN
+Answer yes or no.
+#copyin
+#user
+#uncopyin
+#match no
+#log
+#next
+2.1b 10
+2.2a 5
+
+L2.1b           445768366   100   205   100640  920       `
+#print
+Since spaces are thrown away, what do you do when
+you want spaces? The answer is that you have to ask for
+them explicitly.
+If you type a "~" (tilde) it will be replaced by a space
+on output; use one tilde for each space.
+Thus to get
+a + b
+you need
+.EQ
+a~+~b
+.EN
+
+Modify the equation in file "Example" so there is one space
+around each of the operators =, + and -, so it looks like
+
+a = b + c - d
+
+Print it with neqn and nroff -ms to verify it.
+Type "ready" when done.
+#once #create Ref
+.PP
+You probably thought you were done with this ridiculous
+example of just
+.EQ
+a ~=~
+b ~+~ c
+~-~d
+.EN
+Sorry, but you will probably even see it again.
+.pl 1
+#once neqn Ref | nroff >X1 &
+#once #create Example
+.PP
+You probably thought you were done with this ridiculous
+example of just
+.EQ
+a =
+b + c
+-d
+.EN
+Sorry, but you will probably even see it again.
+.pl 1
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#log
+#next
+2.1c 10
+2.2b 5
+L2.1c           445768367   100   205   100640  1031      `
+#once #create message
+.nf
+.EQ
+delim $$
+.EN
+Several of the examples we did earlier had Greek letters
+and other mathematical symbols in them.
+The way to get things like $pi$ and $sum$ and $int$ is
+rather easy - you just spell out their names, like this:
+
+$pi$ is pi
+
+$sum$ is sum
+
+$int$ is int
+
+and so on.
+The main thing you must always remember about these names
+is that when they appear in an equation, they must be
+separated from surrounding symbols by blanks or tildes,
+OR THEY WILL NOT BE RECOGNIZED.
+
+For practice, modify "Example" so the symbol $partial$
+is replaced by $sum$ everywhere it appears.
+Type "ready" when you're done.
+.pl 1
+#once #create Ref
+.PP
+The symbol
+.EQ
+sum
+.EN
+often appears in lines like
+.EQ
+{ sum x } over { sum y } = y over x
+.EN
+.pl 1
+#
+#once neqn Ref | nroff >X1  &
+#once neqn message | nroff -T$term
+#once #create Example
+.PP
+The symbol
+.EQ
+partial
+.EN
+often appears in lines like
+.EQ
+{ partial x } over { partial y } = y over x
+.EN
+.pl 1
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#log
+#next
+2.1d 10
+
+L2.1d           445768369   100   205   100640  776       `
+#print
+The file "Chars" contains a longer list of characters that
+you can obtain with neqn.
+Print the file "Chars" with neqn and nroff -ms, then
+type "ready".  (Don't forget -Txxx.)
+#once #create Chars
+.LP
+.EQ
+delim $$
+.EN
+.nf
+$alpha$	alpha
+$beta$	beta
+$gamma$	gamma
+$GAMMA$	GAMMA
+$delta$	delta
+$DELTA$	DELTA
+$epsilon$	epsilon
+$zeta$	zeta
+$eta$	eta
+$THETA$	THETA
+$theta$	theta
+$lambda$	lambda
+$LAMBDA$	LAMBDA
+$mu$	mu
+$nu$	nu
+$xi$	xi
+$pi$	pi
+$PI$	PI
+$rho$	rho
+$sigma$	sigma
+$SIGMA$	SIGMA
+$tau$	tau
+$phi$	phi
+$PHI$	PHI
+$psi$	psi
+$PSI$	PSI
+$omega$	omega
+$OMEGA$	OMEGA
+$partial$	partial
+$integral$	integral
+$int$	int
+$sum$	sum
+$prod$	prod
+$<=$	<=
+$>=$	>=
+$==$	==
+$cdot$	cdot
+$...$	...
+.pl 1
+#copyin
+#user
+#uncopyin
+grep 'neqn Chars *| *nroff' <.copy >/dev/null
+#log
+#next
+2.1e 10
+L2.1e           445768371   100   205   100640  608       `
+#once #create message
+.ND
+.PP
+For practice, in this directory there is a file called
+"Example".  It contains an equation.  Make it
+look like this:
+.EQ
+int from i to j f( pi ) ~=~ LAMBDA (x)
+.EN
+by changing the character names as appropriate
+and adding spaces where needed.
+Type "ready" when you're satisfied.
+.pl 1
+#once neqn message | nroff -T$term %s/tinyms -
+#once #create Ref
+.LP
+.EQ
+int from i to j f( pi ) ~=~ LAMBDA (x)
+.EN
+.pl 1
+#once #create Example
+.LP
+.EQ
+sum from i to j f(q) = lambda (x)
+.EN
+.pl 1
+#once neqn Ref | nroff >X2 &
+#user
+neqn Example | nroff >X1
+#cmp X1 X2
+#log
+#next
+2.1f 10
+2.2e 5
+L2.1f           445768372   100   205   100640  758       `
+#once #create message
+.ND
+.LP
+One of the most common problems in using neqn is forgetting
+to leave spaces or tildes around "magic" words like "pi"
+or "int" or "sum".  The result is that the magic words
+cease to be magic, and just look like ordinary strings
+of letters.
+
+In the file "Example", there are several such errors.
+Find them, and fix them so the output looks
+like this, then type "ready".
+.pl 1
+#once #create Ref
+.LP
+.EQ
+sum ~=~ pi ~+~1
+.EN
+.EQ
+a~=~ pi (x)
+.EN
+.EQ
+alpha ~=~ beta ~+~ gamma ~+~ delta
+.EN
+.pl 1
+#once #create Example
+.LP
+.EQ
+sum=pi+1
+.EN
+.EQ
+a=pi(x)
+.EN
+.EQ
+alpha=beta+gamma+delta
+.EN
+.pl 1
+#
+#once neqn Ref | nroff >X1 &
+#once neqn message Ref | nroff -T$term %s/tinyms -
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#log
+#next
+3.1a 10
+L2.2a           445768374   100   205   100640  338       `
+#print
+Will the output from the first equation below be different
+from the second? 
+
+.EQ
+X      =       Y
++Z
+.EN
+
+.EQ
+x      =       y
++       z
+.EN
+
+Answer yes if they will be different,
+no if they will be the same.
+#copyin
+#user
+#uncopyin
+#match yes
+#fail
+Look more closely at ____what letters are being printed.
+#log
+#next
+2.1b 10
+L2.2b           445768375   100   205   100640  595       `
+#print
+One more example of spaces before getting on to something
+new.
+In the file "Example", change the spacing so the equation
+reads
+
+a = b+c-d
+
+Print the example with "-ms".
+Type "ready" when you're done.
+#once #create Ref
+.PP
+Here it is again.  One example goes a long way.
+.EQ
+a ~=~
+b + c
+-d
+.EN
+Sorry, but you will probably even see it again.
+.pl 1
+#once #create Example
+.PP
+Here it is again.  One example goes a long way.
+.EQ
+a =
+b + c
+-d
+.EN
+Sorry, but you will probably even see it again.
+.pl 1
+#
+#once neqn Ref | nroff >X1 &
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#log
+#next
+2.1c 10
+
+L2.2e           445768377   100   205   100640  598       `
+#print
+Make the two equations in "Example" look like these two,
+then type "ready".
+
+#once #create Ref
+.ND
+.LP
+.EQ (1.1)
+PI ~=~ ( pi sub 1 , pi sub 2 ,..., pi sub n )
+.EN
+.EQ (1.2)
+pi bar ~=~ sum ( alpha , beta )
+.EN
+.pl 1
+#once #create Example
+.ND
+.LP
+.EQ
+PHI = ( phi sub 1 , phi sub 2 ,..., phi sub n )
+.EN
+.EQ
+phi bar = sum (A,B)
+.EN
+.pl 1
+#
+#once neqn Ref | nroff >X1 &
+#once neqn Ref | nroff -T$term %s/tinyms -
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#fail
+Don't forget equation numbering and spaces
+where needed.  Print file "Chars" if you've forgotten
+the character names.
+#log
+#next
+2.1f
+L3.1a           445768378   100   205   100640  980       `
+#once #create message
+.ND
+.PP
+Now that we have some of the preliminaries out of the way,
+we can get on to doing real mathematics.
+I have been slipping small things into the example files
+as we go along so that you will at least have seen
+some common neqn constructions.
+
+One of the most frequent is the word "sub", which
+indicates a subscript, like this:
+
+   .EQ
+   x sub i + y sub j
+   .EN
+
+which produces
+.EQ
+x sub i + y sub j
+.EN
+The main thing to notice is that the blanks are delimiters -
+the subscript of "x" is "i"; the blank after the "i" marks
+the end of the subscript.
+
+Modify the file "Example" so the equation in it looks like
+this:
+.EQ
+x sub alpha ~=~ y sub pi ~+~ z sub pi
+.EN
+Then type "ready".
+.pl 1
+#once #create Ref
+.LP
+.EQ
+x sub alpha ~=~ y sub pi ~+~ z sub pi
+.EN
+.pl 1
+#once #create Example
+.LP
+.EQ
+xxx
+.EN
+.pl 1
+#
+#once neqn Ref | nroff >X1 &
+#once neqn message | nroff -T$term %s/tinyms -
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#log
+#next
+3.1b 10
+3.2a 5
+L3.1b           445768380   100   205   100640  655       `
+#once #create message
+.ND
+.PP
+Naturally there is a superscript operation that's exactly
+like "sub", except that it goes up instead of down.
+It is called "sup".  To make
+.EQ
+x sup i+j
+.EN
+for example, you type
+   .EQ
+   x sup i+j
+   .EN
+
+Make the file "Example" produce the same output
+as the following, then type "ready".
+#once #create Ref
+.LP
+.EQ
+x sup alpha ~=~ y sup pi ~+~ z sup pi
+.EN
+.pl 1
+#once #create Example
+.LP
+.EQ
+xxx
+.EN
+.pl 1
+#
+#once neqn Ref | nroff >X1 &
+#once neqn message Ref | nroff -T$term %s/tinyms -
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#fail
+Don't forget that there are spaces
+around the = and +.
+#cmp X1 X2
+#log
+#next
+3.1c 10
+
+L3.1c           445768382   100   205   100640  629       `
+#once #create message
+.ND
+.PP
+Subscripts and superscripts can appear in the same equation,
+and any subscripted or superscripted thing can have
+a subscript or superscript.
+For example, you can say
+
+   .EQ
+   x sub i sub j ~+~ y sup i sup j
+   .EN
+
+to get
+.EQ
+x sub i sub j ~+~ y sup i sup j
+.EN
+Modify "Example" to produce the following output, then type "ready".
+.pl 1
+#once #create Ref
+.LP
+.EQ
+2 sup 2 sup 2 sup 2 ~=~ 65536
+.EN
+.pl 1
+#once #create Example
+.LP
+.EQ
+xxx
+.EN
+.pl 1
+#
+#once neqn Ref | nroff >X1 &
+#once neqn message Ref | nroff -T$term %s/tinyms -
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#log
+#next
+3.1d 10
+3.2c 5
+
+L3.1d           445768384   100   205   100640  901       `
+#once #create message
+.ND
+.PP
+There is one special construction with subscripts
+and superscripts that you have to be aware of, although
+it almost always does what you want automatically.
+When something has both a subscript and a superscript,
+it is usually printed as
+.EQ
+x sub i sup j
+.EN
+instead of
+.EQ
+{x sub i} sup j
+.EN
+To produce this effect, with the superscript _____above the
+subscript instead of to the right, you have to type
+the subscript ______before the superscript, like this:
+
+   .EQ
+   x sub i sup j
+   .EN
+
+That's all there is to it.
+
+Modify "Example" to produce the following output, then type "ready".
+.pl 1
+#once #create Ref
+.LP
+.EQ
+x sub ij sup kmn = y sub i sub j
+.EN
+.pl 1
+#once #create Example
+.LP
+.EQ
+xxx
+.EN
+.pl 1
+#
+#once neqn Ref | nroff >X1 &
+#once neqn message Ref | nroff -T$term %s/tinyms -
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#log
+#next
+3.1e 10
+3.2d 5
+
+L3.1e           445768386   100   205   100640  702       `
+#once #create message
+.ND
+.PP
+One common typing error that you should watch out for
+is forgetting to end a superscript or subscript
+with a blank or other delimiter (like tilde).
+For instance, you often see output like
+.EQ
+f(x sup 2)=1
+.EN
+because there wasn't a space left between the 2 and the ).
+What we really wanted, of course, was
+.EQ
+f(x sup 2 )=1
+.EN
+
+Modify "Example" to produce this output, then type "ready".
+.pl 1
+#once #create Ref
+.LP
+.EQ
+g( x sup pi ) 
+= pi (gx sup 2 )
+.EN
+.pl 1
+#once #create Example
+.LP
+.EQ
+g( x sup pi) 
+=pi(gxsup2)
+.EN
+.pl 1
+#
+#once neqn Ref | nroff >X1 &
+#once neqn message Ref | nroff -T$term %s/tinyms -
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#log
+#next
+4.1a 10
+L3.2a           445768387   100   205   100640  149       `
+#print
+Do
+   x sub i +y sub j
+and
+   x sub i+y sub j
+produce the same output?
+Answer yes or no.
+#copyin
+#user
+#uncopyin
+#match no
+#log
+#next
+3.1b 10
+
+L3.2c           445768389   100   205   100640  341       `
+#once #create message
+.ND
+.PP
+Modify "Example" to produce this output, then type "ready".
+#once #create Ref
+.LP
+.EQ
+x sup 2 + y sup 2 = z sup 2
+.EN
+.pl 1
+#once #create Example
+.LP
+.EQ
+xxx
+.EN
+.pl 1
+#
+#once neqn Ref | nroff >X1 &
+#once neqn message Ref | nroff -T$term %s/tinyms -
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#log
+#next
+3.1d 10
+
+L3.2d           445768390   100   205   100640  161       `
+#print
+Does the equation
+
+  x sup pi sub i
+
+produce the same output as
+
+  x sub i sup pi
+
+Answer yes or no.
+#copyin
+#user
+#uncopyin
+#match no
+#log
+#next
+3.1e 10
+
+L4.1a           445768392   100   205   100640  582       `
+#once #create message
+.ND
+.EQ
+delim $$
+.EN
+.LP
+The next neqn word to learn is "over", which makes
+fractions like
+.EQ
+a+b over c
+.EN
+In fact that line was made by
+   .EQ
+   a+b over c
+   .EN
+To begin with an easy one, reproduce
+the equation below in the file "Example", then type
+ready.
+(To get $>=$, type ">=".)
+.pl 1
+#once #create Ref
+.LP
+.EQ
+x+1 over y+1 ~>=~ x over y
+.EN
+.pl 1
+#once #create Example
+.LP
+.EQ
+replace me
+.EN
+.pl 1
+#
+#once neqn Ref | nroff >X1 &
+#once neqn message Ref | nroff -T$term %s/tinyms -
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#log
+#next
+4.1b 10
+4.2a 5
+L4.1b           445768394   100   205   100640  571       `
+#once #create message
+.ND
+.LP
+Of course you can use reserved words like "pi" or "int"
+with the "over" construction.  For example, modify
+"Example" so its output looks like the following, then
+type "ready".
+.pl 1
+#once #create Ref
+.LP
+.EQ
+alpha over beta ~=~ pi over 2
+.EN
+.pl 1
+#once #create Example
+.LP
+.EQ
+replace me
+.EN
+.pl 1
+#
+#once neqn Ref | nroff >X1 &
+#once neqn message Ref | nroff -T$term %s/tinyms -
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#fail
+The names are alpha, beta and pi.
+I hope your trouble wasn't any more
+complicated than that.
+#log
+#next
+4.1c 10
+
+L4.1c           445768395   100   205   100640  193       `
+#print
+Does the neqn input
+  .EQ
+  a
+  over
+  b
+  .EN
+produce the same output as the input
+  .EQ
+  a over b
+  .EN
+Answer yes or no.
+#copyin
+#user
+#uncopyin
+#match yes
+#log
+#next
+4.1d 10
+4.2c 5
+
+L4.1d           445768397   100   205   100640  742       `
+#once #create message
+.ND
+.LP
+You can put fractions over fractions with multiple "over"'s
+just as you can do multiple subscripts and superscripts,
+although fractions within fractions are much
+less common (probably because they are harder for
+people to read).
+Anyway, if you want, for example, something like
+.EQ
+a over b over c
+.EN
+you just type
+  .EQ
+  a over b over c
+  .EN
+
+As a drill, change "Example" so it produces an equation
+that looks like the following one, then type "ready".
+.pl 1
+#once #create Ref
+.LP
+.EQ
+x over x+x over x+x+x
+.EN
+.pl 1
+#once #create Example
+.LP
+.EQ
+right here
+.EN
+.pl 1
+#
+#once neqn Ref | nroff >X1 &
+#once neqn message Ref | nroff -T$term %s/tinyms -
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#log
+#next
+5.1a
+L4.2a           445768398   100   205   100640  426       `
+#once #create message
+.ND
+.LP
+Another practice one for using "over".
+Modify the file "Example" so it produces
+output that looks like this one, then type "ready".
+.pl 1
+#once #create Ref
+.LP
+.EQ
+a + b over c + d = e over f
+.EN
+.pl 1
+#once #create Example
+.LP
+.EQ
+replace me
+.EN
+.pl 1
+#
+#once neqn Ref | nroff >X1 &
+#once neqn message Ref | nroff -T$term %s/tinyms -
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#log
+#next
+4.1b 10
+L4.2c           445768400   100   205   100640  189       `
+#print
+Does the neqn input
+  .EQ
+  ~a
+  over
+  b~
+  .EN
+produce the same output as the input
+  .EQ
+  a~ over ~b
+  .EN
+Answer yes or no.
+#copyin
+#user
+#uncopyin
+#match no
+#log
+#next
+4.1d 10
+
+L5.1a           445768401   100   205   100640  776       `
+#once #create message
+.ND
+.EQ
+delim $$
+.EN
+.LP
+So far we have carefuly skirted around a potential
+problem; maybe you've wondered about it.
+Suppose we want to produce an equation that looks
+like this:
+.EQ
+x sup { pi + 1 }
+.EN
+The superscript is complicated, in that it contains
+both a $pi$ and a +1, which has to be separated
+from the $pi$ by a blank.
+But I already told you that a blank terminates
+the superscript.  What's going on?
+
+As the first step to finding out, will the input
+equation
+
+  x sup pi + 1
+
+produce the output
+
+  $x sup {pi + 1}$ ?
+Answer yes or no.
+(You can play with the file "Example" if you like.)
+.pl 1
+#once #create Example
+.LP
+.EQ
+replace me
+.EN
+.pl 1
+#
+#once neqn message | nroff -T$term %s/tinyms -
+#copyin
+#user
+#uncopyin
+#match no
+#log
+#next
+5.1b
+L5.1b           445768403   100   205   100640  959       `
+#once #create message
+.ND
+.EQ
+delim $$
+.EN
+.LP
+The problem is really that we need a way to tell neqn
+that in spite of blanks, a group of things (like the $pi$
+and the +1) have to be kept together as a single superscript.
+The way that this is done is to enclose the group in
+braces - the characters { and } - like this:
+
+  .EQ
+  x sup {pi + 1}
+  .EN
+
+This tells neqn that everything inside the braces belongs
+to the superscript, in spite of blanks and tildes.
+(You don't need blanks before and after braces themselves -
+like tildes, they act as delimiters.)
+
+Modify the file "Example" so that the output looks like
+the following, then type "ready".
+(To get $==$, type ==.)
+.pl 1
+#once #create Ref
+.LP
+.EQ
+x sup {pi +1} == y sup z sup {alpha + beta}
+.EN
+.pl 1
+#once #create Example
+.LP
+.EQ
+replace me
+.EN
+.pl 1
+#
+#once neqn Ref | nroff >X1 &
+#once neqn message Ref | nroff -T$term %s/tinyms -
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#log
+#next
+5.1c 10
+5.2b 5
+
+L5.1c           445768404   100   205   100640  798       `
+#once #create message
+.ND
+.EQ
+delim $$
+.EN
+.LP
+Braces are an exceedingly useful construction.
+Wherever you have a place where you could have used
+a single thing like the letter "x", you can plug in
+anything in braces, and the whole thing will
+be positioned properly.  You can use braces with sub and sup
+and over, and all the other magic words we
+haven't seen yet.
+
+First let's use braces with "over".
+Modify "Example" to produce this output, then
+type "ready".
+(Recall that $partial$ is called "partial".)
+.pl 1
+#once #create Ref
+.LP
+.EQ
+{partial y} over {partial x} ~=~ alpha over {alpha +1}
+.EN
+.pl 1
+#once #create Example
+.LP
+.EQ
+replace me
+.EN
+.pl 1
+#
+#once neqn Ref | nroff >X1 &
+#once neqn message Ref | nroff -T$term %s/tinyms -
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#log
+#next
+5.1d 10
+L5.1d           445768406   100   205   100640  1182      `
+#once #create message
+.ND
+.EQ
+delim $$
+.EN
+.LP
+You will get lots of practice
+using braces as we go along.
+One thing to keep in mind is that
+braces can appear ______within braces.
+(Remember that I said that anywhere you
+could use an "x" you could put something in
+braces instead.  So to get this:
+.EQ
+e sup {x sup {pi +1} + y sup {pi +1}}
+.EN
+you can type
+
+  e sup {x sup {pi +1} + y sup {pi +1}}
+
+The big superscript (the one on the "e") has
+a pair of braces that take in everything.
+Then the "x" and the "y" each have braces
+to delimit their superscripts.
+Of course the braces have to go in the right
+places, or you won't get the output you
+want.
+
+To verify that you are still following this
+lesson, modify "Example" so it looks like
+this, then type "ready".
+.pl 1
+#once #create Ref
+.LP
+.EQ
+e sup {{x sup {pi +1} + y sup {pi +1}} over 2}
+.EN
+.pl 1
+#once #create Example
+.LP
+.EQ
+e sup {x sup {pi +1} + y sup {pi +1}}
+.EN
+.pl 1
+#
+#once neqn Ref | nroff >X1 &
+#once neqn message Ref | nroff -T$term %s/tinyms -
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#fail
+Don't forget that you need braces for the overall superscript,
+and also for the "over" part.
+#log
+#next
+5.1e 10
+5.2d 5
+L5.1e           445768407   100   205   100640  1032      `
+#print
+Once you start using braces, there are a number of
+mistakes that you can make.  For example, you can
+leave a brace out, or you can get them out of order
+(Like } xxx { ), or you can get them in illegal places.
+For all of these, neqn tells you "syntax error",
+then tries to say what file and line numbers are
+involved.
+The line numbers are often not exact, but
+they are very close.  When you get such a message,
+print a line or two before and after the line
+numbers named in the syntax error message.
+
+The file "Example" contains a syntax error.
+What line does neqn believe it begins on?
+Type "answer N", where N is the line number.
+#once #create Example
+.LP
+.EQ 3
+e sup -x sup 2 + e sup -x sub i sup 2 + e sup{-x sub i}sup 2
+.EN
+.EQ 4
+   e sup{-{x sub i sup 2 + y sub i sup 2}over 2}
+= e sup{- x over y}
+.EN
+.EQ 5
+a over b = c over d = A over B times C over D
+.EN
+.EQ 8
+B sub a sub 2 +
+B sub a sup 2 +B{ sub a}sup 2 + (B sub a ) sup 2 + (B sup 2 ) sub a
++B sup 2 sup x
+.EN
+#copyin
+#user
+#uncopyin
+#match 13
+#log
+#next
+5.1f 10
+L5.1f           445768409   100   205   100640  129       `
+#print
+Is the construction
+  a {sup pi +1}
+legal in neqn? Answer yes or no.
+#copyin
+#user
+#uncopyin
+#match no
+#log
+#next
+5.1g 10
+
+L5.1g           445768410   100   205   100640  275       `
+#print
+It is often possible to leave out braces,
+but when you do be sure that you get the
+answer you really wanted.
+For example, does
+  x sup a over b
+produce the same output as
+  x sup {a over b}
+Answer yes or no.
+#copyin
+#user
+#uncopyin
+#match no
+#log
+#next
+5.1h 10
+5.2g 5
+
+L5.1h           445768412   100   205   100640  978       `
+#once #create message
+.ND
+.tr %$
+.EQ
+delim $$
+.EN
+.LP
+One thing that you will occasionally need
+is to be able to get a literal { or } in your
+output, for an expression like
+.EQ
+{ "{" a + b "}" } over 2
+.EN
+The way to do this is to place the braces
+that are really to appear ______inside ______quotes,
+like this:
+   .EQ
+   { "{" a + b "}" } over 2
+   .EN
+.br
+The quotes temporarily turn off the special meaning
+of the braces so that you can have them printed.
+
+The file "Example" has a lot of square brackets in
+it.  Modify them so they are all braces when they are
+printed - so they look like this - then type "ready".
+.pl 1
+#once #create Ref
+.LP
+.EQ
+f"{" x sub 1 ,..., x sub n "}" ~=~ "{" x sub 1 ,..., x sub n "}"
+.EN
+.pl 1
+#once #create Example
+.LP
+.EQ
+f[ x sub 1 ,..., x sub n ] ~=~ [ x sub 1 ,..., x sub n ]
+.EN
+.pl 1
+#
+#once neqn Ref | nroff >X1 &
+#once neqn message Ref | nroff -T$term %s/tinyms -
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#log
+#next
+6.1a 10
+L5.2b           445768414   100   205   100640  484       `
+#once #create message
+.ND
+.EQ
+delim $$
+.EN
+.LP
+Try another example with braces, for practice.
+Make the file "Example" produce output that looks
+like this line, then type "ready".
+(The character $rho$ is "rho".)
+.pl 1
+#once #create Ref
+.LP
+.EQ
+alpha sub i sup {pi + rho + 1} ~=~ 1
+.EN
+.pl 1
+#once #create Example
+.LP
+.EQ
+replace me
+.EN
+.pl 1
+#
+#once neqn Ref | nroff >X1 &
+#once neqn message Ref | nroff -T$term %s/tinyms -
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#log
+#next
+5.1c 10
+L5.2d           445768416   100   205   100640  413       `
+#once #create message
+.ND
+.EQ
+delim $$
+.EN
+.LP
+Modify "Example" so it produces this output, then
+type "ready".
+.pl 1
+#once #create Ref
+.LP
+.EQ
+{partial e sup {-{x sup 2 + y sup 2} over 2}} over
+{partial x} ~=~ f(x)
+.EN
+.pl 1
+#once #create Example
+.LP
+.EQ
+xxxx
+.EN
+.pl 1
+#
+#once neqn Ref | nroff >X1 &
+#once neqn message Ref | nroff -T$term %s/tinyms -
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#log
+#next
+5.1e 10
+
+L5.2g           445768418   100   205   100640  147       `
+#print
+Does
+  x sup a over b
+produce the same output as
+  {x sup a} over b
+Answer yes or no.
+#copyin
+#user
+#uncopyin
+#match yes
+#log
+#next
+5.1h 10
+
+L6.1a           445768419   100   205   100640  1588      `
+#once #create message
+.ND
+.tr %$
+.EQ
+delim $$
+.EN
+.LP
+So far every equation you have typed in
+has been "displayed" - neatly centered or indented, and
+offset from the surrounding text.
+But not all equations are like that.
+Very often they appear right in the middle of
+running text as subscripts like $x sub i$ or special characters
+like $pi$ or $partial$.  How are these done?
+
+The idea is this.  Two characters (which may be identical)
+are set aside as "delimiters".  When the
+left delimiter is seen anywhere in ___any line,
+it marks the beginning of an in-line equation.
+The end is marked by the right delimiter.  Between the
+delimiters, all the normal rules of neqn apply.
+
+Suppose we say the delimiters are % signs.
+Then to get $pi$, you have to type %pi%. 
+
+To make sure that you can do this much, find the
+$pi$, $alpha$ and $sum$ characters in "Example"
+and make them into in-line equations.
+Use % and % as the delimiter characters.
+(This is the most frequent choice, by the way.)
+Type "ready" when you're done.
+.pl 1
+#once #create Ref
+.EQ
+delim $$
+.EN
+.LP
+This line contains some $pi$ and $alpha$ Greek
+and $sum$ as well.  Don't forget that spaces
+inside dollar signs are ignored, while spaces
+outside them are significant.
+.pl 1
+#once #create Example
+.EQ
+delim $$
+.EN
+.LP
+This line contains some pi and alpha Greek
+and sum as well.  Don't forget that spaces
+inside dollar signs are ignored, while spaces
+outside them are significant.
+.pl 1
+#once neqn Ref | nroff >X1 &
+#once neqn message Ref | nroff -T$term %s/tinyms -
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#log
+#next
+6.1b
+L6.1b           445768421   100   205   100640  841       `
+#print
+There is one other thing you have to do before
+you can use a character as a delimiter - you
+have to tell neqn that you are going to.
+To do this, as the very first thing in your
+input you must put these three lines:
+
+.EQ
+delim $$
+.EN
+
+(If you like, other characters than $ can be used,
+but we will stick to dollar signs here.)
+Until you do this, $ signs have no special
+significance to neqn.
+
+Modify the file "Example" by adding the "delim"
+lines to the beginning, and check that $ signs are
+now significant.  Type "ready" when you are done.
+#once #create Ref
+.EQ
+delim $$
+.EN
+.LP
+Now is the $times$ for all good $mu$ $epsilon$ $nu$
+to come to the aid of their party.
+.pl 1
+#once #create Example
+.LP
+Now is the $times$ for all good $mu$ $epsilon$ $nu$
+to come to the aid of their party.
+.pl 1
+#user
+#cmp Ref Example
+#log
+#next
+6.1c 10
+
+L6.1c           445768422   100   205   100640  536       `
+#print
+One thing to keep in mind is that outside of
+$ signs, spaces are significant just as they
+were before.  Inside $ signs, spaces are significant
+only as delimiters, and will not add any space
+to the output.
+Furthermore, inside delimiters, new lines also
+don't matter, just as they didn't matter between
+the .EQ and .EN.
+
+Do the lines
+
+Let $alpha$ be the size of the vector $pi$.
+
+and
+
+Let $ alpha $ be the size of the vector $ pi $.
+
+produce the same output?
+Answer yes or no.
+#copyin
+#user
+#uncopyin
+#match yes
+#log
+#next
+6.1d 10
+L6.1d           445768424   100   205   100640  214       `
+#print
+Do the inputs
+
+Let $x sub i$ and $y sub i$ be $>= z sub i$.
+
+and
+
+Let $x sub i$ and $y sub i$ be $>=$ $z sub i$.
+
+produce the same output?
+Answer yes or no.
+#copyin
+#user
+#uncopyin
+#match no
+#log
+#next
+7.1a
+L7.1a           445768426   100   205   100640  912       `
+#once #create message
+.ND
+.tr %$
+.EQ
+delim $$
+.EN
+.LP
+The next construction we're going to look at
+is one for putting things above and below other
+things, in a rather specialized way.
+For example, if you want something like
+.EQ
+sum from i to j
+.EN
+you type
+  .EQ
+  sum from i to j
+  .EN
+The words "from" and "to" are more magic, like
+sub or sup or over.  The "from" part is centered
+under the main piece; the "to" part is centered
+above it.
+As a warmup, modify "Example" so it produces
+output that looks like the following, then type
+ready.
+.pl 1
+#once #create Ref
+.EQ
+delim $$
+.EN
+.LP
+Let $Q( pi )$ be $sum from {i= pi sub 1} to {i= pi sub 2} x sub i$.
+.pl 1
+#once #create Example
+.EQ
+delim $$
+.EN
+.LP
+Let $Q( pi )$ be $sum {i= pi sub 1} {i= pi sub 2} x sub i$.
+.pl 1
+#
+#once neqn Ref | nroff >X1 &
+#once neqn message Ref | nroff -T$term %s/tinyms -
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#log
+#next
+7.1b 10
+L7.1b           445768427   100   205   100640  889       `
+#once #create message
+.ND
+.tr %$
+.EQ
+delim $$
+.EN
+.LP
+As you might expect from our previous discussions,
+any part of a
+
+  thing from thing to thing
+
+construction can be as complicated as you wish.
+The only limitation is that the individual "thing"'s
+may well need braces around them to make it
+clear to neqn which part goes with which.
+
+For example, suppose you want
+.EQ
+sum from {pi = 0} to {pi = n}
+.EN
+Then you have to ensure that the $pi =0$ and
+$pi =n$ parts are included in braces or
+they will not work right.
+
+Modify file "Example" so the output looks like
+the example above, then type "ready".
+.pl 1
+#once #create Ref
+.LP
+.EQ
+sum from {pi = 0} to {pi =n}
+.EN
+.pl 1
+#once #create Example
+.LP
+.EQ
+sum from pi = 0 to pi = n
+.EN
+.pl 1
+#
+#once neqn Ref | nroff >X1 &
+#once neqn message Ref | nroff -T$term %s/tinyms -
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#log
+#next
+7.1c 10
+7.2b 5
+
+L7.1c           445768429   100   205   100640  562       `
+#once #create message
+.ND
+.tr %$
+.EQ
+delim $$
+.EN
+.LP
+It is also quite permissible to leave out
+either the "from" part or the "to" part
+of a from-to construction.  For example,
+modify "Example" so its output looks like this,
+then type "ready".
+.pl 1
+#once #create Ref
+.LP
+.EQ
+lim from {x-> pi /2} ( tan~x) sup {sin~2x}~=~1
+.EN
+.pl 1
+#once #create Example
+.LP
+.EQ
+lim from xxx ( tan~x) sup {sin~2x}~=~1
+.EN
+.pl 1
+#
+#once neqn Ref | nroff >X1 &
+#once neqn message Ref | nroff -T$term %s/tinyms -
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#log
+#next
+7.1d 10
+7.2c 5
+L7.1d           445768431   100   205   100640  697       `
+#once #create message
+.ND
+.tr %$
+.EQ
+delim $$
+.EN
+.LP
+Let's do one more example of from-to for practice
+before we go on to the next topic.
+Modify "Example" so it produces output that looks
+like this, then type "ready".
+.pl 1
+#once #create Ref
+.EQ
+delim $$
+.EN
+.LP
+Let $Q( pi )$ be $sum from {i= pi sub 1} to {i= pi sub 2} x sub i$.
+.pl 1
+#once #create Example
+.EQ
+delim $$
+.EN
+.LP
+Let $Q( pi )$ be $sum from {i= pi sub 1} to xxxx x sub i$.
+.pl 1
+#
+#once neqn Ref | nroff >X1 &
+#once neqn message Ref | nroff -T$term %s/tinyms -
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#fail
+Don't forget to set delimiters before the .LP line,
+and get the spaces right around the dollar signs.
+#log
+#next
+8.1a 10
+
+L7.2b           445768432   100   205   100640  188       `
+#print
+Does the input
+
+  sum from {i = -n} to {i = +n}
+
+produce the same output as the input
+
+  sum from i=-n to i=+n
+
+Answer yes or no.
+#copyin
+#user
+#uncopyin
+#match yes
+#log
+#next
+7.1c
+L7.2c           445768434   100   205   100640  371       `
+#once #create message
+.ND
+.tr %$
+.EQ
+delim $$
+.EN
+.LP
+Modify file "Example" so it looks like this,
+then type "ready".
+.pl 1
+#once #create Ref
+.LP
+.EQ
+sum to N+n-m x sub mn > 0
+.EN
+.pl 1
+#once #create Example
+.LP
+.EQ
+xxx
+.EN
+.pl 1
+#once neqn Ref | nroff >X1 &
+#once neqn message Ref | nroff -T$term %s/tinyms -
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#log
+#next
+7.1d 10
+
+L8.1a           445768435   100   205   100640  866       `
+#once #create message
+.ND
+.LP
+The next neqn operation is called "sqrt" - it makes
+square root signs over things, like this:
+.EQ
+sqrt a+b
+.EN
+(They don't look very good on a terminal, unfortunately.)
+This one is very easy - to print the line above, you
+say
+   .EQ
+   sqrt a+b
+   .EN
+The "sqrt" operates on the first thing it finds
+so if you want something more complicated, like
+.EQ
+sqrt {pi +1}
+.EN
+you have to use braces to enclose the entire
+thing.  This one was printed with
+   .EQ
+   sqrt {pi +1}
+   .EN
+And that's all there is to sqrt.
+
+Modify "Example" so it looks like this, then type "ready".
+.pl 1
+#once #create Ref
+.LP
+.EQ
+f(x) ~=~ sqrt {ax sup 2 +bx+c}
+.EN
+.pl 1
+#once #create Example
+.LP
+.EQ
+f(x)....
+.EN
+.pl 1
+#
+#once neqn Ref | nroff >X1 &
+#once neqn message Ref | nroff -T$term %s/tinyms -
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#log
+#next
+8.1b 10
+L8.1b           445768437   100   205   100640  535       `
+#once #create message
+.ND
+.LP
+Since "sqrt thing" is really a single object, you
+often don't need braces around it, although there
+may well be braces around "thing" itself.
+For example, you can say
+  .EQ
+  1 over sqrt {ax sup2 +bx+c}
+  .EN
+to produce
+.EQ
+1 over sqrt {ax sup 2 +bx+c}
+.EN
+Does the input
+   .EQ
+   e sup sqrt {pi x}
+   .EN
+produce the same output as
+   .EQ
+   e sup {sqrt {pi x}}
+   .EN
+Answer yes or no.
+.pl 1
+#
+#once neqn message | nroff -T$term %s/tinyms -
+#copyin
+#user
+#uncopyin
+#match yes
+#log
+#next
+9.1a 10
+8.2b 5
+
+L8.2b           445768438   100   205   100640  188       `
+#print
+Does the input
+   .EQ
+   e sup sqrt {pi x}
+   .EN
+produce the same output as
+   .EQ
+   e sup sqrt pi x
+   .EN
+Answer yes or no.
+#copyin
+#user
+#uncopyin
+#match no
+#log
+#next
+9.1a 10
+L9.1a           445768440   100   205   100640  1553      `
+#once #create message
+.ND
+.tr %$
+.EQ
+delim $$
+.EN
+.LP
+The next step is to learn about "diacriticals", which
+is a big word for funny marks on symbols, like
+a bar over something ($x bar$), or a tilde or hat on
+something ($x tilde ,~a hat$), or perhaps a dot 
+or dotdot ($T dot ,~U dotdot$), or even an
+underlining like $abc under$.
+
+These are all easy.  Each funny character
+has a name, and all you have to do is put the name
+after the thing you want the character on.
+Thus
+  x hat makes $x hat$
+  y bar makes $y bar$
+  T dot makes $T dot$
+  x tilde makes $x tilde$ (notice that we spell tilde)
+  u dotdot makes $u dotdot$ (looks ugly on a terminal)
+.br
+and
+  i under makes $i under$.
+
+Except for "bar" and "under", these are almost always
+attached to just a single letter.
+If you want to put a bar over something longer, like
+${2 pi +1} bar$, simply enclose the thing in braces:
+
+  {2 pi +1} bar
+
+Modify "Example" to produce output that looks like this,
+then type "ready".
+.pl 1
+#once #create Ref
+.EQ
+delim $$
+.EN
+.LP
+Let $x bar$, $y bar$, and $z bar$ be the components of $pi bar$.
+Let ${alpha +1} bar$ be the mean value of $alpha hat$.
+.pl 1
+#once #create Example
+.EQ
+delim $$
+.EN
+.LP
+Let x bar, y bar, and z bar be the components of pi bar.
+Let alpha +1 bar be the mean value of alpha hat.
+.pl 1
+#
+#once neqn Ref | nroff >X1 &
+#once neqn message Ref | nroff -T$term %s/tinyms -
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#fail
+Don't forget to set delimiters at the beginning,
+and get the spaces right around the dollar signs.
+#log
+#next
+9.1b 10
+9.2a 5
+
+L9.1b           445768442   100   205   100640  711       `
+#once #create message
+.ND
+.tr %$
+.EQ
+delim $$
+.EN
+.LP
+You sometimes have to make explicit what you
+mean when you say "bar", by putting in braces
+to enclose the parts that you want the bar
+to be over. 
+For example, what has to be done to make
+the output
+.EQ
+{x sub i} bar
+.EN
+Find out (by putting braces in the right place
+if necessary) in the file "Example", then
+type "ready" after you have successfully modified it.
+.pl 1
+#once #create Ref
+.EQ
+delim $$
+.EN
+.LP
+.EQ
+{x sub i} bar
+.EN
+.pl 1
+#once #create Example
+.EQ
+delim $$
+.EN
+.LP
+.EQ
+x sub i bar
+.EN
+.pl 1
+#
+#once neqn Ref | nroff >X1 &
+#once neqn message Ref | nroff -T$term %s/tinyms -
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#log
+#next
+10.1a 10
+9.2b 5
+
+L9.2a           445768444   100   205   100640  394       `
+#once #create message
+.ND
+.tr %$
+.EQ
+delim $$
+.EN
+.LP
+Modify "Example" to produce output that looks like this,
+then type "ready".
+.pl 1
+#once #create Ref
+.LP
+.EQ
+x bar ~=~ E(x) bar ~/~ E( x bar )
+.EN
+.pl 1
+#once #create Example
+.LP
+.EQ
+xxxx
+.EN
+.pl 1
+#
+#once neqn Ref | nroff >X1 &
+#once neqn message Ref | nroff -T$term %s/tinyms -
+#user
+neqn Example | nroff >X2
+#cmp X1 X2
+#log
+#next
+9.1b 10
+L9.2b           445768446   100   205   100640  255       `
+#print
+Which equation prints a longer bar?
+
+   xyz sub i bar
+
+or
+
+   x yz sub i bar
+
+Type "answer N", where N is 1 if it's
+the first one, 2 if it's the second, and
+0 if they are the same length.
+#copyin
+#user
+#uncopyin
+#match 0
+#log
+#next
+10.1a 10
+9.3b 5
+
+L9.3b           445768448   100   205   100640  130       `
+#print
+Does
+  ax bar
+produce the same output as
+  a x bar
+Answer yes or no.
+#copyin
+#user
+#uncopyin
+#match no
+#log
+#next
+10.1a 10
+tinyms          445768449   100   205   100640  205       `
+.\" short set of macros to simulate behavior of
+.\" most common -ms macros:
+.\"   .PP, .LP, .EQ, .EN
+.\"
+.de PP
+.br
+.sp
+.ll 60n
+.fi
+.ti +5n
+..
+.de LP
+.br
+.sp
+.ll 60n
+.fi
+..
+.de EQ
+.sp
+.ce
+..
+.de EN
+.sp
+..
+

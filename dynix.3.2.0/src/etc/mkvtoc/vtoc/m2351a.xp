@@ -1,0 +1,26 @@
+*
+*#ident	"$Header: m2351a.xp 1.1 90/03/28 $"
+* Fujitsu M2351A (Eagle) with 46 sectors running on the multibus.
+*
+* Dimensions:
+*   512 bytes/sector
+*    46 sectors/track
+*    20 tracks/cylinder
+*   842 cylinders
+*   839 user accessible cylinders
+*
+* Types:
+*	00	No Partition
+*	01	Regular Partition
+*	02	Boot Block
+*	03	Reserved Disk Area
+*
+* Partition	Type	Start Sector	Size in Sectors	   Block Sz    Frag Sz
+   00		1	335800		49680		   8192        1024
+   01		1	385480		192280		   8192        1024
+   02		1	577760		194120		   8192        1024
+   03		1	32		335768		   8192        1024
+   12		3	773720		920		   0           0
+   13		3	771880		1840		   0           0
+   14		2	0		16		   0           0
+   15		3	16		16		   0           0

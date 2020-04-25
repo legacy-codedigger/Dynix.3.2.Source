@@ -1,0 +1,135 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986 Sequent Computer Systems, Inc.
+.\" All rights reserved
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: s_lock.3p 1.7 90/02/07 $
+.TH S_LOCK 3P "\*(V)" "DYNIX"
+.SH NAME
+s_init_lock, s_lock, s_clock, s_unlock \- initialize, lock, unlock locks
+.SH SYNOPSIS
+.nf
+\f2C syntax:\fP
+.PP
+\f3#include <parallel/parallel.h>
+slock_t *lp;
+s_init_lock (lp);
+S_INIT_LOCK (lp);
+s_lock (lp);
+S_LOCK (lp);
+s_clock (lp);
+S_CLOCK (lp);
+s_unlock (lp);
+S_UNLOCK (lp);\fP
+.PP
+\f2Pascal syntax\fP
+.PP
+\f3procedure s_init_lock(var lp : integer);
+cexternal;
+procedure s_lock(var lp : integer);
+cexternal;
+function s_clock : longint;
+cexternal;
+procedure s_unlock(var lp : integer);
+cexternal;\fP
+.PP
+\f2FORTRAN syntax\fP
+.PP
+\f3subroutine s_init_lock(lp)
+subroutine s_lock(lp)
+subroutine s_clock(lp)
+subroutine s_unlock(lp)
+integer*1 lp\fP
+.fi
+.SH DESCRIPTION
+.I S_init_lock
+initializes a memory-based lock. After the lock is
+initialized, it can be locked with the
+.I s_lock
+or
+.I s_clock
+routine and unlocked with the
+.I s_unlock
+routine.
+There is no practical limit to the number of locks that can
+be used by a process.
+.PP
+In the C language, a lock is a shared data structure of type
+slock_t, as shown in the following declaration statement:
+.sp 5p
+.nf
+	shared slock_t lock;
+.fi
+.sp 
+In Pascal, a lock is a global integer variable.
+In FORTRAN, a lock is an INTEGER*1 variable.
+A FORTRAN lock must be placed in shared memory either
+by declaring it in a common block and using the loader
+.B \-F
+option or by using the FORTRAN compiler
+.B \-mp
+option, which places all variables into shared memory.
+.PP
+.I s_lock
+and
+.I s_clock
+lock the lock whose address is
+.IR lp .
+The lock must previously have been initialized using
+.IR s_init_lock .
+.I s_lock
+is always successful;
+it spins as long as is necessary to acquire the lock.
+.I s_clock
+is successful only if the lock is free;
+if the lock is held by another process, \f2s_clock\fP returns
+the value L_FAILED.
+\f2s_clock\fP can be used when a process does not need to
+acquire a particular lock (for instance, when another lock
+could be used instead).
+.PP
+.I s_unlock
+unlocks the lock whose address is
+.IR lp .
+.PP
+\f2S_INIT_LOCK\fP, \f2S_LOCK\fP, \f2S_UNLOCK\fP,  
+and \f2S_CLOCK\fP
+are C-preprocessor macros.
+(The \f2S_CLOCK\fP macro is actually compiled out of line
+on Balance systems, but it is available for code
+compatibility.)
+These macros are found in the header file
+.IR /usr/include/parallel/parallel.h .
+The macros are faster than the normal function calls, but they
+can add to the code size.
+See the source code in <parallel/parallel.h> for more
+information on the macros.
+.SH "SEE ALSO"
+intro(3P), shmalloc(3P), fortran(1), ld(1), \f2Guide
+to Parallel Programming\fP
+.SH "NOTES"
+The function names
+.IR s_init_lock ,
+.IR s_lock ,
+.IR s_clock ,
+and
+.I s_unlock 
+are used in C, Pascal, and FORTRAN.
+In C, the 
+.I lp
+argument is passed as a pointer to the lock,
+while in Pascal and
+FORTRAN, the
+argument is the address of the lock itself.
+.SH BUGS
+.I s_lock, s_unlock,
+and
+.I s_init_lock
+are declared as integer functions, but do not
+in fact return a value.

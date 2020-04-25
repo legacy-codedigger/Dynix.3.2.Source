@@ -1,0 +1,37 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: valloc.3 1.4 86/05/13 $
+.TH VALLOC 3 "\*(V)" "3BSD"
+.SH NAME
+valloc \- aligned memory allocator
+.SH SYNOPSIS
+.nf
+.B char *valloc(size)
+.B unsigned size;
+.fi
+.SH DESCRIPTION
+.I Valloc
+allocates
+.I size
+bytes aligned on a page boundary.
+It is implemented by calling
+.IR malloc (3)
+with a slightly larger request, saving the true beginning of the block
+allocated, and returning a properly aligned pointer.
+.SH DIAGNOSTICS
+.I Valloc
+returns a null pointer (0) if there is no available memory
+or if the arena has been detectably corrupted by storing outside the bounds
+of a block.
+.SH BUGS
+.I Vfree
+isn't implemented.

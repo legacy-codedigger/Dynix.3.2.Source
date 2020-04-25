@@ -1,0 +1,155 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: shutdown.8 1.11 90/07/23 $
+.\" @(#)shutdown.8 1.1 85/12/28 SMI; from UCB 4.2
+.TH SHUTDOWN 8 "\*(V)" "4BSD"
+.SH NAME
+shutdown \- close down the system at a given time
+.SH SYNOPSIS
+.B /etc/shutdown
+.RB [ \-k ]
+.RB [ \-r ]
+.RB [ \-h ]
+.RB [ \-f ]
+.RB [ \-n ]
+.I time
+.RI [ "warning-message ..." ]
+.SH DESCRIPTION
+.\".IX  "shutdown command"  ""  "\f2shutdown\fP \(em shut down system"
+The 
+.B shutdown
+command
+provides an automated shutdown procedure for the super-user
+to notify users when the system is shutting down.
+The 
+.I time
+argument specifies when
+.B shutdown
+will bring the system down; it may be the word
+.B now
+(indicating an immediate shutdown),
+or it may specify a future time in one of two formats:
+.BI + number
+and
+.IB hour : minute.
+The first form brings the system down in
+.I number
+minutes, and the second brings the system down
+at the time of day indicated in 24-hour notation.
+.LP
+At intervals that get smaller as the system shutdown approaches,
+warning messages are displayed at terminals of all logged-in users,
+and of users who have remote mounts on that machine.
+Five minutes before shutdown,
+or immediately if shutdown is in less than 5 minutes,
+logins are disabled by creating the file
+.I /etc/nologin
+and writing a message there.
+If this file exists when a user attempts to log in,
+.B login
+prints its contents and exits.  The file is removed just before
+.B shutdown
+exits.
+.LP
+At shutdown time a
+message is written in the system log, containing the
+time of shutdown, who ran shutdown and the reason.
+The script
+.B /etc/rc.shutdown
+is called with the argument
+.IR warn .
+A terminal stop signal is sent to
+.B init,
+so that processes are not respawned as they die.
+If
+.B \-r,
+.B \-n,
+or
+.B \-k,
+was used, then
+.B shutdown
+will exec
+.BR reboot (8),
+.BR halt (8),
+or avoid shutting the system down (respectively).
+Otherwise
+.B shutdown
+sends all remaining non-system processes a 
+.I sigterm
+signal, then
+calls
+.B /etc/rc.shutdown
+with the argument 
+.IR shutdown .
+Finally, it sends a terminate signal to
+.BR init ,
+which brings the system down to single-user mode.
+.PP
+The option
+.B \-k
+is to make people think the system is going down,
+but does not actually take it down.
+.PP
+With the
+.B \-f
+option,
+.B shutdown
+arranges, in the manner of
+.BR fastboot (8),
+that when the system is rebooted the file systems will not
+be checked.  
+.PP
+The
+.B \-n
+option prevents the normal
+.BR sync (2)
+before stopping.
+.LP
+The time of the shutdown and the warning message are placed in the file
+.IR /etc/nologin ,
+which should be used to tell the users when the system
+will be back up, and why it is going down.
+.SH FILES
+.if n .ta 2.25i
+.if t .ta 1.75i
+.I "/etc/nologin	"
+tells
+.B login
+not to let anyone log in
+.br
+.I "/etc/rmtab	"
+list of remote hosts that have mounted this host
+.br
+.I "/etc/rc.shutdown	"
+system shutdown script
+.SH "SEE ALSO"
+.BR login (1),
+.BR reboot (8),
+.BR rc (8),
+.BR init (8),
+.BR halt (8),
+.BR fastboot (8)
+.SH BUGS
+.B Shutdown
+only allows you to kill the system between now and 23:59 if
+you use the absolute time for shutdown.
+.PP
+The disks will still be 
+.IR sync ed
+even if
+.B -n
+option is given if the
+.B rc.shutdown
+script runs commands that
+.I sync
+the disks (such as
+.BR umount (8)).

@@ -1,0 +1,33 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: echo.1 1.5 1991/06/12 21:29:46 $
+.TH ECHO 1 "\*(V)" "7th Edition"
+.SH NAME
+echo \- echo arguments
+.SH SYNOPSIS
+.B echo
+[
+.B \-n
+]
+[ arg ] ...
+.SH DESCRIPTION
+.I Echo
+writes its arguments separated by blanks and terminated by
+a newline on the standard output.  If the flag
+.B \-n
+is used, no newline is added to the output.
+.PP
+.I Echo
+is useful for producing diagnostics in
+shell programs and for writing constant data on pipes.
+To send diagnostics to the standard error file, do `echo ... 1>&2'.
+(Note that this is example is using Bourne shell syntax.)

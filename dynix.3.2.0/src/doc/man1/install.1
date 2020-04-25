@@ -1,0 +1,116 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: install.1 1.9 86/09/05 $
+.TH INSTALL 1 "\*(V)" "4BSD"
+.SH NAME
+install \- install binaries
+.SH SYNOPSIS
+.B install
+[
+.B \-c
+] [
+.B \-m
+mode ] [
+.B \-o
+owner ] [
+.B \-g
+group ] [
+.B \-s
+] binary [binary...] destination
+.SH DESCRIPTION
+.I Binary
+is moved (or copied if 
+.B \-c
+is specified) to
+.IR destination .
+If
+.I destination
+already exists,
+it is removed before
+.I binary
+is moved.
+If the destination is a directory then one or more
+.I binary
+files are moved into the
+.I destination
+directory with their original file-names.
+Note that
+.I install
+does not interpret arguments the same as
+.IR mv (1)
+or
+.IR cp (1).
+For example,
+if
+.I x
+is a directory containing the file
+.IR y ,
+and
+.I z
+is a directory at the same level as
+.IR x ,
+then the command line
+"mv x/y z"
+moves the file
+.I y
+into the directory
+.I z
+(i.e.,
+the new full pathname of the file will be
+.IR z/y ).
+However,
+the command line
+"install x/y z"
+installs both the subdirectory
+.I x
+.B and
+the file
+.I y
+into the directory
+.I z
+(i.e.,
+the new full pathname of the file will be
+.IR z/x/y ).
+.PP
+The mode for
+.I Destination
+is set to 755; the
+.B \-m
+.I mode
+option may be used to specify a different mode.
+.PP
+.I Destination
+is changed to owner root; the
+.B \-o
+.I owner
+option may be used to specify a different owner.
+.PP
+.I Destination
+is changed to group root; the
+.B \-g
+.I group
+option may be used to specify a different group.
+.PP
+If the
+.B \-s
+option is specified the binary is stripped after being installed.
+.PP
+.I Install
+refuses to move a file onto itself.
+.PP
+.I Install
+adds no privileges;
+that is, it cannot change owners or groups of files that the user is
+not permitted to access or become, nor write files into directories for which
+the user has no write permission.
+.SH "SEE ALSO"
+chgrp(1), chmod(1), cp(1), mv(1), strip(1), chown(8)

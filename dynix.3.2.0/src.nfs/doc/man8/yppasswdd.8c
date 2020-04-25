@@ -1,0 +1,82 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: yppasswdd.8c 1.4 87/04/07 $
+.\" @(#)yppasswdd.8c 1.1 85/12/28 SMI
+.TH YPPASSWDD 8C "\*(V)" "4BSD"
+.SH NAME
+yppasswdd \- server for modifying yellow pages password file
+.SH SYNOPSIS
+.B /usr/etc/rpc.yppasswdd
+.I file
+[
+.B \-m
+.I "arg1 arg2"
+\&... ]
+.SH DESCRIPTION
+.\".IX  "yypasswdd command"  ""  "\f2yppasswdd\fP \(em yellow pages password server"
+.\".IX  servers  yppasswdd  ""  "\f2yppasswdd\fP \(em yellow pages password server"
+.I Yppasswdd
+is a server that handles password change requests from
+.IR yppasswd (1).
+It changes a password entry in
+.IR file ,
+which is assumed to be in the format of
+.IR passwd (5).
+An entry in
+.I file
+is changed only if the password presented by
+.IR yppasswd (1)
+matches the encrypted password of that entry.
+.LP
+If the
+.B \-m
+option is given,
+.IR make (1)
+is performed in
+.I /etc/yp
+after
+.I file
+is modified.
+Any arguments following the flag are passed to
+.IR make .
+.LP
+This server is not run by default, nor can it be started up from
+.IR inetd (8).
+If it is desired to enable remote password updating for the yellow pages,
+an entry for
+.I yppasswdd
+should be put in the
+.I /etc/rc
+file of the host serving as the master for the yellow pages
+.I passwd
+file.
+.SH EXAMPLE
+.LP
+If the yellow pages password file is stored as
+.IR /etc/yp/src/passwd ,
+and it is necessary to have password changes propagated immediately,
+the server should be invoked as
+.Ps
+/usr/etc/rpc.yppasswdd /etc/yp/src/passwd \-m passwd DIR=/etc/yp/src
+.Pe
+.SH FILES
+/etc/yp/Makefile
+.SH "SEE ALSO"
+yppasswd(1),
+passwd(5),
+ypfiles(5),
+ypmake(8)
+.\" If anyone complains, I'll put this back.
+.\"	.SH CAVEAT
+.\"	This server will eventually be replaced with a more general
+.\"	service for modifying any map in the yellow pages.
+.\"	\f3(Is this necessary?)\fP

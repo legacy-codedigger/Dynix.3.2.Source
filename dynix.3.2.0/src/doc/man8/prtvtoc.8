@@ -1,0 +1,161 @@
+.\" $Copyright:	$
+."Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989 
+."Sequent Computer Systems, Inc.   All rights reserved.
+." 
+."This software is furnished under a license and may be used
+."only in accordance with the terms of that license and with the
+."inclusion of the above copyright notice.   This software may not
+."be provided or otherwise made available to, or used by, any
+."other person.  No title to or ownership of the software is
+."hereby transferred.
+.\"
+...
+.V= $Header: prtvtoc.8 1.5 90/12/14 $
+.TH PRTVTOC 8 "\*(V)" "7th Edition"
+.tr ~
+.SH NAME
+prtvtoc \- print the VTOC of a block device
+.SH SYNOPSIS
+.B /usr/etc/prtvtoc
+[
+.B \-s
+] [
+.B \-h
+] [
+.B \-T
+] [
+.B \-t fstab
+] [
+.B \-m mtab
+] device
+.SH DESCRIPTION
+.B prtvtoc\^
+allows the contents of the VTOC (volume table of contents) to be viewed by
+a user for reference or verification.
+In addition to printing 
+the contents of the VTOC,
+the command lists any free areas on the disk 
+(that is, those without a partition). 
+.PP
+The
+.I device
+on which the VTOC is installed is specified as the
+unpartitioned version of the device, i.e,
+.B /dev/rzd0
+or
+.B /dev/rsd1.
+.SH OPTIONS
+.TP 12
+.B \-s
+Print only the partition table, with headings but without the comments.
+This option also inhibits the printing of all V_NOPART partitions.
+.TP 12
+.B \-h
+Print only the partition table, without headings and comments.
+Use this option when the output of the
+.B prtvtoc
+command is piped into another command.
+.TP 12
+.B \-T
+Print only the disk type name.  Use this option to discover what
+the disk type is.
+.TP 12
+.BI \-t fstab
+Use the file
+.I fstab
+instead of
+.I /etc/fstab.
+.TP 12
+.BI \-m mtab
+Use the file
+.I mtab
+instead of
+.I /etc/mtab.
+.SH EXAMPLE
+The command line entry and system response shown below are
+for a 792\(hymegabyte disk:
+.if n .SC 10 6 29
+.if t .SC 8 6 29
+.sp 1v
+.ft CW
+# \f3prtvtoc /dev/rzd0\fP <CR>
+.nf
+* /dev/rdz0 partition map
+*
+* Disk Type:           m2333k
+*
+.TS
+tab;
+l
+l.
+* Dimensions:
+*     512 bytes/sector
+*      66 sectors/track
+*      10 tracks/cylinder
+*     823 cylinders
+.TE
+*
+* Partition Types:
+* ~0:~Empty Slot
+* ~1:~Regular~Partition
+* ~2:~Bootstrap~Area
+* ~3:~Reserved~Area
+* ~4:~Firmware~Area
+.fi
+.bP
+\0
+.sp 2
+.TS
+tab(:);
+lfB lfB lfB lfB lfB lfB lfB
+lfB lfB lfB lfB lfB lfB lfB
+lfCW lfCW lfCW lfCW lfCW lfCW lfCW.
+::Start:Size:Block Sz:Frag Sz:Mount
+*:Type:Sector:in Sectors:in Bytes:in Bytes:Point
+
+0:1:221100:49500:8192:1024:
+1:1:270600:67320:8192:1024
+2:1:337920:203940:8192:1024:
+3:1:692:220408:8192:1024:
+4:0:0:0:8192:1024
+5:0:0:0:8192:1024
+6:0:0:0:8192:1024
+7:0:0:0:8192:1024
+8:0:0:0:8192:1024
+9:0:0:0:8192:1024
+10:0:0:0:8192:1024
+11:0:0:0:8192:1024
+12:3:0:660:0:0
+13:3:541860:1320:0:0
+14:2:660:16:0:0
+15:3:676:16:0:0
+.TE
+.ft CW
+#
+.ft 1
+.sp 2
+Codes for TYPE are as follows:
+.PP
+.TS
+center;
+lf3 lf3
+l  c.
+Name	Number
+
+No Partition	0
+Regular Partition	1
+Boot Area	2
+Reserved Area	3
+Firmware Area	4
+Model D Scan Dump Area	5
+.TE
+.sp
+If the
+.I device
+passed to
+.B prtvtoc
+does not contain a VTOC, an error will occur.
+.SH SEE ALSO
+mkvtoc(8), rmvtoc(8), prtvtoc(8S)
+.SH NOTES
+A user must have read access to the device for this command to work.

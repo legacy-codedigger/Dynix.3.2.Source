@@ -1,0 +1,102 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: ctype.3 1.10 90/02/15 $
+.TH CTYPE 3 "\*(V)" "7th Edition"
+.SH NAME
+isalnum, isalpha, isascii, iscntrl, isdigit, islower, isprint, ispunct, isspace, isupper, toascii, tolower, toupper \- character classification and conversion macros
+.SH SYNOPSIS
+.B #include <ctype.h>
+.PP
+.B isalnum(c)
+.PP
+.B . . .
+.SH DESCRIPTION
+The
+.I is*
+macros classify ASCII-coded integer values
+by table lookup.
+Each is a predicate returning nonzero for true,
+zero for false.
+.I Isascii
+is defined on all integer values; the rest
+are defined only where 
+.I isascii
+is true and on the single non-ASCII value
+EOF (see
+.IR stdio (3S)).
+If
+.I toupper
+is provided with a lower case letter (can be ensured by using
+.I isascii
+and
+.I islower
+both true) it will return an upper case ASCII character.  Input other than
+lower case results in undefined values.  If
+.I tolower
+is provided with an upper case letter (can be ensured by using
+.I isascii
+and
+.I isupper
+both true) it will return a lower-case ASCII character.  Input other than
+upper case results in undefined values.
+No matter what value
+.I c
+has,
+.I toascii
+returns an ASCII character.
+.PP
+These following macros return non-zero when
+.I c
+meets the indicated criteria:
+.TP 15n
+.I isalnum
+.I c
+is an alphanumeric character
+.TP
+.I isalpha
+.I c
+is a letter
+.TP
+.I isascii
+.I c
+is an ASCII character, code less than 0200.
+.TP
+.I iscntrl
+.I c
+is a delete character (0177) or ordinary control character
+(less than 040).
+.TP
+.I isdigit
+.I c
+is a digit
+.TP
+.I islower 
+.I c
+is a lower case letter
+.TP
+.I isprint
+.I c
+is a printing character, code 040(8) (space) through 0176 (tilde)
+.TP
+.I ispunct
+.I c
+is a punctuation character (neither control nor alphanumeric)
+.TP
+.I isspace
+.I c
+is a space, tab, carriage return, newline, or formfeed
+.TP
+.I isupper
+.I c
+is an upper case letter
+.SH "SEE ALSO"
+ascii(7)

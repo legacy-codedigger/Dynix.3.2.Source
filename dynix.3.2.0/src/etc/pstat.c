@@ -1,0 +1,1235 @@
+/* $Copyright:	$
+ * Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+ * Sequent Computer Systems, Inc.   All rights reserved.
+ *  
+ * This software is furnished under a license and may be used
+ * only in accordance with the terms of that license and with the
+ * inclusion of the above copyright notice.   This software may not
+ * be provided or otherwise made available to, or used by, any
+ * other person.  No title to or ownership of the software is
+ * hereby transferred.
+ */
+
+#ifndef lint
+static char rcsid[] = "$Header: /usr/src/dynix.3.2.0/src/etc/RCS/pstat.c,v 1.2 1993/02/18 02:43:44 bruce Exp $";
+#endif
+
+/*
+ * Print system stuff
+ */
+
+#define mask(x) (x&0377)
+#define	clear(x) ((int)x&0x7fffffff)
+
+/* Blocks to kilobyte: */
+#define	btok(bytes)	((bytes) * DEV_BSIZE / 1024)
+
+#include <stdio.h>
+#undef	FILE
+#include <sys/param.h>
+#include <sys/dir.h>
+#define	KERNEL
+#include <sys/file.h>
+#include <sys/user.h>
+#undef	KERNEL
+#include <sys/proc.h>
+#define KERNEL
+#include <sys/vnode.h>
+#include <sys/inode.h>
+#undef KERNEL
+#include <sys/map.h>
+#include <sys/ioctl.h>
+#include <sys/tty.h>
+#include <sys/conf.h>
+#include <sys/vm.h>
+#include <nlist.h>
+#include <machine/pte.h>
+#include <sys/clist.h>
+#include <mbad/st.h>
+
+char	*fcore	= "/dev/kmem";
+char	*fnlist	= "/dynix";
+int	fc;
+void	do_nlist();
+
+struct nlist nl[] = {
+#define	SINODE	0
+	{ "_inode" },
+#define	SPROC	1
+	{ "_proc" },
+#define	SFIL	2
+	{ "_file" },
+#define	USRPTMA	3
+	{ "_Usrptmap" },
+#define	USRPT	4
+	{ "_usrpt" },
+#define	SNSWAP	5
+	{ "_nswap" },
+#define	SWAPMAP	6
+	{ "_swapmap" },
+#define	SNPROC	7
+	{ "_nproc" },
+#define	SNFILE	8
+	{ "_nfile" },
+#define	SNINODE	9
+	{ "_ninode" },
+#define	SNSWAPMAP 10
+	{ "_nswapmap" },
+#define	SPTY	11
+	{ "_pt_tty" },
+#define	SDMMIN	12
+	{ "_dmmin" },
+#define	SDMMAX	13
+	{ "_dmmax" },
+#define	SNSWDEV	14
+	{ "_nswdev" },
+#define	NST	15
+	{ "_nst" },
+#define	STINFO	16
+	{ "_stinfo" },
+#define SMFILE 17
+	{ "_mfile" },
+#define SNMFILE 18
+	{ "_nmfile" },
+#define	SDMMAX_SW	19
+	{ "_dmmax_sw" },
+#define SMAX_SWAP 20
+	{ "_max_swapmap" },
+#define SMIN_SWAP 21
+	{ "_min_swapmap" },
+#define SCUR_SWAP 22
+	{ "_cur_swapmap" },
+	0,
+};
+
+int	inof;
+int	prcf;
+int	ttyf;
+int	vflg;
+int	usrf;
+long	ubase;
+int	filf;
+int	swpf;
+int	totflg;
+char	partab[1];
+struct	cdevsw	cdevsw[1];
+struct	bdevsw	bdevsw[1];
+int	allflg;
+int	kflg;
+struct	pte *Usrptma;
+struct	pte *usrpt;
+
+main(argc, argv)
+char **argv;
+{
+	register char *argp;
+	int allflags;
+
+	argc--, argv++;
+	while (argc > 0 && **argv == '-') {
+		argp = *argv++;
+		argp++;
+		argc--;
+		while (*argp++)
+		switch (argp[-1]) {
+
+		case 'T':
+			totflg++;
+			break;
+
+		case 'a':
+			allflg++;
+			break;
+
+		case 'i':
+			inof++;
+			break;
+
+		case 'k':
+			kflg++;
+			fcore = "/vmcore";
+			break;
+
+		case 'p':
+			prcf++;
+			break;
+
+		case 'v':
+			vflg++;
+			break;
+
+		case 't':
+			ttyf++;
+			break;
+
+		case 'u':
+			if (argc == 0)
+				break;
+			argc--;
+			usrf++;
+			sscanf( *argv++, "%x", &ubase);
+			break;
+
+		case 'f':
+			filf++;
+			break;
+		case 's':
+			swpf++;
+			break;
+		default:
+			usage();
+			exit(1);
+		}
+	}
+	if (argc>1)
+		fcore = argv[1];
+	if ((fc = open(fcore, 0)) < 0) {
+		printf("Can't find %s\n", fcore);
+		exit(1);
+	}
+	if (argc>0)
+		fnlist = argv[0];
+	do_nlist(fnlist, nl);
+	usrpt = (struct pte *)nl[USRPT].n_value;
+	Usrptma = (struct pte *)nl[USRPTMA].n_value;
+	if (nl[0].n_type == 0) {
+		printf("no namelist\n");
+		exit(1);
+	}
+	allflags = filf | totflg | inof | prcf | ttyf | usrf | swpf | vflg;
+	if (allflags == 0) {
+		printf("pstat: one or more of -[aixptfsuTv] is required\n");
+		exit(1);
+	}
+	if (filf||totflg)
+		dofile();
+	if (inof||totflg)
+		doinode();
+	if (prcf||totflg)
+		doproc();
+	if (totflg)
+		domfile();
+	if (ttyf)
+		dotty();
+	if (usrf)
+		dousr();
+	if (swpf||totflg)
+		doswap();
+	return 0;
+}
+
+usage()
+{
+	printf("usage: pstat -[aiptfsuTv] [system] [core]\n");
+}
+
+/*
+ * Safe version of nlist(), providing a diagnostic output if an
+ * entry can't be found.
+ */
+void
+do_nlist(fnlist, nl)
+	char *fnlist;
+	struct nlist *nl;
+{
+	register int x;
+	register struct nlist *n = nl;
+
+	/* Pre-fill type field with -1, so that we can spot un-filled ones */
+	for (n = nl; n->n_name; ++n)
+		n->n_type = -1;
+
+	/* Get the namelist, just return if there was no problem */
+	x = nlist(fnlist, nl);
+	if (!x)
+		return;
+
+	/* -1 means the file was completely useless */
+	if (x == -1) {
+		fprintf(stderr, "%s: can not get namelist from file.\n",
+			fnlist);
+		exit(1);
+	}
+
+	/* Otherwise we're just missing some symbols */
+	fprintf(stderr, "Error: the following symbols are not in '%s':\n",
+		fnlist);
+	for (n = nl; n->n_name; ++n)
+		if (n->n_type == 0)
+			printf("  %s\n", n->n_name);
+	exit(1);
+}
+
+doinode()
+{
+	register struct inode *ip;
+	register struct vnode *vp;
+	struct inode *xinode, *ainode;
+	register int nin;
+	int ninode;
+
+	nin = 0;
+	ninode = getw(nl[SNINODE].n_value);
+	xinode = (struct inode *)calloc(ninode, sizeof (struct inode));
+	if (xinode == (struct inode *)0) {
+		printf("pstat: not enough core\n");
+		exit(1);
+	}
+	lseek(fc, (int)(ainode = (struct inode *)getw(nl[SINODE].n_value)), 0);
+	read(fc, xinode, ninode * sizeof(struct inode));
+	for (ip = xinode; ip < &xinode[ninode]; ip++)
+		if (ip->i_vnode.v_count)
+			nin++;
+	if (totflg) {
+		printf("%3d/%3d inodes\n", nin, ninode);
+		return;
+	}
+	printf("%d/%d active inodes\n", nin, ninode);
+printf("   LOC   IFLG VFLAG    CNT  DEVICE RDC WRC   INO  MODE NLK UID  SIZE/DEV TYPE\n");
+	for (ip = xinode; ip < &xinode[ninode]; ip++) {
+		vp = &ip->i_vnode;
+		if (vp->v_count == 0)
+			continue;
+		printf("%8.1x ", ainode + (ip - xinode));
+		putf(ip->i_flag&IUPD, 'U');
+		putf(ip->i_flag&IACC, 'A');
+		putf(ip->i_flag&ICHG, 'C');
+		putf(ip->i_flag&IFREE, 'F');
+		printf(" ");
+		putf(vp->v_flag&VROOT, 'R');
+		putf(vp->v_flag&VMAPPED, 'M');
+		putf(vp->v_flag&VMAPSYNC, 'D');
+		putf(vp->v_flag&VNOLINKS, 'N');
+		putf(vp->v_shlockc, 'S');
+		putf(vp->v_exlockc, 'E');
+		putf(vp->v_exsema.s_count || vp->v_shsema.s_count, 'Z');
+		printf(" ");
+		printf("%4d", vp->v_count&0377);
+		printf("%4d,%3d", major(ip->i_dev), minor(ip->i_dev));
+		printf("%4d", vp->v_shlockc&0377);
+		printf("%4d", vp->v_exlockc&0377);
+		printf("%6d", ip->i_number);
+		printf("%6x", ip->i_mode & 0xffff);
+		printf("%4d", ip->i_nlink);
+		printf("%4d", ip->i_uid);
+		if ((ip->i_mode&IFMT)==IFBLK || (ip->i_mode&IFMT)==IFCHR)
+			printf("%6d,%3d", major(ip->i_rdev), minor(ip->i_rdev));
+		else
+			printf("%10ld", ip->i_size);
+		switch (vp->v_type) {
+			case VNON:
+				printf(" NONE");
+				break;
+			case VREG:
+				printf(" REG");
+				break;
+			case VDIR:
+				printf(" DIR");
+				break;
+			case VBLK:
+				printf(" BLK");
+				break;
+			case VCHR:
+				printf(" CHR");
+				break;
+			case VLNK:
+				printf(" SLNK");
+				break;
+			case VSOCK:
+				printf(" SOCK");
+				break;
+			case VFIFO:
+				printf(" FIFO");
+				break;
+			case VBAD:
+			default:
+				printf(" ?");
+				break;
+		}
+		printf("\n");
+	}
+	free(xinode);
+}
+
+getw(loc)
+	off_t loc;
+{
+	int word;
+
+	if (kflg)
+		loc &= 0x7fffffff;
+	lseek(fc, loc, 0);
+	read(fc, &word, sizeof (word));
+	if (kflg)
+		word &= 0x7fffffff;
+	return (word);
+}
+
+putf(v, n)
+{
+	if (v)
+		printf("%c", n);
+	else
+		printf(" ");
+}
+
+/*
+ * report on number of mapped files.  This sort-of replaces the report
+ * on text structures.  Might be nice to have a long report of active
+ * mfile structs, but not very.
+ */
+domfile()
+{
+	register struct mfile *mp;
+	int nmfile;
+	struct mfile *mfile;
+	int nmf;
+
+	nmf = 0;
+	nmfile = getw(nl[SNMFILE].n_value);
+	mfile = (struct mfile *)calloc(nmfile, sizeof (struct mfile));
+	lseek(fc, getw(nl[SMFILE].n_value), 0);
+	read(fc, mfile, nmfile * sizeof (struct mfile));
+	for (mp = mfile; mp < &mfile[nmfile]; mp++)
+		if (mp->mf_vp!=NULL)
+			nmf++;
+	if (totflg) {
+		printf("%3d/%3d mfiles\n", nmf, nmfile);
+		free(mfile);
+		return;
+	}
+}
+
+doproc()
+{
+	struct proc *xproc, *aproc;
+	int nproc;
+	register struct proc *pp;
+	register loc, np;
+	struct pte apte;
+
+	nproc = getw(nl[SNPROC].n_value);
+	xproc = (struct proc *)calloc(nproc, sizeof (struct proc));
+	if (xproc == (struct proc *)0) {
+		printf("pstat: not enough core\n");
+		exit(1);
+	}
+	lseek(fc, (int)(aproc = (struct proc *)getw(nl[SPROC].n_value)), 0);
+	read(fc, xproc, nproc * sizeof (struct proc));
+	np = 0;
+	for (pp=xproc; pp < &xproc[nproc]; pp++)
+		if (pp->p_stat)
+			np++;
+	if (totflg) {
+		printf("%3d/%3d processes\n", np, nproc);
+		return;
+	}
+	printf("   LOC    S    F PRI      SIG  UID SLP TIM  CPU  NI   PGRP    PID   PPID     ADDR  RSS  SIZE   WCHAN    LINK  AFF NOSWAP\n");
+	for (pp=xproc; pp<&xproc[nproc]; pp++) {
+		if (pp->p_stat==0 && allflg==0)
+			continue;
+		printf("%8x", aproc + (pp - xproc));
+		printf(" %2d", pp->p_stat);
+		printf(" %4x", pp->p_flag & 0xffff);
+		printf(" %3d", pp->p_pri);
+		printf(" %8x", pp->p_sig);
+		printf(" %4d", pp->p_uid);
+		printf(" %3d", pp->p_slptime);
+		printf(" %3d", pp->p_time);
+		printf(" %4d", pp->p_cpu&0377);
+		printf(" %3d", pp->p_nice);
+		printf(" %6d", pp->p_pgrp);
+		printf(" %6d", pp->p_pid);
+		printf(" %6d", pp->p_ppid);
+		printf(" %8x", pp->p_uarea);
+		printf(" %4x", pp->p_rssize);
+		printf(" %5x", pp->p_dsize+pp->p_ssize);
+		printf(" %7x", clear(pp->p_wchan));
+		printf(" %7x", clear(pp->p_link));
+		if (pp->p_affinity >= 0)
+			printf("%4d", pp->p_affinity);
+		else
+			printf("    ");
+		printf("%7d", pp->p_noswap);
+		printf("\n");
+	}
+}
+
+#ifdef sequent
+
+int	speed[] = {
+	0,50,75,110,134,150,200,300,600,1200,1800,2400,4800,9600,19200,38400
+};
+
+dotty()
+{
+	int i, j, err, needheader;
+	struct stinfo **stinfo, **st_kinfo;
+	struct tty *tp;
+	char numbuf[16];
+	struct stinfo *Astinfo = (struct stinfo *) NULL;
+	int nst = 0;
+
+	if (0 != nl[STINFO].n_value) {
+		lseek(fc, (long)nl[STINFO].n_value, 0);
+		read(fc, &Astinfo, sizeof (Astinfo));
+	}
+	if (0 != nl[NST].n_value) {
+		lseek(fc, (long)nl[NST].n_value, 0);
+		read(fc, &nst, sizeof (nst));
+	}
+
+	printf("%d Systech ST Multiplexor%s configured.\n",
+		nst, nst==1?"":"s");
+	if ((0 == nst) || ((struct stinfo *) NULL == Astinfo)) {
+		return;
+	}
+	st_kinfo = (struct stinfo **)calloc(sizeof(struct stinfo *),(nst));
+	if (st_kinfo == (struct stinfo **)0) {
+		printf("pstat: not enough core\n");
+		exit(1);
+	}
+	lseek(fc,Astinfo,0);
+	read(fc,st_kinfo,sizeof(struct stinfo *)*(nst));
+	stinfo = (struct stinfo **)calloc(sizeof(struct stinfo *),(nst));
+	if (stinfo == (struct stinfo **)0) {
+		printf("pstat: not enough core\n");
+		exit(1);
+	}
+	for ( i=0 ; i<nst ; i++ ) {
+		if (st_kinfo[i] != NULL) {
+			stinfo[i] = 
+			    (struct stinfo *)calloc(sizeof(struct stinfo),1);
+			if (stinfo[i] == (struct stinfo *)0) {
+				printf("pstat: not enough core\n");
+				exit(1);
+			}
+			lseek(fc,st_kinfo[i],0);
+			read(fc,stinfo[i],sizeof(struct stinfo));
+		}
+	}
+	if( !vflg ) for ( i=0 ; i<nst ; i++ ) {
+		needheader = 1;
+		for ( j=0 ; stinfo[i] && j<stinfo[i]->st_size ; j++ ) {
+			char name[32];
+			tp = &stinfo[i]->st_tty[j];
+			sprintf(name,"%c%1x", "hijklmnoHIJKLMNO"[i], j);
+			if ( needheader ) {
+				needheader = 0;
+				printf("\nBoard %d: stinfo @ 0x%x CSR 0x%x, %d lines\n",i,st_kinfo[i],(int)stinfo[i]->st_addr&0xFFFF,stinfo[i]->st_size);
+				printf("TT DEVICE RAW CAN OUT OPEN  PGRP  TTY FLAGS  STATE  SPEED I/O   LDISC  \n");
+			}
+			printf("%s ",name);
+			printf("%2d,%3d ",major(tp->t_dev),minor(tp->t_dev));
+			printf("%3d %3d %3d ",tp->t_rawq.c_cc,tp->t_canq.c_cc,tp->t_outq.c_cc);
+			printf("%4d ",tp->t_nopen);
+			printf("%5d ",tp->t_pgrp);
+			printf("0x%08x ",tp->t_flags);
+			printf("0x%04x ",tp->t_state);
+			printf("%5d/%5d ", speed[tp->t_ispeed],
+				speed[tp->t_ospeed]);
+			sprintf(numbuf," %d ",tp->t_line);
+			printf("%5.5s ",tp->t_line == 0 ? "otty" :
+					tp->t_line == 1 ? "ntty" : numbuf); 
+			printf("\n");
+		}
+	} else for ( i=0 ; i<nst ; i++ ) {
+		needheader = 1;
+		for ( j=0 ; stinfo[i] && j<stinfo[i]->st_size ; j++ ) {
+			char name[32];
+			tp = &stinfo[i]->st_tty[j];
+			sprintf(name,"%c%1x","hijklmnoHIJKLMNO"[i],j);
+			if ( needheader ) {
+				needheader = 0;
+				printf("\nBoard %d: stinfo @ 0x%x CSR 0x%x, %d lines\n",i,st_kinfo[i],(int)stinfo[i]->st_addr&0xFFFF,stinfo[i]->st_size);
+				printf("\n");
+			}
+			printf("TT DEVICE RAW CAN OUT OPEN  PGRP COL  SPEED I/O   LDISC \n");
+			printf("%s ",name);
+			printf("%2d,%3d ",major(tp->t_dev),minor(tp->t_dev));
+			printf("%3d %3d %3d ",tp->t_rawq.c_cc,tp->t_canq.c_cc,tp->t_outq.c_cc);
+			printf("%4d ",tp->t_nopen);
+			printf("%5d ",tp->t_pgrp);
+			printf("%3d ",tp->t_col&0xff);
+			printf("%5d/%5d ", speed[tp->t_ispeed],
+				speed[tp->t_ospeed]);
+			sprintf(numbuf," %d ",tp->t_line);
+			printf("%5.5s ",tp->t_line == 0 ? "otty" :
+					tp->t_line == 1 ? "ntty" : numbuf); 
+			printf("\n");
+			doflags(tp->t_flags);
+			dostate(tp->t_state);
+		}
+	}
+}
+
+/*
+ * print a verbose listing of the flags word
+ */
+
+struct flags {
+	char *name;
+	int msk;
+	int value;
+	char *descrip;
+} FlagNames[] = {
+	"TANDEM",0x00000001,0x00000001, "send stopc on out q full",
+	"CBREAK",0x00000002,0x00000002, "half-cooked mode",
+	"LCASE",0x00000004,0x00000004, "simulate lower case",
+	"ECHO",0x00000008,0x00000008, "echo input",
+	"CRMOD",0x00000010,0x00000010, "map \\r to \\r\\n on output",
+	"RAW",0x00000020,0x00000020, "no i/o processing",
+	"ODDP",0x000000c0,0x00000040, "get/send odd parity",
+	"EVENP",0x000000c0,0x00000080, "get/send even parity",
+	"ANYP",0x000000c0,0x000000c0, "get any parity/send none",
+	"NL1",0x00000300,0x00000100, "tty 37 newline delay",
+	"NL2",0x00000300,0x00000200, "vt05 newline delay",
+	"NL3",0x00000300,0x00000300, "undefined newline delay",
+	"TAB1",0x00000c00,0x00000400, "tty 37 tab delay",
+	"TAB2",0x00000c00,0x00000800, "undefined tab delay",
+	"XTABS",0x00000c00,0x00000c00, "expand tabs on output",
+	"CR1",0x00003000,0x00001000, "tn 300 CR delay",
+	"CR2",0x00003000,0x00002000, "tty 37 CR delay",
+	"CR3",0x00003000,0x00003000, "concept 100 CR delay",
+	"FF1",0x00004000,0x00004000, "tty 37 vertical tab delay",
+	"BS1",0x00008000,0x00008000, "backspace delay",
+	"CRTBS",0x00010000,0x00010000, "do backspacing for crt",
+	"PRTERA",0x00020000,0x00020000, "\\ ... / erase",
+	"CRTERA",0x00040000,0x00040000, "erasing backspace",
+	"TILDE",0x00080000,0x00080000, "hazeltine tilde kludge",
+	"MDMBUF",0x00100000,0x00100000, "start/stop output on carrier intr",
+	"LITOUT",0x00200000,0x00200000, "literal output",
+	"TOSTOP",0x00400000,0x00400000, "SIGSTOP on background output",
+	"FLUSHO",0x00800000,0x00800000, "flush output to terminal",
+	"NOHANG",0x01000000,0x01000000, "no SIGHUP on carrier drop",
+	"L001000",0x02000000,0x02000000, "undefined",
+	"CRTKIL",0x04000000,0x04000000, "kill line with blanks",
+	"L004000",0x08000000,0x08000000, "undefined",
+	"CTLECH",0x10000000,0x10000000, "echo control chars as ^X",
+	"PENDIN",0x20000000,0x20000000, "tp->t_rawq needs reread",
+	"DECCTQ",0x40000000,0x40000000, "only ^Q starts after ^S",
+	"NOFLSH",0x80000000,0x80000000, "no output flush on signal",
+	NULL, 0,0,NULL
+};
+doflags(f)
+int f;
+{
+	int i;
+	printf("\tFLAGS: %08x\n",f);
+	for ( i=0 ; FlagNames[i].name!=NULL ; i++ ) {
+		if ( (f&FlagNames[i].msk) == FlagNames[i].value) {
+			printf("\t\t%-11s 0x%08x %s\n",FlagNames[i].name,
+				FlagNames[i].value,FlagNames[i].descrip);
+		}
+	}
+}
+
+/*
+** dostates() - print a verbose listing of the state word
+*/
+
+struct state {
+	char *name;
+	int value;
+	char *descrip;
+} StateNames[] = {
+	"TS_TIMEOUT", 0x000001, "delay timeout in progress",
+	"TS_WOPEN", 0x000002, "waiting for open to complete",
+	"TS_ISOPEN", 0x000004, "device is open",
+	"TS_FLUSH", 0x000008, "outq has been flushed during DMA",
+	"TS_CARR_ON", 0x000010,	"software copy of carrier-present",
+	"TS_BUSY", 0x000020, "output in progress",
+	"TS_ASLEEP", 0x000040, "wakeup when output done",
+	"TS_XCLUDE", 0x000080, "exclusive-use flag against open",
+	"TS_TTSTOP", 0x000100, "output stopped by ctl-s",
+	"TS_HUPCLS", 0x000200, "hang up upon last close",
+	"TS_TBLOCK", 0x000400, "tandem queue blocked",
+	"TS_RCOLL", 0x000800, "collision in read select",
+	"TS_WCOLL", 0x001000, "collision in write select",
+	"TS_NBIO", 0x002000, "tty in non-blocking mode",
+	"TS_ASYNC", 0x004000, "tty in async i/o mode",
+	"TS_LCLOSE", 0x008000, "last close in progress",
+	"TS_BKSL", 0x010000, "state for lowercase \\ work",
+	"TS_QUOT", 0x020000, "last character input was \\",
+	"TS_ERASE", 0x040000, "within a \\.../ for PRTRUB",
+	"TS_LNCH", 0x080000, "next character is literal",
+	"TS_TYPEN", 0x100000, "retyping suspended input (PENDIN)",
+	"TS_CNTTB", 0x200000, "counting tab width; leave FLUSHO alone",
+	NULL, 0, NULL
+};
+dostate(s)
+int s;
+{
+	int i;
+	printf("\tSTATE: %08x\n",s);
+	for ( i=0 ; StateNames[i].name!=NULL ; i++ ) {
+		if ( s&StateNames[i].value )
+			printf("\t\t%-11s 0x%08x %s\n",StateNames[i].name,
+				StateNames[i].value,StateNames[i].descrip);
+	}
+}
+
+#endif sequent
+
+#ifdef vax
+dotty()
+{
+	struct tty dz_tty[128];
+	int ndz;
+	register struct tty *tp;
+	register char *mesg;
+
+	printf("1 cons\n");
+	if (kflg)
+		nl[SKL].n_value = clear(nl[SKL].n_value);
+	lseek(fc, (long)nl[SKL].n_value, 0);
+	read(fc, dz_tty, sizeof(dz_tty[0]));
+	mesg = " # RAW CAN OUT   MODE    ADDR   COL  STATE   PGRP DISC\n";
+	printf(mesg);
+	ttyprt(&dz_tty[0], 0);
+	if (nl[SNDZ].n_type == 0)
+		goto dh;
+	if (kflg) {
+		nl[SNDZ].n_value = clear(nl[SNDZ].n_value);
+		nl[SDZ].n_value = clear(nl[SDZ].n_value);
+	}
+	lseek(fc, (long)nl[SNDZ].n_value, 0);
+	read(fc, &ndz, sizeof(ndz));
+	printf("%d dz lines\n", ndz);
+	lseek(fc, (long)nl[SDZ].n_value, 0);
+	read(fc, dz_tty, ndz * sizeof (struct tty));
+	for (tp = dz_tty; tp < &dz_tty[ndz]; tp++)
+		ttyprt(tp, tp - dz_tty);
+dh:
+	if (nl[SNDH].n_type == 0)
+		goto pty;
+	if (kflg) {
+		nl[SNDH].n_value = clear(nl[SNDH].n_value);
+		nl[SDH].n_value = clear(nl[SDH].n_value);
+	}
+	lseek(fc, (long)nl[SNDH].n_value, 0);
+	read(fc, &ndz, sizeof(ndz));
+	printf("%d dh lines\n", ndz);
+	lseek(fc, (long)nl[SDH].n_value, 0);
+	read(fc, dz_tty, ndz * sizeof(struct tty));
+	for (tp = dz_tty; tp < &dz_tty[ndz]; tp++)
+		ttyprt(tp, tp - dz_tty);
+pty:
+	if (nl[SPTY].n_type == 0)
+		goto pty;
+	if (kflg) {
+		nl[SPTY].n_value = clear(nl[SPTY].n_value);
+	}
+	printf("32 pty lines\n");
+	lseek(fc, (long)nl[SPTY].n_value, 0);
+	read(fc, dz_tty, 32*sizeof(struct tty));
+	for (tp = dz_tty; tp < &dz_tty[32]; tp++)
+		ttyprt(tp, tp - dz_tty);
+}
+
+ttyprt(atp, line)
+struct tty *atp;
+{
+	register struct tty *tp;
+
+	printf("%2d", line);
+	tp = atp;
+	switch (tp->t_line) {
+
+/*
+	case NETLDISC:
+		if (tp->t_rec)
+			printf("%4d%4d", 0, tp->t_inbuf);
+		else
+			printf("%4d%4d", tp->t_inbuf, 0);
+		break;
+*/
+
+	default:
+		printf("%4d", tp->t_rawq.c_cc);
+		printf("%4d", tp->t_canq.c_cc);
+	}
+	printf("%4d", tp->t_outq.c_cc);
+	printf("%8.1x", tp->t_flags);
+	printf(" %8.1x", tp->t_addr);
+#ifdef vax
+	printf("%3d", tp->t_delct);
+#endif vax
+	printf("%4d ", tp->t_col);
+	putf(tp->t_state&TS_TIMEOUT, 'T');
+	putf(tp->t_state&TS_WOPEN, 'W');
+	putf(tp->t_state&TS_ISOPEN, 'O');
+	putf(tp->t_state&TS_CARR_ON, 'C');
+	putf(tp->t_state&TS_BUSY, 'B');
+	putf(tp->t_state&TS_ASLEEP, 'A');
+	putf(tp->t_state&TS_XCLUDE, 'X');
+	putf(tp->t_state&TS_HUPCLS, 'H');
+	printf("%6d", tp->t_pgrp);
+	switch (tp->t_line) {
+
+	case NTTYDISC:
+		printf(" ntty");
+		break;
+
+	case NETLDISC:
+		printf(" net");
+		break;
+	}
+	printf("\n");
+}
+#endif vax
+
+dousr()
+{
+	struct user U;
+	struct ucred UC;
+	register i, j, *ip;
+
+	/* This wins only if PAGSIZ > sizeof (struct user) */
+	lseek(fc, ubase * NBPG, 0);
+	read(fc, &U, sizeof(U));
+	lseek(fc, U.u_cred, 0);
+	read(fc, &UC, sizeof(UC));
+	printf("arg\t");
+	for (i=0; i<sizeof(U.u_arg)/sizeof(int); i++)
+		printf(" %.1x", U.u_arg[i]);
+	printf("\n");
+	for (i=0; i<sizeof(label_t)/sizeof(int); i++) {
+		if (i%5==0)
+			printf("\t");
+		printf("%9.1x", ((int *)&(U.u_ssave))[i]);
+		if (i%5==4)
+			printf("\n");
+	}
+	if (i%5)
+		printf("\n");
+	printf("nerror %d\n", U.u_error);
+	printf("uids\tuid=%d,gid=%d,ruid=%d,rgid=%d\n", 
+		UC.cr_uid,UC.cr_gid,UC.cr_ruid,UC.cr_rgid);
+	printf("procp\t%.1x\n", U.u_procp);
+	printf("ap\t%.1x\n", U.u_ap);
+	printf("r_val?\t%.1x %.1x\n", U.u_r.r_val1, U.u_r.r_val2);
+	printf("count, offset %.1x %ld\n", U.u_count, U.u_offset);
+	printf("cdir rdir %.1x %.1x\n", U.u_cdir, U.u_rdir);
+	/* need dump of ucred */
+#ifdef	notdef
+	printf("file\t");
+	for (i=0; i<10; i++)
+		printf("%7.1x", U.u_ofile[i]);
+	printf("\n\t");
+	for (i=10; i<NOFILE; i++)
+		printf("%7.1x", U.u_ofile[i]);
+	printf("\n");
+	printf("pofile\t");
+	for (i=0; i<10; i++)
+		printf("%7.1x", U.u_pofile[i]);
+	printf("\n\t");
+	for (i=10; i<NOFILE; i++)
+		printf("%7.1x", U.u_pofile[i]);
+	printf("\n");
+	printf("ssave");
+	for (i=0; i<sizeof(label_t)/sizeof(int); i++) {
+		if (i%5==0)
+			printf("\t");
+		printf("%9.1x", ((int *)&(U.u_ssave))[i]);
+		if (i%5==4)
+			printf("\n");
+	}
+	if (i%5)
+		printf("\n");
+#endif	notdef
+	printf("sigs\t");
+	for (i=0; i<NSIG; i++)
+		printf("%.1x ", U.u_signal[i]);
+	printf("\n");
+	printf("code\t%.1x\n", U.u_code);
+	printf("ar0\t%.1x\n", U.u_ar0);
+	printf("prof\t%X %X %X %X\n", U.u_prof.pr_base, U.u_prof.pr_size,
+	    U.u_prof.pr_off, U.u_prof.pr_scale);
+	printf("\neosys\t%d\n", U.u_eosys);
+	printf("ttyp\t%.1x\n", U.u_ttyp);
+	printf("ttyd\t%d,%d\n", major(U.u_ttyd), minor(U.u_ttyd));
+	printf("comm\t%.*s\n", sizeof(U.u_comm), U.u_comm);
+	printf("start\t%D\n", U.u_start.tv_sec);
+	printf("acflag\t%D\n", U.u_acflag);
+	printf("cmask\t%D\n", U.u_cmask);
+	printf("sizes\t%.1x %.1x %.1x\n", U.u_tsize, U.u_dsize, U.u_ssize);
+	printf("ru\t");
+	ip = (int *)&U.u_ru;
+	for (i = 0; i < sizeof(U.u_ru)/sizeof(int); i++)
+		printf("%D ", ip[i]);
+	printf("\n");
+	ip = (int *)&U.u_cru;
+	printf("cru\t");
+	for (i = 0; i < sizeof(U.u_cru)/sizeof(int); i++)
+		printf("%D ", ip[i]);
+	printf("\n");
+/*
+	i =  U.u_stack - &U;
+	while (U[++i] == 0);
+	i &= ~07;
+	while (i < 512) {
+		printf("%x ", 0140000+2*i);
+		for (j=0; j<8; j++)
+			printf("%9x", U[i++]);
+		printf("\n");
+	}
+*/
+}
+
+oatoi(s)
+char *s;
+{
+	register v;
+
+	v = 0;
+	while (*s)
+		v = (v<<3) + *s++ - '0';
+	return(v);
+}
+
+dofile()
+{
+	int nfile;
+	struct file *xfile, *afile;
+	register struct file *fp;
+	register nf;
+	int loc;
+	static char *dtypes[] = { "???", "vnode", "socket" };
+
+	nf = 0;
+	nfile = getw(nl[SNFILE].n_value);
+	xfile = (struct file *)calloc(nfile, sizeof (struct file));
+	if (xfile == (struct file *)0) {
+		printf("pstat: not enough core\n");
+		exit(1);
+	}
+	lseek(fc, (int)(afile = (struct file *)getw(nl[SFIL].n_value)), 0);
+	read(fc, xfile, nfile * sizeof (struct file));
+	for (fp=xfile; fp < &xfile[nfile]; fp++)
+		if (fp->f_count)
+			nf++;
+	if (totflg) {
+		printf("%3d/%3d files\n", nf, nfile);
+		return;
+	}
+	printf("%d/%d open files\n", nf, nfile);
+	printf("   LOC   TYPE    FLG     CNT    DATA    OFFSET\n");
+	for (fp=xfile,loc=(int)afile; fp < &xfile[nfile]; fp++,loc+=sizeof(xfile[0])) {
+		if (fp->f_count==0)
+			continue;
+		printf("%8x ", loc);
+		if (fp->f_type <= DTYPE_SOCKET)
+			printf("%-8.8s", dtypes[fp->f_type]);
+		else
+			printf("8d", fp->f_type);
+		putf(fp->f_flag&FREAD, 'R');
+		putf(fp->f_flag&FWRITE, 'W');
+		putf(fp->f_flag&FAPPEND, 'A');
+		putf(fp->f_flag&FSHLOCK, 'S');
+		putf(fp->f_flag&FEXLOCK, 'X');
+		putf(fp->f_flag&FASYNC, 'I');
+		printf("  %3d", mask(fp->f_count));
+		printf("  %8.1x", fp->f_data);
+		if (fp->f_offset < 0)
+			printf("  %x\n", fp->f_offset);
+		else
+			printf("  %ld\n", fp->f_offset);
+	}
+}
+
+int dmmin, dmmax, dmmax_sw, nswdev;
+
+doswap()
+{
+	struct proc *proc;
+	int nproc;
+	struct map *swapmap;
+	int nswapmap;
+	register struct proc *pp;
+	int nswap, used, free, waste, total;
+	int db, sb, pb;
+	register struct mapent *me;
+	int i, j;
+
+	nproc = getw(nl[SNPROC].n_value);
+	proc = (struct proc *)calloc(nproc, sizeof (struct proc));
+	if (proc == (struct proc *)0) {
+		printf("pstat: not enough core\n");
+		exit(1);
+	}
+	lseek(fc, getw(nl[SPROC].n_value), 0);
+	read(fc, proc, nproc * sizeof (struct proc));
+	nswapmap = getw(nl[SNSWAPMAP].n_value);
+	swapmap = (struct map *)calloc(nswapmap, sizeof (struct map));
+	if (swapmap == (struct map *)0) {
+		printf("pstat: not enough core\n");
+		exit(1);
+	}
+	lseek(fc, getw(nl[SWAPMAP].n_value), 0);
+	read(fc, swapmap, nswapmap * sizeof (struct map));
+	swapmap->m_name = "swap";
+	nswap = getw(nl[SNSWAP].n_value);
+	dmmin = getw(nl[SDMMIN].n_value);
+	dmmax = getw(nl[SDMMAX].n_value);
+	dmmax_sw = getw(nl[SDMMAX_SW].n_value);
+	nswdev = getw(nl[SNSWDEV].n_value);
+	free = getw(nl[SCUR_SWAP].n_value);
+	total = getw(nl[SMAX_SWAP].n_value);
+	used = total-free;
+
+	waste = 0;
+	for (pp = proc; pp < &proc[nproc]; pp++) {
+		if (pp->p_stat == 0 || pp->p_stat == SZOMB)
+			continue;
+		if (pp->p_flag & SSYS)
+			continue;
+		db = ctod(pp->p_dsize);
+		sb = ctod(pp->p_ssize);
+		waste -= db + sb;
+		db = up(db);
+		sb = up(sb);
+		waste += db + sb;
+	}
+	if (totflg) {
+		printf("%3d/%3d swap (kbytes)\n", btok(used), btok(total) );
+		return;
+	}
+	printf("%dk used, %dk free, %dk wasted\n",
+			btok(used), btok(free), btok(waste) );
+	printf("avail (num*size): ");
+	for (i = dmmax_sw; i >= dmmin; i /= 2) {
+		j = 0;
+		while (rmalloc(swapmap, i) != 0)
+			j++;
+		if (j) printf("%d*%d ", j, i);
+	}
+	printf("\n");
+}
+
+up(size)
+	register int size;
+{
+	register int i, block;
+
+	i = 0;
+	block = dmmin;
+	while (i < size) {
+		i += block;
+		if (block < dmmax)
+			block *= 2;
+	}
+	return (i);
+}
+
+vusize(p)
+	register struct proc *p;
+{
+
+	return (clrnd(UPAGES + SZSWPT(p)));
+}
+
+imin(a, b)
+{
+
+	return (a < b ? a : b);
+}
+
+/*
+ * Allocate 'size' units from the given
+ * map. Return the base of the allocated space.
+ * In a map, the addresses are increasing and the
+ * list is terminated by a 0 size.
+ *
+ * Algorithm is first-fit.
+ *
+ * This routine knows about the interleaving of the swapmap
+ * and handles that.
+ *
+ * Assumes caller locked the map structure.
+ *
+ * This was taken from the kernel.
+ */
+
+#undef sanity
+#define sanity(x,y)
+
+long
+rmalloc(mp, size)
+	register struct map *mp;
+	register long size;
+{
+	register struct mapent *ep = (struct mapent *)(mp+1);
+	register int addr;
+	register struct mapent *bp;
+	swblk_t first, rest;
+
+	/*
+	 * Search for a piece of the resource map which has enough
+	 * free space to accomodate the request.
+	 */
+	for (bp = ep; bp->m_size; bp++) {
+		if (bp->m_size >= size) {
+			/*
+			 * If allocating from swapmap, then have to
+			 * respect interleaving boundaries.
+			 *
+			 * This is a bit conservative; if m_size - first < size,
+			 * but first <= size then can take the 1st part of the
+			 * chunk.  This is extra code, and doesn't really buy
+			 * much, since rarely run out of swap-space due to
+			 * something like this.
+			 */
+			if (nswdev > 1 &&
+			    (first = dmmax_sw - bp->m_addr%dmmax_sw) < bp->m_size) {
+				if (bp->m_size - first < size)
+					continue;
+				addr = bp->m_addr + first;
+				rest = bp->m_size - first - size;
+				bp->m_size = first;
+				if (rest)
+					rmfree(mp, rest, addr+size);
+				return (addr);
+			}
+			/*
+			 * Allocate from the map.
+			 * If there is no space left of the piece
+			 * we allocated from, move the rest of
+			 * the pieces to the left.
+			 */
+			addr = bp->m_addr;
+			bp->m_addr += size;
+			if ((bp->m_size -= size) == 0) {
+				do {
+					bp++;
+					(bp-1)->m_addr = bp->m_addr;
+				} while ((bp-1)->m_size = bp->m_size);
+			}
+			return (addr);
+		}
+	}
+	return (0);
+}
+
+/*
+ * Free the previously allocated space at addr
+ * of size units into the specified map.
+ * Sort addr into map and combine on
+ * one or both ends if possible.
+ *
+ * Assumes caller locked the map structure.
+ *
+ * Note: this procedure no longer special cases kernelmap and deals with
+ * kmapwnt.  This is done at a higher level (see uptalloc(), uptfree()).
+ */
+rmfree(mp, size, addr)
+	struct map *mp;
+	register long size;
+	register long addr;
+{
+	struct mapent *firstbp;
+	register struct mapent *bp;
+	register int t;
+
+	/*
+	 * Both address and size must be
+	 * positive, or the protocol has broken down.
+	 */
+
+	sanity(addr > 0 && size > 0, "rmfree 1");
+
+	/*
+	 * Locate the piece of the map which starts after the
+	 * returned space (or the end of the map).
+	 */
+
+	firstbp = bp = (struct mapent *)(mp + 1);
+	for (; bp->m_addr <= addr && bp->m_size != 0; bp++)
+		continue;
+
+	/*
+	 * If the piece on the left abuts us,
+	 * then we should combine with it.
+	 */
+
+	if (bp > firstbp && (bp-1)->m_addr+(bp-1)->m_size >= addr) {
+
+		/*
+		 * Check no overlap (internal error).
+		 */
+
+		sanity((bp-1)->m_addr+(bp-1)->m_size <= addr, "rmfree 2");
+
+		/*
+		 * Add into piece on the left by increasing its size.
+		 */
+
+		(bp-1)->m_size += size;
+
+		/*
+		 * If the combined piece abuts the piece on
+		 * the right now, compress it in also,
+		 * by shifting the remaining pieces of the map over.
+		 */
+
+		if (bp->m_addr && addr+size >= bp->m_addr) {
+			sanity(addr+size <= bp->m_addr, "rmfree 3");
+			(bp-1)->m_size += bp->m_size;
+			while (bp->m_size) {
+				bp++;
+				(bp-1)->m_addr = bp->m_addr;
+				(bp-1)->m_size = bp->m_size;
+			}
+		}
+		return;
+	}
+
+	/*
+	 * Don't abut on the left, check for abutting on
+	 * the right.
+	 */
+
+	if (addr+size >= bp->m_addr && bp->m_size) {
+		sanity(addr+size <= bp->m_addr, "rmfree 4");
+		bp->m_addr -= size;
+		bp->m_size += size;
+		return;
+	}
+
+	/*
+	 * Don't abut at all.  Make a new entry
+	 * and check for map overflow.
+	 */
+
+	do {
+		t = bp->m_addr;
+		bp->m_addr = addr;
+		addr = t;
+		t = bp->m_size;
+		bp->m_size = size;
+		bp++;
+	} while (size = t);
+
+	/*
+	 * Segment at bp is to be the delimiter;
+	 * If there is not room for it 
+	 * then the table is too full
+	 * and we must discard something.
+	 */
+
+	if (bp+1 > mp->m_limit) {
+		/*
+		 * Back bp up to last available segment.
+		 * which contains a segment already and must
+		 * be made into the delimiter.
+		 * Discard second to last entry,
+		 * since it is presumably smaller than the last
+		 * and move the last entry back one.
+		 */
+		bp--;
+		printf("%s: rmap ovflo, lost [%d,%d)\n", mp->m_name,
+		    (bp-1)->m_addr, (bp-1)->m_addr+(bp-1)->m_size);
+		bp[-1] = bp[0];
+		bp[0].m_size = bp[0].m_addr = 0;
+	}
+}

@@ -1,0 +1,79 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: tftpd.8c 1.12 91/04/02 $
+.TH TFTPD 8C "\*(V)" "4BSD"
+.SH NAME
+tftpd \- DARPA Trivial File Transfer Protocol server
+.SH SYNOPSIS
+\f3/usr/etc/tftpd\f1 [\f3\-s\fP] [\f3\-S\fP] [\f2homedir\fP]
+.SH DESCRIPTION
+The server
+.B tftpd
+supports the DARPA Trivial File Transfer
+Protocol.
+The TFTP server operates
+at the port indicated in the ``tftp'' service description;
+see
+.B services (5).
+The server is normally started by
+.B inetd (8).
+.PP
+Before responding to a request, the server attempts to
+change its current directory to \f2homedir\fP.
+The default value, as distributed in
+.B /etc/inetd.conf,
+is
+.B /tftpboot.
+.PP
+The use of
+.B tftp
+does not require an account or password on the remote system.
+Due to the lack of authentication information, 
+.B tftpd
+will allow only publicly readable files to be
+accessed.
+Files may be written only if they already exist and are publicly writable.
+Note that this extends the concept of ``public'' to include
+all users on all hosts that can be reached through the network;
+this may not be appropriate on all systems, and its implications
+should be considered before enabling tftp service.
+.PP
+The \f3tftpd\fP server runs with the user ID and group ID set to
+.B \-2 ,
+under the assumption that no files exist with that owner or group.
+However, nothing checks this assumption or enforces this restriction.
+.SH "OPTIONS"
+.IP \f3\-s\f1
+Secure.  When specified, the daemon executes a
+.B chroot(2)
+to \f2homedir\fP, which must succeed.
+.IP \f3\-S\f1
+Stand alone.  The server can be optionally used as a stand alone daemon,
+independent of
+.B inetd (8).
+This usage is for situations in which the number of 
+.B tftp
+requests that the server has to respond to is very high over a very short
+period of time (e.g. handling
+boot requests from a large community of X terminals).  
+The 
+\f3\-S\f1
+option is used to start the server as a stand alone daemon;
+you must manually place an entry to do so in your
+.B /etc/rc.local
+file and comment out the entry for 
+.B tftpd
+in your
+.B /etc/inetd.conf
+file .
+.SH "SEE ALSO"
+tftp(1C), inetd(8)

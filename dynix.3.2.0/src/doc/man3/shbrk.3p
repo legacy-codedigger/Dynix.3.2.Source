@@ -1,0 +1,142 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986 Sequent Computer Systems, Inc.
+.\" All rights reserved
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: shbrk.3p 1.9 87/06/26 $
+.TH SHBRK 3P "\*(V)" "DYNIX"
+.SH NAME
+shbrk, shsbrk \- change shared data segment size
+.SH SYNOPSIS
+.nf
+\f2C syntax:\fP
+.PP
+\f3#include <parallel/parallel.h>
+caddr_t shbrk(addr)
+caddr_t addr;\fP
+.PP
+\f3caddr_t shsbrk(incr)
+int incr;\fP
+.PP
+\f2Pascal syntax\fP
+.PP
+none
+.PP
+\f2FORTRAN syntax\fP
+.PP
+none
+.fi
+.SH DESCRIPTION
+For a set of parallel processes executing a single
+application,
+.I shbrk
+sets the system's idea of the lowest shared data segment 
+location not used by the program (called the \*(lqshared break\*(rq)
+to
+.I addr
+(rounded up to the next multiple of the system's page size).
+Locations greater than
+.I addr
+and below the stack pointer
+or another memory mapped region (see
+\f2mmap\fP(2))
+are not in the address space and will thus
+cause a memory violation if accessed.
+.PP
+In the alternate function,
+.IR shsbrk ,
+.I incr
+more bytes are added to the
+program's shared data space and a pointer to the
+start of the new area is returned.
+.PP
+When a program begins execution via
+.IR execve ,
+the shared break is set at the
+highest location defined by the program.
+Ordinarily, therefore, only programs with growing
+shared data areas need to use
+.IR shsbrk .
+.PP
+When \f2shbrk\fP and \f2shsbrk\fP increase a program's address
+space, they also attempt to increase its allowable resident set size
+(see \f2vm_ctl\fP(2)).
+.SH "RETURN VALUE
+Zero is returned if the 
+shared break
+could be set;
+\-1 if the program requests more
+memory than the system limit.
+.I shsbrk
+returns \-1 if the break could not be set.
+.SH ERRORS
+.I shbrk
+and
+.I shsbrk
+will fail and no additional memory will be allocated if
+any of the following error conditions occur:
+.TP 15
+[EINVAL]
+The shared break address would be lowered.
+.TP 15
+[ENOMEM]
+The routine cannot allocate file system space to expand the
+file which has been memory mapped to the shared data segment
+(see \f2mmap\fP(2)).
+The routine tries to allocate file system space from
+directories in the following order:
+.sp
+1. the directory indicated by the $TMPPATH environmental
+variable
+.br
+2. the current directory
+.br
+3. the user's home directory
+.br
+4. the directory
+.I /usr/tmp
+.br
+5. the directory
+.I /tmp
+.TP 15
+[ENOMEM]
+The limit, as set by
+.IR setrlimit ,
+was exceeded.
+.TP 15
+[ENOMEM]
+The new shared data segment would overlap the stack segment.
+.SH "SEE ALSO"
+execve(2), getrlimit(2), shmalloc(3), end(3), vm_ctl(2),
+mmap(2), \f2Guide to Parallel Programming\fP
+.SH BUGS
+At this time, the size of the shared data segment can only be increased.
+.PP
+The shared break cannot be set above the stack
+segment limit for any of the processes in the program.
+(Remember that each process can have a different stack size.)
+If a process sets the shared break above the bottom of any
+process's stack, any reference to the overlapping area of
+that stack causes a core dump and aborts the program with a
+status of SIGSEGV.
+.PP
+.I shbrk
+and 
+.I shsbrk
+use the SIGSEGV signal and signal handler for internal
+purposes.
+Users who declare their own SIGSEGV handler cannot expect
+reliable results from these routines.
+.PP
+If a
+.I shbrk
+or
+.I shsbrk
+call causes the shared data segment to overlap a memory mapped
+region, the shared data segment replaces the mapped region.

@@ -1,0 +1,7 @@
+#!/bin/sh
+cd ${DESTDIR}/usr/hosts
+rm -f [a-z]*
+for i in `cat ${DESTDIR}/etc/hosts.equiv`
+do
+	ln -s /usr/ucb/rsh $i
+done

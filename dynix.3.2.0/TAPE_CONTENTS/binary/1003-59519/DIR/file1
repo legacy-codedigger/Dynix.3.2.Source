@@ -1,0 +1,39 @@
+rwxr-xr-x     0    10        0 Mar 16 19:55 1992 ./
+rwxr-xr-x     0    10        0 Mar 16 21:23 1992 ./bin/
+rwxr-xr-x     0    10    28672 Mar 16 21:23 1992 ./bin/ed
+rwxr-xr-x     0    10    28672 Mar 16 21:23 1992 ./bin/e linked to ./bin/ed
+rwxr-xr-x     0    10        0 Mar 17 16:27 1992 ./etc/
+rwxr--r--     0    10     1743 Mar 16 19:56 1992 ./etc/instl.encrypt
+rwxr-xr-x     0    10        0 Mar 16 20:55 1992 ./lib/
+rw-r--r--     0    10   300304 Mar 16 20:54 1992 ./lib/libc.a
+rw-r--r--     0    10   302330 Mar 16 20:55 1992 ./lib/libfpac.a
+rwxr-xr-x     0    10        0 Mar 16 19:55 1992 ./usr/
+rwxr-xr-x     0    10        0 Mar 16 21:06 1992 ./usr/lib/
+rw-r--r--     0    10   467166 Mar 16 20:54 1992 ./usr/lib/libc_p.a
+rw-r--r--     0    10   469216 Mar 16 20:55 1992 ./usr/lib/libfpac_p.a
+rw-r--r--     0    10     4582 Mar 16 21:06 1992 ./usr/lib/libtermcap.a
+rw-r--r--     0    10     4582 Mar 16 21:06 1992 ./usr/lib/libtermlib.a linked to ./usr/lib/libtermcap.a
+rwxr-xr-x     0    10        0 Mar 16 21:41 1992 ./usr/bin/
+rwxr-xr-x     0    10    53248 Mar 16 21:34 1992 ./usr/bin/enroll
+rwxr-xr-x     0    10    65536 Mar 16 21:34 1992 ./usr/bin/xsend
+rwxr-xr-x     0    10    65536 Mar 16 21:34 1992 ./usr/bin/xget
+rwxr-xr-x     0    10    16384 Mar 16 21:35 1992 ./usr/bin/crypt
+rwxr-xr-t     0    10   155648 Mar 16 21:41 1992 ./usr/bin/ex
+rwxr-xr-x     0    10        0 Mar 16 19:55 1992 ./usr/man/
+rwxr-xr-x     0    10        0 Mar 16 20:26 1992 ./usr/man/man1/
+r--r--r--     0    10     2994 Mar 16 20:26 1992 ./usr/man/man1/crypt.1
+r--r--r--     0    10     1562 Mar 16 20:26 1992 ./usr/man/man1/xsend.1
+rwxrwxrwx     0    10        0 Mar 16 20:26 1992 ./usr/man/cat1/
+rw-rw-rw-     0    10     1723 Mar 16 20:26 1992 ./usr/man/cat1/crypt.1.Z
+rw-rw-rw-     0    10      795 Mar 16 20:26 1992 ./usr/man/cat1/xsend.1.Z
+rwxr-xr-x     0    10        0 Mar 16 20:26 1992 ./usr/man/man3/
+r--r--r--     0    10     2431 Mar 16 20:26 1992 ./usr/man/man3/crypt.3
+rwxrwxrwx     0    10        0 Mar 16 20:26 1992 ./usr/man/cat3/
+rw-rw-rw-     0    10     1325 Mar 16 20:26 1992 ./usr/man/cat3/crypt.3.Z
+rwxr-xr-x     0    10        0 Mar 16 21:41 1992 ./usr/ucb/
+rwxr-xr-t     0    10   155648 Mar 16 21:41 1992 ./usr/ucb/ex linked to ./usr/bin/ex
+rwxr-xr-t     0    10   155648 Mar 16 21:41 1992 ./usr/ucb/edit linked to ./usr/bin/ex
+rwxr-xr-t     0    10   155648 Mar 16 21:41 1992 ./usr/ucb/e linked to ./usr/bin/ex
+rwxr-xr-t     0    10   155648 Mar 16 21:41 1992 ./usr/ucb/vi linked to ./usr/bin/ex
+rwxr-xr-t     0    10   155648 Mar 16 21:41 1992 ./usr/ucb/view linked to ./usr/bin/ex
+rwxr-xr-t     0    10   155648 Mar 16 21:41 1992 ./usr/ucb/a.vi linked to ./usr/bin/ex

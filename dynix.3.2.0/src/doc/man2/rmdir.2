@@ -1,0 +1,76 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: rmdir.2 1.7 86/05/13 $
+.TH RMDIR 2 "\*(V)" "4BSD"
+.SH NAME
+rmdir \- remove a directory file
+.SH SYNOPSIS
+.nf
+.ft 3
+rmdir(path)
+char *path;
+.fi
+.ft 1
+.SH DESCRIPTION
+.I Rmdir
+removes a directory file
+whose name is given by
+.I path.
+The directory must not have any entries other
+than \*(lq.\*(rq and \*(lq..\*(rq.
+.SH "RETURN VALUE
+A 0 is returned if the remove succeeds; otherwise a \-1 is
+returned and an error code is stored in the global location \f2errno\fP\|.
+.SH ERRORS
+The named file is removed unless one or more of the
+following are true:
+.TP 15
+[ENOTEMPTY]
+The named directory contains files other than ``.'' and ``..'' in it.
+.TP 15
+[EPERM]
+The pathname contains a character with the high-order bit set.
+.TP 15
+[ENOENT]
+The pathname was too long.
+.TP 15
+[ENOTDIR]
+A component of the path prefix is not a directory.
+.TP 15
+[ENOENT]
+The named file does not exist.
+.TP 15
+[EACCES]
+A component of the path prefix denies search permission.
+.TP 15
+[EACCES]
+Write permission is denied on the directory containing the link
+to be removed.
+.TP 15
+[EBUSY]
+The directory to be removed is the mount point
+for a mounted file system.
+.TP 15
+[EROFS]
+The directory entry to be removed resides on a read-only file system.
+.TP 15
+[EFAULT]
+.I Path
+points outside the process's allocated address space.
+.TP 15
+[ELOOP]
+Too many symbolic links were encountered in translating the pathname.
+.TP 15
+[EIO]
+An I/O error occurred while reading from or writing to the file system.
+.SH "SEE ALSO"
+mkdir(2), unlink(2)

@@ -1,0 +1,69 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: chdir.2 1.7 86/05/13 $
+.TH CHDIR 2 "\*(V)" "4BSD"
+.SH NAME
+chdir \- change current working directory
+.SH SYNOPSIS
+.nf
+.ft 3
+chdir(path)
+char *path;
+.ft 1
+.fi
+.SH DESCRIPTION
+.I Path
+is the pathname of a directory.
+.I Chdir
+causes this directory
+to become the current working directory,
+the starting point for path names not beginning with ``/''.
+.PP
+In order for a directory to become the current directory,
+a process must have execute (search) access to the directory.
+.SH "RETURN VALUE
+Upon successful completion, a value of 0 is returned.
+Otherwise, a value of \-1 is returned and \f2errno\fP is set to indicate
+the error.
+.SH ERRORS
+.I Chdir
+will fail and the current working directory will be unchanged if
+one or more of the following are true:
+.TP 15
+[ENOTDIR]
+A component of the pathname is not a directory.
+.TP 15
+[ENOENT]
+The named directory does not exist.
+.TP 15
+[ENOENT]
+The argument path name was too long.
+.TP 15
+[EPERM]
+The argument contains a byte with the high-order bit set.
+.TP 15
+[EACCES]
+Search permission is denied for any component of
+the path name.
+.TP 15
+[EFAULT]
+.I Path
+points outside the process's allocated address space.
+.TP 15
+[ELOOP]
+Too many symbolic links were encountered in translating
+the pathname.
+.TP 15
+[EIO]
+An I/O error occurred while reading from or writing to the file system.
+.SH "SEE ALSO"
+chroot(2)

@@ -1,0 +1,97 @@
+	NOTES FOR C LIBRARY EXTENSIONS FOR DIRECTORY ACCESS
+
+
+The standard C library lacks support for reading UNIX directories, so
+historically programs had knowledge of UNIX directory structure hard-
+wired into them.  When Berkeley changed the format of directories for
+4.2BSD, it became necessary to change programs to work with the new
+structure.  Fortunately Berkeley designed a small set of directory
+access routines to encapsulate knowledge of the new directory format
+so that user programs could deal with directory entries as an abstract
+data type.  The interface to these routines is independent of the
+particular implementation of directories on any given UNIX system.
+
+Therefore it becomes possible to write portable applications that
+search directories by restricting all directory access to these new
+interface routines.  The sources supplied here are a total rewrite of
+Berkeley's code and are in the PUBLIC DOMAIN.  They simulate the new
+4.2BSD directory entries on systems having the original UNIX directory
+structure.  These routines should be added to the standard C library
+on ALL non-BSD UNIX systems and all existing and future code changed to
+use this interface.  Once this is done, there will be no portability
+problems associated with the difference in underlying directory
+structures between 4.2BSD and other UNIX systems.
+
+An additional benefit of these routines is that they buffer directory
+input, which provides improved access speed.
+
+
+			INSTALLATION INSTRUCTIONS
+
+
+If your system predates 7th Edition UNIX you have problems.  Adapt the
+instructions and source code as required, or better still upgrade your
+system (a modern compiler and library can be made to run on an older
+kernel with a modest amount of work).
+
+
+For systems (such as pre-System III UNIXes) that do not support C's
+"void" data type:
+
+0)  Edit the file ./include/dir.h to insert the following line before
+    the first occurrence of the word "void":
+
+	typedef int	void;
+
+
+For 7th Edition or later UNIXes (but NOT 4.2BSD):
+
+1)  Copy the file ./include/dir.h to /usr/include (note that there is
+    NOT a conflict with /usr/include/sys/dir.h).
+
+2)  Copy the file ./man/directory.3c to /usr/man/p_man/man3,
+    /usr/man/u_man/man3, or /usr/man/man3; then print the manual page
+    via the command
+
+	man 3 directory
+
+    to see what the new routines are like.  (If you have a "catman"
+    type of on-line manual, adapt these instructions accordingly.)
+
+3)  Copy the files ./src/* to the "gen" subdirectory of your C library
+    source directory, then remake the C library.  Alternatively you
+    might just compile the new sources and insert their objects near
+    the front of the C library /lib/libc.a using the archiver (seekdir
+    must precede telldir and readdir).
+
+4)  To verify installation, try compiling, linking, and running the
+    program test/testdir.c.  This program searches the current
+    directory "." for each file named as a program argument and prints
+    `"FOO" found.' or `"FOO" not found.' where FOO is replaced by the
+    name being looked for in the directory.  Try something like
+
+	cd /usr/bin			# a multi-block directory
+	WHEREVER/testdir FOO lint BAR f77 XYZZY
+
+    which should produce the output
+
+	"FOO" not found.
+	"lint" found.
+	"BAR" not found.
+	"f77" found.
+	"XYZZY" not found.
+
+5)  Notify your users that all directory access must be through the
+    new routines, and that documentation is available via
+
+	man 3 directory
+
+6)  Change all system sources that were accessing directories to use
+    the new routines.  Nearly all such sources contain the line
+
+	#include <sys/dir.h>
+
+    so they should be easy to find.
+
+7)  After a suitable changeover period, remove /usr/include/sys/dir.h
+    to force use of the new routines for all directory access.

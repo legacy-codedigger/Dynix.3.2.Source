@@ -1,0 +1,72 @@
+/etc/umount -a 
+> /etc/mtab
+/etc/mount -f /
+#
+/bin/domainname mydomainname
+/bin/hostname myhostname
+# 
+/etc/ifconfig lo0 localhost up
+/etc/ifconfig se0 `hostname` up arp -trailers
+/etc/mount -at 4.2						>/dev/console
+##if [ -f /usr/etc/named ]; then
+##	/usr/etc/named & echo  'starting domain nameserver.'		>/dev/console
+##fi
+/etc/umount -at nfs
+echo -n 'starting rpc and net services:'			>/dev/console
+if [ -f /etc/portmap ]; then
+	/etc/portmap & echo -n ' portmap'			>/dev/console
+fi
+##if [ -f /usr/etc/ypserv -a -d /usr/etc/yp/`domainname` ]; then
+##	/usr/etc/ypserv & echo -n ' ypserv'			>/dev/console
+##fi
+##if [ -f /etc/ypbind ]; then
+##	/etc/ypbind & echo -n ' ypbind'				>/dev/console
+##fi
+if [ -f /etc/biod ]; then
+	/etc/biod 8 & echo -n ' biod'				>/dev/console
+fi
+echo '.'							>/dev/console
+/etc/mount -vat nfs						>/dev/console
+#echo -n 'check quotas: '					>/dev/console
+#	/usr/etc/quotacheck -a
+#echo 'done.'							>/dev/console
+#/usr/etc/quotaon -a
+
+/bin/rm -f /tmp/t1
+/etc/dmesg | /usr/bin/egrep DYNIX | /usr/ucb/tail -1 >/tmp/t1
+/bin/grep -v "^DYNIX(R)" /etc/motd >>/tmp/t1
+cat /tmp/t1 > /etc/motd
+/usr/etc/savecore /usr/crash					>/dev/console 2>&1
+/bin/sh /etc/rc.dumpstrings					>/dev/console
+
+echo -n 'local daemons:'					>/dev/console
+
+# routed does not work with pre-3.0 versions of routed on the same
+# network.  In general, it is not needed with flat networks (ie, no gateways)
+
+##if [ -f /usr/etc/routed ]; then
+##	/usr/etc/routed & echo -n ' routed'			>/dev/console
+##fi
+if [ -f /usr/etc/uucpd ]; then
+	/usr/etc/uucpd & echo -n ' uucpd'			>/dev/console
+fi
+if [ -f /usr/etc/sweepd ]; then
+	/usr/etc/sweepd & echo -n ' sweepd'			>/dev/console
+fi
+if [ -f /usr/etc/42talkd ]; then
+	/usr/etc/42talkd & echo -n ' 42talkd'				>/dev/console
+fi
+if [ -f /usr/lib/sendmail ]; then
+	(cd /usr/spool/mqueue; /bin/rm -f lf* nf*)
+	/usr/lib/sendmail -bd -q1h & echo -n ' sendmail'	>/dev/console
+fi
+##
+## if nfs daemon exists and /etc/exports file exists become nfs server
+##
+## The number of nfsd daemons should be tuned based on server load
+## and the number of processors.
+##
+if [ -f /etc/nfsd -a -f /etc/exports ]; then
+	/etc/nfsd 8 & echo -n ' nfsd'				>/dev/console
+fi
+echo '.'							>/dev/console

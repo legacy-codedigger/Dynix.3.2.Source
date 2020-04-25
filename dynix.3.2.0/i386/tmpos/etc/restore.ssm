@@ -1,0 +1,83 @@
+#!/bin/sh
+#
+# restore.ssm
+#
+# This shell script is used during initial system load from
+# tape. It is for loading the SSM software into /usr/ssw from
+# the SSM software tape.
+
+PATH=/bin:/usr/etc:/etc:/usr/bin:/usr/ucb
+TAPE=/dev/ctape8
+D3_SSM=5		# file number of d3 ssm install script
+FWDIR=/usr/ssw
+
+if showcfg | grep -i -s ssm; then
+	:
+else
+	echo "This is not an SSM based system."
+	exit 1
+fi
+
+if [ ! -d $FWDIR ]; then
+	echo "$FWDIR does not exist."
+	exit 1
+fi
+FWDF=`df $FWDIR | grep -v "Filesystem"`
+
+set `echo $FWDF | awk '{tom=substr($1,8);print $1, $6," ",substr(tom, 0, length(tom) -1) * 8," ", index("abcdefghijklmno", substr(tom, length(tom)))-1;}'`
+fwdiskdev=$1
+fwmntpt=$2
+fwdisk=$3
+fwpart=$4
+
+if echo $fwdiskdev | grep -s "/dev/wd"; then
+	:
+else
+	echo "$FWDIR is not mounted on a wd disk."
+	exit 1
+fi
+
+fwdirectory=`cd $FWDIR; /bin/pwd`
+fwpath=`expr $fwdirectory : "^$fwmntpt\(.*\)"`
+fwpath=$fwpath/boot
+
+#
+# create fw, fw/ssm, and diag under $FWDIR if they aren't already there
+#
+if [ ! -d $FWDIR/fw ]; then
+	if mkdir $FWDIR/fw; then
+		:
+	else
+		echo "Failed to create $FWDIR/fw."
+		exit 1
+	fi
+fi
+if [ ! -d $FWDIR/fw/ssm ]; then
+	if mkdir $FWDIR/fw/ssm; then
+		:
+	else
+		echo "Failed to create $FWDIR/fw/ssm."
+		exit 1
+	fi
+fi
+if [ ! -d $FWDIR/diag ]; then
+	if mkdir $FWDIR/diag; then
+		:
+	else
+		echo "Failed to create $FWDIR/diag."
+		exit 1
+	fi
+fi
+echo "Extracting SSM installation script..."
+mt -f $TAPE rew
+mt -f $TAPE fsf $D3_SSM
+dd if=$TAPE of=install.sh
+mt -f $TAPE rew
+echo "Running SSM installation..."
+sh install.sh
+rm -f install.sh
+cp /boot $FWDIR
+echo "/boot copied to $FWDIR"
+echo "Firmware bh loaderPath should be \"wd($fwdisk,$fwpart)$fwpath\""
+echo "All done."
+exit 0

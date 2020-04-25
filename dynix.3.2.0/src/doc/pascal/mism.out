@@ -1,0 +1,6 @@
+Thu Mar 19 09:42 1987  mism.p:
+     2  begin
+e ------^--- Inserted ';'
+     5  	writeln
+E ---------------------^--- Malformed declaration
+E ---------------------^--- Unexpected end-of-file - QUIT

@@ -1,0 +1,70 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: gethostname.2 1.8 86/05/13 $
+.TH GETHOSTNAME 2 "\*(V)" "4BSD"
+.SH NAME
+gethostname, sethostname \- get/set name of current host
+.SH SYNOPSIS
+.nf
+.ft 3
+gethostname(name, namelen)
+char *name;
+int namelen;
+.PP
+.ft 3
+sethostname(name, namelen)
+char *name;
+int namelen;
+.fi
+.SH DESCRIPTION
+.I Gethostname
+returns the standard host name for the current processor, as
+previously set by
+.IR sethostname . 
+The parameter
+.I namelen
+specifies the size of the 
+.I name
+array.  The returned name is null-terminated unless insufficient
+space is provided.
+.PP
+.I Sethostname
+sets the name of the host machine to be
+.IR name ,
+which has length
+.IR namelen .
+This call is restricted to the super-user and
+is normally used only when the system is bootstrapped.
+.SH "RETURN VALUE
+If the call succeeds a value of 0 is returned.  If the call
+fails, then a value of \-1 is returned and an error code is
+placed int the global location \f2errno\fP.
+.SH "ERRORS
+.I Gethostname
+will fail if:
+.TP 15
+[EFAULT]
+The \f2name\fP or \f2namelen\fP parameter gave an
+invalid address.
+.PP
+.I Sethostname
+will fail if:
+.TP 15
+[EFAULT]
+The \f2name\fP or \f2namelen\fP parameter gave an
+.TP 15
+[EPERM]
+The caller was not the super-user.
+.SH SEE ALSO
+gethostid(2)
+.SH BUGS
+Host names are limited to 31 characters.

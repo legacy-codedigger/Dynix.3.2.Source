@@ -1,0 +1,60 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: syscall.2 1.5 86/05/13 $
+.TH SYSCALL 2 "\*(V)" "4BSD/DYNIX"
+.SH NAME
+syscall \- indirect system call
+.SH SYNOPSIS
+.nf
+.B "syscall(number, arg, ...)"
+.fi
+.SH DESCRIPTION
+.I Syscall
+performs the system call whose assembly language
+interface has the specified
+.I number,
+and arguments
+.IR arg .
+.PP
+The r0 value of the system call is returned.
+.SH DIAGNOSTICS
+When the C-bit is set,
+.I syscall
+returns \-1 and sets the
+external variable 
+.I errno
+(see
+.IR intro (2)).
+.SH BUGS
+Certain system calls, such as
+.IR brk (2),
+.IR dup (2),
+.IR fork (2),
+.IR pipe (2),
+.IR sigvec (2),
+.IR vfork (2),
+.IR wait (2),
+and
+.IR wait3 (2),
+cannot be accessed using this interface.
+These syscalls require extra interface code, which is normally provided
+in the C library entry points.
+This interface code is
+.B not
+provided through the
+.IR syscall (2)
+invocation, however.
+.PP
+Some syscall numbers differ between DYNIX and the VAX version of 4.2bsd.
+Programs that fail to use the symbolic definitions of these syscalls from
+.I <syscall.h>
+will fail in unexpected ways when ported to and from DYNIX.

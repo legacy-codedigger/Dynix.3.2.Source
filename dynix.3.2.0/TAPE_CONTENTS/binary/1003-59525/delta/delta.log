@@ -1,0 +1,151 @@
+The following actions are being taken NOW:
+** Run:"newfiles/pre-install.sh pass2, pre-install.sh, base, 4 0 35 4"
+   "etc/NFS.OPTIONS" removed
+   "etc/biod" removed
+   "etc/nfsd" removed
+   "etc/ypbind" removed
+   "usr/bin/ypcat" removed
+   "usr/bin/ypmatch" removed
+   "usr/bin/yppasswd" removed
+   "usr/bin/ypwhich" removed
+   "usr/etc/nfsstat" removed
+   "usr/etc/rpc.mountd" removed
+   "usr/etc/rpc.yppasswdd" removed
+   "usr/etc/showmount" removed
+   "usr/etc/yp/Makefile" removed
+   "usr/etc/yp/makedbm" removed
+   "usr/etc/yp/revnetgroup" removed
+   "usr/etc/yp/stdhosts" removed
+   "usr/etc/yp/ypinit" removed
+   "usr/etc/yp/yppoll" removed
+   "usr/etc/yp/yppush" removed
+   "usr/etc/yp/ypset" removed
+   "usr/etc/yp/ypxfr" removed
+   "usr/etc/yp/ypxfr_1perday" removed
+   "usr/etc/yp/ypxfr_1perhour" removed
+   "usr/etc/yp/ypxfr_2perday" removed
+   "usr/etc/ypserv" removed
+   "usr/man/man1/ypcat.1" removed
+   "usr/man/man1/ypmatch.1" removed
+   "usr/man/man1/yppasswd.1" removed
+   "usr/man/man1/ypwhich.1" removed
+   "usr/man/man2/nfssvc.2" removed
+   "usr/man/man5/exports.5" removed
+   "usr/man/man5/ypfiles.5" removed
+   "usr/man/man8/makedbm.8" removed
+   "usr/man/man8/mountd.8c" removed
+   "usr/man/man8/nfsd.8" removed
+   "usr/man/man8/nfsstat.8" removed
+   "usr/man/man8/showmount.8" removed
+   "usr/man/man8/ypinit.8" removed
+   "usr/man/man8/ypmake.8" removed
+   "usr/man/man8/yppasswdd.8c" removed
+   "usr/man/man8/yppoll.8" removed
+   "usr/man/man8/yppush.8" removed
+   "usr/man/man8/ypserv.8" removed
+   "usr/man/man8/ypset.8" removed
+   "usr/man/man8/ypxfr.8" removed
+   "usr/sys/conf/NFS" removed
+   symlink "etc/yp" removed
+   directory "usr/sys/NFS" removed
+   directory "usr/etc/yp" removed
+   updating directory "usr/service"
+   updating directory "usr/service/mailbug"
+   updating directory "usr/service/stand"
+   updating directory "usr/service/stress_tools"
+   "bin/[" updated
+   "bin/csh" updated
+   "bin/e" updated
+   linking "bin/ed" to "bin/e"
+   "bin/login" updated
+   "bin/mail" updated
+   "bin/sh" updated
+   linking "bin/test" to "bin/["
+   creating "dynix_zd"
+   "etc/format" updated
+   "etc/getty" updated
+   "etc/init" updated
+   "etc/maketape" updated
+   "etc/restore" updated
+   "etc/restore.more" updated
+   "etc/restore.oldmore" updated
+   "etc/restore.oldroot" updated
+   "etc/restore.root" updated
+   "etc/rrestore" updated
+   "etc/shutdown" updated
+   "etc/syslogd" updated
+   "etc/timed" updated
+   "etc/timedc" updated
+   "etc/version" updated
+   "gendynix" updated
+   "lib/libc.a" updated
+   "lib/libfpac.a" updated
+   "usr/bin/cu" updated
+   "usr/bin/ex" updated
+   "usr/bin/host" updated
+   "usr/bin/nroff" updated
+   linking "usr/bin/tip" to "usr/bin/cu"
+   "usr/bin/troff" updated
+   "usr/etc/bootpd" updated
+   "usr/etc/ccompress" updated
+   "usr/etc/crash" updated
+   "usr/etc/fsdb" updated
+   "usr/etc/ftpd" updated
+   "usr/etc/lpc" updated
+   "usr/etc/nslookup" updated
+   "usr/etc/savecore" updated
+   "usr/etc/termcap" updated
+   "usr/etc/tftpd" updated
+   "usr/games/boggle" updated
+   "usr/games/trek" updated
+   "usr/lib/libc_p.a" updated
+   "usr/lib/libfpac_p.a" updated
+   "usr/lib/lint/llib-lcurses.ln" updated
+   "usr/lib/lint/llib-lm.ln" updated
+   "usr/lib/lint/llib-lmp.ln" updated
+   "usr/lib/lint/llib-port.ln" updated
+   "usr/lib/sendmail" updated
+   "usr/lib/uucp/uucico" updated
+   "usr/lib/whatis" updated
+   creating "usr/man/cat2/sigvec.2.Z"
+   creating "usr/man/cat3/signal.3c.Z"
+   creating "usr/man/cat5/diskinfo.5.Z"
+   creating "usr/man/cat8/savecore.8.Z"
+   "usr/man/man2/sigvec.2" updated
+   "usr/man/man3/signal.3c" updated
+   "usr/man/man8/savecore.8" updated
+   "usr/sequent/pdbx.demo/fac.c" updated
+   "usr/sequent/pdbx.demo/pfac.f" updated
+   "usr/sys/conf/DYNIX" updated
+   "usr/sys/conf/GENERIC" updated
+   "usr/sys/conf/OBJSlib.a" updated
+   "usr/sys/conf/newvers.sh" updated
+   "usr/sys/h/user.h" updated
+   "usr/sys/i386/genassym" updated
+   "usr/sys/i386/mftpr.h" updated
+   "usr/ucb/42talk" updated
+   "usr/ucb/Mail" updated
+   linking "usr/ucb/a.vi" to "usr/bin/ex"
+   "usr/ucb/dbx" updated
+   linking "usr/ucb/e" to "usr/bin/ex"
+   linking "usr/ucb/edit" to "usr/bin/ex"
+   linking "usr/ucb/ex" to "usr/bin/ex"
+   "usr/ucb/fed" updated
+   "usr/ucb/ftp" updated
+   "usr/ucb/gcore" updated
+   linking "usr/ucb/mail" to "usr/ucb/Mail"
+   "usr/ucb/more" updated
+   "usr/ucb/msgs" updated
+   linking "usr/ucb/page" to "usr/ucb/more"
+   linking "usr/ucb/pdbx" to "usr/ucb/dbx"
+   "usr/ucb/rdist" updated
+   "usr/ucb/rlogin" updated
+   "usr/ucb/talk" updated
+   "usr/ucb/telnet" updated
+   "usr/ucb/tftp" updated
+   linking "usr/ucb/vi" to "usr/bin/ex"
+   linking "usr/ucb/view" to "usr/bin/ex"
+   creating "usr/etc/mib.txt"
+   creating "usr/etc/snmpd.conf"
+   creating "usr/man/cat5/hosts.lpd.5.Z"
+   creating "usr/man/man5/hosts.lpd.5"

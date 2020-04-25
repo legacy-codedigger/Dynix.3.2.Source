@@ -1,0 +1,53 @@
+# /etc/bootptab: database for bootp server (/etc/bootpd)
+# Blank lines and lines beginning with '#' are ignored.
+#
+# The entries provided below are here as examples
+#
+# Legend:
+#
+#	first field -- hostname
+#			(may be full domain name and probably should be)
+#
+#	hd -- home directory
+#	bf -- bootfile
+#	cs -- cookie servers
+#	ds -- domain name servers
+#	gw -- gateways
+#	ha -- hardware address
+#	ht -- hardware type
+#	im -- impress servers
+#	ip -- host IP address
+#	lg -- log servers
+#	lp -- LPR servers
+#	ns -- IEN-116 name servers
+#	rl -- resource location protocol servers
+#	sm -- subnet mask
+#	tc -- template host (points to similar host entry)
+#	to -- time offset (seconds)
+#	ts -- time servers
+
+# Be careful about including backslashes where they're needed.  Weird (bad)
+# things can happen when a backslash is omitted where one is intended.
+#
+# First, we define a global entry which specifies the stuff every host uses.
+
+global.dummy:\
+	:sm=255.255.255.0:\
+	:hd=/usr/boot:bf=null:\
+	:ds=128.2.35.50 128.2.13.21:\
+	:ns=0x80020b4d 0x80020ffd:\
+	:ts=0x80020b4d 0x80020ffd:\
+	:to=18000:
+
+# Next, we can define different master entries for each subnet. . .
+
+subnet13.dummy:\
+	:tc=global.dummy:gw=128.2.13.1:
+
+# We should be able to use as many levels of indirection as desired.  Use
+# your imagination. . .
+
+# Individual entries (could also have different servers for some/all of these
+# hosts, but we don't really use this feature at CMU):
+
+carnegie:tc=subnet13.dummy:ht=ieee802:ha=7FF8100000AF:ip=128.2.11.1:

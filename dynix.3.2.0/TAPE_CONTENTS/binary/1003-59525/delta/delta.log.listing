@@ -1,0 +1,152 @@
+dynix_sd not found
+dynix_wd not found
+etc/NFS.OPTIONS not found
+etc/biod not found
+etc/nfsd not found
+etc/yp not found
+etc/ypbind not found
+usr/att/usr/lib/llib-port.ln not found
+usr/bin/ypcat not found
+usr/bin/ypmatch not found
+usr/bin/yppasswd not found
+usr/bin/ypwhich not found
+usr/etc/nfsstat not found
+usr/etc/rpc.mountd not found
+usr/etc/rpc.yppasswdd not found
+usr/etc/showmount not found
+usr/etc/yp not found
+usr/etc/yp/Makefile not found
+usr/etc/yp/makedbm not found
+usr/etc/yp/revnetgroup not found
+usr/etc/yp/stdhosts not found
+usr/etc/yp/ypinit not found
+usr/etc/yp/yppoll not found
+usr/etc/yp/yppush not found
+usr/etc/yp/ypset not found
+usr/etc/yp/ypxfr not found
+usr/etc/yp/ypxfr_1perday not found
+usr/etc/yp/ypxfr_1perhour not found
+usr/etc/yp/ypxfr_2perday not found
+usr/etc/ypserv not found
+usr/man/man1/ypcat.1 not found
+usr/man/man1/ypmatch.1 not found
+usr/man/man1/yppasswd.1 not found
+usr/man/man1/ypwhich.1 not found
+usr/man/man2/nfssvc.2 not found
+usr/man/man5/exports.5 not found
+usr/man/man5/ypfiles.5 not found
+usr/man/man8/makedbm.8 not found
+usr/man/man8/mountd.8c not found
+usr/man/man8/nfsd.8 not found
+usr/man/man8/nfsstat.8 not found
+usr/man/man8/showmount.8 not found
+usr/man/man8/ypinit.8 not found
+usr/man/man8/ypmake.8 not found
+usr/man/man8/yppasswdd.8c not found
+usr/man/man8/yppoll.8 not found
+usr/man/man8/yppush.8 not found
+usr/man/man8/ypserv.8 not found
+usr/man/man8/ypset.8 not found
+usr/man/man8/ypxfr.8 not found
+usr/sys/NFS not found
+usr/sys/conf/NFS not found
+-rwxr-xr-x  2 root     Sysstaff    12288 Mar 16 21:23 bin/[*
+-rwxr-xr-x  1 root     Sysstaff   118784 Mar 16 21:21 bin/csh*
+-rwxr-xr-x  2 root     Sysstaff    20480 Mar 16 21:22 bin/e*
+-rwxr-xr-x  2 root     Sysstaff    20480 Mar 16 21:22 bin/ed*
+-rwsr-xr-x  1 root     Sysstaff    65536 Mar 16 21:22 bin/login*
+-rwsr-xr-x  1 root     Sysstaff    73728 Mar 16 21:22 bin/mail*
+-rwxr-xr-x  1 root     Sysstaff    28672 Mar 16 21:22 bin/sh*
+-rwxr-xr-x  2 root     Sysstaff    12288 Mar 16 21:23 bin/test*
+-r--r--r--  1 root     Sysstaff   729979 Mar 16 22:47 dynix_zd
+-rwxr-xr-x  1 root     Sysstaff   102400 Mar 16 21:33 etc/format*
+-rwxr--r--  1 root     Sysstaff    28672 Mar 16 21:33 etc/getty*
+-rwxr--r--  1 root     Sysstaff    61440 Mar 16 21:34 etc/init*
+-rwxr--r--  1 root     Sysstaff     4874 Mar 16 19:56 etc/maketape*
+-rwxr-xr-x  1 root     Sysstaff    61440 Mar 16 21:33 etc/restore*
+-rwxr--r--  1 root     Sysstaff     9033 Mar 16 19:56 etc/restore.more*
+-rwxr--r--  1 root     Sysstaff     9032 Mar 16 19:56 etc/restore.oldmore*
+-rwxr--r--  1 root     Sysstaff     9647 Mar 16 19:56 etc/restore.oldroot*
+-rwxr--r--  1 root     Sysstaff     9648 Mar 16 19:56 etc/restore.root*
+-rwsr-xr-x  1 root     Sysstaff   102400 Mar 16 21:33 etc/rrestore*
+-rwxr-xr-x  1 root     Sysstaff    77824 Mar 16 21:34 etc/shutdown*
+-rwxr-xr-x  1 root     Sysstaff    61440 Mar 16 21:33 etc/syslogd*
+-rwxr-xr-x  1 root     Sysstaff    69632 Mar 16 22:05 etc/timed*
+-r-s--x--x  1 root     Sysstaff    61440 Mar 16 22:05 etc/timedc*
+-rwxr-xr-x  1 root     Sysstaff    16384 Mar 16 21:33 etc/version*
+-r--r--r--  1 root     Sysstaff   734170 Mar 16 22:47 gendynix
+-rw-r--r--  1 root     Sysstaff   300230 Mar 16 20:53 lib/libc.a
+-rw-r--r--  1 root     Sysstaff   302256 Mar 16 20:54 lib/libfpac.a
+-rws--s--x  2 uucp     Sysstaff    86016 Mar 16 21:33 usr/bin/cu*
+-rwxr-xr-t  7 root     Sysstaff   155648 Mar 16 21:41 usr/bin/ex*
+-rwxr-sr-x  1 root     Sysstaff    36864 Mar 16 21:32 usr/bin/host*
+-rwxr-xr-x  1 root     Sysstaff    73728 Mar 16 21:26 usr/bin/nroff*
+-rws--s--x  2 uucp     Sysstaff    86016 Mar 16 21:33 usr/bin/tip*
+-rwxr-xr-x  1 root     Sysstaff    69632 Mar 16 21:26 usr/bin/troff*
+-rwxr-xr-x  1 root     Sysstaff    69632 Mar 16 22:05 usr/etc/bootpd*
+-rwxr-xr-x  1 root     Sysstaff    28672 Mar 16 22:06 usr/etc/ccompress*
+-rwxr-xr-x  1 root     Sysstaff   233472 Mar 16 22:04 usr/etc/crash*
+-rwxr-xr-x  1 root     Sysstaff    61440 Mar 16 22:05 usr/etc/fsdb*
+-rwxr-xr-x  1 root     Sysstaff    94208 Mar 16 22:04 usr/etc/ftpd*
+-rwx--s--x  1 root     Sysstaff    81920 Mar 16 21:42 usr/etc/lpc*
+-r--r--r--  1 root     Sysstaff    25977 Jul 30  1991 usr/etc/mib.txt
+-rwxr-xr-x  1 root     Sysstaff    98304 Mar 16 22:05 usr/etc/nslookup*
+-rwxr-sr-x  1 root     Sysstaff    45056 Mar 16 22:05 usr/etc/savecore*
+-r--r--r--  1 root     Sysstaff     1388 Jul 30  1991 usr/etc/snmpd.conf
+-rw-r--r--  1 root     Sysstaff   111612 Mar 16 21:52 usr/etc/termcap
+-rwxr-xr-x  1 root     Sysstaff    53248 Mar 16 22:05 usr/etc/tftpd*
+-rwxr-xr-x  1 root     Sysstaff    32768 Mar 16 21:40 usr/games/boggle*
+-rwxr-xr-x  1 root     Sysstaff    69632 Mar 16 21:41 usr/games/trek*
+-rw-r--r--  1 root     Sysstaff   467130 Mar 16 20:54 usr/lib/libc_p.a
+-rw-r--r--  1 root     Sysstaff   469180 Mar 16 20:55 usr/lib/libfpac_p.a
+-rw-r--r--  1 root     Sysstaff     5554 Mar 16 20:02 usr/lib/lint/llib-lcurses.ln
+-rw-r--r--  1 root     Sysstaff     1666 Mar 16 20:02 usr/lib/lint/llib-lm.ln
+-rw-r--r--  1 root     Sysstaff     1813 Mar 16 20:02 usr/lib/lint/llib-lmp.ln
+-rw-r--r--  1 root     Sysstaff     2147 Mar 16 20:02 usr/lib/lint/llib-port.ln
+-rwsr-xr-x  1 root     Sysstaff   151552 Mar 16 21:41 usr/lib/sendmail*
+---s--s--x  1 uucp     Sysstaff   155648 Mar 16 21:33 usr/lib/uucp/uucico*
+-rw-r--r--  1 root     Sysstaff    36710 Mar 16 22:49 usr/lib/whatis
+-rw-rw-rw-  1 root     Sysstaff     6190 Mar 16 20:35 usr/man/cat2/sigvec.2.Z
+-rw-rw-rw-  1 root     Sysstaff     3272 Mar 16 20:35 usr/man/cat3/signal.3c.Z
+-rw-rw-rw-  1 root     Sysstaff     4828 Mar 16 20:28 usr/man/cat5/diskinfo.5.Z
+-rw-rw-rw-  1 root     Sysstaff      391 Mar 16 20:29 usr/man/cat5/hosts.lpd.5.Z
+-rw-rw-rw-  1 root     Sysstaff     2578 Mar 16 20:37 usr/man/cat8/savecore.8.Z
+-r--r--r--  1 root     Sysstaff    11534 Mar 16 20:26 usr/man/man2/sigvec.2
+-r--r--r--  1 root     Sysstaff     5733 Mar 16 20:27 usr/man/man3/signal.3c
+-r--r--r--  1 root     Sysstaff      961 Mar 16 20:26 usr/man/man5/hosts.lpd.5
+-r--r--r--  1 root     Sysstaff     4781 Mar 16 20:31 usr/man/man8/savecore.8
+-rw-r--r--  1 root     Sysstaff      443 Mar 16 21:44 usr/sequent/pdbx.demo/fac.c
+-rw-r--r--  1 root     Sysstaff      510 Mar 16 21:44 usr/sequent/pdbx.demo/pfac.f
+drwxr-xr-x  5 nealn    Sysstaff      512 Oct 11 01:15 usr/service/
+drwxrwxrwx  2 nealn    Sysstaff      512 Mar  7 07:25 usr/service/mailbug/
+drwxr-xr-x  2 nealn    Sysstaff      512 Oct 11 01:15 usr/service/stand/
+drwxr-xr-x  2 nealn    Sysstaff      512 Oct 11 01:15 usr/service/stress_tools/
+-r--r--r--  1 root     Sysstaff     6054 Mar 16 22:46 usr/sys/conf/DYNIX
+-r--r--r--  1 root     Sysstaff     8111 Mar 16 22:46 usr/sys/conf/GENERIC
+-rw-r--r--  1 root     Sysstaff  1021010 Mar 16 22:48 usr/sys/conf/OBJSlib.a
+-r--r--r--  1 root     Sysstaff     1192 Mar 16 22:47 usr/sys/conf/newvers.sh
+-r--r--r--  1 root     Sysstaff     9299 Mar 16 19:57 usr/sys/h/user.h
+-rwxr-xr-x  1 root     Sysstaff    20480 Mar 16 22:47 usr/sys/i386/genassym*
+-r--r--r--  1 root     Sysstaff     5652 Mar 16 19:57 usr/sys/i386/mftpr.h
+-rwxr-xr-x  1 root     Sysstaff    73728 Mar 16 21:44 usr/ucb/42talk*
+-rwxr-xr-x  2 root     Sysstaff   114688 Mar 16 21:41 usr/ucb/Mail*
+-rwxr-xr-t  7 root     Sysstaff   155648 Mar 16 21:41 usr/ucb/a.vi*
+-rwxr-xr-x  2 root     Sysstaff   294912 Mar 16 21:44 usr/ucb/dbx*
+-rwxr-xr-t  7 root     Sysstaff   155648 Mar 16 21:41 usr/ucb/e*
+-rwxr-xr-t  7 root     Sysstaff   155648 Mar 16 21:41 usr/ucb/edit*
+-rwxr-xr-t  7 root     Sysstaff   155648 Mar 16 21:41 usr/ucb/ex*
+-rwxr-xr-x  1 root     Sysstaff    49152 Mar 16 21:43 usr/ucb/fed*
+-rwxr-xr-x  1 root     Sysstaff   106496 Mar 16 21:43 usr/ucb/ftp*
+-rwxr-sr-x  1 root     Sysstaff    28672 Mar 16 21:45 usr/ucb/gcore*
+-rwxr-xr-x  2 root     Sysstaff   114688 Mar 16 21:41 usr/ucb/mail*
+-rwxr-xr-x  2 root     Sysstaff    32768 Mar 16 21:43 usr/ucb/more*
+-rwxr-xr-x  1 root     Sysstaff    65536 Mar 16 21:43 usr/ucb/msgs*
+-rwxr-xr-x  2 root     Sysstaff    32768 Mar 16 21:43 usr/ucb/page*
+-rwxr-xr-x  2 root     Sysstaff   294912 Mar 16 21:44 usr/ucb/pdbx*
+-rwsr-x--x  1 root     Sysstaff   106496 Mar 16 21:44 usr/ucb/rdist*
+-rwsr-xr-x  1 root     Sysstaff    69632 Mar 16 21:45 usr/ucb/rlogin*
+-rwxr-xr-x  1 root     Sysstaff    77824 Mar 16 21:43 usr/ucb/talk*
+-rwxr-xr-x  1 root     Sysstaff   114688 Mar 16 21:44 usr/ucb/telnet*
+-rwxr-xr-x  1 root     Sysstaff    61440 Mar 16 21:43 usr/ucb/tftp*
+-rwxr-xr-t  7 root     Sysstaff   155648 Mar 16 21:41 usr/ucb/vi*
+-rwxr-xr-t  7 root     Sysstaff   155648 Mar 16 21:41 usr/ucb/view*

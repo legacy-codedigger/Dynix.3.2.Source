@@ -1,0 +1,94 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: nm.1 1.9 86/08/20 $
+.TH NM 1 "\*(V)" "4BSD"
+.SH NAME
+nm \- print name list
+.SH SYNOPSIS
+.B nm
+[
+.B \-agnopru
+]
+[ file ... ]
+.SH DESCRIPTION
+.I Nm
+prints the name list (symbol table) of each object
+.I file
+in the argument list.  If an argument is an archive, a listing for each object
+file in the archive will be produced.  If no
+.I file
+is given, the symbols in \*(lqa.out\*(rq are listed.
+.PP
+Each symbol name is preceded by its value (blanks if undefined)
+and one of the letters
+.SM
+.B U
+(undefined),
+.SM
+.B A
+(absolute),
+.SM
+.B  T
+(text segment symbol),
+.SM
+.B D
+(data segment symbol),
+.SM
+.B B
+(bss segment symbol),
+.SM
+.B C
+(common symbol),
+.SM
+.B f
+file name,
+or
+.B \-
+for sdb symbol table entries (see
+.B \-a
+below).
+The character \*(lqs\*(rq before the type symbol indicates a variable
+that can be placed in shared memory.
+If the symbol is local (non-external) the type letter is in lower case.
+The output is sorted alphabetically.
+.PP
+Options are:
+.TP
+.B  \-a
+Print symbol table entries inserted for use by debuggers.
+.TP
+.B  \-g
+Print only global (external) symbols.
+.TP
+.B \-n
+Sort numerically rather than alphabetically.
+.TP
+.B  \-o
+Prepend file or archive element name to each output line rather than only once.
+.TP
+.B  \-p
+Do not sort; print in symbol-table order.
+.TP
+.B  \-r
+Sort in reverse order.
+.TP
+.B  \-u
+Print only undefined symbols.
+.SH SEE ALSO
+ar(1), ar(5), a.out(5), stab(5)
+.SH BUGS
+The first few uninitialized data storage symbols
+normally found in the bss segment
+may instead appear in the data segment;
+this avoids wasting the space resulting from data segment size roundup.
+(See
+.IR ld (1)).

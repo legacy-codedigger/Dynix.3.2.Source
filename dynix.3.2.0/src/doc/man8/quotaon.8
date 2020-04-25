@@ -1,0 +1,97 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: quotaon.8 1.4 88/08/15 $
+.\" @(#)quotaon.8	1.2 87/02/10 NFSSRC
+.\" .TH QUOTAON 8  "28 June 1983"
+.\" .UC 4
+.TH QUOTAON 8  "\*(V)" "4BSD"
+.SH NAME
+quotaon, quotaoff \- turn filesystem quotas on and off
+.SH SYNOPSIS
+.B /usr/etc/quotaon
+[
+.B \-v
+]
+.I filesystem...
+.PP
+.B /usr/etc/quotaon
+[
+.B \-v
+]
+.B \-a
+.PP
+.B /usr/etc/quotaoff
+[
+.B \-v
+]
+.I filesystem...
+.PP
+.B /usr/etc/quotaoff
+[
+.B \-v
+]
+.B \-a
+.SH DESCRIPTION
+.I quotaon
+announces to the system that disk quotas should be enabled
+on one or more filesystems.
+The filesystems specified must have entries
+in
+.I
+/etc/fstab
+and be mounted at the time.
+The filesystem quota files must be present in the root
+directory of the specified filesystem and be named
+.IR quotas .
+The optional
+.B \-v
+argument causes
+.I quotaon
+to print a message for each filesystem that has quotas turned on.
+If
+.IR quotaon
+has an
+.B \-a
+argument
+instead of a list of filesystems, 
+quotas are turned on for all filesystems whose entries in
+.I
+/etc/fstab
+indicate that they allow read-write access and have quotas.
+This option is normally used
+to enable quotas
+at boot time.
+.PP
+.I quotaoff
+announces to the system that filesystems specified should
+have any disk quotas turned off.  As above, the
+.B \-v
+option forces a verbose message for each filesystem affected, and
+the 
+.B \-a
+option disables quotas for all filesystems listed in
+.I /etc/fstab .
+.PP
+These commands
+update the status field of devices located in
+.I /etc/mtab
+to indicate when quotas are on or off for each filesystem.
+.SH FILES
+.TP 15
+/etc/mtab
+mount table
+.TP 15
+/etc/fstab
+filesystem table
+.SH "SEE ALSO"
+quotactl(2),
+mtab(5), fstab(5)

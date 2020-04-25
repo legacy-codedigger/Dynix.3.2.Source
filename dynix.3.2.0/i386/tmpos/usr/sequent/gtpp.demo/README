@@ -1,0 +1,23 @@
+
+This directory contains copies of the five example programs
+from Chapter 5 of the "Guide to Parallel Programming"
+published August 1987. This directory contains the
+following files:
+
+	cstatic.c	C static scheduling example
+	pstatic.pas	Pascal static scheduling example
+	cdynamic.c	C dynamic scheduling example
+	pdynamic.pas	Pascal dynamic scheduling example
+	shmem.c		C dynamic shared memory allocation
+			  example
+	Makefile	makefile for all the programs
+
+The makefile targets are:
+
+	all		compiles and loads all programs
+	cstatic		compiles and loads cstatic.c
+	pstatic		compiles and loads pstatic.pas
+	cdynamic	compiles and loads cdynamic.c
+	pdynamic	compiles and loads pdynamic.pas
+	shmem		compiles and loads shmem.c
+	clean		removes all executable files

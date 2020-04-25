@@ -1,0 +1,164 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987 Sequent Computer Systems, Inc.
+.\" All rights reserved
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: putst.8 1.1 91/04/08 $
+.TH PUTST 8 "\*(V)" "DYNIX"
+.CX
+.SH NAME
+putst \- manipulate kernel databases for striped disk partitions
+.SH SYNOPSIS
+.B putst
+-vna
+[
+/dev/rds? ...
+]
+.SH DESCRIPTION
+.I putst
+initializes a stripe description table in the 
+DYNIX kernel for a \*(lqstriped disk\*(rq
+partition.  
+Striped disk partitions are logical disk partitions which are
+interleaved over several physical disk partitions.  Striped disk partitions
+are used to take advantage of performance improvements made possible by
+the parallel operation of the several disk arms which make up the striped
+disk partition.  This parallelism can be acheived either by distributing 
+large transfers over many disks or by spreading multiple simultaneous requests 
+to the same partition across multiple disks.  
+Another possible advantage may come from the ability
+to create multi-volume virtual partitions whose size is larger than that
+of any physical disk involved in it.  
+Striped disk partitions may be accessed just as \*(lqnormal\*(rq disk 
+partitions are, including for creating and mounting DYNIX file systems on them.
+.PP
+.I putst
+must be used before the striped partition can be initialized with
+.IR newfs (8)
+or
+.IR mkfs (8),
+or mounted as a DYNIX file system,
+or otherwise accessed for reading and writing.
+.PP
+Normally
+.I putst
+is invoked at reboot time by the startup script
+.I /etc/rc
+to load stripe tables from the stripe database file
+.IR /etc/stripecap .
+For each stripe device name
+.IR /dev/rds X
+given as an argument,
+.I putst
+searches for an entry named
+.IR ds X
+in
+.IR /etc/stripecap ,
+and uses the parameters defined by that entry to initialize the stripe
+partition's configuration in the DYNIX kernel.
+.PP
+If the
+.B -a
+switch is used, no file name arguments need be given, and
+.I putst
+automatically loads the stripe tables for
+.I /dev/rds0
+through
+.I /dev/rds255
+by using the entries
+.B ds0
+through
+.B ds7
+in
+.I /etc/stripecap
+(if they exist).
+.PP
+If the
+.B -v
+switch is used,
+.I putst
+displays the information loaded into the Dynix kernel's stripe table
+after obtaining it from 
+.I /etc/stripecap
+to download to the driver.
+.PP
+If the
+.B -n
+switch is used,
+.I putst
+perform all of its normal actions, but will not actually update the kernel
+stripe table.  This can be useful for checking the syntax of hand-generated
+stripecap entries.
+.PP
+For reasons of security, the stripe device entries
+(
+.I /dev/rds?
+)
+are owned by the superuser; hence you must be the superuser to use
+.IR putst .
+Also, the download will not change the stripe table entry unless your's
+is the only active open of that stripe device.
+.PP
+Entries in
+.I /etc/stripecap
+are normally created with the
+.IR newst (8)
+utility, but may also be generated manually.
+.SH FILES
+/etc/putst
+.br
+/etc/stripecap
+.br
+/dev/rds*
+.SH "SEE ALSO"
+getst(8), newst(8), ds(4), stripecap(5)
+.SH CAVEATS
+It is assumed that the major and minor device numbers for the
+composit partitions are for the block interface, not the raw
+interface.  Be careful that they are not overlapping partititions
+on the same device or data corruption may result from their use.
+Likewise, care must be taken to ensure that the same stripecap
+configuration is repeatedly used to access the stripe partition.
+Otherwise, previously written data may appear to be corrupt and 
+subsequently get corrupted.
+.PP
+The partitions specified in the stripecap must be such that 
+partition sizes are in descending order as the the partitions are
+in ascending order.
+.PP
+Stripe block sizes must be a minimum of 16 or a multiple thereof
+(representing 8kbytes).
+Stripe section sizes must be a multiple of the that section's stripe
+block size.  This can result in some wasted space and the end of each
+composit partition. 
+.PP
+Performance may be reduced if partitions in the stripe partition are not
+on distict disk drives.  It is also recommended that they be located on
+distinct disk controller channels.  Likewise, it is best for partitions
+to be of equal lengths on identical drives and controllers, although not
+necessary.
+.PP
+Note that the 
+.IR newst(8)
+utility sets the stripe block size to match the stripe section size (no
+interleave) when only one partition is involved or when multiple partitions
+in that section reside on the same physical drive.  In this situation 
+a performance degradation may result otherwise.  Also, some experimentation
+with stripe block sizes may be useful to tune performance to your application.
+.PP
+The total size of the entire stripe partition must be less than 2 gigabytes.
+This is currently a DYNIX addressing limitation.
+.PP
+Stripe partitions cannot be used for the root file system, since the DYNIX
+kernel and standalone utilities do not know the stripe partitions layout.
+This information is not available until the root file system is being used
+to execute putst.  Similarly, do not use it as a swap partition.
+.PP
+The stripe partition's data may be corrupted if one of its composit
+partitions is written to directly.

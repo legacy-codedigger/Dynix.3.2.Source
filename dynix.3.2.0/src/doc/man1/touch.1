@@ -1,0 +1,46 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: touch.1 1.4 86/05/13 $
+.TH TOUCH 1 "\*(V)" "7th Edition"
+.SH NAME
+touch \- update date last modified of a file
+.SH SYNOPSIS
+.B touch
+[
+.B \-c
+]
+[
+.B \-f
+]
+file ...
+.SH DESCRIPTION
+.I Touch
+attempts to set the modified date of each
+.IR file .
+If a
+.I file
+exists,
+this is done by reading a character from the file
+and writing it back.
+If a
+.I file
+does not exist,
+an attempt will be made to create it unless the
+.B \-c
+option is specified.
+The
+.B \-f
+option will attempt to force the touch
+in spite of read and write permissions on a
+.IR file .
+.SH SEE\ ALSO
+utimes(2)

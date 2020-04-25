@@ -1,0 +1,43 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: getlogin.3 1.5 91/03/07 $
+.TH GETLOGIN 3 "\*(V)" "7th Edition"
+.SH NAME
+getlogin \- get login name
+.SH SYNOPSIS
+.B char *getlogin()
+.SH DESCRIPTION
+.I Getlogin
+returns a pointer to the login name as found in
+.IR /etc/utmp .
+It may be used in conjunction with
+.I getpwnam
+to locate the correct password file entry when the same userid
+is shared by several login names.
+.PP
+If
+.I getlogin
+is called within a process that is not attached to a
+typewriter, it returns NULL.
+The correct procedure for determining the login name is to first call
+.I getlogin
+and if it fails, to call
+.I getpw(getuid(), buf).
+.SH FILES
+/etc/utmp
+.SH "SEE ALSO"
+getpwent(3), getgrent(3), utmp(5), getpw(3)
+.SH DIAGNOSTICS
+Returns NULL (0) if name not found.
+.SH BUGS
+The return values point to static data
+whose content is overwritten by each call.

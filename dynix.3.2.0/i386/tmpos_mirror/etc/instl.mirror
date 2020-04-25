@@ -1,0 +1,72 @@
+#! /bin/sh
+#
+# /etc/instl.mirror
+#
+# Shell script to install the disk mirroring software distribution.
+# It updates /etc/versionlog to log installation of software. It
+# checks to be sure that the unformatted man pages have been installed
+# in /usr/man prior to installing those for mirroring. Must be run as
+# root.  
+#
+# This file should be the first tape file on distribution tape.
+# The second tape file should be a tar image of DYNIX mirroring software.
+# The third tape file should be a tar image of DYNIX mirroring man pages.
+#
+TAPE=/dev/ctape8
+PATH=:/bin:/usr/bin:/usr/ucb:/etc; export PATH
+TMP=/tmp/instl$$
+
+# The next variable is the location of the unformatted man pages.
+MAN="/usr/man/man?"
+
+trap "rm -f $TMP;exit" 0 1 2 3
+
+(cd /usr; umount /usr >$TMP 2>&1)
+
+if grep -s "not mounted" $TMP; then
+	echo "Usr filesystem not mounted--Please mount /usr and try again."
+	exit 1
+fi
+rm $TMP
+
+if [ `whoami` != root ]; then
+	echo "Sorry this script must be run as super-user to work properly."
+	exit 1
+fi
+
+if [ "`universe`" != "ucb" ] ; then
+	exec ucb $0 $@
+fi
+
+cd /
+echo "rewinding tape..."
+mt -f $TAPE rew
+echo "extracting DYNIX mirroring software..."
+mt -f $TAPE fsf 1		# move to second tape file
+tar xpf $TAPE			# extract DYNIX mirroring software
+echo "DYNIX mirroring software installed"
+
+if [ ! -d $MAN ]; then
+	echo "Unformatted man pages appear not to be installed."
+	echo "Unformatted man pages for mirroring will not be installed."
+else
+	cd $MAN/..
+	echo "extracting unformatted man pages for DYNIX mirroring..."
+	tar xpf $TAPE		# extract unformatted mirror man pages
+	echo "Unformatted man pages for DYNIX mirroring installed"
+fi
+
+echo "Rewinding tape..."
+mt -f $TAPE rew
+
+if [ -s /usr/lib/whatis ] ; then
+	echo -n "Updating /usr/lib/whatis..."
+	cat /usr/lib/whatis.mirror >>/usr/lib/whatis
+	sort /usr/lib/whatis -o /usr/lib/whatis
+	echo "done"
+fi
+rm /usr/lib/whatis.mirror
+
+echo "`/bin/date`  - DYNIX V3.2.0 Disk Mirroring SW PN: 1003-XXXXX" >> /etc/versionlog
+
+echo "All done."

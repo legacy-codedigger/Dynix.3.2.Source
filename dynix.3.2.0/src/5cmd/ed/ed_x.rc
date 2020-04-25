@@ -1,0 +1,2 @@
+#	@(#)ed_x.rc	1.1
+make -f ed.mk install clobber

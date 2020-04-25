@@ -1,0 +1,2 @@
+This directory contains source code for pc0 (the first pass of the
+Berkeley Pascal compiler) and pxp (the Pascal execution profiler).

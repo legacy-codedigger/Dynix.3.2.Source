@@ -1,0 +1,56 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: dmesg.8 1.6 91/01/21 $
+.TH DMESG 8 "\*(V)" "4BSD"
+.SH NAME
+dmesg \- collect system diagnostic messages to form error log
+.SH SYNOPSIS
+.B /etc/dmesg
+[ \- ]
+.SH DESCRIPTION
+.I Dmesg
+looks in a system buffer for recently printed diagnostic messages
+and prints them on the standard output.
+The messages are those printed by the system when device (hardware) errors
+occur and (occasionally) when system tables overflow non-fatally.
+If the
+.B \-
+flag is given, then
+.I dmesg
+computes (incrementally) the new messages since the last time it
+was run and places these on the standard output.
+This is typically used with
+.IR cron (8)
+to produce the error log
+.I /usr/adm/messages
+by running the command
+.IP
+/etc/dmesg \- >> /usr/adm/messages
+.LP
+every 10 minutes.
+.SH FILES
+.ta 2i
+/usr/adm/messages	error log (conventional location)
+.br
+/usr/adm/msgbuf	scratch file for memory of \- option
+.SH BUGS
+The system error message buffer is of small finite size.  As
+.I dmesg
+is run only every few minutes, not all error messages
+are guaranteed to be logged.  This can be construed as a blessing rather
+than a curse.
+.PP
+Error diagnostics generated immediately before a system crash will
+never get logged.
+.SH "SEE ALSO"
+.IR "DYNIX System Administration Guide" ,
+.I "Sequent Diagnostics User's Guide"

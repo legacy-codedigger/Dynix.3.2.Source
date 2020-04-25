@@ -1,0 +1,113 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986 Sequent Computer Systems, Inc.
+.\" All rights reserved
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: s_wait_barrier.3p 1.6 90/02/07 $
+.TH S_WAIT_BARRIER 3P "\*(V)" "DYNIX"
+.SH NAME
+s_init_barrier, s_wait_barrier \- initialize barrier, wait at barrier
+.SH SYNOPSIS
+.nf
+\f2C syntax:\fP
+.PP
+\f3#include <parallel/parallel.h>
+s_init_barrier (bp, nprocs);
+sbarrier_t *bp;
+int nprocs;\fP
+.PP
+\f3S_INIT_BARRIER (bp, nprocs);\fP
+.PP
+\f3s_wait_barrier (bp);
+sbarrier_t *bp;\fP
+.PP
+\f3S_WAIT_BARRIER (bp);\fP
+.PP
+\f2Pascal syntax\fP
+.PP
+\f3procedure s_init_barrier (var barrier : longint; nprocs : longint);
+cexternal;
+procedure s_wait_barrier (var barrier : longint);
+cexternal;\fP
+.PP
+\f2FORTRAN syntax\fP
+.PP
+\f3integer*4 barrier, nprocs
+subroutine s_init_barrier (barrier, nprocs)
+subroutine s_wait_barrier (barrier)\fP
+.fi
+.SH DESCRIPTION
+.\" These routines provide a convenient ``rendezvous''
+.\" mechanism for processes in a parallel program.
+.\" .PP
+.I S_init_barrier
+initializes a barrier as a rendezvous point for exactly
+.I nprocs
+processes.
+This barrier can be used subsequently with
+.I s_wait_barrier .
+.PP
+In C, a barrier is a shared data structure of
+type sbarrier_t as shown in the following declaration
+statement:
+.sp 5p
+.nf
+	shared sbarrier_t barrier; 
+.fi
+.sp 5p
+In Pascal, a barrier is a global integer variable.
+In FORTRAN, a barrier is an INTEGER*4 variable. 
+A FORTRAN barrier must be placed in shared memory either
+by declaring it in a common block and using the
+loader
+.B \-F
+option or by using the 
+FORTRAN 
+.B \-mp
+option, which places all variables into shared memory.
+.PP
+.I s_wait_barrier
+delays the process in a busy wait until exactly
+.I nprocs
+processes have called
+.IR s_wait_barrier .
+At that point, all processes exit the busy wait simultaneously.
+The barrier must have been previously initialized using
+.I s_init_barrier .
+.PP
+Results are undefined if more than
+.I nprocs
+processes call
+.IR s_wait_barrier .
+A barrier can be used any number of times without being re-initialized.
+A barrier should not be re-initialized while
+processes are waiting at the barrier.
+.PP
+.PP
+\f2S_INIT_BARRIER\fP and \f2S_WAIT_BARRIER\fP
+are C-preprocessor macros.
+(These macros are actually compiled out of line
+on Balance systems, but they are available for code
+compatibility.)
+These macros are found in the header file
+.IR /usr/include/parallel/parallel.h .
+When compiled in line,
+the macros are faster than the normal function calls, but they
+can add to the code size.
+See the source code in <parallel/parallel.h> for more
+information on the macros.
+.SH "SEE ALSO"
+intro(3P), shmalloc(3P), \f2Guide to Parallel
+Programming\fP
+.SH BUGS
+.I s_init_barrier
+and
+.I s_wait_barrier
+are declared as integer functions, but
+do not in fact return a value.

@@ -1,0 +1,147 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: dd.1 1.9 90/03/22 $
+.TH DD 1 "\*(V)" "4BSD"
+.SH NAME
+\f1dd \- convert and copy a file\fP
+.SH SYNOPSIS
+\f3dd\f1
+[\f3option=\f2value\f1] . . .
+.SH DESCRIPTION
+.B Dd
+copies the specified input file
+to the specified output with
+possible conversions.
+The standard input and output are used by default.
+The input and output block size may be
+specified to take advantage of raw physical I/O.\fP
+.SH OPTIONS
+.IP \f3if=\f1 15
+Input filename; standard input is default
+.IP \f3of=\f1 15
+Output filename; standard output is default
+.IP \f3ibs=\f1 15
+\f2n\f1 input block size \f2n\f1 bytes (default 512)
+.IP \f3obs=\f1 15
+\f2n\f1 output block size (default 512)
+.IP \f3bs=\fP 15
+Set both input and output block size,
+superseding \f3ibs\f1 and \f3obs\f1.  If no conversion is specified,
+this function is particularly efficient, because there is no need to
+copy.
+.IP \f3cbs=\fP 15
+Conversion buffer size
+.IP \f3skip=\fP 15
+Skip \f2n\f1 input records before starting copy
+.IP \f3files=\fP 15
+Copy \f2n\f1 input files before terminating (where input is a magtape
+or similar device)
+.IP \f3seek=\fP 15
+Seek \f2n\f1 records from beginning of output file before copying
+.IP \f3count=\fP 15
+Copy only \f2n\f1 input records
+.PP
+The following conversion options are specified by \f3conv=\f1[\f2option\f1]:
+.IP \f3ascii\f1 15
+Convert EBCDIC to ASCII
+.IP \f3ebcdic\f1 
+Convert ASCII to EBCDIC
+.IP \f3ibm\f1
+Slightly different map of ASCII to EBCDIC
+.IP \f3block\f1
+Convert variable length records to fixed length
+.IP \f3unblock\f1
+Convert fixed length records to variable length
+.IP \f3lcase\f1 
+Map alphabetics to lower case
+.IP \f3ucase\f1
+Map alphabetics to upper case
+.IP \f3swab\f1
+Swap every pair of bytes
+.IP \f3noerror\f1
+Do not stop processing on an error
+.IP \f3sync\f1
+Pad every input record to \f3ibs\f1
+.IP "\f3 . . . , . . . "\f1
+Several comma-separated conversions
+.PP
+Where sizes are specified,
+a number of bytes is expected.
+A number may end with
+.B "k, b"
+or
+.B w
+to specify multiplication by
+1024, 512, or sizeof(\f2int\fP);
+a pair of numbers may be separated by
+.B x
+to indicate a product.
+.PP
+.B Cbs
+is used only if
+.B ascii,
+.B unblock,
+.B ebcdic,
+.B ibm,
+or
+.B block
+conversion is specified.
+In the first two cases,
+.B cbs
+characters are placed into the conversion buffer, any specified
+character mapping is done,
+trailing blanks are trimmed, and newline is added
+before sending the line to the output.
+In the latter three cases, characters are read into the
+conversion buffer and blanks are added
+to make up an
+output record of size
+.BR cbs .
+.PP
+After completion,
+.B dd
+reports the number of whole and partial input and output
+blocks.
+.SH EXAMPLES
+To read an EBCDIC tape, blocked ten 80-byte
+EBCDIC card images per record, into ASCII file
+.I x,
+type this command:\fP
+.IP
+.nf
+\f3dd if\f1=\f2/dev/rmt0\fP \f3of\f1=\f2x\f1 \f3ibs=\f2\f2800\f1
+\f3cbs=\f\f2180\f1 \f3conv=\f1\f3ascii,lcase\f1
+.fi
+.PP
+Note that raw magtape is used.
+.B Dd
+is especially suited to I/O on raw
+physical devices, because it allows reading
+and writing in arbitrary record sizes.
+.SH "SEE ALSO"
+\f1cp(1), tr(1)\fP
+.SH DIAGNOSTICS
+.ft CW
+f+p records in(out): numbers of full and partial records read(written)\fP
+.SH BUGS
+The ASCII/EBCDIC conversion tables are
+taken
+from the 256-character standard in
+the \f2CACM\f1, Nov, 1968.
+The ibm conversion, while less accepted as a standard,
+corresponds better to certain IBM print train conventions.
+There is no universal solution.
+.PP
+To ensure that \f3dd\f1 stays synchronized, specify the following
+when copying raw disks with bad sectors:
+.IP
+.B conv=noerror,sync

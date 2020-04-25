@@ -1,0 +1,31 @@
+.\" $Copyright: $
+."Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+."Sequent Computer Systems, Inc.   All rights reserved.
+." 
+."This software is furnished under a license and may be used
+."only in accordance with the terms of that license and with the
+."inclusion of the above copyright notice.   This software may not
+."be provided or otherwise made available to, or used by, any
+."other person.  No title to or ownership of the software is
+."hereby transferred.
+...
+.V= $Header: unccompress.8 1.1 1991/06/21 00:53:06 $
+.TH UNCCOMPRESS 8 "\*(V)" "4BSD/DYNIX"
+.SH NAME
+unccompress \- uncompress a system savecore image
+.SH SYNOPSIS
+.B unccompress
+.I file
+.SH DESCRIPTION
+.B unccompress
+is used to convert a
+.I vmcore
+named
+.I file
+from compressed format back to uncompressed format.
+The file, whose name usually ends in ".ZZ", will be written
+to the same filename with the ".ZZ" removed.
+.SH SEE ALSO
+.BR savecore (8),
+.BR crash (8),
+.BR ccompress (8).

@@ -1,0 +1,154 @@
+preview: started Tue Mar 24 21:16:39 PST 1992 from /dev/console
+Delta distribution from V3.2 to V3.2.0, pass 1 (PREVIEW)
+The following actions will be taken in pass 2:
+** Run:"newfiles/pre-install.sh pass1, pre-install.sh, base, 4 0 35 4"
+   "etc/NFS.OPTIONS" will be removed
+   "etc/biod" will be removed
+   "etc/nfsd" will be removed
+   "etc/ypbind" will be removed
+   "usr/bin/ypcat" will be removed
+   "usr/bin/ypmatch" will be removed
+   "usr/bin/yppasswd" will be removed
+   "usr/bin/ypwhich" will be removed
+   "usr/etc/nfsstat" will be removed
+   "usr/etc/rpc.mountd" will be removed
+   "usr/etc/rpc.yppasswdd" will be removed
+   "usr/etc/showmount" will be removed
+   "usr/etc/yp/Makefile" will be removed
+   "usr/etc/yp/makedbm" will be removed
+   "usr/etc/yp/revnetgroup" will be removed
+   "usr/etc/yp/stdhosts" will be removed
+   "usr/etc/yp/ypinit" will be removed
+   "usr/etc/yp/yppoll" will be removed
+   "usr/etc/yp/yppush" will be removed
+   "usr/etc/yp/ypset" will be removed
+   "usr/etc/yp/ypxfr" will be removed
+   "usr/etc/yp/ypxfr_1perday" will be removed
+   "usr/etc/yp/ypxfr_1perhour" will be removed
+   "usr/etc/yp/ypxfr_2perday" will be removed
+   "usr/etc/ypserv" will be removed
+   "usr/man/man1/ypcat.1" will be removed
+   "usr/man/man1/ypmatch.1" will be removed
+   "usr/man/man1/yppasswd.1" will be removed
+   "usr/man/man1/ypwhich.1" will be removed
+   "usr/man/man2/nfssvc.2" will be removed
+   "usr/man/man5/exports.5" will be removed
+   "usr/man/man5/ypfiles.5" will be removed
+   "usr/man/man8/makedbm.8" will be removed
+   "usr/man/man8/mountd.8c" will be removed
+   "usr/man/man8/nfsd.8" will be removed
+   "usr/man/man8/nfsstat.8" will be removed
+   "usr/man/man8/showmount.8" will be removed
+   "usr/man/man8/ypinit.8" will be removed
+   "usr/man/man8/ypmake.8" will be removed
+   "usr/man/man8/yppasswdd.8c" will be removed
+   "usr/man/man8/yppoll.8" will be removed
+   "usr/man/man8/yppush.8" will be removed
+   "usr/man/man8/ypserv.8" will be removed
+   "usr/man/man8/ypset.8" will be removed
+   "usr/man/man8/ypxfr.8" will be removed
+   "usr/sys/conf/NFS" will be removed
+   "etc/yp" (a symbolic link) will be removed
+   "usr/sys/NFS" (and any subdirectories or files) will be removed
+   "usr/etc/yp" (and any subdirectories or files) will be removed
+** "usr/service" will be updated
+** "usr/service/mailbug" will be updated
+** "usr/service/stand" will be updated
+** "usr/service/stress_tools" will be updated
+   "bin/[" will be updated.
+   "bin/csh" will be updated.
+   "bin/e" will be updated.
+   "bin/ed" will be linked to "bin/e"
+   "bin/login" will be updated.
+   "bin/mail" will be updated.
+   "bin/sh" will be updated.
+   "bin/test" will be linked to "bin/["
+** "dynix_zd" nonexistent; will be added.
+   "etc/format" will be updated.
+   "etc/getty" will be updated.
+   "etc/init" will be updated.
+   "etc/maketape" will be updated.
+   "etc/restore" will be updated.
+   "etc/restore.more" will be updated.
+   "etc/restore.oldmore" will be updated.
+   "etc/restore.oldroot" will be updated.
+   "etc/restore.root" will be updated.
+   "etc/rrestore" will be updated.
+   "etc/shutdown" will be updated.
+   "etc/syslogd" will be updated.
+   "etc/timed" will be updated.
+   "etc/timedc" will be updated.
+   "etc/version" will be updated.
+***"gendynix" will be updated.  See "newfiles/25" for new file.
+   "lib/libc.a" will be updated.
+   "lib/libfpac.a" will be updated.
+   "usr/bin/cu" will be updated.
+   "usr/bin/ex" will be updated.
+   "usr/bin/host" will be updated.
+   "usr/bin/nroff" will be updated.
+   "usr/bin/tip" will be linked to "usr/bin/cu"
+   "usr/bin/troff" will be updated.
+   "usr/etc/bootpd" will be updated.
+   "usr/etc/ccompress" will be updated.
+   "usr/etc/crash" will be updated.
+   "usr/etc/fsdb" will be updated.
+   "usr/etc/ftpd" will be updated.
+   "usr/etc/lpc" will be updated.
+   "usr/etc/nslookup" will be updated.
+   "usr/etc/savecore" will be updated.
+   "usr/etc/termcap" will be updated.
+   "usr/etc/tftpd" will be updated.
+   "usr/games/boggle" will be updated.
+   "usr/games/trek" will be updated.
+   "usr/lib/libc_p.a" will be updated.
+   "usr/lib/libfpac_p.a" will be updated.
+   "usr/lib/lint/llib-lcurses.ln" will be updated.
+   "usr/lib/lint/llib-lm.ln" will be updated.
+   "usr/lib/lint/llib-lmp.ln" will be updated.
+   "usr/lib/lint/llib-port.ln" will be updated.
+   "usr/lib/sendmail" will be updated.
+   "usr/lib/uucp/uucico" will be updated.
+   "usr/lib/whatis" will be updated.
+** "usr/man/cat2/sigvec.2.Z" nonexistent; will be added.
+** "usr/man/cat3/signal.3c.Z" nonexistent; will be added.
+** "usr/man/cat5/diskinfo.5.Z" nonexistent; will be added.
+** "usr/man/cat8/savecore.8.Z" nonexistent; will be added.
+   "usr/man/man2/sigvec.2" will be updated.
+   "usr/man/man3/signal.3c" will be updated.
+   "usr/man/man8/savecore.8" will be updated.
+   "usr/sequent/pdbx.demo/fac.c" will be updated.
+   "usr/sequent/pdbx.demo/pfac.f" will be updated.
+   "usr/sys/conf/DYNIX" will be updated.
+   "usr/sys/conf/GENERIC" will be updated.
+   "usr/sys/conf/OBJSlib.a" will be updated.
+   "usr/sys/conf/newvers.sh" will be updated.
+   "usr/sys/h/user.h" will be updated.
+   "usr/sys/i386/genassym" will be updated.
+   "usr/sys/i386/mftpr.h" will be updated.
+   "usr/ucb/42talk" will be updated.
+   "usr/ucb/Mail" will be updated.
+   "usr/ucb/a.vi" will be linked to "usr/bin/ex"
+   "usr/ucb/dbx" will be updated.
+   "usr/ucb/e" will be linked to "usr/bin/ex"
+   "usr/ucb/edit" will be linked to "usr/bin/ex"
+   "usr/ucb/ex" will be linked to "usr/bin/ex"
+   "usr/ucb/fed" will be updated.
+   "usr/ucb/ftp" will be updated.
+   "usr/ucb/gcore" will be updated.
+   "usr/ucb/mail" will be linked to "usr/ucb/Mail"
+   "usr/ucb/more" will be updated.
+   "usr/ucb/msgs" will be updated.
+   "usr/ucb/page" will be linked to "usr/ucb/more"
+   "usr/ucb/pdbx" will be linked to "usr/ucb/dbx"
+   "usr/ucb/rdist" will be updated.
+   "usr/ucb/rlogin" will be updated.
+   "usr/ucb/talk" will be updated.
+   "usr/ucb/telnet" will be updated.
+   "usr/ucb/tftp" will be updated.
+   "usr/ucb/vi" will be linked to "usr/bin/ex"
+   "usr/ucb/view" will be linked to "usr/bin/ex"
+   "usr/etc/mib.txt" will be added;
+   "usr/etc/snmpd.conf" will be added;
+   "usr/man/cat5/hosts.lpd.5.Z" will be added;
+   "usr/man/man5/hosts.lpd.5" will be added;
+preview: complete Tue Mar 24 21:20:22 PST 1992 in  4 minutes

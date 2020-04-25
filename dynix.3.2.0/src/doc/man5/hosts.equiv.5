@@ -1,0 +1,145 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: hosts.equiv.5 1.2 87/04/07 $
+.\" @(#)hosts.equiv.5 1.1 85/12/28 SMI; from UCB 4.2
+.TH HOSTS.EQUIV 5 "\*(V)" "4BSD"
+.SH NAME
+hosts.equiv \- list of trusted hosts
+.SH SYNOPSIS
+.nf
+\f3/etc/hosts.equiv\fP
+.fi
+.SH DESCRIPTION
+.IX  "hosts.equiv file"  ""  "\fLhosts.equiv\fP \(em trusted hosts list"
+.IX  "trusted hosts list"  ""  "trusted hosts list \(em \fLhosts.equiv\fP"
+.I Hosts.equiv
+contains a list of trusted hosts.
+If a host makes a
+.IR rlogin (1)
+or
+.IR rsh (1)
+request,
+and the initiator of the request is in
+.IR /etc/passwd ,
+no further validity checking is done.
+In other words,
+.I rlogin
+does not prompt for a password, and
+.I rsh
+completes successfully.
+Therefore,
+a remote user is equivalenced to a local user
+with the same user ID when the remote user is in
+.IR hosts.equiv .
+.PP
+The format of
+.I hosts.equiv
+is a list of names, as in this example:
+.Ps
+.\" .ft L
+host1
+host2
++@group1
+-@group2
+.Pe
+A line consisting of a simple host name
+means that anyone logging in from that host is trusted.
+A line consisting of
+.I +@group
+means that all hosts in that network group are trusted.
+A line consisting of
+.I \-@group
+means that hosts in that group are not trusted.
+Programs scan
+.I hosts.equiv
+linearly, and stop at the first hit
+(either positive for hostname and +@ entries,
+or negative for \-@ entries).
+A line consisting of a single +
+means that everyone is trusted.
+.PP
+The
+.I .rhosts
+file has the same format as
+.IR hosts.equiv .
+When user
+.I XXX
+executes
+.I rlogin
+or
+.IR rsh ,
+the
+.I .rhosts
+file from
+.IR XXX 's
+home directory is conceptually concatenated onto the end of
+.I hosts.equiv
+for permission checking.
+However, \-@ entries are not sticky.
+If a user is excluded by a minus entry from
+.I hosts.equiv
+but included in
+.IR .rhosts ,
+then that user is considered trusted.
+In the special case when the user is root,
+then only the
+.I /.rhosts
+file is checked.
+.PP
+It is also possible to have two entries
+(separated by a single space)
+on a line of these files.
+In this case, if the remote host is equivalenced by the first entry,
+then the user named by the second entry is allowed to log in as anyone,
+that is, specify any name to the
+.B \-l
+flag (provided that name is in the
+.I /etc/passwd
+file, of course).
+Thus
+.Ps
+.\" .ft L
+sundown john
+.Pe
+allows
+.I john
+to log in from sundown as anyone.  The usual usage would be
+to put this entry in the
+.I .rhosts
+file in the home directory for
+.IR bill .
+Then
+.I john
+may log in as
+.I bill
+when coming from sundown.
+The second entry may be a netgroup, thus
+.Ps
+.\" .ft L
++@group1 +@group2
+.Pe
+allows any user in
+.I group2
+coming from a host in
+.I group1
+to log in as anyone.
+.SH FILES
+.nf
+/etc/hosts.equiv
+/etc/yp/\f2domain\f1/netgroup
+/etc/yp/\f2domain\f1/netgroup.byuser
+/etc/yp/\f2domain\f1/netgroup.byhost
+.fi
+.SH "SEE ALSO"
+rlogin(1),
+rsh(1),
+netgroup(5)

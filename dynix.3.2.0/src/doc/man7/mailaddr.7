@@ -1,0 +1,238 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: mailaddr.7 1.5 90/03/20 $
+.\"	@(#)mailaddr.7	4.1		7/28/83
+.TH MAILADDR 7 "\*(V)" "4BSD"
+.SH NAME
+mailaddr \- mail addressing description
+.SH DESCRIPTION
+Mail addresses are based on the ARPANET protocol
+listed at the end of this manual page.
+These addresses are in the general format
+.PP
+		user@domain
+.PP
+where a domain is a hierarchical list of subdomains separated by dots.
+For example,
+the following address is normally interpreted from right to left:
+.PP
+		eric@monet.Berkeley.ARPA
+.PP
+the message should go to the ARPA name tables
+(which do not correspond exactly to the physical ARPANET),
+then to the Berkeley gateway,
+after which it should go to the local host, monet.
+When the message reaches monet, it is delivered to the user eric.
+.PP
+Unlike some other forms of addressing,
+this does not imply any routing.
+Thus,
+although this address is specified as an ARPA address,
+it might travel by an alternate route
+if that was more convenient or efficient.
+For example,
+at Berkeley the associated message
+would probably go directly to monet over the Ethernet
+rather than going via the Berkeley ARPANET gateway.
+.PP
+.I Abbreviation.
+Under certain circumstances
+it may not be necessary to type the entire domain name.
+In general anything following the first dot
+may be omitted
+if it is the same as the domain from which you are sending the message.
+For example,
+a user on
+calder.Berkeley.ARPA
+could send to
+eric@monet
+without adding 
+.Berkeley.ARPA
+since it is the same on both sending and receiving hosts.
+.PP
+Certain other abbreviations may be permitted
+as special cases.
+For example,
+at Berkeley ARPANET hosts can be referenced
+without adding 
+.ARPA
+as long as their names do not conflict
+with a local hostname.
+.PP
+.I Compatibility.
+Certain old address formats
+are converted to the new format
+to provide compatibility with the previous mail system.
+In particular, host:user is converted to user@host for consistency
+with the 
+.BR rcp (1c)
+command.
+.PP
+Also, host!user is converted to user@host.UUCP 
+This is normally converted back to 
+host!user
+before being sent on for compatibility with older UUCP hosts.
+.PP
+The current implementation is not able to route messages
+automatically through the UUCP network.
+Until that time you must explicitly tell the mail system
+which hosts to send your message through
+to get to your final destination.
+.PP
+.I Case Distinctions.
+Domain names (i.e., anything after the at sign (@))
+may be given in any mixture of upper- and lowercase
+with the exception of UUCP hostnames.
+Most hosts accept any mixture of case in user names,
+with the notable exception of MULTICS sites.
+.PP
+.I Differences with ARPA Protocols.
+Although the UNIX addressing scheme
+is based on the ARPA mail addressing protocols,
+there are some significant differences.
+.PP
+At the time of this writing
+the only
+``top level''
+domain defined by ARPA is the
+``.ARPA''
+domain itself.
+This is further restricted to having only one level of host specifier.
+That is,
+the only addresses that ARPA accepts at this time must be in the following 
+format:
+.PP
+user@host.ARPA
+.PP
+(where \f2host\f1 is one word).
+In particular,
+addresses such as the following are not legal under the ARPA protocols:
+.PP
+		eric@monet.Berkeley.ARPA
+.PP
+For this reason,
+these addresses are converted to a different format on output
+to the ARPANET,
+typically as follows:
+.PP
+		eric%monet@Berkeley.ARPA
+.PP
+.I Route-addrs.
+Under some circumstances
+it may be necessary to route a message
+through several hosts
+to get it to the final destination.
+Normally this routing is done automatically,
+but sometimes it is desirable to route the message manually.
+Addresses that show these relays are called
+\f2route-addrs\f1.
+These use the syntax:
+.PP
+		<@hosta,@hostb:user@hostc>
+.PP
+This specifies that the message should be sent to hosta,
+from there to hostb,
+and finally to hostc.
+This path is forced
+even if there is a more efficient path
+to hostc.
+.PP
+Route-addrs
+occur frequently on return addresses,
+since these are generally augmented by the software
+at each host.
+It is generally possible to ignore all but the
+``user@host''
+part of the address to determine the actual sender.
+.PP
+.I Postmaster.
+Every site is required to have a user or user alias
+designated
+``postmaster''
+to which problems with the mail system may be addressed.
+.PP
+.I CSNET.
+Messages to CSNET sites can be sent to
+``user.host@UDel-Relay''.
+.SH BERKELEY
+The following comments apply only to the Berkeley environment.
+.PP
+.I Hostnames.
+Many of the old familiar hostnames
+are being phased out.
+In particular,
+single character names as used in Berknet
+are incompatible with the larger world
+of which Berkeley is now a member.
+For this reason
+the following names
+are being obsoleted.
+You should notify any correspondents
+of your new address
+as soon as possible.
+.PP
+.TS
+tab (!);
+l l l.
+OLD!NEW
+j!ingvax!ucbingres
+p!ucbcad
+r!arpavax!ucbarpa
+v!csvax!ucbernie
+n!ucbkim
+y!ucbcory
+.TE
+.PP
+The old addresses will be rejected as unknown hosts
+sometime in the near future.
+.PP
+.I What's My Address?
+If you are on a local machine, say, monet, your address is as follows:
+.PP
+		yourname@monet.Berkeley.ARPA
+.PP
+However, since most of the world does not have the new software
+in place yet, you will have to give correspondents slightly different addresses.
+From the ARPANET, your address would be this:
+.PP
+		yourname%monet@Berkeley.ARPA
+.PP
+From UUCP, your address would be this:
+.PP
+		ucbvax!yourname%monet
+.PP
+.I Computer Center.
+The Berkeley Computer Center is in a subdomain of Berkeley.  Messages to the
+computer center should be addressed as follows:
+.PP
+		user%host.CC@Berkeley.ARPA
+.PP
+If the message is sent from inside Berkeley, the alternate syntax may be used:
+.PP
+		user@host.CC
+.PP
+For the time being, Computer Center hosts are known within the Berkeley
+domain, i.e., the .CC is optional.  However, it is likely that this
+situation will change as both the Computer Science department and the
+Computer Center grow.
+.PP
+.I Bitnet.
+Hosts on bitnet may be accessed using this:
+.PP
+		user@host.BITNET
+.PP
+.SH SEE ALSO
+mail(1), sendmail(8);
+Crocker, D. H.,
+.ul
+Standard for the Format of Arpa Internet Text Messages,
+RFC822.

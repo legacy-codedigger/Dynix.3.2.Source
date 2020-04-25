@@ -1,0 +1,59 @@
+#! /bin/csh -f
+# Build -- invokes Sequent Dynix "i386/tools/build", appends stdout
+#  onto "Make.log", stderr tee's into stdout and, if non-zero, "Make.err"
+# Note: Log files are named Make.log, Make.err, ala "Make".
+#
+# Bruce Jerrick, OGC CS&E.
+#
+# Adapted from:
+# /usr/src/local/Make/Make.csh 1.9 91/11/02 04:48:27
+
+# See "Symmetry DYNIX [V3.1] Source Release Notes",
+#  Chapter 4, "Tape Installation", for more info.
+set BUILDARGS="-V /usr/src/dynix -M i386"
+set BUILD="/usr/src/dynix/i386/tools/build"
+
+
+# Simple $0:t does not work.
+set cmd = $0
+set cmd = $cmd:t
+
+# Existence of any of these files in cwd evokes an abort with message.
+# LEading comma is just to have them appear at top of `ls`.
+set marker_files = ( \
+    ,Make_in_shadow_directory \
+)
+
+foreach i ( $marker_files )
+    if ( -e $i ) then
+	errecho "${cmd} aborted: Directory is marked "'"'"$i"'".'
+	exit 1
+    endif
+end
+
+onintr intr
+set stat=0
+
+set host=`hostname`
+set temp=/tmp/Build$$
+
+set date="`date`"
+echo "============================" >>! Make.log
+echo "$date" >>! Make.log
+echo ${USER}@${host}: build $*:q >>! Make.log
+echo "	Invoking:" build $BUILDARGS $*:q >>! Make.log
+
+($BUILD $BUILDARGS $*:q >>! Make.log) |& tee $temp
+
+intr:
+if ( ! -z $temp ) then
+	echo "============================" >>! Make.err
+	echo "$date" >>! Make.err
+	echo ${USER}@${host}: build $*:q >>! Make.err
+	echo "	Invoking:" build $BUILDARGS $*:q >>! Make.err
+	cat $temp >>! Make.err
+	set stat=1
+endif
+
+rm -f $temp
+exit $stat

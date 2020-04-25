@@ -1,0 +1,48 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: shutdown.2 1.6 86/05/13 $
+.TH SHUTDOWN 2 "\*(V)" "4BSD"
+.SH NAME
+shutdown \- shut down part of a full-duplex connection
+.SH SYNOPSIS
+.nf
+.ft 3
+shutdown(s, how)
+int s, how;
+.fi
+.SH DESCRIPTION
+The
+.I shutdown
+call causes all or part of a full-duplex connection on
+the socket associated with
+.I s
+to be shut down.
+If \f2how\fP is 0, then further receives will be disallowed.
+If \f2how\fP is 1, then further sends will be disallowed.
+If \f2how\fP is 2, then further sends and receives will be disallowed.
+.SH DIAGNOSTICS
+A 0 is returned if the call succeeds, \-1 if it fails.
+.SH ERRORS
+The call succeeds unless:
+.TP 15
+[EBADF]
+.I S
+is not a valid descriptor.
+.TP 15
+[ENOTSOCK]
+.I S
+is a file, not a socket.
+.TP 15
+[ENOTCONN]
+The specified socket is not connected.
+.SH "SEE ALSO"
+connect(2), socket(2)

@@ -1,0 +1,24 @@
+*
+*#ident	"$Header: wren3 1.1 90/01/30 $"
+* CDC Wren III 94161 - CCS Drive with embedded SCSI adaptor
+*
+* Dimensions:
+*   512 bytes/sector
+*    35 sectors/track
+*     9 tracks/cylinder
+*   965 cylinders
+*   963 user accessible cylinders
+*
+* Types:
+*	00	No Partition
+*	01	Regular Partition
+*	02	Boot Block
+*	03	Reserved Disk Area
+*
+* Partition	Type	Start Sector	Size in Sectors	   Block Sz    Frag Sz
+   00		1	32		49108		   8192        1024
+   01		1	49140		75915		   8192        1024
+   02		1	125055		178920		   8192        1024
+   13		3	303975		630		   0           0
+   14		2	0		16		   0           0
+   15		3	16		16		   0           0

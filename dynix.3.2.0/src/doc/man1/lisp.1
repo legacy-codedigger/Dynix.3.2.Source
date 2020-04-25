@@ -1,0 +1,53 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986 Sequent Computer Systems, Inc.
+.\" All rights reserved
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.\" Copyright (c) 1980 Regents of the University of California.
+.\" All rights reserved.  The Berkeley software License Agreement
+.\" specifies the terms and conditions for redistribution.
+.\"
+.V= $Header: lisp.1 1.2 87/03/10 $
+.\"	@(#)lisp.1	6.1 (Berkeley) 4/29/85
+.\"
+.TH LISP 1 "\*(V)" "4BSD"
+.\" .UC 4
+.SH NAME
+lisp \- lisp interpreter
+.SH SYNOPSIS
+.B lisp
+.SH DESCRIPTION
+.I Lisp
+is a lisp interpreter for a dialect which
+closely resembles MIT's M\s-2ACLISP\s0.
+This lisp, known as F\s-2RANZ\s0\ L\s-2ISP\s0, features
+an I/O facility which allows the user to change the input
+and output syntax, add
+macro characters, and maintain compatibility with upper-case
+only lisp systems;
+infinite precision integer arithmetic, and
+an error facility which allows the user to trap system errors in 
+many different ways.
+Programs may be debugged using the
+``Joseph Lister'' trace package.
+A
+.I lisp
+containing compiled and interpreted code may be dumped into
+a file for later use.
+.LP
+There are too many functions to list here; one should refer to the
+manual listed below.
+.SH FILES
+.ta 2.4i
+/usr/lib/lisp/trace.l	Joseph Lister trace package
+.br
+/usr/lib/lisp/toplevel.l	top level read-eval-print loop
+.SH SEE ALSO
+DYNIX Programmer's Manual, VII,
+P2\(emF\s-2RANZ\s0\ L\s-2ISP\s0 Manual

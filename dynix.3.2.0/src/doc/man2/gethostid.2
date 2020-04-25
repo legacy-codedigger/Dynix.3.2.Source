@@ -1,0 +1,39 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: gethostid.2 1.5 86/05/13 $
+.TH GETHOSTID 2 "\*(V)" "4BSD"
+.SH NAME
+gethostid, sethostid \- get/set unique identifier of current host
+.SH SYNOPSIS
+.nf
+.ft 3
+hostid = gethostid()
+int hostid;
+.PP
+.ft 3
+sethostid(hostid)
+int hostid;
+.fi
+.SH DESCRIPTION
+.I Sethostid
+establishes a 32-bit identifier for the
+current processor which is intended to be unique among all
+UNIX systems in existence.  This is normally a DARPA Internet
+address for the local machine.  This call is allowed only to the
+super-user and is normally performed at boot time.
+.PP
+.I Gethostid
+returns the 32-bit identifier for the current processor.
+.SH SEE ALSO
+hostid(1), gethostname(2)
+.SH BUGS
+32 bits for the identifier is too small.

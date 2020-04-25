@@ -1,0 +1,155 @@
+# A current listing of all files mentioned in preview.log.1.1 .
+
+dynix_sd not found
+dynix_wd not found
+dynix_zd not found
+usr/att/usr/lib/llib-port.ln not found
+usr/etc/mib.txt not found
+usr/etc/snmpd.conf not found
+usr/lib/whatis not found
+usr/man/cat2/sigvec.2.Z not found
+usr/man/cat3/signal.3c.Z not found
+usr/man/cat5/diskinfo.5.Z not found
+usr/man/cat5/hosts.lpd.5.Z not found
+usr/man/cat8/savecore.8.Z not found
+usr/man/man5/hosts.lpd.5 not found
+
+-rwxr-xr-x  2 root     Sysstaff    12288 Oct 11 02:44 bin/[
+-rwxr-xr-x  1 root     Sysstaff   118784 Oct 11 02:44 bin/csh
+-rwxr-xr-x  2 root     Sysstaff    28672 Oct 11 02:45 bin/e
+-rwxr-xr-x  2 root     Sysstaff    28672 Oct 11 02:45 bin/ed
+-rwsr-xr-x  1 root     Sysstaff    65536 Oct 11 02:44 bin/login
+-rwsr-xr-x  1 root     Sysstaff    73728 Oct 11 02:44 bin/mail
+-rwxr-xr-x  1 root     Sysstaff    28672 Oct 11 02:44 bin/sh
+-rwxr-xr-x  2 root     Sysstaff    12288 Oct 11 02:44 bin/test
+-rw-r--r--  1 root     Sysstaff       56 Oct 11 01:16 etc/NFS.OPTIONS
+-rwxr-xr-x  1 root     Sysstaff    16384 Oct 11 04:07 etc/biod
+-rwxr-xr-x  1 root     Sysstaff   102400 Oct 11 02:54 etc/format
+-rwxr--r--  1 root     Sysstaff    28672 Oct 11 02:54 etc/getty
+-rwxr--r--  1 root     Sysstaff    61440 Oct 11 02:54 etc/init
+-rwxr--r--  1 root     Sysstaff     4137 Oct 11 01:16 etc/maketape
+-rwxr-xr-x  1 root     Sysstaff    28672 Oct 11 04:07 etc/nfsd
+-rwxr-xr-x  1 root     Sysstaff    61440 Oct 11 02:54 etc/restore
+-rwxr--r--  1 root     Sysstaff     8785 Oct 11 01:16 etc/restore.more
+-rwxr--r--  1 root     Sysstaff     8784 Oct 11 01:16 etc/restore.oldmore
+-rwxr--r--  1 root     Sysstaff     9650 Oct 11 01:16 etc/restore.oldroot
+-rwxr--r--  1 root     Sysstaff     9651 Oct 11 01:16 etc/restore.root
+-rwsr-xr-x  1 root     Sysstaff   102400 Oct 11 02:54 etc/rrestore
+-rwxr-xr-x  1 root     Sysstaff    77824 Oct 11 02:55 etc/shutdown
+-rwxr-xr-x  1 root     Sysstaff    61440 Oct 11 02:54 etc/syslogd
+-rwxr-xr-x  1 root     Sysstaff    69632 Oct 11 03:22 etc/timed
+-r-s--x--x  1 root     Sysstaff    61440 Oct 11 03:22 etc/timedc
+-rwxr-xr-x  1 root     Sysstaff    16384 Oct 11 02:54 etc/version
+lrwxrwxrwx  1 root     Sysstaff       11 Dec 11 01:25 etc/yp -> /usr/etc/yp
+-rwxr-xr-x  1 root     Sysstaff    49152 Oct 11 04:07 etc/ypbind
+-r--r--r--  1 root     Sysstaff   730039 Oct 11 04:05 gendynix
+-rw-r--r--  1 root     Sysstaff   306652 Jan 15 23:45 lib/libc.a
+-rw-r--r--  1 root     Sysstaff   308678 Jan 15 23:45 lib/libfpac.a
+-rws--x--x  2 uucp     Sysstaff    86016 Oct 11 02:54 usr/bin/cu
+-rwxr-xr-t  7 root     Sysstaff   155648 Oct 11 03:03 usr/bin/ex
+-rwxr-sr-x  1 root     Sysstaff    36864 Oct 11 02:54 usr/bin/host
+-rwxr-xr-x  1 root     Sysstaff    73728 Oct 11 02:48 usr/bin/nroff
+-rws--x--x  2 uucp     Sysstaff    86016 Oct 11 02:54 usr/bin/tip
+-rwxr-xr-x  1 root     Sysstaff    69632 Oct 11 02:48 usr/bin/troff
+-rwxr-xr-x  1 root     Sysstaff    40960 Oct 11 04:07 usr/bin/ypcat
+-rwxr-xr-x  1 root     Sysstaff    36864 Oct 11 04:07 usr/bin/ypmatch
+-rwxr-xr-x  1 root     Sysstaff    65536 Oct 11 04:07 usr/bin/yppasswd
+-rwxr-xr-x  1 root     Sysstaff    57344 Oct 11 04:07 usr/bin/ypwhich
+-rwxr-xr-x  1 root     Sysstaff    69632 Oct 11 03:22 usr/etc/bootpd
+-rwxr-xr-x  1 root     Sysstaff    28672 Oct 11 03:22 usr/etc/ccompress
+-rwxr-xr-x  1 root     Sysstaff   233472 Oct 11 03:21 usr/etc/crash
+-rwxr-xr-x  1 root     Sysstaff    61440 Oct 11 03:22 usr/etc/fsdb
+-rwxr-xr-x  1 root     Sysstaff    94208 Oct 11 03:21 usr/etc/ftpd
+-rwx--s--x  1 root     Sysstaff    81920 Oct 11 03:04 usr/etc/lpc
+-rwxr-sr-x  1 root     Sysstaff    24576 Oct 11 04:07 usr/etc/nfsstat
+-rwxr-xr-x  1 root     Sysstaff    98304 Oct 11 03:21 usr/etc/nslookup
+-rwxr-xr-x  1 root     Sysstaff    65536 Oct 11 04:07 usr/etc/rpc.mountd
+-rwxr-xr-x  1 root     Sysstaff    61440 Oct 11 04:07 usr/etc/rpc.yppasswdd
+-rwxr-sr-x  1 root     Sysstaff    45056 Oct 11 03:22 usr/etc/savecore
+-rwxr-xr-x  1 root     Sysstaff    53248 Oct 11 04:07 usr/etc/showmount
+-r--r--r--  1 root     Sysstaff    74054 Aug 30  1991 usr/etc/termcap
+-rwxr-xr-x  1 root     Sysstaff    53248 Oct 11 03:21 usr/etc/tftpd
+drwxr-xr-x  2 root     Sysstaff      512 Dec 11 01:25 usr/etc/yp
+-rw-r--r--  1 root     Sysstaff     6364 Oct 11 04:07 usr/etc/yp/Makefile
+-rwxr-xr-x  1 root     Sysstaff    28672 Oct 11 04:07 usr/etc/yp/makedbm
+-rwxr-xr-x  1 root     Sysstaff    20480 Oct 11 04:07 usr/etc/yp/revnetgroup
+-rwxr-xr-x  1 root     Sysstaff    20480 Oct 11 04:07 usr/etc/yp/stdhosts
+-rwxr-xr-x  1 root     Sysstaff     7335 Oct 11 04:07 usr/etc/yp/ypinit
+-rwxr-xr-x  1 root     Sysstaff    53248 Oct 11 04:07 usr/etc/yp/yppoll
+-rwxr-xr-x  1 root     Sysstaff    57344 Oct 11 04:07 usr/etc/yp/yppush
+-rwxr-xr-x  1 root     Sysstaff    36864 Oct 11 04:07 usr/etc/yp/ypset
+-rwxr-xr-x  1 root     Sysstaff    73728 Oct 11 04:07 usr/etc/yp/ypxfr
+-rwxr-xr-x  1 root     Sysstaff      942 Oct 11 04:07 usr/etc/yp/ypxfr_1perday
+-rwxr-xr-x  1 root     Sysstaff      771 Oct 11 04:07 usr/etc/yp/ypxfr_1perhour
+-rwxr-xr-x  1 root     Sysstaff      909 Oct 11 04:07 usr/etc/yp/ypxfr_2perday
+-rwxr-xr-x  1 root     Sysstaff    77824 Oct 11 04:07 usr/etc/ypserv
+-rwxr-xr-x  1 root     Sysstaff    32768 Oct 11 03:01 usr/games/boggle
+-rwxr-xr-x  1 root     Sysstaff    69632 Oct 11 03:01 usr/games/trek
+-rw-r--r--  1 root     Sysstaff   474406 Jan 15 23:45 usr/lib/libc_p.a
+-rw-r--r--  1 root     Sysstaff   476456 Jan 15 23:46 usr/lib/libfpac_p.a
+-rw-r--r--  1 root     Sysstaff     5554 Oct 11 01:21 usr/lib/lint/llib-lcurses.ln
+-rw-r--r--  1 root     Sysstaff     1666 Oct 11 01:21 usr/lib/lint/llib-lm.ln
+-rw-r--r--  1 root     Sysstaff     1813 Oct 11 01:21 usr/lib/lint/llib-lmp.ln
+-rw-r--r--  1 root     Sysstaff     2147 Oct 11 01:21 usr/lib/lint/llib-port.ln
+lrwxrwxrwx  1 root     Sysstaff       31 Dec 11 07:49 usr/lib/sendmail -> sendmail.5.61+eap+OGI_1.1.named
+---s--s--x  1 uucp     Dialer     157793 Jan 10  1991 usr/lib/uucp/uucico
+-r--r--r--  1 root     Sysstaff     2250 Oct 11 04:06 usr/man/man1/ypcat.1
+-r--r--r--  1 root     Sysstaff     2008 Oct 11 04:06 usr/man/man1/ypmatch.1
+-r--r--r--  1 root     Sysstaff     2214 Oct 11 04:06 usr/man/man1/yppasswd.1
+-r--r--r--  1 root     Sysstaff     2458 Oct 11 04:06 usr/man/man1/ypwhich.1
+-r--r--r--  1 root     Sysstaff     1416 Oct 11 04:06 usr/man/man2/nfssvc.2
+-r--r--r--  1 root     Sysstaff    10876 Oct 11 01:41 usr/man/man2/sigvec.2
+-r--r--r--  1 root     Sysstaff     5075 Oct 11 01:41 usr/man/man3/signal.3c
+-r--r--r--  1 root     Sysstaff     1796 Oct 11 04:06 usr/man/man5/exports.5
+-r--r--r--  1 root     Sysstaff     4203 Oct 11 04:07 usr/man/man5/ypfiles.5
+-r--r--r--  1 root     Sysstaff     3163 Oct 11 04:07 usr/man/man8/makedbm.8
+-r--r--r--  1 root     Sysstaff     1417 Oct 11 04:07 usr/man/man8/mountd.8c
+-r--r--r--  1 root     Sysstaff     1490 Oct 11 04:07 usr/man/man8/nfsd.8
+-r--r--r--  1 root     Sysstaff     2123 Oct 11 04:07 usr/man/man8/nfsstat.8
+-r--r--r--  1 root     Sysstaff     4634 Oct 11 01:45 usr/man/man8/savecore.8
+-r--r--r--  1 root     Sysstaff     1624 Oct 11 04:07 usr/man/man8/showmount.8
+-r--r--r--  1 root     Sysstaff     2932 Oct 11 04:07 usr/man/man8/ypinit.8
+-r--r--r--  1 root     Sysstaff     2073 Oct 11 04:07 usr/man/man8/ypmake.8
+-r--r--r--  1 root     Sysstaff     2269 Oct 11 04:07 usr/man/man8/yppasswdd.8c
+-r--r--r--  1 root     Sysstaff     1560 Oct 11 04:07 usr/man/man8/yppoll.8
+-r--r--r--  1 root     Sysstaff     2757 Oct 11 04:07 usr/man/man8/yppush.8
+-r--r--r--  1 root     Sysstaff     5604 Oct 11 04:07 usr/man/man8/ypserv.8
+-r--r--r--  1 root     Sysstaff     3302 Oct 11 04:07 usr/man/man8/ypset.8
+-r--r--r--  1 root     Sysstaff     3803 Oct 11 04:07 usr/man/man8/ypxfr.8
+-rw-r--r--  1 root     Sysstaff      434 May 23  1991 usr/sequent/pdbx.demo/fac.c
+-rw-r--r--  1 root     Sysstaff      530 May 23  1991 usr/sequent/pdbx.demo/pfac.f
+drwxr-xr-x  5 root     Sysstaff      512 Oct 11 01:15 usr/service
+drwxrwxr-x  2 root     Sysstaff      512 Mar  7 07:25 usr/service/mailbug
+drwxr-xr-x  2 root     Sysstaff      512 Oct 11 01:15 usr/service/stand
+drwxr-xr-x  2 root     Sysstaff      512 Oct 11 01:15 usr/service/stress_tools
+drwxr-xr-x  2 root     Sysstaff      512 Dec 11 01:24 usr/sys/NFS
+-r--r--r--  1 root     Sysstaff     5945 Oct 11 04:05 usr/sys/conf/DYNIX
+-r--r--r--  1 root     Sysstaff     8001 Oct 11 04:05 usr/sys/conf/GENERIC
+-r--r--r--  1 root     Sysstaff     5966 Oct 11 04:05 usr/sys/conf/NFS
+-rw-r--r--  1 root     Sysstaff  1104402 Oct 11 04:06 usr/sys/conf/OBJSlib.a
+-r--r--r--  1 root     Sysstaff     1198 Oct 11 04:05 usr/sys/conf/newvers.sh
+-r--r--r--  1 root     Sysstaff     9025 Oct 11 01:17 usr/sys/h/user.h
+-rwxr-xr-x  1 root     Sysstaff    20480 Oct 11 04:05 usr/sys/i386/genassym
+-r--r--r--  1 root     Sysstaff     5673 Oct 11 01:17 usr/sys/i386/mftpr.h
+-rwxr-xr-x  1 root     Sysstaff    73728 Oct 11 03:05 usr/ucb/42talk
+-rwxr-xr-x  2 root     Sysstaff   114688 Oct 11 03:03 usr/ucb/Mail
+-rwxr-xr-t  7 root     Sysstaff   155648 Oct 11 03:03 usr/ucb/a.vi
+lrwxr-xr-x  1 root     Sysstaff       34 Jan 28 09:15 usr/ucb/dbx -> dbx.pre.FORTRAN_compiler.V2.1_1047
+-rwxr-xr-t  7 root     Sysstaff   155648 Oct 11 03:03 usr/ucb/e
+-rwxr-xr-t  7 root     Sysstaff   155648 Oct 11 03:03 usr/ucb/edit
+-rwxr-xr-t  7 root     Sysstaff   155648 Oct 11 03:03 usr/ucb/ex
+-rwxr-xr-x  1 root     Sysstaff    49152 Oct 11 03:04 usr/ucb/fed
+-rwxr-xr-x  1 root     Sysstaff   106496 Oct 11 03:04 usr/ucb/ftp
+-rwxr-sr-x  1 root     kmem        28672 Oct 11 03:05 usr/ucb/gcore
+-rwxr-xr-x  2 root     Sysstaff   114688 Oct 11 03:03 usr/ucb/mail
+-rwxr-xr-x  2 root     Sysstaff    32768 Oct 11 03:04 usr/ucb/more
+-rwxr-xr-x  1 root     Sysstaff    61440 Dec 30  1990 usr/ucb/msgs
+-rwxr-xr-x  2 root     Sysstaff    32768 Oct 11 03:04 usr/ucb/page
+lrwxr-xr-x  1 root     Sysstaff       35 Jan 28 09:15 usr/ucb/pdbx -> pdbx.pre.FORTRAN_compiler.V2.1_1047
+lrwxr-xr-x  1 root     Sysstaff       14 Jan 20 17:34 usr/ucb/rdist -> rdist.4.3tahoe
+-rwsr-xr-x  1 root     Sysstaff    69632 Oct 11 03:06 usr/ucb/rlogin
+-rwxr-xr-x  1 root     Sysstaff    77824 Oct 11 03:04 usr/ucb/talk
+-rwxr-xr-x  1 root     Sysstaff   114688 Oct 11 03:05 usr/ucb/telnet
+-rwxr-xr-x  1 root     Sysstaff    61440 Oct 11 03:04 usr/ucb/tftp
+-rwxr-xr-t  7 root     Sysstaff   155648 Oct 11 03:03 usr/ucb/vi
+-rwxr-xr-t  7 root     Sysstaff   155648 Oct 11 03:03 usr/ucb/view

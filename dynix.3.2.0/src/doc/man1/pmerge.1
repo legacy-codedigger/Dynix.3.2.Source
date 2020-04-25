@@ -1,0 +1,41 @@
+.\" $Copyright:	$
+.\"Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\"Sequent Computer Systems, Inc.   All rights reserved.
+.\" 
+.\"This software is furnished under a license and may be used
+.\"only in accordance with the terms of that license and with the
+.\"inclusion of the above copyright notice.   This software may not
+.\"be provided or otherwise made available to, or used by, any
+.\"other person.  No title to or ownership of the software is
+.\"hereby transferred.
+...
+.V= $Header: pmerge.1 1.1 86/08/08 $
+.TH PMERGE 1 "\*(V)" "4BSD/DYNIX"
+.SH NAME
+pmerge \- pascal file merger
+.SH SYNOPSIS
+.B pmerge
+name.p ...
+.SH DESCRIPTION
+.I Pmerge
+assembles the named Pascal files into a single standard Pascal program.
+The resulting program is listed on the standard output.
+It is intended to be used to merge a collection of separately compiled
+modules so that they can be run through a Pascal interpreter,
+or exported to other sites.
+.SH FILES
+.ta 1.5i
+/usr/tmp/MG\(**	default temporary files
+.br
+.SH "SEE ALSO"
+pc(1),
+.br
+Auxiliary documentation
+.I Berkeley Pascal User's Manual.
+.SH AUTHOR
+M. Kirk McKusick
+.SH BUGS
+Very minimal error checking is done,
+so incorrect programs will produce unpredictable results.
+Block comments should be placed after the keyword to which they refer
+or they are likely to end up in bizarre places.

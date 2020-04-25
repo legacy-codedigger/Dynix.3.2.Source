@@ -1,0 +1,90 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: getpwent.3.so 1.10 89/11/06 $
+.TH GETPWENT 3 "\*(V)" "7th Edition"
+.SH NAME
+getpwent, getpwuid, getpwnam, setpwent, endpwent \- get password file entry
+.SH SYNOPSIS
+.nf
+.B #include <pwd.h>
+.PP
+.B struct passwd *getpwent()
+.PP
+.B struct passwd *getpwuid(uid)
+.B int uid;
+.PP
+.B struct passwd *getpwnam(name)
+.B char *name;
+.PP
+.B setpwent()
+.PP
+.B endpwent()
+.fi
+.SH DESCRIPTION
+.I Getpwent,
+.I getpwuid
+and
+.I getpwnam
+each return a pointer to an object with the
+following structure
+containing the broken-out
+fields of a line in the password file.
+.RS
+.PP
+.nf
+.so pwd.h
+.ft 1
+.ad
+.fi
+.RE
+.PP
+The fields
+.I pw_quota
+and
+.I pw_comment
+are unused; the others have meanings described in
+.IR passwd (5).
+.PP
+.I Getpwent
+reads the next
+line (opening the file if necessary);
+.I setpwent
+rewinds the file;
+.I endpwent
+closes it.
+.PP
+.I Getpwuid
+and
+.I getpwnam
+search from the beginning until a matching
+.I uid
+or
+.I name
+is found
+(or until EOF is encountered).
+.SH FILES
+.nf
+/etc/passwd
+/etc/yp/\f2domainname\f1/passwd.byname
+/etc/yp/\f2domainname\f1/passwd.byuid
+.fi
+.SH "SEE ALSO"
+getlogin(3), getgrent(3), passwd(5), ypserv(8)
+.SH DIAGNOSTICS
+Null pointer
+(0) returned on EOF or error.
+.SH BUGS
+All information
+is contained in a static area
+so it must be copied if it is
+to be saved.
+.br

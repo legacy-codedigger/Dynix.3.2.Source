@@ -1,0 +1,6 @@
+#
+# Internet networks (reordered for local efficiency)
+#
+loopback-net	127		software-loopback-net
+sample-net	 97		sample-in-house-network
+other-net	 98		other-in-house-network

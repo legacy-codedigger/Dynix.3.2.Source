@@ -1,0 +1,20 @@
+# $Copyright:	$
+# Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+# Sequent Computer Systems, Inc.   All rights reserved.
+#  
+# This software is furnished under a license and may be used
+# only in accordance with the terms of that license and with the
+# inclusion of the above copyright notice.   This software may not
+# be provided or otherwise made available to, or used by, any
+# other person.  No title to or ownership of the software is
+# hereby transferred.
+
+$Header: README 1.2 86/03/17 $
+This directory contains source for most of the
+documents contained in Volume 2 of The UNIX
+Programmer's Manual.  Most use -ms to format;
+many also use refer, tbl and eqn. Precise incantations
+are engraved in ./run.
+
+The citations for those papers that use
+refer are taken from /usr/dict/papers/Rv7man.

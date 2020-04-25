@@ -1,0 +1,14 @@
+;
+;	sample reverse address example
+;
+
+@	IN	SOA	MACHINE.COMPANYNAME.COM root.MACHINE.COMPANYNAME.com (
+				1.1		; Serial
+				10800	; Refresh 3 hours
+				3600	; Retry   1 hour
+				3600000 ; Expire  1000 hours
+				86400 )	; Minimum 24 hours
+		IN	NS	HOST_A.sequent.COM
+3.1		IN	PTR	HOST_B.sequent.COM.
+6.1		IN	PTR	HOST_C.sequent.COM.
+7.1		IN	PTR	HOST_A.sequent.COM.

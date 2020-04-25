@@ -1,0 +1,214 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: sd.4 1.17 1991/08/06 22:48:18 $
+.TH SD 4 "\*(V)" "DYNIX"
+.SH NAME
+sd \- SCSI disk controller
+.SH SYNOPSIS
+.B "device sd0 at sec? doneq 50 req 50 bin 5 unit 0 target 0 # embedded SCSI"
+.B "device sd0 at sec? doneq 50 req 50 bin 5 unit 0 target 6 # target adapter"
+.SH DESCRIPTION
+This device driver controls both SCSI disk target adapters
+and SCSI disks with embedded targets ("embedded SCSI" disks).
+It supports up to eight disks per target adapter,
+with a maximum of seven target adapters per SCED board,
+or it can support a maximum of seven embedded SCSI
+disks per SCED board.
+The device driver can support a maximum of 32 disk drives
+per system.
+Mixing of embedded SCSI and target adapters is not allowed
+on one system.
+.PP
+The lower 3 bits of the minor of the special file refers to partitions
+0-7 while the next 8 bits refers to the drive number, the remaining 5 bits
+complete the partition number.
+Special files with minor partition numbers 0\-15 and unit number 0
+refer to partitions a\-p on drive ``sd0''
+(the first drive listed in the kernel configuration file),
+minor partition numbers 0\-15 unit number 1 refer to ``sd1'', and so on.
+Standard device names are of the form ``sd\f2nx\fP'',
+where \f2n\fP is the drive number
+and \f2x\fP is the partition name (a\-p).
+.PP
+Block devices access the disk via the system's normal
+buffering mechanism, and may be read and written without regard to
+physical disk records.
+There is also a ``raw'' interface
+that provides for direct transmission between the disk
+and the user's read or write buffer.
+A single read or write call results in exactly one I/O operation,
+and therefore raw I/O is considerably more efficient when
+many words are transmitted.
+The names of the raw special files
+conventionally begin with an extra ``r''
+\(em e.g., ``rsd0a''.
+Raw transfers are limited to a maximum of 254 512-byte sectors
+because of the SCSI command structure.
+In raw I/O, counts must be a multiple of 512 bytes,
+and must begin on 16-byte aligned memory addresses.
+Likewise,
+.I lseek
+calls should specify a multiple of 512 bytes.
+.SH CONFIGURATION
+Before attempting to add a new disk or target adapter,
+read the disk and target adapter manuals thoroughly.
+The main information needed is how to set the target adapter
+number and drive-select cabling.
+.PP
+The driver will recognise drives with and without 
+VTOC
+(Volume Table of Contents).
+If the disk does not contain a 
+VTOC
+the driver will use the compatibility information hard coded in the driver.
+.SH COMPATIBILITY BINARY CONFIGURATION
+.PP
+.I Table of disk units.
+.br
+The ``sdbconf'' array in
+the device driver binary configuration file
+(\f2/sys/conf/conf_sd.c\fP)
+must contain an entry for each drive that may be configured;
+the entries must be in the same order as the ``device''
+entries in the kernel configuration file
+(kernel configuration
+files are described in the article
+``Building DYNIX Systems with Config'' in Volume 2).
+When adding a new drive,
+make sure that the corresponding entry in ``sdbconf''
+points to the partition table for the appropriate drive type.
+(As installed, ``sdbconf'' has entries for 8 drives,
+all using the same partition table.
+Superfluous entries are ignored;
+you must add more entries if you have more than 8 drives.)
+.PP
+.I Partition tables.
+.br
+The binary configuration file
+contains one or more partition tables,
+defined as arrays of 8 ``sd_partition'' structures.
+Each partition table gives the starting address and size
+(in 512-byte sectors) of the 8 partitions on a particular type of disk.
+To support a new disk layout, add a new partition table
+to the binary configuration file,
+using an existing table as a template.
+.PP
+.SH TUNING PARAMETERS
+The following tuning parameters are defined for each drive
+in the ``sdbconf'' array
+of the binary configuration file:
+(1) the buffer size for ioctl operations,
+(2) the number of IATs (indirect access table entries, used for scatter/gather
+I/O), and
+(3) water marks to lessen the interrupt load on the SCED board.
+.PP
+.I IATs.
+.br
+An indirect access table is used to map a contiguous I/O buffer in virtual
+memory to the corresponding pages scattered throughout physical memory.
+Each table entry (IAT) can map up to 2048 bytes.
+The number of IATs directly affects
+the total number of of outstanding requests that
+the device driver can queue to the SCED board.
+Groups of IATs are allocated on a per-transfer basis, and there must be
+enough entries to handle at least one request.
+.PP
+.I Water marks.
+.br
+The water marks are ``low'' and
+``thresh(hold)''.
+The device driver will queue up a maximum of
+``thresh'' requests in a drive's device output queue before interrupting
+the SCED board to handle the requests.
+The ``low'' water mark is used when the device input queue has been filled and
+is draining off.
+The device driver does not begin queuing requests
+again until the ``low'' water mark has been reached.
+(The size of a drive's device input and output queues
+is defined by the ``doneq'' and ``req'' fields of the corresponding ``device''
+entry in the kernel configuration file.)
+.SH FILES
+/dev/sd?[a-h]		block files
+.br
+/dev/rsd?[a-h]		raw files
+.br
+/dev/rsd?		raw whole disk
+.br
+/sys/conf/conf_sd.c	binary configuration file
+.SH "STAND-ALONE EQUIVALENCE"
+The convention for specifing a SCSI disk from stand-alone code is:
+.br
+		sd(\f3u\fP,\f3p\fP)
+.br
+where \f3u\fP refers to the unit number and \f3p\fP refers to the 
+partition number. Each SCSI controller may have 8 unit numbers
+There may be 8 controllers on a SCSI bus.
+The assignment of unit number depends on whether the target adapter is
+embedded or not.
+The partition is a number 0-256, (partition 256 refers to the whole disk).
+.nf
+
+\s+1Separate target adapter:\s-1
+	\f3u\fP = SCED board number x 512
+		  + SCSI target adapter type x 64
+	          + SCSI target number x 8
+		  + SCSI unit number
+	\f3p\fP = partition number.
+.fi
+Note that type is currently always 0, and the adapter starts at 6 and
+decreases to 0;
+.nf
+
+\s+1Separate target adapter:\s-1
+	\f3u\fP = SCED board number x 512
+	          + SCSI target number x 8
+	\f3p\fP = partition number.
+.fi
+
+.SH SEE ALSO
+df(1), diskpart(8), newfs(8), sdformat(8S), format(8), prtvtoc(8), mkvtoc(8), vtoc(5),
+.SH DIAGNOSTICS
+See the ANSI X3T9.2 (SCSI) specification.
+.SH BUGS
+In raw I/O,
+.IR read (2)
+and
+.IR write (2)
+truncate file offsets to 512-byte block boundaries,
+and
+.I write
+scribbles on the tail of incomplete blocks.
+Thus, in programs that access raw devices,
+.I read, write,
+and
+.IR lseek (2)
+should always deal in 512-byte multiples.
+.PP
+A program to analyze the logged error information (even in its
+present reduced form) is needed.
+Error messages should be more consistent.
+.PP
+The partition tables for the file systems should be read off of each
+disk, as they are never quite what any single installation would prefer,
+and this would make disks more portable.
+.PP
+The kernel ``milliseconds per seek'' statistic is not kept for this
+device; thus,
+.IR iostat (1)
+always reports zero for this statistic.
+.PP
+When a request to the disk accesses past the end of media
+(for example, a non-existent block number),
+the device driver will report soft errors
+followed by a hard error in the same way that a bad block is treated.
+There is no special handling of the volume overflow sense error code
+for disks.

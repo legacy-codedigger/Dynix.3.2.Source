@@ -1,0 +1,101 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: su.1 1.13 1991/08/06 19:06:46 $
+.TH SU 1 "\*(V)" "3BSD"
+.SH NAME
+su \- substitute user id temporarily
+.SH SYNOPSIS
+.B su
+[
+.B \-f
+] [
+.B \-
+] [ userid ]
+.SH DESCRIPTION
+.I Su
+demands the password of the specified
+.I userid,
+and if it is given,
+changes to that 
+.I userid
+and invokes the shell
+.IR sh (1)
+without changing the current directory
+(Note this may result in 
+.IR pwd (1)
+failing to report the current directory correctly, 
+if the permissions prohibit that).
+The user environment
+is unchanged except for HOME and SHELL,
+which are taken from the password file
+for the user being substituted
+(see
+.IR environ (7)).
+The new user ID stays in force until the shell exits.
+.PP
+If the
+.B \-f
+flag is included,
+a fast login is performed,
+skipping the new
+.IR userid 's
+.I .login
+or
+.I .cshrc
+files.
+.PP
+If the
+.B \-
+flag is included,
+a full login is performed,
+causing the current environment to be flushed, and replaced
+with whatever
+.IR login (1)
+would provide on a standard login.
+.PP
+If no 
+.I userid
+is specified, \*(lqroot\*(rq is assumed.
+A user must belong to group \*(lqroot\*(rq
+to switch to
+.I userid
+\*(lqroot\*(rq.
+If group \*(lqroot\*(rq does not exist,
+\*(lqroot\*(rq privileges may be obtained by any user
+who knows the \*(lqroot\*(rq password.
+To remind the super-user of his responsibilities,
+the shell substitutes `#' for its usual prompt.
+.PP
+In the file
+.IR /usr/adm/sus ,
+.I su
+logs both successful and unsuccessful attempts to 
+switch user ID to \*(lqroot\*(rq.
+The attempts are also reported to 
+.IR syslogd (8)
+instead of being written to the system console.  
+.SH FILES
+/etc/passwd	password file
+.br
+/usr/adm/sus	lists potential security breaches
+.br
+/etc/group	users in group root may
+.I su
+to \*(lqroot\*(rq
+.SH "SEE ALSO"
+login(1), sh(1), syslogd(8)
+.SH BUGS
+Local administrative rules cause restrictions to
+be placed on who can
+.I su
+to \*(lqroot\*(rq, even with the root password.
+These rules vary from site to site.

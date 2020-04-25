@@ -1,0 +1,46 @@
+# $Copyright:	$
+# Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+# Sequent Computer Systems, Inc.   All rights reserved.
+#  
+# This software is furnished under a license and may be used
+# only in accordance with the terms of that license and with the
+# inclusion of the above copyright notice.   This software may not
+# be provided or otherwise made available to, or used by, any
+# other person.  No title to or ownership of the software is
+# hereby transferred.
+
+# \" $Header: cwscript 1.3 86/03/17 $
+/^\.if/b
+/^\.ix/b
+/^\.tm/b
+s/\\\\/\\e\\e/g
+s/\\\([n"'bt0]\)/\\e\1/g
+s/^\.SS/.P1/
+s/^\.ES/.P2/
+s/\^/\\(14/g
+s/~/\\v'.25m'\\s\\nS&\\s\\nP\\v'-.25m'/g
+s/\\|/ZZZ/g
+s/|/\\v'.05m'\\s\\nS&\\s\\nP\\v'-.05m'/g
+s/ZZZ/\\|/g
+s/_/\\(em/g
+s/</\\(fi/g
+s/>/\\(fl/g
+/^\.P1/,/^\.P2/{
+	s/{/\\(Fl/g
+	s/}/\\(Fi/g
+	s/"/\\(34/g
+	s/[?!]/\\s\\ns&\\s\\nP/g
+	s:/:\\s\\ns/\\s\\nP:g
+}
+/^\.UL/{
+	s/{/\\(Fl/g
+	s/}/\\(Fi/g
+	s/"/\\(34/g
+	s/[?!]/\\s\\ns&\\s\\nP/g
+	s:/:\\s\\ns/\\s\\nP:g
+}
+s/#/\\(de/g
+s/\\\*/XXX/g
+s/\*/\\v'-.1m'\\s\\ns&\\s\\nP\\v'.1m'/g
+s/XXX/\\*/g
+s/\\e/\\s\\ns\\(rg\\s\\nP/g

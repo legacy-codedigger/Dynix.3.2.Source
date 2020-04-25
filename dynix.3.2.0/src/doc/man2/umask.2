@@ -1,0 +1,38 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: umask.2 1.6 86/05/13 $
+.TH UMASK 2 "\*(V)" "4BSD"
+.SH NAME
+umask \- set file creation mode mask
+.SH SYNOPSIS
+.ft 3
+oumask = umask(numask)
+.br
+int oumask, numask;
+.ft 1
+.SH DESCRIPTION
+.I Umask
+sets the process's file mode creation mask to \f2numask\fP
+and returns the previous value of the mask.  The low-order
+9 bits of \f2numask\fP are used whenever a file is created,
+clearing corresponding bits in the file mode
+(see
+.IR chmod (2)).
+This clearing allows each user to restrict the default access
+to his files.
+.PP
+The value is initially 022 (write access for owner only).
+The mask is inherited by child processes.
+.SH "RETURN VALUE
+The previous value of the file mode mask is returned by the call.
+.SH SEE ALSO
+chmod(2), mknod(2), open(2)

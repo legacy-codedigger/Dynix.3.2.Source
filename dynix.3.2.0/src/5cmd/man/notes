@@ -1,0 +1,341 @@
+a_man/man1/abt.1m.z		abt(1M) is not supported.  It applies to 3B20s only.
+a_man/man1/acct.1m.z		acct(1M) is not supported.  Try "ucb man sa".
+a_man/man1/acctcms.1m.z		acctcms(1M) is not supported.  Try "ucb man sa".
+a_man/man1/acctcon.1m.z		acctcon(1M) is not supported.  Try "ucb man ac".
+a_man/man1/acctmerg.1m.z	acctmerg(1M) is not supported.
+a_man/man1/acctprc.1m.z		acctprc(1M) is not supported.
+a_man/man1/acctsh.1m.z		acctsh(1M) is not supported.
+a_man/man1/acuset.1m.z		acuset(1M) is not supported.  It applies to 3B20s only.
+a_man/man1/bdblk.1m.z		bdblk(1M) is not supported.  Try "ucb man addbad".
+a_man/man1/brc.1m.z		brc(1M) is not supported.  Try "ucb man rc".
+a_man/man1/checkall.1m.z	checkall(1M) is not supported.  Try "ucb man fstab".
+a_man/man1/chmap.1m.z		chmap(1M) is not supported.  It applies to 3B20s only.
+a_man/man1/clri.1m.z		clri(1M) is the ucb universe version.  Try "ucb man clri".
+a_man/man1/config.3b.1m.z	config.3b(1M) is not supported.  It applies to 3B20s only.
+a_man/man1/config.dc.1m.z	config.dc(1M) is not supported.  It applies to DEC machines only.
+a_man/man1/crash.1m.z		crash(1M) is not supported.
+a_man/man1/cron.1m.z		cron(1M) is not supported.  Try "ucb man cron".
+a_man/man1/dcopy.1m.z		dcopy(1M) is not supported.  It does not apply to this implementation.
+a_man/man1/devnm.1m.z		devnm(1M) is not supported.  Try "ucb man fstab".
+a_man/man1/df.1m.z		df(1M) is the ucb universe version.  Try "ucb man df".
+a_man/man1/dfcvers.1m.z		dfcvers(1M) is not supported.  It applies to 3B20s only.
+a_man/man1/dgn.1m.z		dgn(1M) is not supported.  It applies to 3B20s only.
+a_man/man1/diskusg.1m.z		diskusg(1M) is not supported.  Try "ucb man quot".
+a_man/man1/dmkset.1m.z		dmkset(1M) is not supported.  It applies to DEC machines only.
+a_man/man1/don.1m.z		don(1M) is not supported.  It applies to 3B20s only.
+a_man/man1/dskfmt.1m.z		dskfmt(1M) is not supported.  It applies to 3B20s only.
+a_man/man1/dstart.1m.z		dstart(1M) is not supported.  It applies to 3B20s only.
+a_man/man1/errdead.1m.z		errdead(1M) is not supported.  Try "ucb man dmesg".
+a_man/man1/errdemon.1m.z	errdemon(1M) is not supported.  Try "ucb man dmesg".
+a_man/man1/errpt.1m.z		errpt(1M) is not supported.
+a_man/man1/errstop.1m.z		errstop(1M) is not supported.
+a_man/man1/ff.1m.z		ff(1M) is not supported.  It does not apply to this implementation.
+a_man/man1/filesave.1m.z	filesave(1M) is not supported.  See the System Admin. Guide.
+a_man/man1/finc.1m.z		finc(1M) is not supported.  It does not apply to this implementation.
+a_man/man1/format.1m.z		format(1M) is not supported.  It applies to VAX machines only.
+a_man/man1/frec.1m.z		frec(1M) is not supported.  It does not apply to this implementation.
+a_man/man1/fsck.1m.z		fsck(1M) is the ucb universe version.  Try "ucb man fsck".
+a_man/man1/fscv.vax.1m.z	fscv.vax(1M) is not supported.  It applies to VAX machines only.
+a_man/man1/fsdb.1m.z		fsdb(1M) is not supported.  It does not apply to this implementation.
+a_man/man1/fts.1m.z		fts(1M) is not supported.  It applies to 3B20s only.
+a_man/man1/fuser.1m.z		fuser(1M) is not supported.  It does not apply to this implementation.
+a_man/man1/fwtmp.1m.z		fwtmp(1M) is not supported.  Try "ucb man ac".
+a_man/man1/getty.1m.z		getty(1M) is the ucb universe version.  Try "ucb man getty".
+a_man/man1/init.1m.z		init(1M) is the ucb universe version.  Try "ucb man init".
+a_man/man1/ipb.1m.z		ipb(1M) is not supported.  It applies to 3B20s only.
+a_man/man1/killall.1m.z		killall(1M) is not supported.  Try "ucb man shutdown".
+a_man/man1/link.1m.z		link(1M) is not supported.
+a_man/man1/mkboot.1m.z		mkboot(1M) is not supported.  It applies to 3B20s only.
+a_man/man1/mkfs.1m.z		mkfs(1M) is the ucb universe version.  Try "ucb man mkfs".
+a_man/man1/mount.1m.z		mount(1M) is the ucb universe version.  Try "ucb man mount".
+a_man/man1/msi.1m.z		msi(1M) is not supported.  It applies to 3B20s only.
+a_man/man1/ncheck.1m.z		ncheck(1M) is the ucb universe version.  Try "ucb man ncheck".
+a_man/man1/newboot.1m.z		newboot(1M) is not supported.  It applies to 3B20s only.
+a_man/man1/pcldaemon.1m.z	pcldaemon(1M) is not supported.  It applies to DEC machines only.
+a_man/man1/prm.1m.z		prm(1M) is not supported.  It applies to 3B20s only.
+a_man/man1/profiler.1m.z	profiler(1M) is not supported.
+a_man/man1/psel.1m.z		psel(1M) is not supported.  It applies to 3B20s only.
+a_man/man1/pwck.1m.z		pwck(1M) is not supported.
+a_man/man1/qasurvey.1m.z	qasurvey(1M) is not supported.
+a_man/man1/reboot.1m.z		reboot(1M) is the ucb universe version.  Try "ucb man reboot".
+a_man/man1/rmv.1m.z		rmv(1M) is not supported.  It applies to 3B20s only.
+a_man/man1/rst.1m.z		rst(1M) is not supported.  It applies to 3B20s only.
+a_man/man1/runacct.1m.z		runacct(1M) is not supported.
+a_man/man1/sadp.1m.z		sadp(1M) is not supported.
+a_man/man1/sar.1m.z		sar(1M) is not supported.
+a_man/man1/setmnt.1m.z		setmnt(1M) is not supported.  Try "ucb man fstab".
+a_man/man1/setmrf.1m.z		setmrf(1M) is not supported.  It applies to 3B20s only.
+a_man/man1/shutdown.1m.z	shutdown(1M) is the ucb universe version.  Try "ucb man shutdown".
+a_man/man1/ssr.1m.z		ssr(1M) is not supported.  It applies to 3B20s only.
+a_man/man1/sta.1m.z		sta(1M) is not supported.  It applies to 3B20s only.
+a_man/man1/swap.1m.z		swap(1M) is not supported.  Try "ucb man swapon".
+a_man/man1/sysdef.1m.z		sysdef(1M) is not supported.
+a_man/man1/trenter.1m.z		trenter(1M) is not supported.  Try "ucb man mailbug".
+a_man/man1/uuclean.1m.z		uuclean(1M) is not supported.  Try "ucb man uucp".
+a_man/man1/uusub.1m.z		uusub(1M) is not supported.  Try "ucb man uucp".
+a_man/man1/vcf.1m.z		vcf(1M) is not supported.  It applies to VAX machines only.
+a_man/man1/vlx.1m.z		vlx(1M) is not supported.  It applies to VAX machines only.
+a_man/man1/volcopy.1m.z		volcopy(1M) is not supported.  Try "ucb man dump".
+a_man/man1/vpmc.dec.1m.z	vpmc.dec(1M) is not supported.  It applies to DEC machines only.
+a_man/man1/vpmc.u3b.1m.z	vpmc.u3b(1M) is not supported.  It applies to 3B20s only.
+a_man/man1/vpmsave.1m.z		vpmsave(1M) is not supported.
+a_man/man1/vpmset.1m.z		vpmset(1M) is not supported.
+a_man/man1/vpmtest.1m.z		vpmtest(1M) is not supported.
+a_man/man1/wall.1m.z		wall(1M) is the ucb universe version.  Try "ucb man wall".
+a_man/man1/whodo.1m		whodo(1M) is not supported.  Try "ucb man w".
+a_man/man7/acu.7.z		acu(7) is not supported.
+a_man/man7/dgn.7.z		dgn(7) is not supported.  It applies to 3B20s only.
+a_man/man7/dmc.7.z		dmc(7) is not supported.  It applies to DEC machines only.
+a_man/man7/dmk.7.z		dmk(7) is not supported.  It applies to DEC machines only.
+a_man/man7/dsk.7.z		dsk(7) is not supported.  It applies to 3B20s only.
+a_man/man7/du.pdp.7.z		du.pdp(7) is not supported.  It applies to PDP-11s only.
+a_man/man7/dz.7.z		dz(7) is not supported.  It applies to DEC machines only.
+a_man/man7/err.7.z		err(7) is not supported.
+a_man/man7/gd.7.z		gd(7) is not supported.  It applies to DEC machines only.
+a_man/man7/gt.7.z		gt(7) is not supported.  It applies to DEC machines only.
+a_man/man7/hm.7.z		hm(7) is not supported.  It applies to DEC machines only.
+a_man/man7/hp.7.z		hp(7) is not supported.  It applies to DEC machines only.
+a_man/man7/hs.pdp.7.z		hs.pdp(7) is not supported.  It applies to PDP-11s only.
+a_man/man7/ht.7.z		ht(7) is not supported.  It applies to DEC machines only.
+a_man/man7/kl.pdp.7.z		kl.pdp(7) is not supported.  It applies to PDP-11s only.
+a_man/man7/kmc.7.z		kmc(7) is not supported.  It applies to DEC machines only.
+a_man/man7/lp.7.z		lp(7) is not supported.  It applies to DEC machines only.
+a_man/man7/mem.7.z		mem(7) is supported.  It applies to also try "ucb man mem".
+a_man/man7/ml11.pdp.7.z		ml11.pdp(7) is not supported.  It applies to PDP-11s only.
+a_man/man7/mtc.7.z		mtc(7) is not supported.  It applies to 3B20s only.
+a_man/man7/osm.7.z		osm(7) is not supported.  It applies to 3B20s only.
+a_man/man7/pcl.7.z		pcl(7) is not supported.  It applies to DEC machines only.
+a_man/man7/prf.7.z		prf(7) is not supported.
+a_man/man7/rf.pdp.7.z		rf.pdp(7) is not supported.  It applies to PDP-11s only.
+a_man/man7/rk.pdp.7.z		rk.pdp(7) is not supported.  It applies to PDP-11s only.
+a_man/man7/rl.7.z		rl(7) is not supported.  It applies to DEC machines only.
+a_man/man7/rm80.7.z		rm80(7) is not supported.  It applies to DEC machines only.
+a_man/man7/rp.pdp.7.z		rp.pdp(7) is not supported.  It applies to PDP-11s only.
+a_man/man7/rp07.7.z		rp07(7) is not supported.  It applies to VAX machines machines only.
+a_man/man7/sxt.7.z		sxt(7) is not supported.
+a_man/man7/termio.7.z		termio(7) is partially supported.  See the System V User's Guide for more details.
+a_man/man7/tm.pdp.7.z		tm.pdp(7) is not supported.  It applies to PDP-11s only.
+a_man/man7/tn4.7		tn4(7) is not supported.  It applies to 3B20s only.
+a_man/man7/tn74.7.z		tn74(7) is not supported.  It applies to 3B20s only.
+a_man/man7/tn83.7.z		tn83(7) is not supported.  It applies to 3B20s only.
+a_man/man7/tn85.7.z		tn85(7) is not supported.  It applies to 3B20s only.
+a_man/man7/trace.7.z		trace(7) is not supported.
+a_man/man7/ts11.7.z		ts11(7) is not supported.  It applies to VAX machines only.
+a_man/man7/tu78.7.z		tu78(7) is not supported.  It applies to VAX machines only.
+a_man/man7/un32.7.z		un32(7) is not supported.  It applies to 3B20s only.
+a_man/man7/un53.7.z		un53(7) is not supported.  It applies to 3B20s only.
+a_man/man7/vp.pdp.7.z		vp.pdp(7) is not supported.  It applies to PDP-11s only.
+a_man/man7/vpm.7.z		vpm(7) is not supported.
+a_man/man8/3B20sboot.8.z	3B20boot(8) is not supported.  It applies to 3B20 only.
+a_man/man8/3B20sops.8.z		3B20ops(8) is not supported.  It applies to 3B20 only.
+a_man/man8/70boot.8.z		70boot(8) is not supported.  It applies to PDP-11s only.
+a_man/man8/750ops.8.z		750ops(8) is not supported.  It applies to VAX machines only.
+a_man/man8/780ops.8.z		780ops(8) is not supported.  It applies to VAX machines only.
+a_man/man8/crash.dec.8.z	crash.dec(8) is not supported.  It applies to DEC machines only.
+a_man/man8/crash.u3b.8.z	crash.u3b(8) is not supported.  It applies to 3B20s only.
+a_man/man8/diskboot.8.z		diskboot(8) is not supported.  It applies to PDP-11s only.
+a_man/man8/eai.8.z		eai(8) is not supported.  It applies to 3B20s only.
+a_man/man8/ldtape.8.z		ldtape(8) is not supported.  It applies to 3B20s only.
+a_man/man8/mk.8.z		mk(8) is not supported.  See the instructions accompanying source distributions.
+a_man/man8/prm.8.z		prm(8) is not supported.  It applies to 3B20s only.
+a_man/man8/rje.8.z		rje(8) is not supported.
+a_man/man8/romboot.8.z		romboot(8) is not supported.  It applies to PDP-11s only.
+a_man/man8/tapeboot.8.z		tapeboot(8) is not supported.  It applies to PDP-11s only.
+a_man/man8/unixboot.8.z		unixboot(8) is not supported.  It applies to PDP-11s only.
+p_man/man2/ioctl.2.z		ioctl(2) is an emulation.  See the System V User's Guide for more details.
+p_man/man2/sys3b.2.z		sys3b(2) is not supported.  It applies to 3B20s only.
+p_man/man3/abort.3f.z		abort(3F) is not supported.  Fortran is available only in the ucb universe.
+p_man/man3/abort.3f.z		Try "ucb man fortran"
+p_man/man3/abs.3f.z		abs(3F) is not supported.  Fortran is available only in the ucb universe.
+p_man/man3/abs.3f.z		Try "ucb man fortran"
+p_man/man3/acos.3f.z		acos(3F) is not supported.  Fortran is available only in the ucb universe.
+p_man/man3/acos.3f.z		Try "ucb man fortran"
+p_man/man3/aimag.3f.z		aimag(3F) is not supported.  Fortran is available only in the ucb universe.
+p_man/man3/aimag.3f.z		Try "ucb man fortran"
+p_man/man3/aint.3f.z		aint(3F) is not supported.  Fortran is available only in the ucb universe.
+p_man/man3/aint.3f.z		Try "ucb man fortran"
+p_man/man3/asin.3f.z		asin(3F) is not supported.  Fortran is available only in the ucb universe.
+p_man/man3/asin.3f.z		Try "ucb man fortran"
+p_man/man3/atan.3f.z		atan(3F) is not supported.  Fortran is available only in the ucb universe.
+p_man/man3/atan.3f.z		Try "ucb man fortran"
+p_man/man3/atan2.3f.z		atan2(3F) is not supported.  Fortran is available only in the ucb universe.
+p_man/man3/atan2.3f.z		Try "ucb man fortran"
+p_man/man3/bool.3f.z		bool(3F) is not supported.  Fortran is available only in the ucb universe.
+p_man/man3/bool.3f.z		Try "ucb man fortran"
+p_man/man3/conjg.3f.z		conjg(3F) is not supported.  Fortran is available only in the ucb universe.
+p_man/man3/conjg.3f.z		Try "ucb man fortran"
+p_man/man3/cos.3f.z		cos(3F) is not supported.  Fortran is available only in the ucb universe.
+p_man/man3/cos.3f.z		Try "ucb man fortran"
+p_man/man3/cosh.3f.z		cosh(3F) is not supported.  Fortran is available only in the ucb universe.
+p_man/man3/cosh.3f.z		Try "ucb man fortran"
+p_man/man3/dial.3c.z		dial(3C) is not supported.
+p_man/man3/dim.3f.z		dim(3F) is not supported.  Fortran is available only in the ucb universe.
+p_man/man3/dim.3f.z		Try "ucb man fortran"
+p_man/man3/directory.3c.z	directory(3c) is an extension to System V to enable you to write portable
+p_man/man3/directory.3c.z	routines to read directories.  These routines may not appear on other system V
+p_man/man3/directory.3c.z	systems.  These interfaces are identical to those in ucb universe.
+p_man/man3/dprod.3f.z		dprod(3F) is not supported.  Fortran is available only in the ucb universe.
+p_man/man3/dprod.3f.z		Try "ucb man fortran"
+p_man/man3/exp.3f.z		exp(3F) is not supported.  Fortran is available only in the ucb universe.
+p_man/man3/exp.3f.z		Try "ucb man fortran"
+p_man/man3/ftype.3f.z		ftype(3F) is not supported.  Fortran is available only in the ucb universe.
+p_man/man3/ftype.3f.z		Try "ucb man fortran"
+p_man/man3/getarg.3f.z		getarg(3F) is not supported.  Fortran is available only in the ucb universe.
+p_man/man3/getarg.3f.z		Try "ucb man fortran"
+p_man/man3/getenv.3f.z		getenv(3F) is not supported.  Fortran is available only in the ucb universe.
+p_man/man3/getenv.3f.z		Try "ucb man fortran"
+p_man/man3/getut.3c.z		getut(3C) is not supported.
+p_man/man3/iargc.3f.z		iargc(3F) is not supported.  Fortran is available only in the ucb universe.
+p_man/man3/iargc.3f.z		Try "ucb man fortran"
+p_man/man3/index.3f.z		index(3F) is not supported.  Fortran is available only in the ucb universe.
+p_man/man3/index.3f.z		Try "ucb man fortran"
+p_man/man3/ldahread.3x.z	ldahread(3X) is not supported.
+p_man/man3/ldclose.3x.z		ldclose(3X) is not supported.
+p_man/man3/ldfhread.3x.z	ldfhread(3X) is not supported.
+p_man/man3/ldgetname.3x.z	ldgetname(3X) is not supported.
+p_man/man3/ldlread.3x.z		ldlread(3X) is not supported.
+p_man/man3/ldlseek.3x.z		ldlseek(3X) is not supported.
+p_man/man3/ldohseek.3x.z	ldohseek(3X) is not supported.
+p_man/man3/ldopen.3x.z		ldopen(3X) is not supported.
+p_man/man3/ldrseek.3x.z		ldrseek(3X) is not supported.
+p_man/man3/ldshread.3x.z	ldshread(3X) is not supported.
+p_man/man3/ldsseek.3x.z		ldsseek(3X) is not supported.
+p_man/man3/ldtbindex.3x.z	ldtbindex(3X) is not supported.
+p_man/man3/ldtbread.3x.z	ldtbread(3X) is not supported.
+p_man/man3/ldtbseek.3x.z	ldtbseek(3X) is not supported.
+p_man/man3/len.3f		len(3F) is not supported.  Fortran is available only in the ucb universe.
+p_man/man3/len.3f		Try "ucb man fortran"
+p_man/man3/log.3f.z		log(3F) is not supported.  Fortran is available only in the ucb universe.
+p_man/man3/log.3f.z		Try "ucb man fortran"
+p_man/man3/log10.3f.z		log10(3F) is not supported.  Fortran is available only in the ucb universe.
+p_man/man3/log10.3f.z		Try "ucb man fortran"
+p_man/man3/max.3f.z		max(3F) is not supported.  Fortran is available only in the ucb universe.
+p_man/man3/max.3f.z		Try "ucb man fortran"
+p_man/man3/mclock.3f.z		mclock(3F) is not supported.  Fortran is available only in the ucb universe.
+p_man/man3/mclock.3f.z		Try "ucb man fortran"
+p_man/man3/mil.3f.z		mil(3F) is not supported.  Fortran is available only in the ucb universe.
+p_man/man3/mil.3f.z		Try "ucb man fortran"
+p_man/man3/min.3f.z		min(3F) is not supported.  Fortran is available only in the ucb universe.
+p_man/man3/min.3f.z		Try "ucb man fortran"
+p_man/man3/mod.3f.z		mod(3F) is not supported.  Fortran is available only in the ucb universe.
+p_man/man3/mod.3f.z		Try "ucb man fortran"
+p_man/man3/nlist.3c.z		nlist(3C) is the ucb universe version.
+p_man/man3/plot.3x.z		plot(3X) is not supported.  Try "ucb man 3x plot".
+p_man/man3/rand.3f.z		rand(3F) is not supported.  Fortran is available only in the ucb universe.
+p_man/man3/rand.3f.z		Try "ucb man fortran"
+p_man/man3/round.3f.z		round(3F) is not supported.  Fortran is available only in the ucb universe.
+p_man/man3/round.3f.z		Try "ucb man fortran"
+p_man/man3/sign.3f.z		sign(3F) is not supported.  Fortran is available only in the ucb universe.
+p_man/man3/sign.3f.z		Try "ucb man fortran"
+p_man/man3/signal.3f.z		signal(3F) is not supported.  Fortran is available only in the ucb universe.
+p_man/man3/signal.3f.z		Try "ucb man fortran"
+p_man/man3/sin.3f.z		sin(3F) is not supported.  Fortran is available only in the ucb universe.
+p_man/man3/sin.3f.z		Try "ucb man fortran"
+p_man/man3/sinh.3f.z		sinh(3F) is not supported.  Fortran is available only in the ucb universe.
+p_man/man3/sinh.3f.z		Try "ucb man fortran"
+p_man/man3/sputl.3x.z		sputl(3X) is not supported.
+p_man/man3/sqrt.3f.z		sqrt(3F) is not supported.  Fortran is available only in the ucb universe.
+p_man/man3/sqrt.3f.z		Try "ucb man fortran"
+p_man/man3/strcmp.3f.z		strcmp(3F) is not supported.  Fortran is available only in the ucb universe.
+p_man/man3/strcmp.3f.z		Try "ucb man fortran"
+p_man/man3/system.3f.z		system(3F) is not supported.  Fortran is available only in the ucb universe.
+p_man/man3/system.3f.z		Try "ucb man fortran"
+p_man/man3/tan.3f.z		tan(3F) is not supported.  Fortran is available only in the ucb universe.
+p_man/man3/tan.3f.z		Try "ucb man fortran"
+p_man/man3/tanh.3f.z		tanh(3F) is not supported.  Fortran is available only in the ucb universe.
+p_man/man3/tanh.3f.z		Try "ucb man fortran"
+p_man/man4/a.out.4.z		a.out(4) is the ucb universe version.  Try "ucb man a.out".
+p_man/man4/a.out.pdp.4.z	a.out.pdp(4) is not supported.  It applies to PDP-11s only.
+p_man/man4/acct.4.z		acct(4) is not supported.
+p_man/man4/ar.4.z		ar(4) is the ucb universe version.  Try "ucb man ar ranlib".
+p_man/man4/ar.pdp.4.z		ar.pdp(4) is not supported.  It applies to PDP-11s only.
+p_man/man4/checklist.4.z	checklist(4) is not supported.  Try "ucb man fstab".
+p_man/man4/core.4.z		core(4) is the ucb universe version.  Try "ucb man core".
+p_man/man4/dir.4.z		dir(4) is the ucb universe version.  Try "man directory".
+p_man/man4/errfile.4.z		errfile(4) is not supported.
+p_man/man4/filehdr.4.z		filehdr(4) is not supported.  Try "ucb man a.out".
+p_man/man4/fs.4.z		fs(4) is not supported.  Try "ucb man fs".
+p_man/man4/gettydefs.4.z	gettydefs(4) is not supported.  Try "ucb man gettytab".
+p_man/man4/inittab.4.z		inittab(4) is not supported.  Try "ucb man ttys".
+p_man/man4/inode.4.z		inode(4) is the ucb universe version.  Try "ucb man stat".
+p_man/man4/issue.4.z		issue(4) is not supported.
+p_man/man4/ldfcn.4.z		ldfcn(4) is not supported.  It applies to PDP-11s only.
+p_man/man4/linenum.4.z		linenum(4) is not supported.
+p_man/man4/master.dec.4.z	master.dec(4) is not supported.  It applies to DEC machines only.
+p_man/man4/master.u3b.4.z	master.u3b(4) is not supported.  It applies to 3B20s only.
+p_man/man4/mnttab.4.z		mnttab(4) is the ucb universe version.  Try "ucb man mtab".
+p_man/man4/passwd.4.z		passwd(4) is the ucb universe version.  Try "ucb man 5 passwd".
+p_man/man4/plot.4.z		plot(4) is not supported.
+p_man/man4/pnch.4.z		pnch(4) is not supported.
+p_man/man4/reloc.4.z		reloc(4) is not supported.
+p_man/man4/scnhdr.4.z		scnhdr(4) is not supported.
+p_man/man4/syms.4.z		syms(4) is not supported.
+p_man/man4/system.4.z		system(4) is not supported.  It applies to 3B20s only.
+p_man/man4/utmp.4.z		utmp(4) is the ucb universe version.  Try "ucb man utmp".
+p_man/man5/prof.5.z		prof(5) is not supported.
+p_man/man5/stat.5.z		stat(5) is the ucb universe version.  Try "ucb man stat".
+p_man/man5/types.5.z		types(5) is the ucb universe version.  Try "ucb man types".
+u_man/man1/acctcom.1.z		acctcom(1) is not supported.
+u_man/man1/adb.1.z		adb(1) is not supported.  Try "ucb man dbx".
+u_man/man1/ar.1.z		ar(1) is the ucb universe version.  Try "ucb man ar ranlib".
+u_man/man1/ar.pdp.1.z		ar.pdp(1) is not supported.  It applies to PDP-11s only.
+u_man/man1/arcv.pdp.1.z		arcv.pdp(1) is not supported.  It applies to PDP-11s only.
+u_man/man1/as.1.z		as(1) is the ucb universe version.  Try "ucb man as".
+u_man/man1/as.pdp.1.z		as.pdp(1) is not supported.  It applies to PDP-11s only.
+u_man/man1/at.1.z		at(1) is not supported.  Try "ucb man at".
+u_man/man1/cc.1.z		cc(1) is the ucb universe version.  Try "ucb man cc".
+u_man/man1/convert.1.z		convert(1) is not supported.
+u_man/man1/cpp.1.z		cpp(1) is supported.  "ns32000" or "i386" is predefined.
+u_man/man1/cprs.1.z		cprs(1) is not supported.  It applies to 3B20s only.
+u_man/man1/crontab.1.z		crontab(1) is not supported.  Try "ucb man cron".
+u_man/man1/ct.1c.z		ct(1C) is not supported.
+u_man/man1/cu.1c.z		cu(1C) is not supported.  Try "ucb man tip".
+u_man/man1/dis.1.z		dis(1) is not supported.  Try "ucb man disas".
+u_man/man1/dump.1.z		dump(1) is not supported.
+u_man/man1/f77.1.z		f77(1) is not supported.  Try "ucb man fortran".
+u_man/man1/kasb.1.z		kasb(1) is not supported.  It applies to DEC machines only.
+u_man/man1/ld.1.z		ld(1) is the ucb universe version.  Try "ucb man ld".
+u_man/man1/ld.pdp.1.z		ld.pdp(1) is not supported.  It applies to PDP-11s only.
+u_man/man1/list.1.z		list(1) is not supported.  It applies to 3B20s only.
+u_man/man1/login.1.z		login(1) is the ucb universe version.  Try "ucb man login".
+u_man/man1/lorder.1.z		lorder(1) is the ucb universe version.  Try "ucb man lorder".
+u_man/man1/machid.1.z		machid(1) is supported.  "ns32000" or "i386" may be true.
+u_man/man1/net.1c.z		net(1C) is not supported.  It applies to DEC machines only.
+u_man/man1/newgrp.1.z		newgrp(1) is not supported.
+u_man/man1/nm.1.z		nm(1) is the ucb universe version.  Try "ucb man nm".
+u_man/man1/nm.pdp.1.z		nm.pdp(1) is not supported.  It applies to PDP-11s only.
+u_man/man1/passwd.1.z		passwd(1) is the ucb universe version.  Try "ucb man passwd".
+u_man/man1/prof.1.z		prof(1) is the ucb universe version.  Try "ucb man prof".
+u_man/man1/rjestat.1c.z		rjestat(1C) is not supported.
+u_man/man1/sag.1g.z		sag(1G) is not supported.
+u_man/man1/sar.1.z		sar(1) is not supported.
+u_man/man1/scc.1.z		scc(1) is not supported.  It applies to DEC machines only.
+u_man/man1/sdb.1.z		sdb(1) is the ucb universe version.  Try "ucb man sdb".
+u_man/man1/send.1c.z		send(1C) is not supported.
+u_man/man1/shl.1.z		shl(1) is not supported.
+u_man/man1/size.1.z		size(1) is the ucb universe version.  Try "ucb man size".
+u_man/man1/size.pdp.1.z		size.pdp(1) is not supported.  It applies to PDP-11s only.
+u_man/man1/strip.1.z		strip(1) is the ucb universe version.  Try "ucb man strip".
+u_man/man1/strip.pdp.1.z	strip.pdp(1) is not supported.  It applies to PDP-11s only.
+u_man/man1/timex.1.z		timex(1) is not supported.  Try "ucb man time".
+u_man/man1/un53ctl.1c.z		un53ctl(1C) is not supported.  It applies to 3B20s only.
+u_man/man1/uucp.1c.z		uucp(1C) is not supported.  Try "ucb man uucp".
+u_man/man1/uustat.1c.z		uustat(1C) is not supported.  Try "ucb man uusnap".
+u_man/man1/uuto.1c.z		uuto(1C) is not supported.
+u_man/man1/uux.1c.z		uux(1C) is not supported.  Try "ucb man uux".
+u_man/man1/vpr.1.z		vpr(1) is not supported.  Try "ucb man lpr".
+u_man/man1/who.1.z		who(1) is the ucb universe version.  Try "ucb man who".
+u_man/man6/arithmetic.6.z	arithmetic(6) is not supported.
+u_man/man6/back.6.z		back(6) is not supported.
+u_man/man6/bj.6.z		bj(6) is not supported.
+u_man/man6/chess.6.z		chess(6) is not supported.
+u_man/man6/craps.6.z		craps(6) is not supported.
+u_man/man6/hangman.6.z		hangman(6) is not supported.
+u_man/man6/jotto.6.z		jotto(6) is not supported.
+u_man/man6/maze.6		maze(6) is not supported.
+u_man/man6/moo.6.z		moo(6) is not supported.
+u_man/man6/quiz.6.z		quiz(6) is not supported.
+u_man/man6/reversi.6.z		reversi(6) is not supported.
+u_man/man6/sky.6.z		sky(6) is not supported.
+u_man/man6/ttt.6.z		ttt(6) is not supported.
+u_man/man6/wump.6.z		wump(6) is not supported.

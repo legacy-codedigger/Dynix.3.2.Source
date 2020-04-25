@@ -1,0 +1,62 @@
+.\" $Copyright:	$
+.\"Copyright (c) 1984, 1985, 1986, 1987 Sequent Computer Systems, Inc.
+.\"All rights reserved
+.\" 
+.\"This software is furnished under a license and may be used
+.\"only in accordance with the terms of that license and with the
+.\"inclusion of the above copyright notice.   This software may not
+.\"be provided or otherwise made available to, or used by, any
+.\"other person.  No title to or ownership of the software is
+.\"hereby transferred.
+...
+.V= $Header: prtvtoc.8s 1.4 91/01/21 $
+.TH PRTVTOC 8S "\*(V)" "DYNIX"
+.SH NAME
+prtvtoc \- standalone print VTOC utility
+.SH SYNOPSIS
+.BR "From the powerup monitor" :
+.br
+.sp
+.in +1
+.IR "on SCED-based systems" :
+.br
+*
+.B b 0
+.IR dv ( un , su )\c
+.B stand/prtvtoc
+.br
+.sp
+.IR "on SSM-based systems" :
+.br
+--->
+.B bh 
+.IR dv ( un , su )\c
+.B stand/prtvtoc
+.SH DESCRIPTION
+.I Prtvtoc
+is the standalone utility for displaying a disk's VTOC.
+Once booted,
+.I prtvtoc
+will prompt with:
+.sp
+.nf
+.in +0.5i
+Type a device name which contains a VTOC at the prompt
+Type "exit" to exit\n
+.in -0.5i
+.fi
+.sp
+The device name is specified in powerup monitor format, i.e.,
+.IR dv ( un , su ).
+The VTOC from that device will then be displayed on the console.
+Entering the string
+.I exit
+will cause the
+.I prtvtoc
+utility to return to the powerup monitor.
+Refer to the
+.I "DYNIX System Administration Guide"
+for further details on using the powerup monitor.
+.SH "SEE ALSO"
+boot(8S), rmvtoc(8S), prtvtoc(8)
+.I "DYNIX System Administration Guide"

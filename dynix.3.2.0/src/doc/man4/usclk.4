@@ -1,0 +1,104 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986 Sequent Computer Systems, Inc.
+.\" All rights reserved
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: usclk.4 1.5 1991/08/06 22:47:57 $
+.TH USCLK 4 "\*(V)" "DYNIX"
+.SH NAME
+usclk - 32-bit microsecond counter
+.SH SYNOPSIS
+.PP
+device usclk0 at mbad? csr 0x40000		(Balance ONLY)
+.PP
+pseudo-device usclk	1			(Symmetry ONLY)
+.SH DESCRIPTION
+This device provides access to a 32-bit counter which increments
+every microsecond.
+This counter can be used to do fine-grain
+timing studies on program execution.
+This device does not support read() and write() system call access.
+To access the counter,
+this device must be mapped into a process's memory (see
+\f2mmap\f1(2)).
+Only one page of usclk memory can be mapped into a process (see
+\f2getpagesize\f1()).
+Requests to mmap more will fail.
+The device can only be mapped READ ONLY.
+Generally, this device should be accessed only through the
+.IR usclkinit (3)
+and
+.IR getusclk (3)
+library functions. 
+.PP
+The implementation of this device is different for Symmetry and
+Balance systems.
+.PP
+The following are some considerations for these systems.
+.PP
+.B Balance Systems:
+.PP
+The counter is implemented by a special multibus peripheral.
+In order to use this counter,
+this board must be purchased from Sequent and installed.
+Installation instructions for the board are included with the board.
+For \s-2DYNIX\s0 software to access the board, the usclk
+driver must be configured into the kernel.  
+.PP
+After mapping the device, the counter values are available
+only in the first 4 bytes of the mapping.
+Access to other
+locations in the page will return unpredictable values, or
+may even cause a SIGBUS signal.
+There is a small probability
+such invalid accesses will cause \s-2DYNIX\s0 to panic.
+.PP
+Since the multibus is a 16-bit bus, 32-bit accesses to
+this timer are split into two multibus transfers.
+This can cause some error in the value returned.
+The routine
+.IR getusclk (3)
+reads the counter in such a way so as to guarantee
+accurate results.
+However, these accesses are slow.
+Reading the 32-bit timer takes about 25 microseconds.
+.PP
+.B Symmetry systems:
+.PP
+Symmetry systems implement this counter as a set of 32-bit
+registers on the processor boards.
+Each processor has its own counter register.
+But, the initialization and
+incrementing of these counter registers is synchronized
+across all processor boards.
+The resulting effect is
+as though there were only one counter register.
+However, accessing this counter involves no accesses off the
+processor board.
+So, by mapping the device into the
+process's address space, the overhead of accessing the counter
+is essentially zero.
+.PP
+Since this timer implementation is integral to the
+hardware, the software for accessing it is always activated.
+.SH ERRORS
+.TP 10
+ENXIO
+an open request is denied because
+.I /dev/usclk
+has a minor device number greater than one,
+or the usclk board was not found at boot time (Balance only).
+.TP 10
+ENOSPC
+an mmap request tried to map more than one page of the usclk device.
+Refer to
+.IR getpagesize (2).
+.TP 10
+EINVAL
+an attempt was made to map with write access.

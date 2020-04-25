@@ -1,0 +1,32 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: mklost+found.8 1.4 86/05/13 $
+.TH MKLOST+FOUND 8 "\*(V)" "4BSD"
+.SH NAME
+mklost+found \- make a lost+found directory for fsck
+.SH SYNOPSIS
+.B /etc/mklost+found
+.SH DESCRIPTION
+A directory
+.I lost+found
+is created in the current directory and a number of empty files
+are created therein and then removed so that there will be
+empty slots for
+.IR fsck (8).
+This command should not normally be needed since 
+.IR mkfs (8)
+automatically creates the
+.I lost+found
+directory when a new file system is created.
+.SH "SEE ALSO"
+fsck(8),
+mkfs(8)

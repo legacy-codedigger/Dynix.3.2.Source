@@ -1,0 +1,56 @@
+.\" $Copyright:	$
+.\"
+...
+.V= $Header: rmvtoc.8s 1.4 91/01/21 $
+.TH RMVTOC 8S "\*(V)" "DYNIX"
+.SH NAME
+rmvtoc \- standalone VTOC removal utility
+.SH SYNOPSIS
+.BR "From the powerup monitor" :
+.br
+.sp
+.in +1
+.IR "on SCED-based systems" :
+.br
+*
+.B b 0
+.IR dv ( un , su )\c
+.B stand/rmvtoc
+.br
+.sp
+.IR "on SSM-based systems" :
+.br
+--->
+.B bh 
+.IR dv ( un , su )\c
+.B stand/rmvtoc
+.SH DESCRIPTION
+.I rmvtoc
+is the standalone utility for removing a disk's VTOC.
+Once booted,
+.I rmvtoc
+will prompt with:
+.sp
+.nf
+.in +0.5i
+Type a device name whose VTOC you wish to delete
+Type "exit" to exit\n
+.in -0.5i
+.fi
+.sp
+The device name is specified in powerup monitor format, i.e.,
+.IR dv ( un , su ).
+The VTOC from that device will then be removed if it is a valid
+VTOC.  If the VTOC is invalid, an error will be printed and no
+action will be taken.
+Entering the string
+.I exit
+will cause the
+.I rmvtoc
+utility to return to the powerup monitor.
+Refer to the
+.I "DYNIX System Administration Guide"
+for further details on using the powerup monitor.
+.SH "SEE ALSO"
+boot(8S), prtvtoc(8S), rmvtoc(8)
+.I "DYNIX System Administration Guide"

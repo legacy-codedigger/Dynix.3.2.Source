@@ -1,0 +1,113 @@
+# $Copyright:	$
+# Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+# Sequent Computer Systems, Inc.   All rights reserved.
+#  
+# This software is furnished under a license and may be used
+# only in accordance with the terms of that license and with the
+# inclusion of the above copyright notice.   This software may not
+# be provided or otherwise made available to, or used by, any
+# other person.  No title to or ownership of the software is
+# hereby transferred.
+
+# $Header: makerules.src 2.17 91/04/06 $
+# Macros passed to make in the CCS build process.
+
+CCS_ROOT=$(LOCALVIEW)/$(MACHINE)/tmpos
+CCS_HDRS=$(CCSVIEW)/$(MACHINE)/tmpos
+CCS_LIBS=$(CCSVIEW)/$(MACHINE)/tmpos
+DESTDIR=$(CCS_ROOT)
+INCLUDE=-I$(CCS_ROOT)/usr/include -I$(CCS_HDRS)/usr/include
+
+CC=$(TOOLS)/xcc -A$(TOOLS)/ -B$(TOOLS)/ -G$(CCS_LIBS)/
+CPP=$(TOOLS)/xcpp
+C2=$(TOOLS)/xc2
+AS=$(TOOLS)/xas
+LD=$(TOOLS)/xld -G$(CCS_LIBS)/
+AR=$(TOOLS)/xar
+NM=$(TOOLS)/xnm
+LORDER=$(TOOLS)/xlorder
+RANLIB=$(TOOLS)/xranlib
+SIZE=$(TOOLS)/xsize
+STRIP=$(TOOLS)/xstrip
+SYMORDER=$(TOOLS)/xsymorder
+LINT=$(TOOLS)/xlint CPP=$(CPP) LL=$(TOOLS)/lib/lint
+YACC=$(TOOLS)/xyacc YP=$(TOOLS)/lib/yaccpar
+CTAGS=$(TOOLS)/xctags
+PCD=$(TOOLS)/pcd
+MAKEPAL=TOOLS=$(TOOLS) $(TOOLS)/cad/makepal
+PALASM=TOOLS=$(TOOLS) $(TOOLS)/cad/palasm
+PALFAULT=TOOLS=$(TOOLS) $(TOOLS)/cad/palfault
+MAKEBLAST=TOOLS=$(TOOLS) $(TOOLS)/cad/makeblast
+MAKECCSPAL=TOOLS=$(TOOLS) $(TOOLS)/cad/makeccspal
+MAKEFT=TOOLS=$(TOOLS) $(TOOLS)/cad/makeft
+XLATE=$(TOOLS)/cad/xlate
+UCC=$(TOOLS)/xuc -A$(TOOLS)/ -B$(TOOLS)/ -G$(CCS_LIBS)/
+ULD=$(TOOLS)/xuld
+UPOST=$(TOOLS)/xupost
+USIZE=$(TOOLS)/xusize
+UAL=$(TOOLS)/xual
+
+ATT_ROOT=$(LOCALVIEW)/$(MACHINE)/tmpos_att
+ATT_HDRS=$(CCSVIEW)/$(MACHINE)/tmpos_att
+ATT_LIBS=$(CCSVIEW)/$(MACHINE)/tmpos_att
+ATT_DESTDIR=$(ATT_ROOT)
+ATT_INCLUDE=-I$(ATT_ROOT)/usr/include -I$(ATT_HDRS)/usr/include
+ATT_CC=$(TOOLS)/xcc -A$(TOOLS)/ -B$(TOOLS)/ -G$(ATT_LIBS)/
+ATT_AS=$(TOOLS)/xas
+ATT_LD=$(TOOLS)/xld -G$(ATT_LIBS)/
+ATT_YACC=$(TOOLS)/x5yacc YP=$(TOOLS)/5lib/yaccpar
+ATT_AR=$(TOOLS)/xar
+ATT_RANLIB=$(TOOLS)/xranlib
+
+CRYPT_ROOT=$(LOCALVIEW)/$(MACHINE)/tmpos_crypt
+CRYPT_HDRS=$(CCSVIEW)/$(MACHINE)/tmpos_crypt
+CRYPT_LIBS=$(CCSVIEW)/$(MACHINE)/tmpos_crypt
+CRYPT_DESTDIR=$(CRYPT_ROOT)
+CRYPT_INCLUDE=-I$(CRYPT_ROOT)/usr/include -I$(CRYPT_HDRS)/usr/include
+CRYPT_CC=$(TOOLS)/xcc -A$(TOOLS)/ -B$(TOOLS)/ -G$(CRYPT_LIBS)/
+CRYPT_LD=$(TOOLS)/xld -G$(CRYPT_LIBS)/
+
+ATT_CRYPT_ROOT=$(LOCALVIEW)/$(MACHINE)/tmpos_att_crypt
+ATT_CRYPT_HDRS=$(CCSVIEW)/$(MACHINE)/tmpos_att_crypt
+ATT_CRYPT_LIBS=$(CCSVIEW)/$(MACHINE)/tmpos_att_crypt
+ATT_CRYPT_DESTDIR=$(ATT_CRYPT_ROOT)
+ATT_CRYPT_INCLUDE=-I$(ATT_CRYPT_ROOT)/usr/include -I$(ATT_CRYPT_HDRS)/usr/include
+ATT_CRYPT_CC=$(TOOLS)/xcc -A$(TOOLS)/ -B$(TOOLS)/ -G$(ATT_CRYPT_LIBS)/
+ATT_CRYPT_LD=$(TOOLS)/xld -G$(ATT_CRYPT_LIBS)/
+
+STRIPE_ROOT=$(LOCALVIEW)/$(MACHINE)/tmpos_stripe
+STRIPE_HDRS=$(CCSVIEW)/$(MACHINE)/tmpos_stripe
+STRIPE_LIBS=$(CCSVIEW)/$(MACHINE)/tmpos_stripe
+STRIPE_DESTDIR=$(STRIPE_ROOT)
+STRIPE_INCLUDE=-I$(STRIPE_ROOT)/usr/include -I$(STRIPE_HDRS)/usr/include
+STRIPE_CC=$(TOOLS)/xcc -A$(TOOLS)/ -B$(TOOLS)/ -G$(STRIPE_LIBS)/
+STRIPE_LD=$(TOOLS)/xld -G$(STRIPE_LIBS)/
+
+MIRROR_ROOT=$(LOCALVIEW)/$(MACHINE)/tmpos_mirror
+MIRROR_HDRS=$(CCSVIEW)/$(MACHINE)/tmpos_mirror
+MIRROR_LIBS=$(CCSVIEW)/$(MACHINE)/tmpos_mirror
+MIRROR_DESTDIR=$(MIRROR_ROOT)
+MIRROR_INCLUDE=-I$(MIRROR_ROOT)/usr/include -I$(MIRROR_HDRS)/usr/include
+MIRROR_CC=$(TOOLS)/xcc -A$(TOOLS)/ -B$(TOOLS)/ -G$(MIRROR_LIBS)/
+MIRROR_LD=$(TOOLS)/xld -G$(MIRROR_LIBS)/
+
+MFG_ROOT=$(LOCALVIEW)/$(MACHINE)/tmpos_mfg
+MFG_HDRS=$(CCSVIEW)/$(MACHINE)/tmpos_mfg
+MFG_LIBS=$(CCSVIEW)/$(MACHINE)/tmpos_mfg
+MFG_DESTDIR=$(MFG_ROOT)
+MFG_INCLUDE=-I$(MFG_ROOT)/usr/include -I$(MFG_HDRS)/usr/include
+MFG_CC=$(TOOLS)/xcc -A$(TOOLS)/ -B$(TOOLS)/ -G$(MFG_LIBS)/
+MFG_LD=$(TOOLS)/xld -G$(MFG_LIBS)/
+
+MRULES=-f $(RULEFILE) -f Makefile NATIVE=$(NATIVE) MACHINE=$(MACHINE) \
+CCSVIEW=$(CCSVIEW) LOCALVIEW=$(LOCALVIEW) TOOLS=$(TOOLS) RULEFILE=$(RULEFILE) \
+ROOT_DISKTYPE=$(ROOT_DISKTYPE) USR_DISKTYPE=$(USR_DISKTYPE) \
+MINIROOT=$(MINIROOT) TMPOS_USR=$(TMPOS_USR) TMPOS_ROOT=$(TMPOS_ROOT)
+
+SVSTOOLS=$(CCSVIEW)/$(MACHINE)/svstools
+PASCAL=$(SVSTOOLS)/bin/ccspascal -A$(SVSTOOLS)/usr/lib/ -B$(TOOLS)/ -G$(CCS_LIBS)/
+FORTRAN=$(SVSTOOLS)/bin/ccsfortran -A$(SVSTOOLS)/usr/lib/ -B$(TOOLS)/ -G$(CCS_LIBS)/
+JLINKER=$(SVSTOOLS)/usr/lib/jlinker
+SVSASM=$(SVSTOOLS)/bin/asm32k
+NFS_ROOT=$(LOCALVIEW)/$(MACHINE)/tmpos_nfs
+NFS_DESTDIR=$(NFS_ROOT)

@@ -1,0 +1,32 @@
+.\" $Copyright:	$
+.\"Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\"Sequent Computer Systems, Inc.   All rights reserved.
+.\" 
+.\"This software is furnished under a license and may be used
+.\"only in accordance with the terms of that license and with the
+.\"inclusion of the above copyright notice.   This software may not
+.\"be provided or otherwise made available to, or used by, any
+.\"other person.  No title to or ownership of the software is
+.\"hereby transferred.
+...
+.V= $Header: rusersd.8c 1.2 87/06/18 $
+.\" @(#)rusersd.8c	1.2 87/02/10 NFSSRC
+.\" @(#)rusersd.8c 1.1 86/09/25 SMI;
+.TH RUSERSD 8C "29 July 1986"
+.SH NAME
+rusersd \- network username server
+.SH SYNOPSIS
+.B /usr/etc/rpc.rusersd
+.SH DESCRIPTION
+.IX  "rstatd command"  ""  "\fLrstatd\fP \(em network username server"
+.IX  statistics  rstatd  ""  "\fLrstatd\fP \(em network username server"
+.IX  servers  rstatd  ""  "\fLrstatd\fP \(em network username server"
+.LP
+.I Rusersd
+is a server that returns a list of users on the network. 
+The 
+.I rusersd
+daemon is normally invoked by
+.IR inetd (8C).
+.SH "SEE ALSO"
+rusers(1C), services(5), inetd(8)

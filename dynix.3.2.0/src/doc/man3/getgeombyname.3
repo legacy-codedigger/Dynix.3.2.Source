@@ -1,0 +1,44 @@
+.\" $Copyright:	$
+.\"Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989 
+.\"Sequent Computer Systems, Inc.   All rights reserved.
+.\" 
+.\"This software is furnished under a license and may be used
+.\"only in accordance with the terms of that license and with the
+.\"inclusion of the above copyright notice.   This software may not
+.\"be provided or otherwise made available to, or used by, any
+.\"other person.  No title to or ownership of the software is
+.\"hereby transferred.
+...
+.V= $Header: getgeombyname.3 1.1 89/09/13 $
+.TH GETGEOMBYNAME 3 "\*(V)" "DYNIX"
+.SH NAME
+getgeombyname \- get disk geometry by name
+.SH SYNOPSIS
+\f3#include <zdc/zdc.h>
+.br
+\f3#include <diskinfo.h>
+.PP
+\f3struct geomtab *
+.br
+getgeombyname(disktype)
+.br
+char *disktype;\fP
+.SH DESCRIPTION
+.B getgeombyname
+takes a disk type name (e.g. \f2m2333k\f1) and returns a structure
+describing its geometry information.  All information
+is obtained from files in the directory
+.I /etc/diskinfo
+which end in the suffix \f2.geom\f1.  Each of these
+files contains the geometry information for one disk type.
+See
+.I /usr/include/diskinfo.h
+for a description of the fields in
+.IR "struct geomtab" .
+.SH "SEE ALSO"
+.BR diskinfo (5)
+.SH NOTES
+This is a Sequent library routine.  To use it, specify the
+\f3-lseq\f1 option to link with the Sequent library.  Since
+this is a Sequent extension, code using this routine may not be
+portable to other systems.

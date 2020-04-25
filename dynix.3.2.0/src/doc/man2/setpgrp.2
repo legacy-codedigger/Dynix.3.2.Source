@@ -1,0 +1,55 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: setpgrp.2 1.6 1991/07/09 20:04:03 $
+.TH SETPGRP 2 "\*(V)" "4BSD"
+.SH NAME
+setpgrp \- set process group
+.SH SYNOPSIS
+.ft 3
+setpgrp(pid, pgrp)
+.br
+int pid, pgrp;
+.ft 1
+.SH DESCRIPTION
+.I Setpgrp
+sets the process group of the specified process
+.I pid
+to the specified
+.IR pgrp .
+If
+.I pid
+is zero, then the call applies to the current process.
+.PP
+If the invoker is not the super-user, then the affected process
+must have the same effective user-id as the invoker or be a descendant
+of the invoking process.
+.SH "RETURN VALUE
+.I Setpgrp
+returns 0 when the operation was successful.  If
+the request failed, \-1 is returned and the global
+variable
+.I errno
+indicates the reason.
+.SH ERRORS
+.I Setpgrp
+will fail and the process group will not be altered if
+one of the following occur:
+.TP 15
+[ESRCH]
+The requested process does not exist.
+.TP 15
+[EPERM]
+The effective user ID of the requested process is different
+from that of the caller and the process is not a descendent
+of the calling process.
+.SH "SEE ALSO"
+getpgrp(2)

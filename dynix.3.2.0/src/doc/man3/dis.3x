@@ -1,0 +1,136 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: dis.3x 1.9 87/08/06 $
+.TH DIS 3X "\*(V)" "DYNIX"
+.SH NAME
+dis \- disassemble Series 32000 or Series 386 instructions
+.SH SYNOPSIS
+.PP
+.B "Balance Only"
+.PP
+.in +0.5i
+.nf
+.B char *dis32000(addr, len_p)
+.B unsigned long addr;
+.B int *len_p;
+.sp
+.B dis32000_init(sb, iread, xlate_name, flag)
+.B unsigned int sb;
+.B unsigned char (*iread)();
+.B char *(*xlate_name)();
+.B int flag;
+.fi
+.in
+.PP
+.B "Symmetry Only"
+.PP
+.in +0.5i
+.nf
+.B char *dis386(addr, len_p)
+.B unsigned long addr;
+.B int *len_p;
+.sp
+.B dis386_init(sb, iread, xlate_name, flag)
+.B unsigned int sb;
+.B unsigned char (*iread)();
+.B char *(*xlate_name)();
+.B int flag;
+.fi
+.in
+.SH DESCRIPTION
+.I Dis32000
+is a disassembler for the Series 32000 of processors as incorporated
+into the Balance architecture;
+.I dis386
+is a disassembler for the Series 386 of processors as incorporated
+into the Symmetry architecture.
+.I Dis32000
+is initialized with
+.IR dis32000_init ;
+.I dis386
+is initialized with
+.IR dis386_init .
+.I Dis32000_init
+and
+.I dis386
+take four arguments:
+.TP
+.BR sb :
+The current value of the static base register.
+This is usually 0.
+The default value of the static base can be found in the a.out header
+(see
+.IR a.out (5)).
+This argument is significant to only the Balance series;
+the Symmetry series ignores this argument,
+since it is always 0.
+.TP
+.BR iread :
+A pointer to a routine to return bytes from the instruction space.
+.TP
+.BR xlate_name :
+A pointer to a routine to
+return the symbolic name of an absolute address.
+If a NULL pointer is passed as the routine to translate addresses,
+no translation will be done.
+.TP
+.BR flag :
+If nonzero, for each operand, the disassembler will place the ``true''
+addressing mode enclosed in ``<>'' in the text along with the normally
+displayed operand.
+For things that have been translated to a name, this
+will show the underlying addressing mode.
+For branch, acb, and bsr instructions, this will show the actual offset.
+This argument is significant to only the Balance series;
+the Symmetry series ignores this argument.
+.PP
+The routine to return bytes from the instruction space should be
+declared as follows:
+.PP
+.nf
+.B     unsigned char iread(addr)
+.B     unsigned int addr;
+.fi
+.PP
+It should return the byte at the address in the instruction space
+given by
+.IR addr .
+.PP
+The routine to return the symbolic address of an absolute address
+should be declared as follows:
+.PP
+.nf
+.B     char *xlate_name(addr)
+.B     unsigned int addr;
+.fi
+.PP
+It should return a pointer to a static buffer 
+holding the symbolic name of the location given by
+.IR addr .
+If no name is found, a NULL pointer should be returned.
+.PP
+.I Dis32000
+and
+.I dis386
+return a pointer to a static character
+string that is the disassembly of the given address.
+They store the length of the instruction in the integer pointed to by
+.IR len_p .
+.PP
+This routine is found in the Sequent library, designated in
+.IR ld (1)
+or
+.IR cc (1)
+by
+.BR -lseq .
+.SH "SEE ALSO"
+disas(1)

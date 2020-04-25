@@ -1,0 +1,407 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: pstat.8 1.18 1991/08/06 23:02:26 $
+.TH PSTAT 8 "\*(V)" "4BSD/DYNIX"
+.SH NAME
+pstat \- print system facts
+.SH SYNOPSIS
+.B /etc/pstat
+.B \-aipufsTtv
+[
+.B system
+] [
+.B corefile
+]
+.SH DESCRIPTION
+.B Pstat
+interprets the contents of certain system tables.
+If
+.I corefile
+is given, the tables are sought there, otherwise
+in
+.I /dev/kmem.
+The required namelist is taken from
+.I /dynix
+unless 
+.I system
+is specified.
+.SH OPTIONS
+.TP \w'\--T\ 'u
+.B \-a
+Under
+.BR \-p ,
+describe all process slots rather than just active ones.
+.TP
+.B \-i
+Print the inode table with the these headings:
+.RS
+.IP LOC \w'NOSWAP\ 'u
+The core location of this table entry.
+.IP IFLG
+Miscellaneous inode specific state variables are encoded as:
+.RS
+.IP U \w'M\ 'u
+update time
+.RI ( fs (5))
+must be corrected
+.IP A
+access time must be corrected
+.IP C
+changed time must be corrected
+.IP F
+on the free list
+.RE
+.IP VFLAG \w'NOSWAP\ 'u
+Miscellaneous vnode state flags are encoded as:
+.RS
+.IP R
+vnode is the root of a mounted file system
+.IP M
+vnode is mapped
+.RI ( mmap (2))
+.IP D
+vnode must be sync'd before being mapped
+.IP N
+vnode has no links
+.IP S
+shared lock applied
+.IP E
+exclusive lock applied
+.IP Z
+someone waiting for an exclusive lock
+.RE
+.IP CNT \w'NOSWAP\ 'u
+Number of open file table entries for this inode.
+.IP DEVICE
+Major and minor device number of filesystem in which
+this inode resides.
+.IP RDC
+Reference count of shared locks on the inode.
+.IP WRC
+Reference count of exclusive locks on the inode (this may
+be > 1 if, for example, a file descriptor is inherited across a fork).
+.IP INO
+I-number within the device.
+.IP MODE
+Mode bits, see
+.BR chmod (2).
+.IP NLK
+Number of links to this inode.
+.IP UID
+User ID of owner.
+.IP SIZ/DEV
+Number of bytes in an ordinary file, or
+major and minor device of special file.
+.IP TYPE
+Type of the inode.
+.RE
+.PP
+.PD
+.TP \w'\--T\ 'u
+.B \-p
+Print process table for active processes with these headings:
+.RS
+.IP LOC \w'NOSWAP\ 'u
+The core location of this table entry.
+.IP S
+Run state is encoded as:
+.RS
+.PD 0
+.IP 0
+no process
+.IP 1
+waiting for some event
+.IP 3
+runnable
+.IP 4
+being created
+.IP 5
+being terminated (zombie)
+.IP 6
+stopped under trace
+.IP 7
+running on a processor
+.PD 
+.RE
+.IP F
+Miscellaneous state variables, ORed together (hexadecimal):
+.RS
+.PD 0
+.IP 000001 9n
+loaded
+.IP 000002
+the scheduler or pager process
+.IP 000010
+traced
+.IP 000020
+used in tracing
+.	\".IP 000040
+.	\"locked in by
+.	\".IR lock (2).
+.IP 000040
+process text may be written during tracing
+.IP 000080
+restore old mask after taking signal
+.IP 000100
+process resulted from a
+.IR vfork (2)
+which is not yet complete
+.IP 000200
+process has no virtual memory, as it is a parent in the context of
+.IR vfork (2)
+.IP 000400
+timing out during sleep
+.IP 000800
+process used 4.1BSD compatibility mode signal primitives,
+no system calls will restart.
+.IP 001000
+selecting
+.IP 002000
+signal woke process up
+.IP 004000
+synch with swapper during swapout
+.IP 008000
+force swap of self
+.IP 010000
+process may not be swapped
+.RI ( vm_ctl (2))
+.IP 020000
+process priority will not age
+.RI ( proc_ctl (2))
+.IP 040000
+process is a multi-process debugger
+.IP 080000
+process is being debugged by a multi-process debugger
+.IP 100000
+traced process is stopped for multi-process debugger
+.IP 200000
+multi-process debugging state flag
+.IP 400000
+process is stopped for old-flavor debugger
+.PD
+.RE
+.IP PRI
+Scheduling priority, see
+.BR setpriority (2).
+.IP SIG
+Signals received (signals 1-32 coded in bits 0-31),
+.IP UID
+Real user ID.
+.IP SLP
+Amount of time process has been blocked.
+.IP TIM
+Time resident in seconds; times over 127 coded as 127.
+.IP CPU
+Weighted integral of CPU time, for scheduler.
+.IP NI
+Nice level,
+see
+.BR setpriority (2).
+.IP PGRP
+Process number of root of process group
+(the opener of the controlling terminal).
+.IP PID
+The process ID number.
+.IP PPID
+The process ID of parent process.
+.IP ADDR
+If in core, the page frame number of the first page of the `u-area' of
+the process.
+.IP RSS
+Resident set size \(em the number of physical page frames allocated
+to this process.
+.IP SIZE
+Virtual size of process image (data+stack) in multiples of 512 bytes.
+.IP WCHAN
+Wait channel number of a waiting process.
+.IP LINK
+Link pointer in list of runnable processes.
+.IP AFF
+Processor affinity.
+.IP NOSWAP
+Number of reasons not to swap this process.
+.RE
+.PD
+.TP \w'\--T\ 'u
+.B \-u
+print information about a user process;
+the next argument is its address as given
+by
+.IR ps (1).
+The process must be in main memory, or the file used can
+be a core image and the address 0.
+.PD
+.TP
+.B \-f
+Print the open file table with these headings:
+.RS
+.IP LOC \w'NOSWAP\ 'u
+The core location of this table entry.
+.IP TYPE
+The type of object the file table entry points to.
+.IP FLG
+Miscellaneous state variables are encoded as:
+.RS
+.IP R
+open for reading
+.IP W
+open for writing
+.IP A
+open for appending
+.IP S
+shared locked applied
+.IP X
+exclusive lock applied
+.IP I
+non-blocking IO
+.RE
+.IP CNT
+Number of processes that know this open file.
+.IP DATA
+The location of the vnode or socket for this file.
+.IP OFFSET
+The file offset (see
+.BR lseek (2)),
+or the core address of the associated socket structure.
+.RE
+.PD
+.PP
+.TP \w'\--T\ 'u
+.B \-s
+Print information about swap space usage: the number of (512-byte) pages used,
+free pages, and "wasted" pages.  A wasted page 
+belongs to an
+allocated chunk of swap space, but is currently unused within that chunk.
+.PP
+.TP \w'\--T\ 'u
+.B \-T
+Print the number of used and configured slots in the system tables.
+Useful for checking how full system tables have become if the
+system is under a heavy load.
+.PP
+.TP
+.B \-t
+Print table for terminals
+with these headings:
+.RS
+.IP TT \w'NOSWAP\ 'u
+the two character abbreviation for the tty (e.g., hc for ttyhc).
+.IP DEVICE
+Major and minor number for each tty.
+.IP RAW
+Number of characters in raw input queue.
+.IP CAN
+Number of characters in canonicalized input queue.
+.IP OUT
+Number of characters in output queue.
+.IP OPEN
+Number of unique opens of the tty.
+.IP PGRP
+Process group for which this is controlling terminal.
+.IP "TTY FLAGS
+hexadecimal value of t_flags (use -v to interpret).
+.IP STATE
+hexadecimal value of t_state (use -v to interpret).
+.IP "SPEED I/O
+input/output baud rates.
+.IP LDISC
+Line discipline; otty or ntty
+.PP
+Sample output is:
+.PP
+.in 0
+.nf
+
+9 Systech ST Multiplexors.
+
+Board 0: st_info @ 0x60e2c CSR 0x8c0200, 16 lines
+.if t .ta 2 7 10 13 16 20 25 32 37 43
+.if n .ta 3 10 14 18 22 29 37 49 57 70
+TT	DEVICE	RAW	CAN	OUT	OPEN	PGRP	TTY FLAGS	STATE	SPEED I/O	LDISC 
+.if t .ta 3 5 8 11 14 17 20 25 32 37 44
+.if n .ta 4 7 11 15 19 23 29 37 49 57 70
+
+h0	7,	0	0	0	0	1	18298	0x000040f0	0x0214	9600/ 9600	otty 
+h1	7,	1	0	0	0	1	17712	0x000040f0	0x0214	9600/ 9600	otty 
+h2	7,	2	0	0	0	1	13872	0x000040f0	0x0214	19200/19200	otty 
+h3	7,	3	0	0	0	1	257	0x140540f0	0x0206	19200/19200	otty 
+h4	7,	4	0	0	0	1	0	0x00000cd8	0x0002	19200/19200	otty 
+h5	7,	5	0	0	0	1	0	0x000040f0	0x0002	19200/19200	otty 
+h6	7,	6	0	0	0	1	26050	0x140500d8	0x0214	9600/ 9600	ntty 
+h7	7,	7	0	0	0	1	261	0x140540f0	0x0214	9200/19200	otty 
+h8	7,	8	0	0	0	1	262	0x140540f0	0x0214	9600/ 9600	otty 
+h9	7,	9	0	0	0	1	16521	0x000040f0	0x0214	9600/ 9600	otty 
+ha	7,	10	0	0	0	1	19427	0x140540f0	0x0214	9600/ 9600	otty 
+hb	7,	11	0	0	0	1	20572	0x000040f0	0x0214	9600/ 9600	otty 
+hc	7,	12	0	0	0	1	12235	0x540540f0	0x0214	9600/ 9600	otty 
+hd	7,	13	0	0	0	1	18781	0x000040f0	0x0214	9600/ 9600	otty 
+he	7,	14	0	0	0	1	0	0x000040f0	0x0002	9600/ 9600	otty 
+hf	7,	15	0	0	0	1	269	0x000040f0	0x0214	9600/ 9600	otty 
+.fi
+.in
+.RE
+.PP
+.TP \w'\--T\ 'u
+.B \-v
+this causes
+.B \-t
+to print verbose information about the ttys
+.PP
+Sample output is:
+.PP
+.in 0
+.nf
+
+9 Systech ST Multiplexors.
+
+Board 0: st_info @ 0x60e2c CSR 0x8c0200, 16 lines
+.if t .ta 2 7 10 13 16 20 25 32 43
+.if n .ta 3 10 14 18 22 29 37 42 57
+TT	DEVICE	RAW	CAN	OUT	OPEN	PGRP	COL	SPEED I/O	LDISC
+.if t .ta 3 5 8 11 14 17 20 25 32 44
+.if n .ta 4 7 11 15 19 23 29 37 42 57
+h3	7,	3	0	0	0	1	257	42	19200/19200	otty 
+.TS
+tab (!);
+l l l l.
+FLAGS:!140540f0
+!CRMOD!0x00000010!Map \er to \er\en on output
+!RAW!0x00000020!No i/o processing
+!ANYP!0x000000c0!Get any parity/send none
+!FF1!0x00004000!TTY 37 vertical tab delay
+!CRTBS!0x00010000!Do backspacing for crt
+!CRTERA!0x00040000!Erasing backspace
+!CRTKIL!0x04000000!Kill line with blanks
+!CTLECH0!Ox10000000!Echo control chars as ^X
+
+STATE:!00000206
+!TS_WOPEN!0x00000002!Waiting for open to complete
+!TS_ISOPEN!0x00000004!Device is open
+!TS_HUPCLS!0x00000200!Hang up upon last close
+.TE
+.SH FILES
+.ta \w'/dev/kmem  'u
+/dynix	namelist
+.br
+/dev/kmem	default source of tables
+.SH SEE ALSO
+ps(1),
+stat(2),
+fs(5)
+.PP
+K. Thompson,
+.I UNIX Implementation
+.SH BUGS
+It would be very useful if the system recorded \*(lqmaximum occupancy\*(rq
+on the tables reported by
+.B \-T;
+even more useful if these tables were dynamically allocated.

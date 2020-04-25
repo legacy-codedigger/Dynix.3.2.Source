@@ -1,0 +1,93 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: gettimeofday.2 1.10 1991/06/12 01:47:16 $
+.TH GETTIMEOFDAY 2 "\*(V)" "4BSD"
+.SH NAME
+gettimeofday, settimeofday \- get/set date and time
+.SH SYNOPSIS
+.nf
+.ft 3
+#include <sys/time.h>
+.PP
+.ft 3
+gettimeofday(tp, tzp)
+struct timeval *tp;
+struct timezone *tzp;
+.PP
+.ft 3
+settimeofday(tp, tzp)
+struct timeval *tp;
+struct timezone *tzp;
+.fi
+.SH DESCRIPTION
+The system's notion of the current Greenwich time and
+the current time zone
+is obtained with the
+.I gettimeofday
+call, and set with the
+.I settimeofday
+call.
+The time is expressed
+in seconds and microseconds since midnight (0 hour), January 1, 1970.
+The resolution of the system clock is hardware dependent,
+and the time may be updated continuously or in ``ticks.''
+.PP
+The structures pointed to by
+.I tp
+and
+.I tzp
+are defined in 
+.I <sys/time.h>
+as:
+.PP
+.nf
+.RS
+.DT
+struct timeval {
+	long	tv_sec;		/* seconds since Jan. 1, 1970 */
+	long	tv_usec;		/* and microseconds */
+};
+.sp 1
+struct timezone {
+	int	tz_minuteswest;	/* of Greenwich */
+	int	tz_dsttime;	/* type of dst correction to apply */
+};
+.RE
+.fi
+.PP
+The 
+.I timezone
+structure indicates the local time zone
+(measured in minutes of time westward from Greenwich),
+and a flag that, if nonzero, indicates that
+Daylight Saving time applies locally during
+the appropriate part of the year.
+.PP
+If
+.I tzp
+is NULL, the time zone information will not be returned or set.
+.PP
+Only the super-user may set the time of day or time zone.
+.SH RETURN
+A 0 return value indicates that the call succeeded.
+A \-1 return value indicates an error occurred, and in this
+case an error code is stored into the global variable \f2errno\fP.
+.SH "ERRORS
+The following error codes may be set in \f2errno\fP:
+.TP 15
+[EFAULT]
+An argument address referenced invalid memory.
+.TP 15
+[EPERM]
+A user other than the super-user attempted to set the time.
+.SH "SEE ALSO"
+date(1), adjtime(2), ctime(3)

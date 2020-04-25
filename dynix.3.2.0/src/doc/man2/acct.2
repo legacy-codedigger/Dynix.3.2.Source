@@ -1,0 +1,87 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: acct.2 1.6 86/05/13 $
+.TH ACCT 2 "\*(V)" "4BSD"
+.SH NAME
+acct \- turn accounting on or off
+.SH SYNOPSIS
+.nf
+.ft 3
+acct(file)
+char *file;
+.ft 1
+.fi
+.SH DESCRIPTION
+The system is prepared to write a record
+in an accounting
+.I file
+for each process as it terminates.
+This
+call, with a null-terminated string naming an existing file
+as argument, turns on accounting;
+records for each terminating process are appended to
+.IR file .
+An argument of 0 causes accounting to be turned off.
+.PP
+The accounting file format is given in
+.IR acct (5).
+.PP
+This call is permitted only to the super-user.
+.SH NOTES
+Accounting is automatically disabled when the file system the
+accounting file resides on runs out of space; it is enabled when
+space once again becomes available.
+.SH "RETURN VALUE
+On error \-1 is returned.
+The file must exist and the call may be exercised only by the super-user.
+It is erroneous to try to turn on accounting when it is already on.
+.SH ERRORS
+.I Acct
+will fail if one of the following is true:
+.TP 15
+[EPERM]
+The caller is not the super-user.
+.TP 15
+[EPERM]
+The pathname contains a character with the high-order bit set.
+.TP 15
+[ENOTDIR]
+A component of the path prefix is not a directory.
+.TP 15
+[ENOENT]
+The named file does not exist.
+.TP 15
+[EROFS]
+The named file resides on a read-only file system.
+.TP 15
+[EFAULT]
+.I File
+points outside the process's allocated address space.
+.TP 15
+[ELOOP]
+Too many symbolic links were encountered in translating the pathname.
+.TP 15
+[EACCES]
+The file is not a plain file.
+.TP 15
+[ENOENT]
+The pathname is too long.
+.TP 15
+[EIO]
+An I/O error occurred while reading from or writing to the file system.
+.SH "SEE ALSO"
+acct(5), sa(8)
+.SH BUGS
+No accounting is produced for programs running
+when a crash occurs.
+In particular nonterminating programs are never
+accounted for.

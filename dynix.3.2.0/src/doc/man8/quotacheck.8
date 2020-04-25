@@ -1,0 +1,91 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: quotacheck.8 1.6 88/08/16 $
+.\" @(#)quotacheck.8	1.2 87/02/10 NFSSRC
+.\" .TH QUOTACHECK 8  "18 July 1983"
+.\" .UC 4
+.TH QUOTACHECK 8  "\*(V)" "4BSD"
+.SH NAME
+quotacheck \- filesystem quota consistency checker
+.SH SYNOPSIS
+.B /usr/etc/quotacheck
+[
+.B \-v
+] [
+.B \-p
+]
+filesystem...
+.br
+.B /usr/etc/quotacheck
+[
+.B \-v
+]
+] [
+.B \-p
+]
+.B \-a
+.SH DESCRIPTION
+.I quotacheck
+examines each filesystem,
+builds a table of current disk usage,
+and compares this table against that stored
+in the disk quota file for the filesystem.
+If any inconsistencies are detected, both the
+quota file and the current system copy of the
+incorrect quotas are updated.  (The latter 
+occurs only if an active filesystem is checked).
+.PP
+.I quotacheck
+expects each filesystem to be checked to have a quota file named
+.I quotas
+in the root directory.  If none is present,
+.I quotacheck
+ignores the filesystem.
+.PP
+.I quotacheck
+is normally run at boot time from the
+.B /etc/rc.local
+file, see
+.IR rc (8),
+before disk quotas are enabled with
+.IR quotaon (8).
+.PP
+.I quotacheck
+accesses the raw device in calculating the actual disk usage for each
+user.  Thus, the filesystems checked should be quiescent while
+.I quotacheck
+is running.
+.SH OPTIONS
+.PP
+.TP 8
+.B \-v
+Indicate the calculated disk quotas
+for each user on a particular filesystem.
+.I quotacheck
+normally reports only those quotas modified.
+.TP 8
+.B \-a
+Check all the filesystems whose entries in
+.I /etc/fstab
+indicate they allow read-write access and have disk quotas.
+.TP 8
+.B \-p
+Run parallel passes on the required filesystems,
+using the pass numbers in
+.I /etc/fstab
+in the same way they are used with
+.IR fsck (8).
+.SH FILES
+.DT
+/etc/fstab	default filesystems
+.SH "SEE ALSO"
+quotactl(2), quotaon(8)

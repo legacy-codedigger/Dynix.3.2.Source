@@ -1,0 +1,34 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: which.1 1.5 86/05/13 $
+.TH WHICH 1 "\*(V)" "3BSD"
+.SH NAME
+which \- locate a program file including aliases and paths (\f2csh\f1 only)
+.SH SYNOPSIS
+.B which
+[ name ] ...
+.SH DESCRIPTION
+.I Which
+takes a list of names and looks for the files which would be
+executed had these names been given as commands.
+Each argument is expanded if it is aliased,
+and searched for along the user's path.
+Both aliases and path are taken from the user's \&.cshrc file.
+.SH FILES
+.ta 1i
+~/\&.cshrc	source of aliases and path values
+.SH DIAGNOSTICS
+A diagnostic is given for names which are aliased to more than a single
+word,
+or if an executable file with the argument name was not found in the path.
+.SH BUGS
+Must be executed by a csh, since only csh's know about aliases.

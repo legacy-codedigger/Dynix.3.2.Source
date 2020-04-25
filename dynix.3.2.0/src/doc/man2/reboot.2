@@ -1,0 +1,74 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: reboot.2 1.5 86/05/13 $
+.TH REBOOT 2 "\*(V)" "4BSD/DYNIX"
+.SH NAME
+reboot \- reboot system or halt processor
+.SH SYNOPSIS
+.nf
+.B #include <sys/reboot.h>
+.PP
+.B reboot(howto)
+.B int howto;
+.fi
+.SH DESCRIPTION
+.I Reboot
+reboots the system, and is invoked automatically
+in the event of unrecoverable system failures.
+.I Howto
+is a mask of options passed to the bootstrap program.
+The system call interface permits only RB_HALT or RB_AUTOBOOT
+to be passed to the reboot program.
+When none of these options (e.g. RB_AUTOBOOT) is given, the system is rebooted
+according to the SCEDMON parameters.
+An automatic consistency check of the disks is then normally performed.
+.PP
+The bits of
+.I howto
+are:
+.TP
+RB_HALT
+the processor is simply halted; no reboot takes place.
+RB_HALT should be used with caution.
+.TP
+RB_ASKNAME
+Interpreted by the bootstrap program itself, causing it to
+inquire as to what file should be booted.
+.TP
+RB_SINGLE
+Normally, the reboot procedure involves an automatic disk consistency
+check and then multi-user operations.  RB_SINGLE prevents the consistency
+check, rather simply booting the system with a single-user shell on
+the console.
+RB_SINGLE is interpreted by the
+.IR init (8)
+program in the newly booted system.
+This switch is not available from the system call interface.
+.PP
+Only the super-user may
+.I reboot
+a machine.
+.SH "RETURN VALUES"
+If successful, this call never returns.  Otherwise, a \-1
+is returned and an error is returned in the global variable
+.IR errno .
+.SH ERRORS
+.TP 15
+[EPERM]
+The caller is not the super-user.
+.TP
+[EINVAL]
+The currently executing processor is not the only online processor
+in the system; see
+.IR tmp_ctl (2).
+.SH "SEE ALSO"
+tmp_ctl(2), halt(8), init(8), reboot(8)

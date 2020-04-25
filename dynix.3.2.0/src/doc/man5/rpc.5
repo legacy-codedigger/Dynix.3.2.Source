@@ -1,0 +1,60 @@
+.\"$Copyright:	$
+.V=$Header: rpc.5 1.4 87/06/22 $
+.TH RPC 5 "\*(V)" "4BSD"
+.SH NAME
+rpc \- rpc program number data base
+.SH SYNOPSIS
+.B /etc/rpc
+.SH DESCRIPTION
+The
+.I rpc
+file contains user readable names that can be used in place of
+.I rpc
+program numbers.
+Each line has the following information:
+.Ps
+\f2name number aliases\f1
+.Pe
+Where
+.I name
+is the name of the server for the
+.I rpc
+program,
+.I number
+is the
+.I rpc
+program number, and
+.I aliases
+are other command names that map to
+.IR name .
+Items are separated by blanks or tabs.
+A
+.B #
+indicates the beginning of a comment;
+characters following the
+.B #
+up to the end of the line are not interpreted by routines that
+search the file.
+.PP
+The following is an example of an
+.I rpc
+file:
+.ta \w'selection_svc\0\0\0\0\0'u +\w'100009\0\0\0'u
+.Ps
+rstatd	100001	rstat rup perfmeter
+rusersd	100002	rusers
+nfs	100003	nfsprog
+ypserv	100004	ypprog
+mountd	100005	mount showmount
+ypbind	100007
+walld	100008	rwall shutdown
+yppasswdd	100009	yppasswd
+ethersstatd	100010	etherstat
+rquotad	100011	rquotaprog quota rquota
+sprayd	100012	spray
+selection_svc	100014	selnsvc
+.Pe
+.SH FILES
+/etc/rpc
+.SH "SEE ALSO"
+getrpcent(3N)

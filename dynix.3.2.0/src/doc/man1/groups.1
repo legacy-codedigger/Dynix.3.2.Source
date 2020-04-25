@@ -1,0 +1,38 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: groups.1 1.4 86/05/13 $
+.TH GROUPS 1 "\*(V)" "4BSD"
+.SH NAME
+groups \- show group memberships
+.SH SYNOPSIS
+.B
+groups [user]
+.SH DESCRIPTION
+The
+.I groups
+command shows the groups to which you or the optionally specified
+user belong.
+Each user belongs to a group specified in the password file
+.I /etc/passwd
+and possibly to other groups as specified in the file
+.IR /etc/group .
+If you do not own a file but belong to the group which it is owned
+by then you are granted group access to the file.
+.PP
+When a new file is created it is given
+the group of the containing directory.
+.SH "SEE ALSO"
+setgroups(2)
+.SH FILES
+/etc/passwd, /etc/group
+.SH BUGS
+More groups should be allowed.

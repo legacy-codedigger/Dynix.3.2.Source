@@ -1,0 +1,223 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: ts.4 1.24 1991/08/07 00:21:15 $
+.TH TS 4 "\*(V)" "DYNIX"
+.SH NAME
+ts \- SCSI tape controller
+.SH SYNOPSIS
+.B "device ts0 at sec? doneq 20 req 20 bin 5 unit 0 target 4"
+.SH DESCRIPTION
+This device driver supports SCSI target adapters
+for streaming tape drives.
+It supports up to four tapes per target adapter
+and a maximum of seven target adapters per SCED board.
+.PP
+The standard device names begin with ``rts'' followed by a number
+representing the tape unit, that is, ``rts0'' through ``rts7''.
+The corresponding no-rewind device name is eight greater than the
+standard name, that is, ``rts8'' through ``rts15''.
+.PP
+Note that on SSM-based machines this device does not exist.  In this case,
+rts0 and rts8 are links to rtm0 and rtm8, respectively.
+This enables the use of the SSM SCSI cartridge tape through rts0 and rts8.
+.SH "IMPLICATIONS OF STREAMING"
+Because the ts driver supports streaming tapes,
+the interface to the ts driver is different from that of ``standard''
+tape drives, in these ways:
+.TP
+.B Block interface
+The block interface is not supported at all.  Attempts to use it will
+return ENXIO.
+.TP
+.B Raw interface
+The raw ts interface has several differences
+from standard tape:
+.PP
+To provide reasonable performance and drive life, transfers to and from
+the tape must be done in large chunks.  The ts driver assures this by
+buffering data internally.  One consequence of this is that errors on
+writes often cannot be reported until sometime long after the user
+passed that data to the driver.  Write errors will be reported to the
+user program on the next write system call after the error occurred, or
+on the close system call following the error.
+.PP
+The raw interface does not support block sizes in the same fashion that
+standard tape does.  The ts tape device has a 512-byte physical block
+size.  User records are packed into these physical blocks on write and
+unpacked from these blocks on read.  So, when reading, the user gets as
+many bytes as he asks for, until end-of-file is encountered.  If less
+than a multiple of 512 bytes was written, the file size will be rounded
+up to a multiple of 512 bytes.  The extra bytes contain zeros.
+.PP
+Reading part-way into a file on the no-rewind device, closing the
+device, and re-opening it will not work as expected.  The tape will
+always space forward to the beginning of the next file on close.
+.SH IOCTLs
+A subset of the ioctl functions are supported at this time.
+Here is a list of supported and non-supported functions:
+.RS
+.nf
+.ta +\w'MTERASE  'u +\w'is not supported.  'u
+MTFSF	is supported.	(mt fsf nn)
+MTWEOF	is supported.	(mt weof nn)
+MTFSR	is not supported.
+MTBSR	is not supported.
+MTSEOD	is supported.	(mt eod)
+MTREW	is supported.	(mt rewind)
+MTERASE	is supported.	(mt erase)
+MTOFFL	is not supported.
+MTBSF	is not supported.
+MTRET	is supported.	(mt retension)
+.fi
+.RE
+.PP
+The MTERASE ioctl erases the entire tape and then rewinds it.
+Reading status (mt status) is not supported.
+.PP
+Ioctls will not always behave as expected if they are intermixed with
+reads and writes in a program.
+.SH "OPERATIONAL INFORMATION"
+A tape is always retensioned when it is first opened for read or
+ioctl.  It is erased when it is first opened for write.  Note that if
+the first operation performed on the tape after insertion (or booting)
+is ``mt retension'', the tape will be retensioned twice.  This
+automatic retensioning of the tape is to help insure good data
+transfer, especially on writes to the tape.
+.PP
+The data capacity of a tape will decrease with the number of soft
+errors on the tape and the number of times the drive must reposition
+between writes to the tape.  These consume tape space.  A reasonable
+expectation for a 450-foot tape is about 44 Mbytes.
+.PP
+The mean time between failure of the tape drive is also affected by
+the number of repositions while reading or writing the tape.  The tape
+drive will ``stream'' better when it is accessed under light system load.
+.SH CONFIGURATION
+The ``tsbconf'' array in the device driver binary configuration file
+.RI ( /sys/conf/conf_ts.c )
+must contain an entry for each drive that may be configured; the
+entries must be in the same order as the ``device'' entries in the
+kernel configuration file (kernel configuration files are described in
+the article ``Building DYNIX Systems with Config'' in Volume 2).  As
+installed, ``tsbconf'' has entries for 4 drives.  Superfluous entries
+are ignored.
+.SH "TUNING PARAMETERS"
+The following tuning parameters are defined for each drive in the
+``tsbconf'' array of the binary configuration file:
+.IP (1)
+The buffer size (in k bytes) used to buffer data for I/O
+transfers.  Two buffers, each of this size, are allocated from the
+kernel's free page pool when the
+device is opened.  These buffers are used to improve tape streaming
+performance.  The buffer space is released when the device is closed.
+.IP (2)
+Flags for configurable features.  Flags available are:
+.RS
+.IP TSC_OPENFAIL
+When this flag is set, open calls to this device can fail for lack of
+physical memory for the buffers.   When this flag is clear, the buffer
+memory will always be allocated, but the process may block during this
+allocation process while other processes are swapped out to free up
+memory.
+.IP TSC_AUTORET
+When this flag is set, the device will retension automatically on the
+first access after the tape has been changed.  When clear, it will not
+retension automatically.
+.IP TSC_RWS_SENSE
+When this flag is set, all SCSI request sense
+buffers associated with SCSI READ, WRITE, and
+SPACE operations which caused a sense condition
+will be printed out.
+.IP TSC_PRSENSE
+When this flag is set, all SCSI request sense buffers
+will be printed out, along with the command which caused the sense
+condition.  Otherwise, only sense buffers which are in some way
+unusual will be printed out.
+.RE
+.IP (3)
+bits:  For the ADSI and Emulex target adapters, this should always
+be a 1 for proper operation of the device.
+.SH FILES
+.TP "\w'/sys/conf/conf_ts.c\ \ 'u"
+/dev/rts*
+raw files
+.TP
+/sys/conf/conf_ts.c
+binary configuration file
+.SH "SEE ALSO"
+mt(1), mtio(4), sd(4), tm(4), ctape(4)
+.SH DIAGNOSTICS
+.BR "ts%d: error writing buffer to tape" .
+An I/O error has occurred while writing the data to tape.
+.PP
+.BR "ts%d: tsclose: error writing file mark on close" .
+An I/O error has occurred while writing a file mark to the tape.
+This message often occurs following the previous message.
+.PP
+.BR "ts%d: tscioctl: can't write eof after read" .
+When in read mode, the ts driver does
+not support writing an EOF mark.
+.PP
+.BR "ts%d: illegal write after read" .
+The ts driver does not support writing
+immediately after reading.  Writes are
+supported only from the beginning of the
+medium (in which case all former data is
+erased) and at the logical end of data (in which
+case the new data is appended).
+.PP
+.BR "ts%d: illegal read after write" .
+The process attempted to read data on the tape after successfully
+completing a write to the tape,
+without rewinding or retensioning the tape first.
+.PP
+.BR "ts%d: tsioctl: bad operation after write" .
+The process attempted to issue an invalid ioctl after successfully
+completing a write to the tape.
+Only rewinding and retensioning are valid after a write.
+.PP
+.BI "ts%d:" " error" " on command" " command\c"
+\&.
+Many error messages take this form.
+.I Error
+is one of:
+.RS
+.nf
+Aborted command
+Hardware error
+Illegal request
+Media error
+Media is protected
+Tape not ready
+Unknown error
+Vendor unique error
+Volume overflow
+.fi
+.RE
+.I Command
+is one of:
+.RS
+.nf
+erase
+mode select
+read
+request sense
+retension
+rewind
+space
+test unit ready
+write
+write file marks
+.fi
+.RE
+Some error messages are accompanied by a display of the command buffer
+and the sense data buffer at the time of the error.

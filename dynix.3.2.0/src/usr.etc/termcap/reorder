@@ -1,0 +1,63 @@
+" $Copyright:	$
+" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+" Sequent Computer Systems, Inc.   All rights reserved.
+"  
+" This software is furnished under a license and may be used
+" only in accordance with the terms of that license and with the
+" inclusion of the above copyright notice.   This software may not
+" be provided or otherwise made available to, or used by, any
+" other person.  No title to or ownership of the software is
+" hereby transferred.
+"
+" The follow ex script rebuilds the termcap file.  You should save
+" these lines in "reorder".  Then copy the /etc/termcap file
+" into termcap.src and run "ex - termcap.src < reorder" after 
+" fussing the order of the following noting that the entries at the bottom
+" appear as first in the termcap file when done.  You should get the
+" file termcap.obj created. 
+" Be sure to add any local terminals you use.
+/|tvi914|/;.,/^[^	]/-m0
+/|tvi925|/;.,/^[^	]/-m0
+/|tvi925a|/;.,/^[^	]/-m0
+/|tvi925vc|/;.,/^[^	]/-m0
+/|tvi950|/;.,/^[^	]/-m0
+/|tvi950-rv|/;.,/^[^	]/-m0
+/|tvi950emacs|/;.,/^[^	]/-m0
+/|tvi950b|/;.,/^[^	]/-m0
+/|tvi950vc|/;.,/^[^	]/-m0
+/|tvi970|/;.,/^[^	]/-m0
+/|tvi970vc|/;.,/^[^	]/-m0
+/|trs200|/;.,/^[^	]/-m0
+/|trs100|/;.,/^[^	]/-m0
+/|co3100-132|/;.,/^[^	]/-m0
+/|co3100|/;.,/^[^	]/-m0
+/|h19|/;.,/^[^	]/-m0
+/|sqnt220l|/;.,/^[^	]/-m0
+/|sqnt220-wvb|/;.,/^[^	]/-m0
+/|sqnt220-w|/;.,/^[^	]/-m0
+/|sqnt220-vb|/;.,/^[^	]/-m0
+/|sqnt220|/;.,/^[^	]/-m0
+/|shells-h|/;.,/^[^	]/-m0
+/|shells-c|/;.,/^[^	]/-m0
+/|shells-e|/;.,/^[^	]/-m0
+/|shells|/;.,/^[^	]/-m0
+/|wy50-w|/;.,/^[^	]/-m0
+/|wy50|/;.,/^[^	]/-m0
+/|wy85-wvb|/;.,/^[^	]/-m0
+/|wy85-w|/;.,/^[^	]/-m0
+/|wy85-vb|/;.,/^[^	]/-m0
+/|wy85|/;.,/^[^	]/-m0
+/|wy75-wvb|/;.,/^[^	]/-m0
+/|wy75-w|/;.,/^[^	]/-m0
+/|wy75-vb|/;.,/^[^	]/-m0
+/|wy75|/;.,/^[^	]/-m0
+/^s/;.,/^#/-m0
+0a
+#
+# See bottom of this file for reorder ex script
+#
+.
+/\$Copyright/;.,/\$Header/m0
+$r!sed 's/^/\# /' reorder
+w! termcap.obj
+q

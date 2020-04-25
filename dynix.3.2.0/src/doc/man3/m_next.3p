@@ -1,0 +1,47 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986 Sequent Computer Systems, Inc.
+.\" All rights reserved
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: m_next.3p 1.5 87/04/16 $
+.TH M_NEXT 3P "\*(V)" "DYNIX"
+.SH NAME
+m_next \- increment global counter
+.SH SYNOPSIS
+.nf
+\f2C syntax:\fP
+.PP
+\f3#include <parallel/microtask.h>
+int m_next();\fP
+.PP
+\f2Pascal syntax\fP
+.PP
+\f3function m_next : longint ;
+cexternal ;\fP
+.PP
+\f2FORTRAN syntax\fP
+.PP
+\f3integer*4 function m_next\fP
+.fi
+.SH DESCRIPTION
+The 
+.I m_next
+routine atomically increments a global counter.
+The program's first call to
+.I m_next 
+returns the value 1, the second returns 2, and so on.
+Calls to the
+.IR m_fork ,
+.IR m_sync , 
+or
+.I m_single
+routines reset the global counter to zero.
+.SH "SEE ALSO"
+m_fork(3P), m_sync(3P), m_single(3P), \f2Guide to
+Parallel Programming\fP

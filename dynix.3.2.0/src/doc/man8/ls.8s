@@ -1,0 +1,61 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: ls.8s 1.5 90/10/13 $
+.TH LS 8S "\*(V)" "DYNIX"
+.SH NAME
+ls \- generate a standalone directory listing
+.SH SYNOPSIS
+.BR "From the powerup monitor" :
+.br
+.sp
+.in +1
+.IR "on SCED-based systems" :
+.br
+*
+.B b 0
+.IR dv ( un , su )\c
+.B stand/ls
+.br
+.sp
+.IR "on SSM-based systems" :
+.br
+--->
+.B bh 
+.IR dv ( un , su )\c
+.B stand/ls
+.SH DESCRIPTION
+Standalone
+.I ls
+provides a rudimentary directory listing capability.
+When invoked,
+.I ls
+prompts for the name of a directory, in standalone file notation (see
+.IR boot (8S)).
+.I Ls
+reads the designated directory, and displays a list of inode numbers
+and file names that are present in that directory.
+For example, giving
+.I ls
+the argument
+.IB dv ( un , su )stand
+will list the files of the directory in which the
+.I ls
+program is located (of which
+.I ls
+is one).
+.PP
+Standalone
+.I ls
+repeatedly lists the given directories until the directory ``exit'' is
+entered.
+.SH "SEE ALSO"
+ls(1), boot(8S), cat(8S), copy(8S), copy2(8S)

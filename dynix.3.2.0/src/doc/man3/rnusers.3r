@@ -1,0 +1,129 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: rnusers.3r 1.5 87/07/02 $
+.\" @(#)rnusers.3r 1.1 85/12/28 SMI; new on release 3.0
+.TH RNUSERS 3R "\*(V)" "4BSD"
+.SH NAME
+rnusers, rusers \- return information about users on remote machines
+.SH SYNOPSIS
+.nf
+.ft 3
+#include <rpcsvc/rusers.h>
+.sp
+rnusers(host)
+	char *host
+.sp
+rusers(host, up)
+	char *host
+	struct utmpidlearr *up;
+.SH DESCRIPTION
+.I Rnusers
+returns the number of users logged on to
+.I host
+(\-1 if it cannot determine that number).
+.I Rusers
+fills the
+.I utmpidlearr
+structure with data about
+.IR host ,
+and returns 0 if successful.
+The relevant structures are:
+.ta \w'struct\0\0'u +\w'struct utmp\0\0\0'u
+.Ps
+struct utmparr {	/* RUSERSVERS_ORIG */
+	struct utmp	**uta_arr;
+	int	uta_cnt
+};
+.sp
+.ta \w'struct\0\0'u +\w'struct utmp\0\0\0'u
+struct utmpidle {
+	struct utmp	ui_utmp;
+	unsigned	ui_idle;
+};
+.sp
+.ta \w'struct\0\0'u +\w'struct utmpidle\0\0\0'u
+struct utmpidlearr {	/* RUSERSVERS_IDLE */
+	struct utmpidle	**uia_arr;
+	int	uia_cnt
+};
+.Pe
+.SH "RPC INFO"
+.ta 0.5i 1.0i 1.5i
+.nf
+program number:
+	RUSERSPROG
+.sp
+xdr routines:
+	int xdr_utmp(xdrs, up)
+		XDR *xdrs;
+		struct utmp *up;
+	int xdr_utmpidle(xdrs, ui);
+		XDR *xdrs;
+		struct utmpidle *ui;
+	int xdr_utmpptr(xdrs, up);
+		XDR *xdrs;
+		struct utmp **up;
+	int xdr_utmpidleptr(xdrs, up);
+		XDR *xdrs;
+		struct utmpidle **up;
+	int xdr_utmparr(xdrs, up);
+		XDR *xdrs;
+		struct utmparr *up;
+	int xdr_utmpidlearr(xdrs, up);
+		XDR *xdrs;
+		struct utmpidlearr *up;
+.fi
+.PP
+procs:
+.in +0.5i
+.nf
+RUSERSPROC_NUM
+.fi
+.in +0.5i
+No arguments,
+returns number of users as an \fIunsigned long\fP.
+.in -0.5i
+.nf
+RUSERSPROC_NAMES
+.fi
+.in +0.5i
+No arguments,
+returns \fIutmparr\fP or \fIutmpidlearr\fP,
+depending on version number.
+.in -0.5i
+.nf
+RUSERPROC_ALLNAMES
+.fi
+.in +0.5i
+No arguments,
+returns \fIutmparr\fP or \fIutmpidlearr\fP,
+depending on version number.
+Returns listing even for \fIutmp\fP entries satisfying \fInonuser()\fP in \fIutmp.h\fP.
+.in -0.5i
+.PP
+versions:
+.in +0.5i
+.nf
+RUSERSVERS_ORIG
+RUSERSVERS_IDLE
+.fi
+.in -0.5i
+.PP
+structures:
+.nf
+.in +0.5i
+(Refer to the DESCRIPTION section.)
+.fi
+.in -0.5i
+.SH "SEE ALSO"
+rusers(1),
+rusersd(8c)

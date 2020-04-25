@@ -1,0 +1,131 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+.\"
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: tail.1 1.12 90/03/30 $
+.TH TAIL 1 "\*(V)" "4BSD"
+.SH NAME
+tail \- deliver the last part of a file
+.SH SYNOPSIS
+.B tail
+[ \(+-[number][\f3lbc\f1][\f3fr\f1] ]
+[ file ]
+.SH DESCRIPTION
+.B Tail
+copies the named file to the standard output beginning
+at a designated place.
+If no file is named,
+the standard input is used.
+.SH OPTIONS
+.TP
+.BI \+\f2number\f1
+Copy input starting at line
+.I number
+of the input file.  
+Depending on the use of the 
+.B l, b
+or
+.B c
+options, 
+.I number
+denotes a count of lines, blocks or characters.
+If none of the
+.B l, b
+or
+.B c
+options are specified, 
+.B tail
+defaults to counting lines.
+If 
+.I number
+is not specified, a value of 10 is used.
+.TP
+.BI \-\f2number\f1
+Copy input starting at a distance of
+.I number
+lines from the end of the file.  
+Depending on the use of the 
+.B l, b
+or
+.B c
+options, 
+.I number
+denotes a count of lines, blocks or characters.
+If none of the
+.B l, b
+or
+.B c
+options are specified, 
+.B tail
+defaults to counting lines.
+If 
+.I number
+is not specified, a value of 10 is used.
+.TP 
+.B \ l
+.I number
+is used as a count of lines.
+.TP
+.B \ b
+.I number
+is used as a count of 512-byte blocks.
+.TP
+.B \ c
+.I number
+is used as a count of characters.
+.TP
+.B \ f
+.B tail
+does not quit at the end of the input file, but 
+continues to read from the input file repeatedly in 
+hopes that the file will grow.
+.TP
+.B \ r
+.B tail
+prints lines from the end of the input file in reverse order.
+The default for 
+.B r
+is to print one entire buffer
+(approximately 32K)
+this way.
+.SH "SEE ALSO"
+dd(1)
+.SH BUGS
+Tails relative to the end of the file
+are treasured up in a buffer,
+and thus are limited in length.
+.PP
+Various kinds of anomalous behavior may happen
+with character special files.
+.PP
+Note that the
+.B tail
+command recognizes only one option argument before the list of
+files.  Therefore, you cannot use the
+.B -n
+option and the
+.B -f
+option together as in
+.B tail
+.B -f
+.B -20
+.I filename.
+To use these two options together, you 
+would specify them as
+.B tail
+.B -20f
+.I filename.

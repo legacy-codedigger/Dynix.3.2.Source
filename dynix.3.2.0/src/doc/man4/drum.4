@@ -1,0 +1,29 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: drum.4 1.4 86/05/13 $
+.TH DRUM 4 "\*(V)" "4BSD"
+.SH NAME
+drum \- paging device
+.SH DESCRIPTION
+This file refers to the paging device in use by the system.
+This may actually be a subdevice of one of the disk drivers, but in
+a system with paging interleaved across multiple disk drives
+it provides an indirect driver for the multiple drives.
+.SH FILES
+/dev/drum
+.SH BUGS
+Reads from the drum are not allowed across the interleaving boundaries.
+Since these only occur every
+.BR . 5Mbytes
+or so,
+and since the system never allocates blocks across the boundary,
+this is usually not a problem.

@@ -1,0 +1,58 @@
+head     1.2;
+branch   ;
+access   ;
+symbols  ;
+locks    ;
+comment  @@;
+
+
+1.2
+date     92.03.25.00.20.50;  author bruce;  state Exp;
+branches ;
+next     1.1;
+
+1.1
+date     92.03.25.00.19.35;  author bruce;  state Exp;
+branches ;
+next     ;
+
+
+desc
+@Initial revision is as distributed with Dynix OS Delta V3.2.0.b1 -> V3.2.0,
+    PN: 1003-59525,
+    file dated Mar 17 1992.
+@
+
+
+1.2
+log
+@Disabled unused options:
+    att
+    vfont
+    gnu
+@
+text
+@base	true	-
+nfs	true	-
+att	false	/usr/att
+doc	true	/usr/doc
+man	true	/usr/man/man
+games	true	/usr/games
+vfont	false	/usr/lib/vfont
+gnu	false	/usr/local/gnu
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d3 1
+a3 1
+att	true	/usr/att
+d7 2
+a8 2
+vfont	true	/usr/lib/vfont
+gnu	true	/usr/local/gnu
+@

@@ -1,0 +1,181 @@
+.\" $Copyright: $
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: vm_ctl.2 1.14 1991/07/11 18:54:46 $
+.TH VM_CTL 2 "\*(V)" "DYNIX"
+.SH NAME
+vm_ctl \- examine and change virtual memory tuning parameters
+.SH SYNOPSIS
+.nf
+.DT
+.ft 3
+#include <sys/types.h>
+#include <sys/vmsystm.h>
+.PP
+.ft 3
+vm_ctl(operation, argp)
+int operation;
+union {
+	struct vm_tune *vmtune;
+	unsigned long *procrss;
+	bool_t onoff;
+}	argp;
+.fi
+.ft 1
+.SH DESCRIPTION
+.I Vm_ctl
+examines and changes virtual memory (VM) related parameters.
+The function performed depends on the value of
+.IR operation .
+.PP
+If
+.I operation
+is VM_GETPARAM,
+.I vm_ctl
+fetches the system-wide VM tuning parameters into the structure pointed to by
+.IR vmtune .
+No special permissions are required to obtain this information.
+.PP
+If
+.I operation
+is VM_SETPARAM,
+the system-wide VM tuning parameters
+become the values in the structure pointed to by
+.IR vmtune .
+Existing processes are unaffected by some of the per-process tuning parameters;
+new processes, however, are bound by the new values.
+This form of the call is permitted only to the super-user.
+.PP
+If
+.I operation
+is VM_GETRS,
+the unsigned long pointed to by
+.I procrss
+is filled with the allowable resident set size of the calling process.
+No special permissions are required to obtain this information.
+.PP
+If
+.I operation
+is VM_SETRS,
+the resident set size of the calling process is set to
+the unsigned long pointed to by
+.IR procrss .
+This value must be within the system-wide bounds currently enforced via
+the VM_SETPARAM operation (described above),
+and the per-process resident set size restriction (set with
+.IR setrlimit ).
+This form of the call is permitted only to the super-user.
+.PP
+If
+.I operation
+is VM_SWAPABLE,
+the calling process is declared non-swappable if \*(lqonoff\*(rq is zero;
+otherwise, the calling process is declared swappable.
+The swappable attribute is inherited across forks and execs.
+This form of the call is permitted only to the super-user,
+unless the proper configuration parameter has been altered
+(see \*(lqNOTES\*(rq later).
+Note: VM_SWAPABLE has only one \*(lqP\*(rq.
+.PP
+If
+.I operation
+is VM_PFFABLE,
+the calling process is declared non-PFFable if \*(lqonoff\*(rq is zero;
+otherwise, the calling process is declared PFFable.
+When a process is PFFable,
+its resident set size will be altered based on the frequency
+at which the process page-faults.
+The PFFable attribute is inherited across forks and execs.
+This form of the call is permitted only to the super-user,
+unless the proper configuration parameter has been altered
+(see \*(lqNOTES\*(rq later).
+.SH "RETURN VALUE"
+If the call succeeds, 0 is returned.
+Otherwise, a \-1 is returned, and the error code is stored into
+.IR errno .
+.PP
+The structure pointed to by
+.I vmtune
+is defined in
+.RI < sys/vmsystm.h >
+as:
+.RS
+.DT
+.nf
+/*
+ * VM System parameters; tunable.
+ *
+ * Where appropriate, the units (HW pages or clusters) are noted.
+ * PFF rate units (PFFlow, PFFhigh) may change if faults/sec isn't
+ * enough resolution.  Note that clusters are 4kb on Symmetry systems
+ * and 2kb on Balance.
+ */
+
+struct	vm_tune	{
+	long	vt_minRS;	/* min # clusters for Rset */
+	long	vt_maxRS;	/* max # clusters for Rset; limited by maxRS */
+	long	vt_RSexecslop;	/* # HW pages slop in exec */
+	long	vt_RSexecmult;	/* Rset size multipler */
+	long	vt_RSexecdiv;	/* Rset size divider */
+	int	vt_dirtylow;	/* dirty-list low-water mark (HW pages) */
+	int	vt_dirtyhigh;	/* dirty-list high-water mark (HW pages) */
+	int	vt_klout_look;	/* pageout kluster look-ahead (clusters) */
+	long	vt_PFFvtime;	/* ticks between PFF adjusts; 0 ==> no PFF */
+	long	vt_PFFdecr;	/* # clusters to decrement if PFF < PFFlow */
+	long	vt_PFFlow;	/* low PFF rate, <= PFFhigh (faults/sec) */
+	long	vt_PFFincr;	/* # clusters to add if PFF > PFFhigh */
+	long	vt_PFFhigh;	/* high PFF rate (faults/sec) */
+	long	vt_minfree;	/* free-list low bound for swap (HW pages) */
+	long	vt_desfree;	/* free-list high bound for swap (HW pages) */
+	long	vt_maxdirty;	/* max dirty-list before swap (HW pages) */
+};
+.fi
+.RE
+.SH ERRORS
+.TP 15
+[EFAULT]
+The memory pointed to by
+.I vmtune
+or
+.I procrss
+lies outside the valid address space for the process.
+.TP 15
+[EINVAL]
+.I operation
+is not one of the supported values.
+.TP 15
+[EINVAL]
+An element of the structure pointed to by
+.I vmtune
+is not within permissible range.
+.TP 15
+[EPERM]
+The process does not have the proper permissions to make the requested change.
+.SH "SEE ALSO"
+getrlimit(2), getrusage(2), mmap(2), munmap(2), vmtune(8)
+.SH NOTES
+Setting the resident set size (via VM_SETRS)
+does not actually change the current number of resident pages.
+Pages will be added or removed through normal page faulting activity.
+.PP
+The system verifies that the tuning parameters at least have some
+degree of sanity to avoid immediate obvious panics.
+However, ignorant alterations of tuning parameters will most certainly
+result in a severe degradation in response.
+.PP
+Binary configuration of ability for non-root processes to
+disable swapping, PFF-ing, or adjusting the size of the
+resident set is provided via three variables in
+.IR /sys/conf/param.c :
+root_vm_swapable, root_vm_pffable, root_vm_setrs, respectively.
+If any of these variables is non-zero,
+the corresponding function is available only to root processes.
+Note: root_vm_swapable has only one \*(lqp\*(rq.

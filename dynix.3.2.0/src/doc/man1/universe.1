@@ -1,0 +1,81 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: universe.1 1.12 87/02/19 $
+.TH UNIVERSE 1 "\*(V)" "DYNIX"
+.SH NAME
+universe, att, ucb \- universe manipulations
+.SH SYNOPSIS
+.B universe
+.PP
+.B att
+[ command [ arg ... ] ]
+.PP
+.B ucb
+[ command [ arg ... ] ]
+.SH DESCRIPTION
+.I Universe
+displays the current universe setting as `att' or `ucb'.
+The `att' universe selects the functionality of AT&T's UNIX System V
+Rel 2 Ver 2,
+while the `ucb' universe selects the functionality of UNIX 4.2bsd,
+as distributed by the University of California at Berkeley,
+and enhanced by Sequent.
+.PP
+.I Att
+or
+.I ucb
+run
+.I command
+in the corresponding universe.
+If
+.I command
+is omitted, a new shell
+is started in the selected universe and
+run as a login shell.
+.PP
+Before running the shell or command, the
+.I att
+or 
+.I ucb
+commands perform the following actions:
+change the universe to U_UCB or U_ATT,
+copy ATTPATH (if U_ATT) or UCBPATH (if U_UCB) to PATH, 
+copy ATTSHELL (if U_ATT) or UCBSHELL (if U_UCB) to SHELL, 
+change directory to $HOME (if command is omitted),
+and exec the shell ($SHELL) or command.
+.PP
+.I Att
+or
+.I ucb
+will generate an additional shell if
+.I command
+is omitted.
+When the new shell exits, the previous environment is restored.
+If you do not want to return to the old environment, you can
+exec the new shell by typing `exec att' or `exec ucb'.
+.PP
+If you move back and forth between universes often,
+do not place a
+.I stty
+command, such as:
+.br
+	stty 0
+.br
+in your
+.I .logout
+file.
+.SH "SEE ALSO"
+environ(7), ln(1), login(1)
+.br
+.I
+DYNIX System V User's Guide
+

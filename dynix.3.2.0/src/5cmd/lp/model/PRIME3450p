@@ -1,0 +1,111 @@
+#       PRIME3450p - Model file for Prime 3450 LED printer (Fujitsu RX7100)
+#                    using Centronics parallel interface
+#
+#       Model file for lp support of the Fujitsu RX7100 Printer
+#       This file is a non-PostScript interface for use with the
+#       resident fonts provided with the RX7100.
+#
+#
+#	The following options on the lp command line are supported:
+#
+#		-olp    -  Use the LP 8.3 point font.  This would override
+#			   the default Courier 12 pt. font.  These two are
+# 			   the only resident fonts.
+#
+#      		-oland  -  Use landscape orientation.  This overrides the
+#			   default portrait orientation.  Only the Courier
+#			   font is available for landscape.
+#
+#   		-onh	-  Suppresses printing of the header page.
+#
+#		-oport  -  Use portrait (default) orientation.
+#
+#               -ocourier - Use Courier (default) font.
+#
+#
+
+printer='basename $0'
+orient=
+font=
+header=
+for i in $5
+do
+      case "$i" in
+	-courier | courier) # Courier font
+   		font=-courier
+		;;
+	-land | land) # Landscape orientation
+ 		orient=-land
+		;;
+	-port | port) # Portrait orientation
+		orient=-port
+		;;
+	-lp | lp) # LP (small) font
+		font=-lp
+		;;
+        -nh | nh) # No Header page
+                header=no
+                ;;
+	esac
+done
+if [ X$orient = X-land ]
+then
+    echo "\033&l1O\c"
+else
+    echo "\033&l0O\c"
+fi
+if [ X$font = X-lp ]
+then
+    echo "\033(s0T\c"
+    echo "\033)s3T\c"
+    echo "\033(s16.6H\c"
+    echo "\033)s16.6H\c"
+    echo "\033(s8.5V\c"
+    echo "\033)s8.5V\c"
+else
+    echo "\033(s3T\c"
+    echo "\033)s0T\c"
+    echo "\033(s10H\c"
+    echo "\033)s10H\c"
+    echo "\033(s12V\c"
+    echo "\033)s12V\c"
+fi
+uloginid=$2
+printerid=`basename $0`
+requestid=$1
+title=$3
+user=`grep "^$2:" /etc/passwd | line | cut -d: -f5`
+# initialize printer job stream
+x="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+if [ X$header != Xno ]
+	then
+	echo "$x\n$x\n$x\n$x\n$x\n"
+	banner $uloginid
+	echo "\n\n"
+	echo "User: $user\n"
+	echo "Request ID: $requestid     Printer: $printerid\n"
+	date
+	echo "\n\n"
+	if [ -n "$title" ]
+	then
+		banner $title
+		echo "\n"
+	fi
+	echo "$x\n$x\n$x\n$x\n$x\n"
+	echo "\f\c"
+	fi
+copies=$4
+shift; shift; shift; shift; shift
+files="$*"
+i=1
+while [ $i -le $copies ]
+do
+	for file in $files
+	do
+		cat "$file" 2>&1
+		echo "\f\c"
+	done
+	i=`expr $i + 1`
+done
+# terminate job
+exit 0

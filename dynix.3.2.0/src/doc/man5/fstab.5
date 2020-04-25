@@ -1,0 +1,290 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: fstab.5 1.16 90/02/23 $
+.\" @(#)fstab.5 1.1 85/12/28 SMI;
+.TH FSTAB 5 "\*(V)" "4BSD"
+.SH NAME
+fstab \- static information about filesystems
+.SH SYNOPSIS
+.B "#include <mntent.h>"
+.SH DESCRIPTION
+.\".IX  "fstab file"  ""  "\f2fstab\fP \(em fileystem static information"
+.\".IX  "fileystem static information"  ""  "fileystem static information \(em \f2fstab\fP"
+The file
+.I /etc/fstab
+describes the filesystems and swapping partitions used by the local machine.
+The system administrator can modify it with a text editor.
+It is read by commands that mount, unmount, dump, restore,
+and check the consistency of filesystems;
+it is also read by the system when providing swap space.
+The file consists of a number of lines of the form:
+.Ps
+\f2fsname dir type opts freq passno\fP
+.Pe
+\fRfor example:\" Note: because .Pe does a .ft P, the \fR is needed.
+.Ps
+/dev/zd0a / 4.2 rw,noquota 1 2
+/dev/zd1b swap swap . . .
+.Pe
+The second line also demonstrates how to handle empty fields; because
+swap devices have neither options nor backups, the last three fields
+have a '.' placed in them instead.
+.PP
+The entries from this file are accessed using the routines in
+.IR getmntent (3),
+which returns a structure of the following form:
+.Ps
+.ta \w'struct\0\0'u +\w'char\0\0'u +\w'*mnt_fsname;\0\0\0'u
+struct mntent {
+	char	*mnt_fsname;	/* filesystem name */
+	char	*mnt_dir;	/* filesystem path prefix */
+	char	*mnt_type;	/* 4.2, nfs, swap, or ignore */
+	char	*mnt_opts;	/* rw, ro, noquota, quota, hard, soft, intr */
+	int	mnt_freq;	/* dump frequency, in days */
+	int	mnt_passno;	/* pass number on parallel fsck */
+};
+.Pe
+Fields are separated by white space;
+a
+.B #
+as the first non-white space character indicates a comment.
+If a field is null,
+you must place a period (\.) there as a placeholder.
+.PP
+The 
+.I mnt_dir
+fields is the full path name of the directory to be mounted on.
+.PP
+The
+.I mnt_type
+field determines how the 
+.I mnt_fsname
+and 
+.I mnt_opts
+fields are interpreted.
+Here is a list of the filesystem types currently supported,
+and the way each of them interprets these fields:
+.ta \w'mnt_fsname\0\0'u
+.TP 10
+.B 4.2
+\f2mnt_fsname\fP	Must be a block special device.
+.\".br
+.\"\fImnt_opts\fR	valid options are:
+.\".BI ro , 
+.\".BI rw , 
+.\".BI quota , 
+.\"and
+.\".BI noquota .
+.TP 10
+.B nfs
+\f2mnt_fsname\fP	the path on the server of the directory to be served.
+.\".br
+.\"\fImnt_opts\fR	valid options are:
+.\".BI ro , 
+.\".BI rw , 
+.\".BI quota , 
+.\".BI noquota , 
+.\".BI hard , 
+.\".BI soft ,
+.\"and
+.\".BI intr .
+.TP 10
+.B swap
+\f2mnt_fsname\fP	must be a block special device swap partition.
+.\".br
+.\"\fImnt_opts\fR	are ignored.
+.PP
+If the
+.I mnt_type
+is specified as
+.B ignore
+then the entry is ignored.
+This is useful to show disk partitions not currently used.
+.PP
+The 
+.I mnt_opts
+field contains a list of comma-separated option words.  Some
+.I mnt_opts
+are valid for all filesystem types, while others apply to a
+specific type only:
+.IP 
+.I mnt_opts
+valid on 
+.I all 
+file systems (the default is
+.BR rw,suid ):
+.RS
+.IP \f3rw\fP .75i
+read/write.
+.IP \f3ro\fP
+read-only.
+.IP \f3suid\fP
+set-uid execution allowed.
+.IP \f3nosuid\fP
+set-uid execution not allowed.
+.RE
+.sp 1
+.IP
+.I mnt_opts 
+specific to
+.B 4.2
+file systems (the default is
+\f3noquota\fP).
+.RS
+.IP \f3quota\fP .75i
+usage limits enforced.
+.IP \f3noquota\fP
+usage limits not enforced.
+.RE
+.sp 1
+.IP
+.I mnt_opts
+specific to 
+.B nfs
+(NFS) file systems.
+The defaults are:
+.Ps
+fg,retry=1,timeo=7,retrans=4,port=NFS_PORT,hard
+.Pe
+with defaults for 
+.I rsize 
+and 
+.I wsize 
+set by the kernel:
+.TP 10
+.B bg
+if the first attempt fails, retry in the background.
+.TP 10
+.B fg
+retry in foreground.
+.TP 10
+\f3retry=\f2n\f1
+set number of failure retries to 
+.IR n .
+.TP 10
+\f3rsize=\f2n\f1
+set read buffer size to 
+.I n 
+bytes.
+.TP 10
+\f3wsize=\f2n\f1
+set write buffer size to 
+.I n
+bytes.
+.TP 10
+\f3timeo=\f2n\f1
+set NFS timeout to 
+.I n 
+tenths of a second.
+.TP 10
+\f3retrans=\f2n\f1
+set number of NFS retransmissions to 
+.IR n .
+.TP 10
+\f3port=\f2n\f1
+set server IP port number to 
+.IR n .
+.TP 10
+.B soft
+return error if server doesn't respond.
+.TP 10
+.B hard
+retry request until server responds.
+.TP 10
+.B intr
+allow keyboard interrupts on hard mounts.
+.PP
+The
+.B bg
+option causes 
+.I mount
+to run in the background if the server's
+.IR mountd (8)
+does not respond.  
+.I Mount 
+attempts each request
+.B retry
+times before giving up.  Once the filesystem is mounted,
+each 
+.B nfs 
+request made in the kernel waits
+.B timeo
+tenths of a second for a response.  If no response arrives, the
+time-out is multiplied by 
+.B 2 
+and the request is retransmitted.  When
+.B retrans
+retransmissions have been sent with no reply a
+.B soft
+mounted filesystem returns an error on the request and a
+.B hard
+mounted filesystem retries the request.
+The number of bytes in a read or write request can be set with the
+.B rsize
+and
+.B wsize
+options, respectively.
+.PP
+The
+.I mnt_freq
+field indicates how often each partition should be dumped by the
+.IR dump (8)
+command (and triggers
+\f2dump\f1's
+.B w
+option, which determines what filesystems should be dumped).
+Most systems set the
+.I mnt_freq
+field to 1, indicating that filesystems are dumped each day.
+.PP
+The final field,
+.IR mnt_passno ,
+is used by the consistency checking program
+.IR fsck (8)
+to allow overlapped checking of filesystems during a reboot.
+First, all filesystems with
+.I mnt_passno
+of 
+.B 1 
+are checked simultaneously, then all filesystems with
+.I mnt_passno
+of 
+.BR 2 , 
+and so on.
+Typically, the
+.I mnt_passno
+of the root filesystem is set to
+.BR 1 ,
+and one filesystem on each available disk drive is set to be checked
+in each subsequent pass, until all filesystem partitions are checked.
+.PP
+The
+.I /etc/fstab
+file is only read by programs and never written to by programs;
+the system administrator must maintain it manually.
+The order of records in
+.I /etc/fstab
+is important because
+.I fsck,
+.I mount,
+and
+.I umount
+process the file sequentially;
+filesystems must appear 
+.I after 
+filesystems within which they are mounted.
+.SH FILES
+/etc/fstab
+.SH SEE ALSO
+getmntent(3),
+fsck(8),
+mount(8)

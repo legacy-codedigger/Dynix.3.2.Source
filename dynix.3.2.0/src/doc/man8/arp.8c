@@ -1,0 +1,105 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986 Sequent Computer Systems, Inc.
+.\" All rights reserved
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: arp.8c 1.2 87/05/27 $
+.TH ARP 8C "\*(V)" "4BSD"
+.SH NAME
+arp \- address resolution display and control
+.SH SYNOPSIS
+.B /usr/etc/arp
+.I hostname
+[
+.I system
+] [
+.I core
+]
+.B arp -a
+.br
+.B arp -d
+.I hostname
+.br
+.B arp -s
+.I hostname ether_addr
+[
+.B temp
+] [
+.B pub
+] [
+.B trail
+]
+.br
+.B arp -f
+.I filename
+.SH DESCRIPTION
+The
+.I arp
+program displays and modifies the Internet-to-Ethernet address translation
+tables used by the address resolution protocol
+.IR ( arp (4p)).
+.LP
+With no flags, the program displays the current ARP entry for
+.I hostname.
+The host may be specified by name or by number,
+using Internet dot notation.
+With the
+.B -a
+flag, the program displays all of the current ARP entries by reading the table
+from the file
+.I core
+(default /dev/kmem) based on the kernel file 
+.I system 
+(default /dynix).
+.LP
+With the
+.B -d
+flag, a super-user may delete an entry for the host called
+.I hostname.
+.LP
+The
+.B -s
+flag is given to create an ARP entry for the host called
+.I hostname
+with the Ethernet address 
+.I ether_addr.
+The Ethernet address is given as six hex bytes separated by colons.
+The entry will be permanent unless the word
+.B temp
+is given in the command. 
+If the word
+.B pub
+is given, the entry will be "published"; i.e., this system will
+act as an ARP server,
+responding to requests for 
+.I hostname
+even though the host address is not its own.
+The word
+.B trail
+indicates that trailer encapsulations may be sent to this host.
+.LP
+The 
+.B -f
+flag causes the file
+.I filename
+to be read and multiple entries to be set in the ARP tables.  Entries
+in the file should be of the form
+.IP
+.I hostname ether_addr
+[
+.B temp
+] [
+.B pub
+] [
+.B trail
+]
+.LP
+with argument meanings as given above.
+.SH "SEE ALSO"
+inet(3N), arp(4P), ifconfig(8C)

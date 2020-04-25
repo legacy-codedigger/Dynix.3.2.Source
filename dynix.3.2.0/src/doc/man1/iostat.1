@@ -1,0 +1,88 @@
+.\" $Copyright:	$
+.\" Copyright (c) 1984, 1985, 1986, 1987, 1988, 1989, 1990 
+.\" Sequent Computer Systems, Inc.   All rights reserved.
+.\"  
+.\" This software is furnished under a license and may be used
+.\" only in accordance with the terms of that license and with the
+.\" inclusion of the above copyright notice.   This software may not
+.\" be provided or otherwise made available to, or used by, any
+.\" other person.  No title to or ownership of the software is
+.\" hereby transferred.
+...
+.V= $Header: iostat.1 1.11 87/08/01 $
+.TH IOSTAT 1 "\*(V)" "4BSD"
+.SH NAME
+iostat \- report I/O statistics
+.SH SYNOPSIS
+.B iostat
+[ interval [ count ] ]
+.SH DESCRIPTION
+.I Iostat
+iteratively reports the number of characters read and written to terminals,
+and, for each disk, the number of seeks, transfers per second, disk sectors
+transfered per second,
+and the milliseconds per average seek.
+It also gives the percentage of time the system has
+spent in user mode, in user mode running low priority (niced) processes,
+in system mode, and idling.
+.PP
+To compute this information, for each disk, seeks and data transfer completions
+and number of disk sectors are counted;
+for terminals collectively, the number
+of input and output characters are counted.
+From these numbers and given the transfer rates
+of the devices it is possible to determine
+average seek times for each device
+(which includes all forms of disk latency).
+.PP
+The optional
+.I interval
+argument causes
+.I iostat
+to report once each
+.I interval
+seconds.
+The first report is an average for all time since a reboot and each
+subsequent report is for the last interval only.
+.PP
+The optional
+.I count
+argument restricts the number of reports.
+.SH EXAMPLE
+.if t .ta 0.7i 1.4i 2.4i 3.4i 4.3i
+.if n .ta 1.0i 1.9i 3.35i 4.75i 6.0i
+.Ps
+	tty	xp0	sd0	sd1	cpu
+ tin tout bps tps msps  bps tps msps  bps tps msps  us ni sy id
+  38  543  36   3  0.0    0   0  0.0    3   0  0.0   9  2 17 72
+.Pe
+For terminals,
+.B tin
+is the number of characters received per second from terminals and
+.B tout
+is the number of characters transmitted per second to terminals.
+For disks,
+.B bps
+is the number of blocks (512 byte disk blocks) transferred per second,
+.B tps
+is the number of transfers per second,
+and
+.B msps
+is the number of milliseconds per seek.
+The latter is always 0.0 since the number of seeks is not kept by DYNIX.
+For cpus,
+.B us
+is the percentage of time spent in user mode,
+.B ni
+is the percentage of time spent in user mode at lower priority (niced),
+.B sy
+is the percentage of time spent in system (kernel) mode,
+and
+.B id
+is the percentage of time spent idle.
+.SH FILES
+/dev/kmem
+.br
+/dynix
+.SH SEE ALSO
+vmstat(1)

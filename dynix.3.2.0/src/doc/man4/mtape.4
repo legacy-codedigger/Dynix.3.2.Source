@@ -1,0 +1,18 @@
+.\" $Copyright:	$
+...
+.V= $Header: mtape.4 1.2 90/11/02 $
+.TH MTAPE 4 "\*(V)" "DYNIX"
+.SH NAME
+mtape \- 9-track tape pseudo device
+.SH DESCRIPTION
+The devices mtape0 (rewind) and mtape8 (no rewind) are interfaces
+to the system 9-track
+tape drive.  On SSM-based machines, they are links to rtg0 and rtg8,
+respectively.  On SCED-based machines, they are links to rmt8 and rmt12,
+respectively.  The mtape links provide a consistent interface to the
+9-track tape drive, independent of the machine type.  These links are
+created by /dev/MAKEDEV when invoked with "std", "mtape", or "ctape".
+.SH FILES
+/dev/mtape*
+.SH "SEE ALSO"
+mt(1), mtio(4), tg(4), ctape(4), makedev(8)
